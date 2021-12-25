@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="mydiv mt-1 text-center">
+        <p class="header">
+            الملكة والأمير
+        </p>
+        <div class="row justify-content-between mt-2 mcenter">
+            <div class="col mt-2">
+                <div class="row">
+                    <p>التاريخ</p>
+                    <p class=" mr-3">{{sharedData.date|date:'yyyy-MM-dd'}}</p>
+                </div>
+            </div>
+            <div class="col">
+                <div class="row mt-2">
+                    <p>كود الفاتورة</p>
+                    <p class="  mr-3">{{sharedData.code}}</p>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="row m-auto ">
+                <p>اسم العميل</p>
+                <p class=" mr-3">{{sharedData.customer}}</p>
+            </div>
+        </div>
+        <div class="text-center c_table">
+            
+            <table class="table table-bordered table-sm">
+                <thead class="thead-dark ">
+                    <tr>
+                        <th>المنتج</th>
+                        <th>الكمية</th>
+                        <th>السعر</th>
+                        <th>الاجمالى</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of dynamicOrderList">
+                        <th>{{ item.productName }}</th>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.price }}</td>
+                        <td>{{ item.total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="mr-3">
+            <div class="row m-auto ">
+                <p>الاجمالى</p>
+                <p class=" mr-3">{{sharedData.total}}</p>
+            </div>
+            <div class="row m-auto ">
+                <p>خصم بالجنية</p>
+                <p class=" mr-3">{{sharedData.discount}}</p>
+            </div>
+            <div class="row m-auto ">
+                <p>مدفوع</p>
+                <p class=" mr-3">{{sharedData.paid}}</p>
+            </div>
+            <div class="row m-auto ">
+                <p> الصافى</p>
+                <p class="mr-1">{{sharedData.total - sharedData.discount - sharedData.paid}}</p>
+            </div>
+        </div>
+        <p class="bg-dark text-white rounded">Power By Polimigo Company</p>
+    </div>
+</div>

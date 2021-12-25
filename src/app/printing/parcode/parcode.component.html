@@ -1,0 +1,11 @@
+<p class="title" style="margin-left: 1.5cm;margin-right: 1.5cm; font-size: 16;">{{sharedData.name}}</p>
+<p class="myDivToPrint">
+    <ngx-barcode
+     [bc-value]="sharedData.parcode"
+      [bc-height]="60" 
+      [bc-margin-top]="0"
+       [bc-font-size]="16" 
+       [bc-margin-bottom]="0"
+   [bc-display-value]="true">
+    </ngx-barcode>
+</p>

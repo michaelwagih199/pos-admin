@@ -1,0 +1,40 @@
+<mat-card class="mat-elevation-z2">
+    <mat-card-header>
+     <div class="container-fluid">
+         <h2 class="text-center text-header">
+            تقيم بضاعة المخزن
+         </h2>
+     </div>
+    </mat-card-header>
+
+    <mat-card-content>
+        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
+        <div class="text-center text-footer">
+            <table class="table table-bordered table-sm mt-2">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>المنتج</th>
+                        <th>سعر الشراء</th>
+                        <th>عدد القطع</th>
+                        <th>القيمة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of productList">
+                        <th>{{item?.productName }}</th>
+                        <td>{{ item?.purchasingPrice }}</td>
+                        <td>{{ item?.numberUnitsInStock }}</td>
+                        <td>{{ item.purchasingPrice * item.numberUnitsInStock }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center">
+            <div class="customClass-1 mt-3">
+                <p class="text-center">الاجمالى</p>
+                <hr>
+                <p class="customTest">{{total}}</p>
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>

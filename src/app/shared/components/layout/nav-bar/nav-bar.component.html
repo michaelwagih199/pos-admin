@@ -1,0 +1,100 @@
+<!-- Toolbar -->
+<div class="doNotPrint">
+	<mat-toolbar color="primary" class="header">
+		<div>
+			<mat-icon aria-hidden="false" class="homeIcon" (click)="toHome()">home</mat-icon>
+			<mat-icon aria-hidden="false" [ngClass]="[ isNotification ? 'notifi-yes' : 'homeIcon']" (click)="toNotification()">notifications</mat-icon>
+		</div>
+		<div>Polimigos</div>
+		<span class="nav-tool-items ">
+			<mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
+		</span>
+	</mat-toolbar>
+
+	<mat-sidenav-container>
+		<!-- Sidenav -->
+		<mat-sidenav #sidenav [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened" [fixedInViewport]="true"
+			[fixedTopGap]>
+
+			<mat-nav-list>
+
+				<div data-toggle="tooltip" data-placement="top" title="Logout">
+					<a id="userName" mat-list-item (click)="logoutComfirm()">
+						{{userName}}
+						<mat-icon>person</mat-icon>
+					</a>
+				</div>
+
+				<a *ngIf="DynamicNavBar.saleOrder" mat-list-item [routerLink]="'/saleOrder'">
+					<mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.seling}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.stock" mat-list-item [routerLink]="'/stock'">
+					<mat-icon>addchart</mat-icon> {{arabic.navBarList.stock}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.customers" mat-list-item [routerLink]="'/customers'">
+					<mat-icon>person</mat-icon> {{arabic.navBarList.customers}}
+				</a>
+				<a *ngIf="DynamicNavBar.suppliers" mat-list-item [routerLink]="'/suppliers'">
+					<mat-icon>person</mat-icon> {{arabic.navBarList.suppliers}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.purshasing" mat-list-item [routerLink]="'/purchases'">
+					<mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.purshasing}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.retrival" mat-list-item [routerLink]="'/retrivals'">
+					<mat-icon>autorenew</mat-icon> {{arabic.navBarList.retrival}}
+				</a>
+				<a *ngIf="DynamicNavBar.expenses" mat-list-item [routerLink]="'/expenses'">
+					<mat-icon>trending_down</mat-icon> {{arabic.navBarList.expenses}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.maintenance" mat-list-item [routerLink]="'/maintenance'">
+					<mat-icon>handyman</mat-icon> {{arabic.navBarList.maintenance}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.reports" mat-list-item [routerLink]="'/reports'">
+					<mat-icon>trending_up</mat-icon> {{arabic.navBarList.reports}}
+				</a>
+
+				<a *ngIf="DynamicNavBar.setting" mat-list-item [routerLink]="'/setting'">
+					<mat-icon>settings</mat-icon> {{arabic.navBarList.setting}}
+				</a>
+
+				<a mat-list-item (click)="aboutApp()">
+					<mat-icon>favorite_border</mat-icon> {{arabic.navBarList.aboutApp}}
+				</a>
+
+			</mat-nav-list>
+
+		</mat-sidenav>
+
+		<!-- Main content -->
+		<mat-sidenav-content>
+			<!-- Applying the mat-tyography class adds styles for native elements. -->
+			<!-- <section class="mat-typography title-group">
+			<h3>Heading Goes Here</h3>
+			<mat-divider></mat-divider>
+		  </section> -->
+
+
+			<!-- <mat-card class="my-alternate-theme">
+				My Alternate Themes: &nbsp; &nbsp; &nbsp;
+				<button mat-raised-button color="primary">
+					Primary
+				</button>
+				<button mat-raised-button color="accent">
+					Accent
+				</button>
+				<button mat-raised-button color="warn">
+					Warning
+				</button>
+			</mat-card> -->
+
+			<router-outlet></router-outlet>
+
+		</mat-sidenav-content>
+	</mat-sidenav-container>
+</div>

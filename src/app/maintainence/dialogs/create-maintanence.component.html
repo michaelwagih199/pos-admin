@@ -1,0 +1,42 @@
+<h2 mat-dialog-title>إضافة ميعاد صيانة</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+    <form nz-form [formGroup]="validateForm">
+        <div class="container-fluid mt-2">
+            <div class="row justify-content-between ">
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>اسم العميل</mat-label>
+                        <input matInput required placeholder="اسم العميل" formControlName="customerName"
+                            [(ngModel)]="maintanence.customerName" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>التاريخ</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="maintanenceDate"
+                            [(ngModel)]="maintanence.maintanenceDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker" ></mat-datepicker-toggle >
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div>
+                <mat-form-field class="full-width">
+                    <mat-label>ملاحظات</mat-label>
+                    <textarea matInput [(ngModel)]="maintanence.comment" formControlName="notes"
+                        placeholder="ملاحظة"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="center">
+    <button mat-raised-button (click)="save()"
+        [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
+    <button mat-raised-button color="primary" (click)="close()"
+        tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
+</mat-dialog-actions>

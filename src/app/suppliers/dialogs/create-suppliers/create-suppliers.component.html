@@ -1,0 +1,59 @@
+<h2 mat-dialog-title>إضافة مورد</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+    <form nz-form [formGroup]="validateForm">
+        <div class="container-fluid">
+            <div class="row justify-content-between mt-2">
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>الاسم</mat-label>
+                        <input matInput required placeholder="الاسم"
+                            formControlName="supplierName" [(ngModel)]="supplier.supplierName" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>رقم التليفون</mat-label>
+                        <input type="tel" matInput required placeholder="رقم التليفون"
+                            formControlName="supplierPhone" [(ngModel)]="supplier.supplierPhone" autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>اسم الشركة</mat-label>
+                        <input  matInput placeholder="اسم الشركة"
+                            formControlName="supplierCompany" [(ngModel)]="supplier.supplierCompany" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>العنوان</mat-label>
+                        <input  matInput  placeholder="العنوان"
+                            formControlName="supplierAddress" [(ngModel)]="supplier.supplierAddress" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <mat-form-field appearance="fill" class="full-width">
+                    <mat-label>{{arabic.util.tables.notes}}</mat-label>
+                    <textarea matInput placeholder="{{arabic.util.tables.notes}}" formControlName="notes"
+                        [(ngModel)]="supplier.notes" autocomplete="off"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="center">
+    <button mat-raised-button (click)="save()"
+        [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
+    <button mat-raised-button color="primary" (click)="close()"
+        tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
+</mat-dialog-actions>

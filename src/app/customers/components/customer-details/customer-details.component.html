@@ -1,0 +1,28 @@
+<mat-card class="mat-elevation-z2">
+
+    <mat-card-header>
+        <div class="row ">
+            <div class="col mt-2">
+                <div class="row justify-content-center">
+                    <p class="mt-2">اسم العميل</p>
+                    <p class="text-white bg-dark rounded p-2 mr-4 block">{{customer?.customerName}}</p>
+                </div>
+            </div>
+           
+            <div class="ml-3 mt-2">
+                <button mat-icon-button color="warn" (click)="back()">
+                    <mat-icon>arrow_circle_up
+                    </mat-icon>
+                </button>
+            </div>
+        </div>
+    </mat-card-header>
+    <mat-card-content>
+        <mat-tab-group class="mt-3">
+            <mat-tab label="الدفعات">
+                <app-payments></app-payments>
+            </mat-tab>
+            
+        </mat-tab-group>
+    </mat-card-content>
+</mat-card>

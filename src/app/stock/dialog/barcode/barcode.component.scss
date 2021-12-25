@@ -1,0 +1,27 @@
+@media print {
+  header,
+  footer,
+  aside,
+  form {
+    display: none;
+  }
+
+  .doNotPrint {
+    display: none !important;
+  }
+
+  .myDivToPrint {
+    background-color: white;
+    height: 25mm;
+    width: 37mm;
+  }
+  .title {
+    text-align: center;
+    margin-bottom: 0px;
+  }
+  .svg {
+    margin-top: 0px;
+    margin-bottom: 0px;
+  }
+}
+

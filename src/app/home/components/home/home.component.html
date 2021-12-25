@@ -1,0 +1,13 @@
+<div class="card">
+    <ngb-carousel *ngIf="images"  >
+        <ng-template ngbSlide *ngFor="let index of images">
+            <div >
+                <img [src]="index.src" class="bg" alt="Random first slide">
+            </div>
+            <div class="carousel-caption custom-caption">
+                <h3 class="cabtion-header">{{ index.header }}</h3>
+                <!-- <p>{{ index.discription}}</p> -->
+            </div>
+        </ng-template>
+    </ngb-carousel>
+</div>

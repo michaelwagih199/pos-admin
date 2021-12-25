@@ -1,0 +1,237 @@
+
+$bg_dark_color: #000F27;
+$green_color: #008D60;
+$redItems:#FF0036;
+$timperItems:#FF741A;
+$ofWhite:#E5E5E5;
+$font_header_size: 20px;
+
+
+.customClass-1{
+
+    background-color: white;
+    border-left: 8px solid #2B81FF;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+
+    &:hover {
+      border-left: 8px solid $redItems;
+      text-decoration: none;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+
+  }
+
+  
+  .customClass-2{
+
+    background-color: white;
+    border-left: 8px solid #FF587F;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+    &:hover {
+      border-left: 8px solid $bg_dark_color;
+      font-weight: bold;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      text-decoration: none;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+    
+  }
+
+
+  .customClass-3{
+    background-color: white;
+    border-left: 8px solid #87BF50;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+    &:hover {
+      border-left: 8px solid $redItems;
+      font-weight: bold;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      text-decoration: none;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+  }
+  
+  .customClass-4{
+    background-color: white;
+    border-left: 8px solid #FFB349;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+    &:hover {
+      border-left: 8px solid $green_color;
+      font-weight: bold;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      text-decoration: none;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+  }
+  
+  .mat-card-header {
+    display: flex;
+    flex-direction: row;
+    background: #F4F3F0;
+    border-radius: 8px;
+    border: 1px solid #212121;
+  }
+  
+$bg_dark_color: #000F27;
+$green_color: #008D60;
+$redItems:#FF0036;
+$timperItems:#FF741A;
+$ofWhite:#E5E5E5;
+$font_header_size: 16px;
+
+
+.customClass-1{
+
+    background-color: white;
+    border-left: 8px solid #2B81FF;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+
+    &:hover {
+      border-left: 8px solid $redItems;
+      text-decoration: none;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+
+  }
+
+  
+  .customClass-2{
+
+    background-color: white;
+    border-left: 8px solid #FF587F;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+    &:hover {
+      border-left: 8px solid $bg_dark_color;
+      font-weight: bold;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      text-decoration: none;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+    
+  }
+
+
+  .customClass-3{
+    background-color: white;
+    border-left: 8px solid #87BF50;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+    &:hover {
+      border-left: 8px solid $redItems;
+      font-weight: bold;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      text-decoration: none;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+  }
+  
+  .customClass-4{
+    background-color: white;
+    border-left: 8px solid #FFB349;
+    height: 90px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 3px grey;
+    font-family: 'El Messiri', sans-serif;
+    font-size: $font_header_size;
+    &:hover {
+      border-left: 8px solid $green_color;
+      font-weight: bold;
+    }
+    .customTest{
+      color: black;
+      font-size: 24px;
+      text-decoration: none;
+      &:hover{
+        animation: swing; 
+        animation-duration: 1s; 
+      }
+    }
+  }
+  
+  .mat-card-header {
+    display: flex;
+    flex-direction: row;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #212121;
+  }
+  
+  .mat-card{
+    background: #F4F3F0;
+  }
+
+  .mat-raised-button{
+    font-family: 'El Messiri', sans-serif;
+    font-size: large;
+  }

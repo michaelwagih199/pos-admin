@@ -1,0 +1,174 @@
+<div class="container-fluid">
+    <div class="row justify-content-between">
+        <div class="col">
+            <h3>حفظ فاتورة مشتريات</h3>
+        </div>
+        <div class="col">
+            <div class="row justify-content-center">
+                <h3 class="text-dark mt-2">كود الفاتورة</h3>
+                <h3 class="bg-danger text-white p-2 rounded mr-2">{{billsCode}}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+<mat-divider></mat-divider>
+<mat-dialog-content>
+    <div class="container-fluid mt-2">
+        <div>
+            <div class="row m-2 ">
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>رقم الفاتورة</mat-label>
+                        <input matInput required placeholder="رقم الفاتوره" [(ngModel)]="codeSearch" autocomplete="off">
+                    </mat-form-field>
+                </div>
+                <!-- <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>تاريخ الفاتورة</mat-label>
+                        <input matInput [matDatepicker]="picker">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div> -->
+                <div class="col mt-2">
+                    <button mat-raised-button color="primary" (click)="getBills()">عرض الفاتورة</button>
+                </div>
+            </div>
+            <p class="text-center text-white bg-primary rounded">الطلب</p>
+            <table class="table table-bordered table-sm">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>العميل</th>
+                        <th>الاجمالى</th>
+                        <th>الخصم</th>
+                        <th>الصافى</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of saleOrderPaymentList">
+                        <th>{{ item.createdDate | date: 'yyyy-MM-dd'}}</th>
+                        <td>{{ item?.saleOrder?.customer?.customerName }}</td>
+                        <td>{{ item.remaining }}</td>
+                        <td>{{ item.discount}}</td>
+                        <td>{{ item.netCost}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="mt-2" style="text-align: center;">
+                <p class="text-white bg-primary rounded">التفاصيل</p>
+                <!--table-->
+                <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>المنتج</th>
+                            <th>الكمية</th>
+                            <th>سعر الوحدة</th>
+                            <th>الاجمالى</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of saleOrderList">
+                            <th>{{ item.product.productName }}</th>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.total}}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    (click)="open(content,item)">مرتجع</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <hr>
+            <div class=" text-center custom-div p-2">
+                <h3 class="text-white bg-primary rounded">المرتجعات</h3>
+                <!--table-->
+                <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>المنتج</th>
+                            <th>الكمية</th>
+                            <th>سعر الوحدة</th>
+                            <th>الاجمالى</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of retrivalBillsList">
+                            <th>{{ item.product.productName }}</th>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.total}}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    (click)="deleteDynamicItem(item)">حزف</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h3 class="text-white bg-primary rounded mt-2">اجمالى الفاتورة</h3>
+            <div class="container-fluid">
+                <div class="row mt-2 custom-div ">
+                    
+                    <div class="col mt-2">
+                        <div class="row justify-content-around">
+                             <h3 class="mt-2">الاجمالى</h3>
+                             <h2 class="bg-danger text-white text-center p-2 rounded">{{total}}</h2>
+                        </div>
+                     </div>
+
+                    <div class="col mt-2">
+                        <mat-form-field class="full-width">
+                            <input matInput required appearance="outline" class="full-width" placeholder="الخصم"
+                                type="number" [(ngModel)]="discount" autocomplete="off">
+                        </mat-form-field>
+                    </div>
+                   
+                    <div class="col mt-2">
+                        <div class="row justify-content-around">
+                             <h3 class="mt-2">المطلوب سدادة</h3>
+                             <h2 class="bg-danger text-white text-center p-2 rounded">{{total-discount}}</h2>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="center">
+    <button mat-raised-button color="warn" (click)="save()">حفظ</button>
+    <button mat-raised-button color="primary" (click)="close()" tabindex="1">إلغاء</button>
+</mat-dialog-actions>
+
+<div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">الكمية</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+
+        </div>
+        <div class="modal-body">
+            <div *ngIf="ismaxQuantity" class="bg-danger text-center text-white rounded">
+                <h3>اقصى كمية{{maxQuantity}}</h3>
+            </div>
+            <form nz-form [formGroup]="validateForm">
+                <mat-form-field class="full-width">
+                    <input matInput required appearance="outline" class="full-width" placeholder="الكمية" type="number"
+                        formControlName="description" [(ngModel)]="quantity" autocomplete="off">
+                </mat-form-field>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button mat-raised-button color="primary" (click)="onAddRetrival()"
+                [disabled]="!validateForm.valid">اضافة</button>
+        </div>
+    </ng-template>
+</div>

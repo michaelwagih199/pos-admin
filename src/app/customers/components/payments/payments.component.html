@@ -1,0 +1,110 @@
+<div>
+    <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
+
+    <form nz-form [formGroup]="validateForm">
+        <div class="row justify-content-around mt-4">
+            <div class="col">
+                <mat-form-field appearance="fill">
+                    <mat-label>{{arabic.customers.util.paymentValue}}</mat-label>
+                    <input matInput type="number" required placeholder="{{arabic.customers.util.paymentValue}}"
+                        formControlName="paymentValue" [(ngModel)]="customerPayment.paymentValue" autocomplete="off">
+                </mat-form-field>
+            </div>
+
+            <div class="col">
+                <mat-form-field appearance="fill">
+                    <mat-label>{{arabic.customers.util.paymentDate}}</mat-label>
+                    <input matInput required [matDatepicker]="picker" formControlName="paymentDate"
+                        [(ngModel)]="customerPayment.paymentDate" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div class="col">
+                <mat-form-field appearance="fill">
+                    <mat-label>{{arabic.util.tables.notes}}</mat-label>
+                    <textarea matInput placeholder="{{arabic.util.tables.notes}}" formControlName="notes"
+                        [(ngModel)]="customerPayment.notes" autocomplete="off"></textarea>
+                </mat-form-field>
+            </div>
+            <div class="col">
+                <button mat-raised-button color="primary" class="mybtn" (click)="addPayment()"
+                    [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
+            </div>
+        </div>
+    </form>
+    <mat-divider></mat-divider>
+    <!--end tables-->
+    <div class="mt-2">
+        <table mat-table
+            [dataSource]="customerPaymentList | paginate: {itemsPerPage: pageSize, currentPage: page, totalItems:count}">
+
+            <ng-container matColumnDef="id">
+                <th mat-header-cell *matHeaderCellDef> {{arabic.util.tables.id}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.id}} </td>
+            </ng-container>
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="paymentDate">
+                <th mat-header-cell *matHeaderCellDef> التاريخ </th>
+                <td mat-cell *matCellDef="let element"> {{element.paymentDate|date: 'yyyy-MM-dd'}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="paymentValue">
+                <th mat-header-cell *matHeaderCellDef> قيمة الدفعة </th>
+                <td mat-cell *matCellDef="let element"> {{element.paymentValue}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="notes">
+                <th mat-header-cell *matHeaderCellDef> {{arabic.util.tables.notes}} </th>
+                <td mat-cell *matCellDef="let element"> {{element.notes}} </td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="actions">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let element" class="action-link">
+                    
+                    <button mat-icon-button color="warn" (click)="deletePayment(element)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+        <div class="text-center mt-3" style="direction: ltr;">
+            <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+        </div>
+    </div>
+    <mat-divider></mat-divider>
+    <div class="mt-4 mr-4 ml-4 mb-3 mycontainer">
+        <div class="row text-center justify-content-center bg-dark rounded">
+            
+            <div class="col mt-2">
+                <div class="row justify-content-center">
+                    <p class="mt-2 text-white">اجمالى المديونة</p>
+                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{indebtedness}}</p>
+                </div>
+            </div>
+
+            <div class="col mt-2 text-white">
+                <div class="row justify-content-center">
+                    <p class="mt-2 text-white">{{arabic.customers.util.allPayment}}</p>
+                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{allPayment}}</p>
+                </div>
+            </div>
+
+            <div class="col mt-2 text-white">
+                <div class="row justify-content-center">
+                    <p class="mt-2 text-white">المتبقى</p>
+                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{indebtedness-allPayment}}</p>
+                </div>
+            </div>
+
+          
+        </div>
+    </div>
+    <!--end tables-->
+</div>

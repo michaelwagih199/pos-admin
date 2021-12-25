@@ -1,0 +1,101 @@
+<div class="container-fluid mt-2 mb-2">
+    <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
+    <div class="row justify-content-around header">
+        <div class="col">
+            <mat-form-field appearance="fill">
+                <mat-label>Enter a date range</mat-label>
+                <mat-date-range-input [rangePicker]="picker">
+                    <input matStartDate placeholder="Start date" [(ngModel)]="startDate" autocomplete="off">
+                    <input matEndDate placeholder="End date" [(ngModel)]="endDate" autocomplete="off">
+                </mat-date-range-input>
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-date-range-picker #picker></mat-date-range-picker>
+            </mat-form-field>
+        </div>
+        <div class="col">
+            <button mat-raised-button color="primary" class="mt-2" (click)="getReport()">عرض
+                التقرير</button>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <div class="col">
+            <mat-card>
+                <mat-card-header>
+                    <div class="container-fluid text-center">
+                        <h3 class="text-footer">وارد</h3>
+                    </div>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="text-center text-footer">
+                        <table class="table table-bordered table-sm mt-2">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>مبيعات</th>
+                                    <th>دفعات عملاء</th>
+                                    <th>ايداعات</th>
+                                    <th>الاجمالى</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{income?.sumSales }}</th>
+                                    <td>{{ income?.fromCustomers }}</td>
+                                    <td>{{ income?.incomes }}</td>
+                                    <td>{{ totalIncome}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+
+        <div class="col">
+            <mat-card>
+                <mat-card-header>
+                    <div class="container-fluid text-center ">
+                        <h3 class="text-footer">صادر</h3>
+                    </div>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="text-center text-footer">
+                        <table class="table table-bordered table-sm mt-2 ">
+                            <thead class="thead-dark">
+                                <tr>
+                                    <th>مصروفات</th>
+                                    <th>دفعات موردين</th>
+                                    <th>مسحوبات</th>
+                                    <th>مرتجعات</th>
+                                    <th>الاجمالى</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>{{ export?.sumExpenses}}</th>
+                                    <td>{{ export?.sumSuppliersValues }}</td>
+                                    <td>{{ export?.sumExport }}</td>
+                                    <td>{{ export?.sumRetrivals }}</td>
+                                    <td>{{totalExport }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                </mat-card-content>
+            </mat-card>
+           
+        </div>
+    </div>
+
+   <div class="row  mt-2">
+        <div class="col-4 text-center">
+            <div class="customClass-1 mt-2">
+                <p class="text-center">الصافى</p>
+                <hr>
+                <p class="customTest">{{totalIncome - totalExport}}</p>
+            </div>
+        </div>
+   </div>
+
+</div>

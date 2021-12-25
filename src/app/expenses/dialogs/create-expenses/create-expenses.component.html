@@ -1,0 +1,65 @@
+<h2 mat-dialog-title>حفظ المصروف</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+    <form nz-form [formGroup]="validateForm">
+        <div class="container-fluid mt-2">
+            <div class="row justify-content-between ">
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>البيان</mat-label>
+                        <input matInput required placeholder="البيان" formControlName="expensesName"
+                            [(ngModel)]="expenses.expensesName" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>قيمة المصروف</mat-label>
+                        <input matInput type="number" required placeholder="قيمة المصروف"
+                            formControlName="expensesValue" [(ngModel)]="expenses.expensesValue" autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="row justify-content-between">
+                <div class="col">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>التاريخ</mat-label>
+                        <input matInput [matDatepicker]="picker" formControlName="expensesDate"
+                            [(ngModel)]="expenses.expensesDate">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>{{arabic.stock.products.table.productCategory}}</mat-label>
+                        <mat-select matNativeControl required [(ngModel)]="categoryId"
+                            formControlName="productCategory">
+                            <mat-option *ngFor="let item of categoryList" [value]="item?.id">
+                                {{item?.categoryName}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+            </div>
+            <div>
+                <mat-form-field class="full-width">
+                    <mat-label>ملاحظات</mat-label>
+                    <textarea matInput [(ngModel)]="expenses.notes" formControlName="notes"
+                        placeholder="ملاحظة"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="center">
+    <button mat-raised-button (click)="save()"
+        [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
+    <button mat-raised-button color="primary" (click)="close()"
+        tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
+</mat-dialog-actions>

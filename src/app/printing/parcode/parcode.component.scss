@@ -1,0 +1,25 @@
+@media print {
+  .doNotPrint {
+    display: none !important;
+  }
+  .myDivToPrint {
+    background-color: white;
+    height: fit-content;
+    width: fit-content;
+    display: block;
+    margin: auto;
+  }
+  .title {
+    direction: rtl;
+    text-align: center;
+    height: fit-content;
+    width: fit-content;
+    display: block;
+    font-size: 16px;
+    
+  }
+  @page {
+    size: 38mm 25mm; /* width height */
+  }
+}
+
