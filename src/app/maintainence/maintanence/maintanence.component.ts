@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
@@ -10,6 +11,7 @@ import { Arabic } from 'src/app/text';
 import { CreateMaintanenceComponent } from '../dialogs/create-maintanence.component';
 import { MaintanenceModel } from '../models/maintanceObject';
 import { MaintanenceService } from '../services/maintanence.service';
+import { MyUtils } from '../../_helpers/util';
 
 @Component({
   selector: 'app-maintanence',
@@ -29,11 +31,12 @@ export class MaintanenceComponent implements OnInit {
   //for autocomplete
   options!: string[]
   filteredOptions!: Observable<string[]>
-
+  pipe = new DatePipe('en-US');
+  
   constructor(
     private maintanenceService: MaintanenceService,
     private dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
   ) {
 
   }
@@ -167,7 +170,9 @@ export class MaintanenceComponent implements OnInit {
   }
 
   addMaintanence() {
-    this.maintanenceService.create(this.maintanence).subscribe(data => {
+    let myFormattedDate = this.pipe.transform(this.maintanence.maintanenceDate, 'yyyy-MM-dd');
+this.maintanence?.maintanenceDate != myFormattedDate;
+    this.maintanenceService.create(this.maintanence).subscribe(() => {
       this.openSnackBar(`${this.arabic.stock.category.util.dialog.notification.saved}`, '')
       this.retrieve()
     })
