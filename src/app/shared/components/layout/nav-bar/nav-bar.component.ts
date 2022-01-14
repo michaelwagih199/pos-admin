@@ -6,8 +6,6 @@ import { TokenStorageService } from 'src/app/core/services/token-storage.service
 import { Arabic } from 'src/app/text';
 import { AboutAppDialogComponent } from '../dialog/about-app-dialog/about-app-dialog.component';
 import { MaintanenceService } from '../../../../maintainence/services/maintanence.service';
-import { Subscription } from 'rxjs';
-import { data } from '../../../../printing/recipt-report/recipt-report.component';
 import { NotificationsComponent } from '../dialog/notifications/notifications.component';
 
 @Component({
@@ -21,9 +19,9 @@ export class NavBarComponent implements OnInit {
   userName: any;
   DynamicNavBar = {
     saleOrder: true,
-    stock: false,
+    stock: true,
     customers: true,
-    suppliers: false,
+    suppliers: true,
     purshasing: false,
     retrival: true,
     expenses: false,
