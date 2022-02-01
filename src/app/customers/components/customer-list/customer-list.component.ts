@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Arabic } from 'src/app/text';
 import { FormControl } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { startWith, map } from 'rxjs/operators';
@@ -31,6 +31,7 @@ export class CustomerListComponent implements OnInit {
   myControl = new FormControl();
   //for autocomplete
   options!: string[]
+  selectedCustomersFilter: any
   filteredOptions!: Observable<string[]>
 
   constructor(
@@ -98,6 +99,17 @@ export class CustomerListComponent implements OnInit {
         });
   }
 
+  getAllDebitCustomer() {
+    this.isLoading = true;
+    this.customerService.getAllDebitCustomer().subscribe(data => {
+      this.isLoading = false
+      this.customerList = data.data;
+    }, error => {
+      this.isLoading = false
+      console.log(error);
+    });
+  }
+
 
   /**
    * events
@@ -127,6 +139,14 @@ export class CustomerListComponent implements OnInit {
     });
   }
 
+  onSearchFilterChange(value: string) {
+    if (value == 'allCustomer') {
+      this.retrieve();
+    } else {
+      this.getAllDebitCustomer()
+    }
+
+  }
 
   addDialog() {
     const dialogConfig = new MatDialogConfig();
@@ -182,7 +202,7 @@ export class CustomerListComponent implements OnInit {
     })
   }
 
-  onCustomerDetails(id:number) {
+  onCustomerDetails(id: number) {
     this.router.navigate([`customers/customerDetails/${id}`])
   }
 

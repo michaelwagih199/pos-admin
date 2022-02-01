@@ -7,12 +7,17 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root',
 })
 export class CustomerService {
+  
   private baseUrl = `${environment.baseUrl}/customers`;
 
   constructor(private http: HttpClient) {}
 
   findAll(): Observable<any> {
     return this.http.get(`${this.baseUrl}`);
+  }
+
+  getAllDebitCustomer(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/get-debit-customers`);
   }
 
   findById(id: number): Observable<any> {

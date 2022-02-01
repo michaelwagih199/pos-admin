@@ -19,11 +19,18 @@
         <button mat-icon-button class="fab-right" color="primary" (click)="refresh()">
             <mat-icon>replay</mat-icon>
         </button>
-
+        <mat-form-field appearance="outline">
+            <mat-label>تصنيف العملاء</mat-label>
+            <select matNativeControl required [(ngModel)]="selectedCustomersFilter"
+                (ngModelChange)="onSearchFilterChange($event)">
+                <option value="allCustomer">العملاء</option>
+                <option value="debitCustomer">العملاء المديونين</option>
+            </select>
+        </mat-form-field>
         <button mat-mini-fab  color="accent" class="fab-right" (click)="addDialog()">
             <mat-icon>add</mat-icon>
         </button>
-
+      
     </mat-card-header>
     <mat-card-content>
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
