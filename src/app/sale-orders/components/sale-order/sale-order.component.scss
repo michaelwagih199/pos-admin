@@ -35,7 +35,12 @@ $font-cairo: "Cairo", sans-serif;
 }
 
 .navy{
-  background-color:$blue-dark-color,
+  background-color:$blue-light-color;
+  font-size: larger;
+  font-family: $font-cairo;
+  color: white;
+  text-align: center;
+  border-radius:3px;
 }
 
 .yellow{
@@ -50,22 +55,28 @@ $font-cairo: "Cairo", sans-serif;
   background-color: $blue-dark-color;
 }
 
-.dark-bg {
-  background-color: #1e1e1e;
+.blue_ligt-bg {
+  background-color: $blue-light-color;
+  border-radius: 5px;
 }
 
 .text-s {
   font-size: 12px;
 }
 
-.text14 {
-  font-size: 14px;
+.text-16 {
+  font-size: 16px;
   font-family: $font-cairo;
+  font-weight: bold;
+  text-align: center;
 }
 
 .text-xl {
   font-size: x-large;
-  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  color: white;
+  font-family: $font-cairo;
+  padding: 5px;
 }
 .text-l {
   font-size: large;
@@ -73,19 +84,20 @@ $font-cairo: "Cairo", sans-serif;
 }
 
 .info {
-  background-color: white;
-  font-family: "Cairo", sans-serif;
+  background-color: #f4f3f0;
   border: 1px solid $blue-dark-color;
   border-radius: 5px;
+  height: fit-content;
 }
 
 mat-form-field {
   font-family: "Cairo", sans-serif;
   font-weight: bold;
+  font-size: 12px;
 }
 
 .mybtn {
-  width: 40%;
+  width: fit-content;
   font-size: 16px;
   font-family: "Cairo";
 }
@@ -107,7 +119,7 @@ mat-grid-tile {
 
 
 .my-card {
-  background: $blue-dark-color;
+  background: $blue-light-color;
   width: 100%;
 } 
 

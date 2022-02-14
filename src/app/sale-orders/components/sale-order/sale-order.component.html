@@ -28,7 +28,7 @@
       <!--center dive-->
       <div class="col-4 greybg ">
         <mat-card class="mat-elevation-z2">
-          <div class="header">
+          <div class="blue_ligt-bg text-16 text-white">
             <p>تصنيقات رئيسيه</p>
           </div>
 
@@ -49,7 +49,7 @@
         </mat-card>
 
         <mat-card class="mat-elevation-z2 mt-1">
-          <div class="header">
+          <div class="blue_ligt-bg text-16 text-white">
             <p>تصنيقات فرعية</p>
           </div>
           <div class="scrollable-15">
@@ -57,7 +57,7 @@
               <mat-grid-list cols="5" gutterSize="10px" rowHeight="50px">
                 <mat-grid-tile *ngFor="let card of productList">
                   <mat-card class="my-card mt-2 ">
-                    <mat-card-title (click)="addProduct(card)" >{{card.productName}}</mat-card-title>
+                    <mat-card-title (click)="addProduct(card)">{{card.productName}}</mat-card-title>
                   </mat-card>
                 </mat-grid-tile>
               </mat-grid-list>
@@ -68,7 +68,7 @@
           </div>
         </mat-card>
         <mat-card class="mat-elevation-z2 mt-1">
-          <div class="header">
+          <div class="blue_ligt-bg text-16 text-white  ">
             <p>التشغيل</p>
           </div>
           <div class="scrollable-15">
@@ -76,7 +76,7 @@
               <mat-grid-list cols="5" gutterSize="10px" rowHeight="50px">
                 <mat-grid-tile *ngFor="let card of tailerTasksList">
                   <mat-card class="my-card mt-2 ">
-                    <mat-card-title (click)="addCard(card)" >{{card.task}}</mat-card-title>
+                    <mat-card-title (click)="addCard(card)">{{card.task}}</mat-card-title>
                   </mat-card>
                 </mat-grid-tile>
               </mat-grid-list>
@@ -100,42 +100,52 @@
             </div>
           </div>
         </mat-card>
-        <div class=" info ">
-          <form nz-form [formGroup]="orderForm">
-            <div class="row ">
-              <div class="col">
-                <mat-form-field appearance="outline" class="full-width">
-                  <input matInput required placeholder="اللون" formControlName="description"
-                    [(ngModel)]="boutiqeOrder.color" autocomplete="off">
-                </mat-form-field>
-              </div>
-              <div class="col">
-                <mat-form-field appearance="outline" class="full-width">
-                  <input matInput required placeholder="عدد القطع" type="number" formControlName="description"
-                    [(ngModel)]="boutiqeOrder.color" autocomplete="off">
-                </mat-form-field>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col">
-                <mat-form-field appearance="outline" class="full-width">
-                  <input matInput required placeholder="ملاحظات" formControlName="description"
-                    [(ngModel)]="boutiqeOrder.color" autocomplete="off">
-                </mat-form-field>
-              </div>
-              <div class="col">
-                <button mat-raised-button color="accent" class="mybtn" (click)="addToInvoce()">إضافة</button>
-              </div>
-            </div>
-          </form>
-
-        </div>
+        
 
       </div>
       <!--left div-->
       <div class="col-8 greybg ">
-        <div class="mt-2 text-center">
 
+        <div class=" info">
+          <form nz-form [formGroup]="orderForm">
+            <div class="row ">
+              <div class="col m-2">
+                <mat-form-field appearance="outline" class="full-width">
+                  <input matInput required placeholder="اللون" formControlName="color"
+                    [(ngModel)]="dynamcObjectSelected.color" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div class="col m-2">
+                <mat-form-field appearance="outline" class="full-width">
+                  <input matInput required placeholder="عدد القطع" type="number" formControlName="quantity"
+                    [(ngModel)]="dynamcObjectSelected.quantity" autocomplete="off">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col m-2">
+                <mat-form-field appearance="outline" class="full-width">
+                  <input matInput required placeholder="السعر" type="number" formControlName="price"
+                    [(ngModel)]="dynamcObjectSelected.price" autocomplete="off">
+                </mat-form-field>
+              </div>
+              <div class="col m-2">
+                <mat-form-field appearance="outline" class="full-width">
+                  <input matInput  placeholder="ملاحظات" formControlName="note"
+                    [(ngModel)]="dynamcObjectSelected.note" autocomplete="off">
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="row justify-content-center m-2">
+              <button mat-raised-button color="accent" class="mybtn text-center" (click)="addToInvoce()"
+              [disabled]="!orderForm.valid">إضافة</button>
+            </div>
+            
+          </form>
+
+        </div>
+        <mat-divider></mat-divider>
+        <div class="mt-2 text-center">
           <!--table-->
           <table class="table table-bordered table-sm">
             <thead class="navy text-white">
@@ -150,8 +160,8 @@
                 <th>تشغيل 4</th>
                 <th>تشغيل 5</th>
                 <th> السعر</th>
-                <th>ملاحظات</th>
                 <th>الاجمالى</th>
+                <th>ملاحظات</th>
                 <th></th>
               </tr>
             </thead>
@@ -166,9 +176,9 @@
                 <td>{{ item.task3 }}</td>
                 <td>{{ item.task4 }}</td>
                 <td>{{ item.task5 }}</td>
-                <td>{{ item.note }}</td>
                 <td>{{ item.price }}</td>
                 <td>{{ item.total}}</td>
+                <td>{{ item.note }}</td>
                 <td>
                   <button mat-icon-button color="warn" (click)="deleteDynamicItem(item)">
                     <mat-icon>delete</mat-icon>
@@ -178,31 +188,59 @@
             </tbody>
           </table>
         </div>
+        <hr>
+        <div class="row justify-content-between text14 mt-2" *ngIf="canCustomer">
+          <div class="col info">
+            <div class="row ">
 
-        <div class="row justify-content-around text14" *ngIf="canCustomer">
-          <div class="mt-1">
-            <form>
-              <mat-form-field class="example-full-width">
-                <mat-label>{{arabic.customers.util.searchBar}}</mat-label>
-                <input type="text" placeholder={{arabic.customers.util.searchBar}} matInput [formControl]="myControl"
-                  [matAutocomplete]="auto" [(ngModel)]="searchCustomerInout" (keyup.enter)="search()">
-                <mat-icon color="accent" matSuffix>search</mat-icon>
-                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
-                    (click)="OnHumanSelected(searchCustomerInout)">
-                    {{option}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </form>
+              <div class="col">
+                <form>
+                  <mat-form-field class="example-full-width">
+                    <mat-label>{{arabic.customers.util.searchBar}}</mat-label>
+                    <input type="text" placeholder={{arabic.customers.util.searchBar}} matInput
+                      [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="searchCustomerInout"
+                      (keyup.enter)="search()">
+                    <mat-icon color="accent" matSuffix>search</mat-icon>
+                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                      <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+                        (click)="OnHumanSelected(searchCustomerInout)">
+                        {{option}}
+                      </mat-option>
+                    </mat-autocomplete>
+                  </mat-form-field>
+                </form>
+              </div>
+
+              <div class="col mt-1">
+                <button mat-mini-fab color="accent" (click)="addDialog()">
+                  <mat-icon>add</mat-icon>
+                </button>
+              </div>
+            </div>
           </div>
-          <div class="mt-2">
-            <button mat-mini-fab color="accent" (click)="addDialog()">
-              <mat-icon>add</mat-icon>
-            </button>
+          <div class="col">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>التاريخ</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="maintanenceDate"
+                [(ngModel)]="dynamcObjectSelected">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
           </div>
+          <div class="col">
+            <div class="row justify-content-around navy text-xl">
+              <p> الاجمالى</p>
+              <p>{{totalValue}}</p>
+            </div>
+          </div>
+
         </div>
         <mat-divider></mat-divider>
+        <div class="row justify-content-center mt-3 ">
+            <button mat-raised-button color="accent" class="mybtn m-2" (click)="viewOrderToday()">حفظ</button>
+            <button mat-raised-button color="accent" class="mybtn m-2" (click)="viewOrderToday()">حفظ وطباعة</button>
+            <button mat-raised-button color="warn" class="mybtn m-2" (click)="refresh()">الغاء</button>
+        </div>
       </div>
       <!--end left-->
     </div>

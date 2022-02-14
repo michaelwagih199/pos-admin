@@ -229,7 +229,14 @@ export class SaleOrderComponent implements OnInit {
   }
 
   addToInvoce() {
-    this.dynamicOrderList.push(this.dynamcObjectSelected)
+    if (this.dynamcObjectSelected.categoryName && this.dynamcObjectSelected.task1 && this.dynamcObjectSelected.productName) {
+      this.dynamcObjectSelected.total = this.dynamcObjectSelected.price * this.dynamcObjectSelected.quantity
+      this.dynamicOrderList.push(this.dynamcObjectSelected)
+      this.calcTotal()
+    } else
+      this.openSnackBar('اكمل البيانات', '')
+    this.dynamcObjectSelected = new DynamicOrder()
+    this.task = []
   }
 
   refresh() {
@@ -442,12 +449,14 @@ export class SaleOrderComponent implements OnInit {
         value: '',
         disabled: this.canOrder,
       }),
-      productFilter: [null, [Validators.required]],
+      color: [null, [Validators.required]],
+      quantity: [null, [Validators.required]],
+      price: [null, [Validators.required]],
     });
 
-    this.quantityValidateForm = this.fb.group({
-      modalquantity: [this.modalquantity, [Validators.required]],
-    });
+    // this.quantityValidateForm = this.fb.group({
+    //   modalquantity: [this.modalquantity, [Validators.required]],
+    // });
   }
 
   /**
