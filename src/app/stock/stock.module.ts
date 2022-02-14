@@ -10,9 +10,11 @@ import { CreateCategoryComponent } from './dialog/create-category/create-categor
 import { CreateProductComponent } from './dialog/create-product/create-product.component';
 import { BarcodeComponent } from './dialog/barcode/barcode.component';
 import { NgxBarcodeModule } from 'ngx-barcode';
+import { TailerTasksComponent } from './components/tailer-tasks/tailer-tasks.component';
+import { AddTailerTasksComponent } from './dialog/add-tailer-tasks/add-tailer-tasks.component';
 
 @NgModule({
-  declarations: [StockComponent, ProductCategoryComponent, ProductsComponent, CreateCategoryComponent, CreateProductComponent, BarcodeComponent],
+  declarations: [StockComponent, ProductCategoryComponent, ProductsComponent, CreateCategoryComponent, CreateProductComponent, BarcodeComponent, TailerTasksComponent, AddTailerTasksComponent],
   imports: [
     CommonModule,
     StockRoutingModule,

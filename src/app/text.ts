@@ -33,12 +33,16 @@ export class Arabic {
         reports: "التقارير",
         setting: "الاعدادات",
         aboutApp: "عن التطبيق",
+        welcome: "الاستقبال",
+        works: "التشغيل",
+
     }
 
     stock = {
         tabs: {
             tab1: "التصنيفات",
-            tab2: "المنتجات"
+            tab2: "تصنيفات فرعيه",
+            tab3: "تشغيل"
         },
         category: {
             util: {

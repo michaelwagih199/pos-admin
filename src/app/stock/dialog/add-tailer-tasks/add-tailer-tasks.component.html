@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>اضافة تشغيل</h2>
+<mat-dialog-content >
+    <form nz-form [formGroup]="validateForm">
+        <mat-form-field>
+            <input matInput required
+                    placeholder="اضافة تشغيل"
+                    formControlName="description"
+                    [(ngModel)]="description"
+                    autocomplete="off">
+        </mat-form-field>
+      </form>
+      
+</mat-dialog-content>
+
+<mat-dialog-actions align="center">
+    <button mat-raised-button  (click)="save()" [disabled]="!validateForm.valid" >{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
+	<button mat-raised-button color="primary" (click)="close()" tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
+</mat-dialog-actions>

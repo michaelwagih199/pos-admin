@@ -17,6 +17,10 @@ export class ProductServiceService {
     return this.http.get(`${this.baseUrl}/active`);
   }
 
+  findByCategoryId(id:any):Observable<any> {
+    return this.http.get(`${this.baseUrl}/categoryId/${id}`);
+  }
+
   getAllPagination(params:any): Observable<any> {
     return this.http.get(`${this.baseUrl}/pageable`, { params });
   }

@@ -25,9 +25,9 @@ export class HomeComponent implements OnInit {
 
   ngOnInit(): void {}
   images: ImagesModel[] = [
-    { src: 'assets/home4.jpg', header: 'Polimigos Eco Systems', discription: '' },
-    { src: 'assets/home2.jpg', header: 'Together We Can', discription: '' },
-    { src: 'assets/home.jpg', header: 'Do your Work Quietly', discription: '' },
-    { src: 'assets/home5.jpg', header: 'Never Stop Dreaming', discription: '' },
+    { src: 'assets/tailer.jpg', header: 'Polimigos Eco Systems', discription: '' },
+    { src: 'assets/tailer2.jpg', header: 'Together We Can', discription: '' },
+    { src: 'assets/tailer3.jpg', header: 'Do your Work Quietly', discription: '' },
+    { src: 'assets/tailer5.jpg', header: 'Never Stop Dreaming', discription: '' },
   ];
 }

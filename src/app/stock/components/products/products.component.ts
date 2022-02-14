@@ -31,12 +31,7 @@ export class ProductsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'productName',
-    'retailPrice',
-    'purchasingPrice',
-    'numberUnitsInStock',
-    'alertUnits',
     'productCategory',
-    'wholesalePrice',
     'actions',
   ];
   myControl = new FormControl();
@@ -139,21 +134,7 @@ export class ProductsComponent implements OnInit {
     return value;
   }
 
-  onBarcode(element: any) {
-    // this.isLoading = true;
-    const dialogRef = this.dialog.open(BarcodeComponent, {
-      data: {
-        productCode: element,
-      },
-    });
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        const a = document.createElement('a');
-        a.click();
-        a.remove();
-      }
-    });
-  }
+  
 
   OnHumanSelected(SelectedHuman: any) {
     this.searchInout = SelectedHuman;

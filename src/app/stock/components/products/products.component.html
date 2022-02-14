@@ -57,37 +57,6 @@
                 <td mat-cell *matCellDef="let element"> {{element.productCategory.categoryName}} </td>
             </ng-container>
 
-            <!-- Name Column -->
-            <ng-container matColumnDef="purchasingPrice">
-                <th mat-header-cell *matHeaderCellDef> {{arabic.stock.products.table.purchasingPrice}} </th>
-                <td mat-cell *matCellDef="let element"> {{element.purchasingPrice}} </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="retailPrice">
-                <th mat-header-cell *matHeaderCellDef> {{arabic.stock.products.table.retailPrice}} </th>
-                <td mat-cell *matCellDef="let element"> {{element.retailPrice}} </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="wholesalePrice">
-                <th mat-header-cell *matHeaderCellDef> {{arabic.stock.products.table.wholesalePrice}} </th>
-                <td mat-cell *matCellDef="let element"> {{element.wholesalePrice}} </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="numberUnitsInStock">
-                <th mat-header-cell *matHeaderCellDef> {{arabic.stock.products.table.numberUnitsInStock}} </th>
-                <td mat-cell *matCellDef="let element"> {{element.numberUnitsInStock}} </td>
-            </ng-container>
-
-            <!-- Name Column -->
-            <ng-container matColumnDef="alertUnits">
-                <th mat-header-cell *matHeaderCellDef> {{arabic.stock.products.table.alertUnits}} </th>
-                <td mat-cell *matCellDef="let element"> {{element.alertUnits}} </td>
-            </ng-container>
-
-
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef> </th>
                 <td mat-cell *matCellDef="let element" class="action-link">
@@ -99,11 +68,6 @@
                     <button mat-icon-button color="warn" (click)="deleteDialog('Delete',element)">
                         <mat-icon>delete</mat-icon>
                     </button>
-                    |
-                    <button mat-icon-button color="primary" (click)="onBarcode(element)">
-                        <mat-icon>qr_code_scanner</mat-icon>
-                    </button>
-
                 </td>
             </ng-container>
 

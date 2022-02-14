@@ -1,7 +1,16 @@
+$base-color: #f4f3f0;
+$red-dark-color: rgb(208, 12, 48);
+$blue-dark-color: #1D2053;
+$purble-color: #673AB7;
+$blue-light-color: rgb(26, 96, 159);
+$yellow-color: #FFC107;
+$font-cairo: "Cairo", sans-serif;
+
 .myContainer {
   font-family: "Cairo", sans-serif;
   font-size: 16px;
 }
+
 .example-full-width {
   width: 100%;
 }
@@ -12,23 +21,33 @@
 }
 
 .greybg {
-  background-color: #f4f3f0;
+  background-color: $base-color;
 }
 
 .red {
-  background-color: #db1f48;
+  background-color: $red-dark-color;
 }
+
 .sand {
-  background: #f4f3f0;
+  background: $base-color;
   border-radius: 8px;
-  border: 1px solid #212121;
+  border: 1px solid $base-color;
 }
+
 .navy{
-  background-color:#005A8D,
+  background-color:$blue-dark-color,
+}
+
+.yellow{
+  background-color: $yellow-color;
+  font-size: large;
+  font-family: $font-cairo;
+  border-radius:3px;
+  text-align: center;
 }
 
 .dark {
-  background-color: #122620;
+  background-color: $blue-dark-color;
 }
 
 .dark-bg {
@@ -38,8 +57,10 @@
 .text-s {
   font-size: 12px;
 }
+
 .text14 {
   font-size: 14px;
+  font-family: $font-cairo;
 }
 
 .text-xl {
@@ -52,13 +73,13 @@
 }
 
 .info {
-  font-size: 20px;
-  background-color: #f4f3f0;
-  font-weight: bold;
+  background-color: white;
+  font-family: "Cairo", sans-serif;
+  border: 1px solid $blue-dark-color;
+  border-radius: 5px;
 }
 
 mat-form-field {
-  width: 150px;
   font-family: "Cairo", sans-serif;
   font-weight: bold;
 }
@@ -70,3 +91,39 @@ mat-form-field {
 }
 
 
+mat-grid-tile {
+  background: $base-color;
+  border-radius: 3px;
+}
+
+.scrollable-20{
+  overflow-y: scroll;
+  height: 20vh;
+}
+.scrollable-15{
+  overflow-y: scroll;
+  height: 15vh;
+}
+
+
+.my-card {
+  background: $blue-dark-color;
+  width: 100%;
+} 
+
+.mat-card-title{
+  cursor: pointer;
+  text-align: center;
+  color: #F4F3F0;
+  font-size: large;
+  font-family: $font-cairo;
+}
+
+.header {
+  background-color: $base-color;
+  border-radius: 8px;
+  font-family: $font-cairo;
+  font-size: larger;
+  text-align: center;
+  border: 1px solid $blue-dark-color;
+}

@@ -26,41 +26,24 @@
 				</div>
 
 				<a *ngIf="DynamicNavBar.saleOrder" mat-list-item [routerLink]="'/saleOrder'">
-					<mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.seling}}
+					<mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.welcome}}
 				</a>
 
 				<a *ngIf="DynamicNavBar.stock" mat-list-item [routerLink]="'/stock'">
-					<mat-icon>addchart</mat-icon> {{arabic.navBarList.stock}}
+					<mat-icon>addchart</mat-icon> {{arabic.navBarList.works}}
 				</a>
 
 				<a *ngIf="DynamicNavBar.customers" mat-list-item [routerLink]="'/customers'">
 					<mat-icon>person</mat-icon> {{arabic.navBarList.customers}}
 				</a>
-				<a *ngIf="DynamicNavBar.suppliers" mat-list-item [routerLink]="'/suppliers'">
-					<mat-icon>person</mat-icon> {{arabic.navBarList.suppliers}}
-				</a>
 
-				<a *ngIf="DynamicNavBar.purshasing" mat-list-item [routerLink]="'/purchases'">
-					<mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.purshasing}}
-				</a>
-
-				<a *ngIf="DynamicNavBar.retrival" mat-list-item [routerLink]="'/retrivals'">
-					<mat-icon>autorenew</mat-icon> {{arabic.navBarList.retrival}}
-				</a>
+				
 				<a *ngIf="DynamicNavBar.expenses" mat-list-item [routerLink]="'/expenses'">
 					<mat-icon>trending_down</mat-icon> {{arabic.navBarList.expenses}}
 				</a>
 
-				<a *ngIf="DynamicNavBar.maintenance" mat-list-item [routerLink]="'/maintenance'">
-					<mat-icon>handyman</mat-icon> {{arabic.navBarList.maintenance}}
-				</a>
-
 				<a *ngIf="DynamicNavBar.reports" mat-list-item [routerLink]="'/reports'">
 					<mat-icon>trending_up</mat-icon> {{arabic.navBarList.reports}}
-				</a>
-
-				<a *ngIf="DynamicNavBar.setting" mat-list-item [routerLink]="'/setting'">
-					<mat-icon>settings</mat-icon> {{arabic.navBarList.setting}}
 				</a>
 
 				<a mat-list-item (click)="aboutApp()">
