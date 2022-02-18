@@ -8,7 +8,7 @@ export class DynamicOrder {
     task3!: any
     task4!: any
     task5!: any
-    note!: any
+    notes!: any
     productCode!: any
     quantity!: any
     price!: any

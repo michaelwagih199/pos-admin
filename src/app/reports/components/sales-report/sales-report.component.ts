@@ -45,6 +45,8 @@ export class SalesReportComponent implements OnInit {
       .getSales(this.formatDate(this.startDate), this.formatDate(this.endDate))
       .subscribe((data) => {
         this.ordersList = data;
+        console.log(data);
+        
         this.orderCounter = this.ordersList.length
         this.sumTotal= this.ordersList.map(a => a.totalOrder).reduce(function(a, b)
         {
@@ -86,7 +88,7 @@ export class SalesReportComponent implements OnInit {
   }
 
   details(content: any, item: OrderPaymentModel) {
-    this.modalService.open(content);
+    this.modalService.open(content,{ size: 'xl' });
     this.orderDetailsService
       .getByCode(item.saleOrder.orderCode)
       .subscribe((data) => {

@@ -2,6 +2,7 @@ export class Arabic {
     error = {
         "Product Saved In System": "المنتج حفظ فى المخزن من قبل"
     }
+
     util = {
         searchfilter: "بحث عن طريق",
         searchfilterByCustomerName: "بحث بالعميل",
@@ -19,6 +20,15 @@ export class Arabic {
             ok: "نعم",
             cancel: "إلغاء",
         },
+    }
+
+    printig = {
+        
+        saleOrderInvoce: {
+            heading: "فاتوره مبيعات",
+            receivedDate: "تاريخ الاستلام",
+            finalNotes:"لا يتم التسليم إلا بموجب هذا الإصال"
+        }
     }
 
     navBarList = {

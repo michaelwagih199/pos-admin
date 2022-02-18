@@ -1,31 +1,41 @@
+$receipt: 8cm 10cm; /* width height */
+$print-a5-width: 14.8cm;
+$print-a5-height: 21cm;
+$font-cairo: Arial, Helvetica, sans-serif;
+
 .mydiv {
   margin: auto;
-  width: 8cm;
-  font-family: "Cairo";
+  width: $print-a5-width;
+  font-family: $font-cairo;
   border: 2px solid black;
-  padding: 2px;
   margin: auto;
+  padding:1mm 6mm;
   .header {
-    font-size: 16px;
-    border: 2px solid black;
-    padding: 3px;
-    width: 4cm;
-    margin-top: 3px;
+    font-size: 12px;
+    border: 1px solid black;
+    padding: 2px;
+    width: calc($print-a5-width/2);
+
     margin: auto;
     border-radius: 25px;
+  }
+  table,
+  th,
+  td {
+    border: 1px solid black;
   }
   .cborder {
     border: 1px solid black;
     padding-left: 2px;
     padding-right: 2px;
-    font-size: 16px;
-    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 5px;
+    font-family: $font-cairo;
   }
   .mcenter {
     margin: auto;
   }
-  .c_table{
-    font-size: 10px;
+  .c_table {
+    font-size: 9px;
   }
 }
 
@@ -34,41 +44,44 @@
     display: none !important;
   }
   .mydiv {
-    width: 8cm;
-    font-family: "Cairo";
+    width: $print-a5-width;
+    font-family: $font-cairo;
     border: 2px solid black;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
+    margin: auto;
+    text-align: center;
+    padding:1mm 6mm;
     .header {
-      font-size: 16px;
-      border: 2px solid black;
-      padding: 3px;
-      width: 4cm;
-      margin-top: 3px;
-      margin: auto;
+      font-size: 14px;
+      border: 1px solid black;
+      width: calc($print-a5-width/2);
+      margin-top: 2px;
       border-radius: 25px;
+    }
+    table,
+    th,
+    td {
+      border: 1px solid black;
     }
     .cborder {
       border: 1px solid black;
       padding-left: 2px;
       padding-right: 2px;
-      font-size: 16px;
-      font-family: Arial, Helvetica, sans-serif;
+      border-radius: 5px;
+      font-family: $font-cairo;
     }
     .mcenter {
       margin: auto;
     }
-    .c_table{
-      font-size: 10px;
+    .c_table {
+      font-size: 9px;
     }
   }
   @page {
-    size: 8cm 10cm;  /* width height */
-   
+    size: $print-a5-width $print-a5-height; /* width height */
   }
 }
-
-
 

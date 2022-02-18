@@ -1,67 +1,84 @@
-<div class="container">
-    <div class="mydiv mt-1 text-center">
-        <p class="header">
-            الملكة والأمير
-        </p>
-        <div class="row justify-content-between mt-2 mcenter">
-            <div class="col mt-2">
-                <div class="row">
-                    <p>التاريخ</p>
-                    <p class=" mr-3">{{sharedData.date|date:'yyyy-MM-dd'}}</p>
-                </div>
-            </div>
-            <div class="col">
-                <div class="row mt-2">
-                    <p>كود الفاتورة</p>
-                    <p class="  mr-3">{{sharedData.code}}</p>
-                </div>
+<div class="mydiv text-center">
+    <p class="header ">
+        {{arabic.printig.saleOrderInvoce.heading}}
+    </p>
+    <div class="row justify-content-between mt-1 mcenter">
+        <div class="col mt-1">
+            <div class="row">
+                <p class="mr-2">التاريخ</p>
+                <p class=" mr-2">{{sharedData.date|date:'yyyy-MM-dd'}}</p>
             </div>
         </div>
-        <div>
+        <div class="col">
+            <div class="row mt-1">
+                <p>كود الفاتورة</p>
+                <p class="  mr-2">{{sharedData.code}}</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="row justify-content-between mt-1 mcenter">
+        <div class="col">
             <div class="row m-auto ">
                 <p>اسم العميل</p>
                 <p class=" mr-3">{{sharedData.customer}}</p>
             </div>
         </div>
-        <div class="text-center c_table">
-            
-            <table class="table table-bordered table-sm">
-                <thead class="thead-dark ">
-                    <tr>
-                        <th>المنتج</th>
-                        <th>الكمية</th>
-                        <th>السعر</th>
-                        <th>الاجمالى</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of dynamicOrderList">
-                        <th>{{ item.productName }}</th>
-                        <td>{{ item.quantity }}</td>
-                        <td>{{ item.price }}</td>
-                        <td>{{ item.total}}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        <div class="mr-3">
+        <div class="col">
             <div class="row m-auto ">
-                <p>الاجمالى</p>
-                <p class=" mr-3">{{sharedData.total}}</p>
-            </div>
-            <div class="row m-auto ">
-                <p>خصم بالجنية</p>
-                <p class=" mr-3">{{sharedData.discount}}</p>
-            </div>
-            <div class="row m-auto ">
-                <p>مدفوع</p>
-                <p class=" mr-3">{{sharedData.paid}}</p>
-            </div>
-            <div class="row m-auto ">
-                <p> الصافى</p>
-                <p class="mr-1">{{sharedData.total - sharedData.discount - sharedData.paid}}</p>
+                <p>{{arabic.printig.saleOrderInvoce.receivedDate}}</p>
+                <p class=" mr-3">{{sharedData.orderPayload.receivedDate}}</p>
             </div>
         </div>
-        <p class="bg-dark text-white rounded">Power By Polimigo Company</p>
+    </div>
+    <div>
+        <table>
+            <thead>
+                <tr>
+                    <th>المنتج</th>
+                    <th>التفاصيل</th>
+                    <th colspan="5">تشغيل</th>
+                    <th>الكمية</th>
+                    <th>السعر</th>
+                    <th>الاجمالى</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of dynamicOrderList">
+                    <th>{{ item.categoryName }}</th>
+                    <th>{{ item.productName }}</th>
+                    <th>{{ item.task1 }}</th>
+                    <th>{{ item.task2 }}</th>
+                    <th>{{ item.task3 }}</th>
+                    <th>{{ item.task4 }}</th>
+                    <th>{{ item.task5 }}</th>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.total}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th colspan="10">الاجمالى</th>          
+                    <th>{{sharedData.total}}</th>                    
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <br>
+    <div class="row justify-content-around mcenter">
+        <div class="col">
+            <p class="mr-3">الصنايعى المسئول</p>
+        </div>
+        <div class="col">
+            <p>مدير الفرع</p>
+        </div>
+    </div>
+    <br>
+    <div class="mcenter cborder">
+        {{arabic.printig.saleOrderInvoce.finalNotes}}
     </div>
 </div>

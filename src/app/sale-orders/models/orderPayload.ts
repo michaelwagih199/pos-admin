@@ -1,5 +1,9 @@
 import { DynamicOrder } from './dynamicOrder';
 
 export class OrderDetailsPayload {
-    dynamicDetailsDaoList!: DynamicOrder[]
+    receivedDate:any
+    customerName:any
+    orderCode:any
+    total:any
+    dynamicDetailsList!: DynamicOrder[]
 }

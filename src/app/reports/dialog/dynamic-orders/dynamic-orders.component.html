@@ -1,30 +1,4 @@
 <mat-card class="mat-elevation-z2">
-    <mat-card-header>
-        <div class="container-fluid">
-            <div class="row justify-content-center text-center ">
-                <div class="col mt-2">
-                    <mat-form-field appearance="fill" class="full-width">
-                        <mat-label>Enter a date range</mat-label>
-                        <mat-date-range-input [rangePicker]="picker">
-                            <input matStartDate placeholder="Start date" [(ngModel)]="startDate" autocomplete="off">
-                            <input matEndDate placeholder="End date" [(ngModel)]="endDate" autocomplete="off">
-                        </mat-date-range-input>
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-date-range-picker #picker></mat-date-range-picker>
-                    </mat-form-field>
-                </div>
-                <div class="col-2 mt-2">
-                    <button mat-raised-button color="primary" class="full-width mt-2" (click)="getReport()">عرض
-                        التقرير</button>
-                </div>
-                <div class="col-2 mt-2">
-                    <button mat-raised-button color="primary" class="full-width mt-2" (click)="exportAsXLSX()">
-                        تصدير التقرير</button>
-                </div>
-            </div>
-        </div>
-
-    </mat-card-header>
     <mat-card-content>
         <div class="row justify-content-center text-center m-2 p-3 ">
             <div class="col">
@@ -45,7 +19,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-2" style="text-align: center;">
+        <div>
             <!--table-->
             <nz-table #basicTable [nzData]="ordersList">
                 <thead>
@@ -65,24 +39,16 @@
                         <th>{{ item.saleOrder.customer?.customerName }}</th>
                         <th>{{ item.saleOrder.receivedDate |date: 'yyyy-MM-dd' }}</th>
                         <th>{{ item.totalOrder}}</th>
-
                         <td>
                             <button type="button" class="btn btn-primary btn-sm"
-                                (click)="details(content,item)">التفاصيل</button> |
-
-                            <button type="button" class="btn btn-danger btn-sm" (click)="deleteDialog(item)">مسح
-                            </button>
+                                (click)="details(content,item)">التفاصيل</button> 
                         </td>
-
                     </tr>
                 </tbody>
             </nz-table>
         </div>
     </mat-card-content>
-
 </mat-card>
-
-
 <div>
     <ng-template #content let-modal>
         <div class="modal-header">

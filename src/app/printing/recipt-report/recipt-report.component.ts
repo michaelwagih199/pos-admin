@@ -12,11 +12,13 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
 import { CustomerService } from 'src/app/customers/service/customer.service';
 import { DynamicOrder } from 'src/app/sale-orders/models/dynamicOrder';
+import { OrderDetailsPayload } from 'src/app/sale-orders/models/orderPayload';
 import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
 import { OrderPaymentService } from 'src/app/sale-orders/service/order-payment.service';
 import { OrderService } from 'src/app/sale-orders/service/order.service';
 import { DataService } from 'src/app/shared/service/data.service';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
+import { Arabic } from 'src/app/text';
 
 export interface data {
   dynamicList: DynamicOrder[];
@@ -28,7 +30,7 @@ export interface data {
   customer: any;
   orderTypeId: any;
   paymentTypeId: any;
-  orderPayload: any;
+  orderPayload: OrderDetailsPayload;
   orderPayment: any;
 }
 
@@ -45,6 +47,8 @@ export class ReciptReportComponent
   subscription!: Subscription;
 
   sharedData!: data;
+  arabic: Arabic = new Arabic();
+
 
   constructor(
     private router: Router,

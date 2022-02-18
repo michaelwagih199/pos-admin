@@ -32,6 +32,11 @@ import { CategoryModel } from 'src/app/stock/model/categoryModel';
 import { ProductModel } from 'src/app/stock/model/productModel';
 import { TailerTasksModel } from 'src/app/stock/model/tailer-taskMode';
 import { TailerTasksServiceService } from 'src/app/stock/service/tailer-tasks-service.service';
+import { DatePipe } from '@angular/common';
+import { DynamicOrdersComponent } from '../../../reports/dialog/dynamic-orders/dynamic-orders.component';
+import { SalesRoportService } from 'src/app/reports/service/sales-roport.service';
+import { DynamicSOrderType } from 'src/app/reports/models/dynamic-sale-order-type';
+import { OrderType } from '../../models/saleOrder';
 
 @Component({
   selector: 'app-sale-order',
@@ -40,18 +45,11 @@ import { TailerTasksServiceService } from 'src/app/stock/service/tailer-tasks-se
 })
 export class SaleOrderComponent implements OnInit {
 
-  quantityValidateForm!: FormGroup;
+  saveOrderForm!: FormGroup;
   arabic: Arabic = new Arabic();
-  currentDate = new Date();
-  paymentType!: string;
-  orderType!: string;
-  orderCode: any;
-
-
-  searchType!: string;
-
-  myControl = new FormControl();
-  productControl = new FormControl();
+  orderCode: any
+  customerControl = new FormControl();
+  currentDate = new Date()
   customer: CustomerModel = new CustomerModel();
 
   //for autocomplete
@@ -59,37 +57,23 @@ export class SaleOrderComponent implements OnInit {
   filteredOptions!: Observable<string[]>;
 
   productOptions!: string[];
+
   productFilteredOptions!: Observable<string[]>;
 
   isLoading: boolean = false;
-  isInstallment: boolean = false;
   searchCustomerInout = '';
-  productSearchValue: string = '';
-  installmentValue: any = 30;
-  productSelectedSearchFilter!: string;
 
   dynamicOrderList: DynamicOrder[] = [];
   dynamcObjectSelected: DynamicOrder = new DynamicOrder();
 
   //calc
   totalValue: number = 0;
-  paid: number = 0;
-  discount: number = 0;
-  modalquantity: number = 0;
 
-  orderTypeId!: number;
-  paymentTypeId!: number;
 
-  IsorderType: boolean = true;
-  IspaymentType: boolean = true;
-  productSelected: any;
 
   //validate
-  canOrder: any;
-  canCustomer: boolean = true;
-  canSelect = false;
-  checkResponse: CheckitesResponse | undefined;
   orderPayload: OrderDetailsPayload = new OrderDetailsPayload();
+  pipe = new DatePipe('en-US');
 
   orderForm!: FormGroup;
 
@@ -102,15 +86,12 @@ export class SaleOrderComponent implements OnInit {
 
   constructor(
     private customerService: CustomerService,
-    private dynamicItemService: DynamicItemService,
-    private orderDetailsService: OrderDetailsService,
-    private orderPaymentService: OrderPaymentService,
     private productService: ProductServiceService,
     private tailerTaskService: TailerTasksServiceService,
     private categoryService: CategoryServiceService,
     private orderService: OrderService,
     private dialog: MatDialog,
-    private modalService: NgbModal,
+    private saleReportservice: SalesRoportService,
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
     private router: Router,
@@ -133,7 +114,7 @@ export class SaleOrderComponent implements OnInit {
     this.customerService.getNames().subscribe(
       (response) => {
         this.options = response;
-        this.filteredOptions = this.myControl.valueChanges.pipe(
+        this.filteredOptions = this.customerControl.valueChanges.pipe(
           startWith(''),
           map((value) => this._filter(value))
         );
@@ -210,6 +191,8 @@ export class SaleOrderComponent implements OnInit {
 
   addProduct(item: ProductModel) {
     this.dynamcObjectSelected.productName = item.productName
+    this.dynamcObjectSelected.productCode = item.productCode
+    this.dynamcObjectSelected.productId = item.id
   }
 
   task: Array<string> = []
@@ -224,18 +207,29 @@ export class SaleOrderComponent implements OnInit {
     this.dynamcObjectSelected.task5 = this.task[4]
   }
 
-  viewOrderToday() {
+  viewOrderToday(): void {
+    const dialogRef = this.dialog.open(DynamicOrdersComponent, {
+      width: '80%',
+      data: { orderType: DynamicSOrderType.TODAY_ORDERS },
+    });
+    dialogRef.afterClosed().subscribe(result => {
 
+    });
   }
 
+
   addToInvoce() {
+    console.log(this.dynamcObjectSelected);
+
     if (this.dynamcObjectSelected.categoryName && this.dynamcObjectSelected.task1 && this.dynamcObjectSelected.productName) {
       this.dynamcObjectSelected.total = this.dynamcObjectSelected.price * this.dynamcObjectSelected.quantity
       this.dynamicOrderList.push(this.dynamcObjectSelected)
       this.calcTotal()
-    } else
+    } else {
       this.openSnackBar('اكمل البيانات', '')
+    }
     this.dynamcObjectSelected = new DynamicOrder()
+    this.dynamcObjectSelected.notes = ''
     this.task = []
   }
 
@@ -265,58 +259,73 @@ export class SaleOrderComponent implements OnInit {
     return value;
   }
 
+  // order methods
   onSaveOrder() {
-    if (this.canCustomer == true && this.searchCustomerInout == '') {
-      this.openSnackBar('اختر العميل', '');
-    } else {
+    if (this.isOrderValid()) {
+      this.calcTotal()
+      this.isLoading = true
       //saveOrder
-      this.orderPayload.dynamicDetailsDaoList = this.dynamicOrderList;
-      console.log(this.dynamicOrderList);
-      this.orderPayment.discount = this.discount;
-      this.orderPayment.netCost = this.totalValue - (this.discount + this.paid);
-      if (this.paymentType == 'كاش') {
-        this.orderPayment.paid = this.totalValue - (this.discount + this.paid);
-        this.orderPayment.remaining =
-          this.orderPayment.netCost - this.orderPayment.paid;
-      } else {
-        this.orderPayment.paid = this.paid;
-        this.orderPayment.remaining =
-          this.totalValue - this.discount - this.orderPayment.paid;
-      }
-
-      this.orderPayment.totalOrder = this.totalValue;
-
-      this.orderService
-        .createOrder(
-          this.searchCustomerInout,
-          this.orderTypeId,
-          this.paymentTypeId
-        )
-        .subscribe(
-          (data) => {
-            this.orderDetailsService
-              .createOrderDetails(this.orderCode, this.orderPayload)
-              .subscribe();
-            this.orderPaymentService
-              .createOrderPayment(this.orderCode, this.orderPayment)
-              .subscribe();
-            this.openSnackBar('تم حفظ الطلب', '');
-            this.reset();
-          },
-          (error) => console.log(error)
-        );
+      this.saveOrder()
+      this.openSnackBar(this.arabic.util.saved, '')
+    } else {
+      this.openSnackBar('اكمل البيانات', '');
     }
   }
 
+  onSaveAndPrint() {
+    if (this.isOrderValid()) {
+      this.calcTotal()
+      this.isLoading = true
+      //saveOrder and print
+      this.saveOrder()
+      this.printOrder()
+    } else {
+      this.openSnackBar('اكمل البيانات', '');
+    }
+  }
+
+  isOrderValid(): boolean {
+    if (this.searchCustomerInout && this.orderPayload.receivedDate && this.dynamicOrderList.length > 0)
+      return true;
+    else
+      return false;
+  }
+
+
+  saveOrder() {
+    this.orderPayload.receivedDate = this.pipe.transform(this.orderPayload.receivedDate, 'yyyy-MM-dd');
+    this.orderPayload.customerName = this.searchCustomerInout
+    this.orderPayload.dynamicDetailsList = this.dynamicOrderList
+    this.orderPayload.orderCode = this.orderCode
+    this.orderPayload.total = this.totalValue
+    this.orderService.createBoutiqueOrder(this.orderPayload).subscribe(response => {
+      if (response.code == 'CREATED') {
+
+        this.refresh()
+        this.isLoading = false
+      }
+    }, err => console.log(err))
+  }
+
+  printOrder() {
+    let data = {
+      dynamicList: this.dynamicOrderList,
+      date: this.currentDate,
+      total: this.totalValue,
+      code: this.orderCode,
+      customer: this.searchCustomerInout,
+      orderPayload: this.orderPayload,
+    };
+
+    this.dataServer.changeMessage(data);
+    this.redirectTo(`/printing`);
+  }
 
   reset() {
     this.totalValue = 0;
-    this.paid = 0;
-    this.discount = 0;
     this.dynamicOrderList = [];
-    this.orderType = '';
-    this.paymentType = '';
-    this.productSearchValue = '';
+    this.dynamcObjectSelected = new DynamicOrder()
+
     this.getOrderCode();
   }
 
@@ -341,10 +350,6 @@ export class SaleOrderComponent implements OnInit {
     });
   }
 
-  onorderTypeChange(value: string) {
-    this.orderType = value;
-    this.IsorderType = false;
-  }
 
   deleteDynamicItem(obj: any) {
     for (var i = 0; i < this.dynamicOrderList.length; i++) {
@@ -355,39 +360,8 @@ export class SaleOrderComponent implements OnInit {
     this.calcTotal();
   }
 
-  openUpdateQuantity(content: any, obj: DynamicOrder) {
-    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
-    this.modalquantity = obj.quantity;
-    this.dynamcObjectSelected = obj;
-  }
 
-  onupdateQuantity() {
-    this.dynamicItemService
-      .findDynamic(
-        this.productSearchValue,
-        this.paymentTypeId,
-        this.orderTypeId,
-        this.modalquantity,
-        this.installmentValue
-      )
-      .subscribe((data) => {
-        console.log(data);
-        if (data.message === 'can Order') {
-          this.dynamcObjectSelected.quantity = this.modalquantity;
-          this.dynamcObjectSelected.total =
-            this.dynamcObjectSelected.quantity *
-            this.dynamcObjectSelected.price;
-          this.modalService.dismissAll();
-        } else if (data.message === 'Alert Quantity') {
-          this.openSnackBar('البضاعة ستقل للحد الادنى ', '');
-          this.canOrder = true;
-        } else {
-          this.openSnackBar('البضاعة لا تكفى', '');
-          this.canOrder = true;
-        }
-        this.calcTotal();
-      });
-  }
+
 
   /**
    * uiux
@@ -406,32 +380,6 @@ export class SaleOrderComponent implements OnInit {
     );
   }
 
-  private _filterproduct(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.productOptions.filter((productOption) =>
-      productOption.toLowerCase().includes(filterValue)
-    );
-  }
-
-  openConfimation(title: any, confirmedFn: () => void) {
-    const dialogRef = this.dialog.open(ConfirmationDialog, {
-      data: {
-        message: title,
-        buttonText: {
-          ok: `${this.arabic.util.dialogButtons.ok}`,
-          cancel: `${this.arabic.util.dialogButtons.cancel}`,
-        },
-      },
-    });
-    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
-      if (confirmed) {
-        confirmedFn();
-        const a = document.createElement('a');
-        a.click();
-        a.remove();
-      }
-    });
-  }
 
   redirectTo(uri: string) {
     this.router
@@ -445,18 +393,15 @@ export class SaleOrderComponent implements OnInit {
 
   validateform() {
     this.orderForm = this.fb.group({
-      productValueControl: new FormControl({
-        value: '',
-        disabled: this.canOrder,
-      }),
       color: [null, [Validators.required]],
       quantity: [null, [Validators.required]],
       price: [null, [Validators.required]],
+      note: [null,],
     });
 
-    // this.quantityValidateForm = this.fb.group({
-    //   modalquantity: [this.modalquantity, [Validators.required]],
-    // });
+    this.saveOrderForm = this.fb.group({
+      receivedDate: [null, [Validators.required]],
+    });
   }
 
   /**
@@ -464,8 +409,6 @@ export class SaleOrderComponent implements OnInit {
    */
 
   calcTotal() {
-    this.paid = 0;
-    this.discount = 0;
     if (this.dynamicOrderList.length == 0) {
       this.totalValue = 0;
     } else {

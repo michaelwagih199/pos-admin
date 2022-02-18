@@ -10,6 +10,8 @@ import { CustomerService } from '../../service/customer.service';
 import { CustomerModel } from '../../model/customer-model';
 import { CreateCustomerComponent } from '../../dialogs/create-customer/create-customer.component';
 import { Router } from '@angular/router';
+import { DynamicSOrderType } from 'src/app/reports/models/dynamic-sale-order-type';
+import { DynamicOrdersComponent } from 'src/app/reports/dialog/dynamic-orders/dynamic-orders.component';
 
 @Component({
   selector: 'app-customer-list',
@@ -203,7 +205,16 @@ export class CustomerListComponent implements OnInit {
   }
 
   onCustomerDetails(id: number) {
-    this.router.navigate([`customers/customerDetails/${id}`])
+    const dialogRef = this.dialog.open(DynamicOrdersComponent, {
+      width: '80%',
+      data: {
+        orderType: DynamicSOrderType.CUSTOMERS_ORDERS,
+        customerId: id
+      },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
   search() {

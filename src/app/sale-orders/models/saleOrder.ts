@@ -5,6 +5,7 @@ export class SaleOrderModel {
     id: number | undefined
     orderCode: string | undefined
     orderDate: any
+    receivedDate:any
     customer: CustomerModel | undefined
     orderType: OrderType | undefined
     paymentType: OrderPaymentModel | undefined

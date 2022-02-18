@@ -107,7 +107,7 @@
       <div class="col-8 greybg ">
 
         <div class=" info">
-          <form nz-form [formGroup]="orderForm">
+          <form  [formGroup]="orderForm">
             <div class="row ">
               <div class="col m-2">
                 <mat-form-field appearance="outline" class="full-width">
@@ -131,8 +131,8 @@
               </div>
               <div class="col m-2">
                 <mat-form-field appearance="outline" class="full-width">
-                  <input matInput  placeholder="ملاحظات" formControlName="note"
-                    [(ngModel)]="dynamcObjectSelected.note" autocomplete="off">
+                  <input matInput placeholder="ملاحظات" formControlName="note"
+                    [(ngModel)]="dynamcObjectSelected.notes" autocomplete="off">
                 </mat-form-field>
               </div>
             </div>
@@ -154,11 +154,8 @@
                 <th>تفاصيل</th>
                 <th>عدد</th>
                 <th>اللون</th>
-                <th>تشغيل 1</th>
-                <th>تشغيل 2</th>
-                <th>تشغيل 3</th>
-                <th>تشغيل 4</th>
-                <th>تشغيل 5</th>
+                <th colspan="5" >تشغيل </th>
+               
                 <th> السعر</th>
                 <th>الاجمالى</th>
                 <th>ملاحظات</th>
@@ -178,7 +175,7 @@
                 <td>{{ item.task5 }}</td>
                 <td>{{ item.price }}</td>
                 <td>{{ item.total}}</td>
-                <td>{{ item.note }}</td>
+                <td>{{ item.notes }}</td>
                 <td>
                   <button mat-icon-button color="warn" (click)="deleteDynamicItem(item)">
                     <mat-icon>delete</mat-icon>
@@ -189,16 +186,20 @@
           </table>
         </div>
         <hr>
-        <div class="row justify-content-between text14 mt-2" *ngIf="canCustomer">
+        <form [formGroup]="saveOrderForm" >
+
+        <div class="row justify-content-between text14 mt-2">
+         
+
           <div class="col info">
             <div class="row ">
-
+             
               <div class="col">
-                <form>
+               
                   <mat-form-field class="example-full-width">
                     <mat-label>{{arabic.customers.util.searchBar}}</mat-label>
                     <input type="text" placeholder={{arabic.customers.util.searchBar}} matInput
-                      [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="searchCustomerInout"
+                      [formControl]="customerControl" [matAutocomplete]="auto" [(ngModel)]="searchCustomerInout"
                       (keyup.enter)="search()">
                     <mat-icon color="accent" matSuffix>search</mat-icon>
                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -208,21 +209,21 @@
                       </mat-option>
                     </mat-autocomplete>
                   </mat-form-field>
-                </form>
+               
               </div>
-
               <div class="col mt-1">
                 <button mat-mini-fab color="accent" (click)="addDialog()">
                   <mat-icon>add</mat-icon>
                 </button>
               </div>
+            
             </div>
           </div>
           <div class="col">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>التاريخ</mat-label>
-              <input matInput [matDatepicker]="picker" formControlName="maintanenceDate"
-                [(ngModel)]="dynamcObjectSelected">
+              <mat-label>تاريخ الاستلام</mat-label>
+              <input matInput [matDatepicker]="picker" formControlName="receivedDate"
+                [(ngModel)]="orderPayload.receivedDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
@@ -233,12 +234,13 @@
               <p>{{totalValue}}</p>
             </div>
           </div>
-
         </div>
+      </form>
+      
         <mat-divider></mat-divider>
         <div class="row justify-content-center mt-3 ">
-            <button mat-raised-button color="accent" class="mybtn m-2" (click)="viewOrderToday()">حفظ</button>
-            <button mat-raised-button color="accent" class="mybtn m-2" (click)="viewOrderToday()">حفظ وطباعة</button>
+            <button mat-raised-button color="accent" class="mybtn m-2"  [disabled]="!saveOrderForm.valid" (click)="onSaveOrder()">حفظ</button>
+            <button mat-raised-button color="accent" class="mybtn m-2" [disabled]="!saveOrderForm.valid" (click)="onSaveAndPrint()">حفظ وطباعة</button>
             <button mat-raised-button color="warn" class="mybtn m-2" (click)="refresh()">الغاء</button>
         </div>
       </div>

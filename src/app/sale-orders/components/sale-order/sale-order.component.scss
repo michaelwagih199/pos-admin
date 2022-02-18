@@ -45,7 +45,7 @@ $font-cairo: "Cairo", sans-serif;
 
 .yellow{
   background-color: $yellow-color;
-  font-size: large;
+  font-size: medium;
   font-family: $font-cairo;
   border-radius:3px;
   text-align: center;
@@ -127,7 +127,7 @@ mat-grid-tile {
   cursor: pointer;
   text-align: center;
   color: #F4F3F0;
-  font-size: large;
+  font-size: medium;
   font-family: $font-cairo;
 }
 

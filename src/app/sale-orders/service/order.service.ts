@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 export class OrderService {
   private baseUrl = `${environment.baseUrl}/saleOrders`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getOrderCode(): Observable<any> {
     return this.http.get(`${this.baseUrl}/nextCode`);
@@ -18,14 +18,18 @@ export class OrderService {
   createOrder(
     customerName: any,
     orderTypeId: any,
-    paymentTypeId: any
-  ): Observable<any> {
-    //http://localhost:8080/api/saleOrders?customerName=maged latif&orderTypeId=1&paymentTypeId=1
+    paymentTypeId: any): Observable<any> {
     return this.http.post(
       `${this.baseUrl}?customerName=${customerName}&orderTypeId=${orderTypeId}&paymentTypeId=${paymentTypeId}`,
       {}
     );
   }
+
+  createBoutiqueOrder(orderObj:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/boutique/save`, orderObj);
+  }
+
+
 
   delete(id: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/archive?id=${id}`, null);
