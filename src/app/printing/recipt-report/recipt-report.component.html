@@ -5,8 +5,14 @@
     <div class="row justify-content-between mt-1 mcenter">
         <div class="col mt-1">
             <div class="row">
-                <p class="mr-2">التاريخ</p>
-                <p class=" mr-2">{{sharedData.date|date:'yyyy-MM-dd'}}</p>
+                <p class="mr-2">تاريخ الاستلام</p>
+                <p class=" mr-2">{{sharedData.date |date: 'yyyy-MM-dd'}}</p>
+            </div>
+        </div>
+        <div class="col mt-1">
+            <div class="row">
+                <p class="mr-2">الوقت</p>
+                <p class=" mr-2">{{sharedData.date |date: 'mediumTime'}}</p>
             </div>
         </div>
         <div class="col">
@@ -37,6 +43,7 @@
                 <tr>
                     <th>المنتج</th>
                     <th>التفاصيل</th>
+                    <th>اللون</th>
                     <th colspan="5">تشغيل</th>
                     <th>الكمية</th>
                     <th>السعر</th>
@@ -47,6 +54,7 @@
                 <tr *ngFor="let item of dynamicOrderList">
                     <th>{{ item.categoryName }}</th>
                     <th>{{ item.productName }}</th>
+                    <th>{{ item.color }}</th>
                     <th>{{ item.task1 }}</th>
                     <th>{{ item.task2 }}</th>
                     <th>{{ item.task3 }}</th>
@@ -78,7 +86,8 @@
         </div>
     </div>
     <br>
-    <div class="mcenter cborder">
-        {{arabic.printig.saleOrderInvoce.finalNotes}}
+    <div class="l-flex-around">
+        <p class="text-sm">{{arabic.printig.saleOrderInvoce.finalNotes}}</p>
+        <p class="text-sm">{{arabic.printig.saleOrderInvoce.finalNotes2}}</p>
     </div>
 </div>

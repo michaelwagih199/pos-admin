@@ -62,6 +62,11 @@ $font-cairo: "Cairo", sans-serif;
 
 .text-s {
   font-size: 12px;
+  font-family: $font-cairo;
+}
+.text-m {
+  font-size: 14px;
+  font-family: $font-cairo;
 }
 
 .text-16 {
@@ -69,6 +74,9 @@ $font-cairo: "Cairo", sans-serif;
   font-family: $font-cairo;
   font-weight: bold;
   text-align: center;
+}
+.m-p-1{
+  padding: 1px;
 }
 
 .text-xl {
@@ -78,16 +86,17 @@ $font-cairo: "Cairo", sans-serif;
   font-family: $font-cairo;
   padding: 5px;
 }
-.text-l {
-  font-size: large;
-  font-family: Arial, Helvetica, sans-serif;
-}
+
 
 .info {
   background-color: #f4f3f0;
   border: 1px solid $blue-dark-color;
   border-radius: 5px;
   height: fit-content;
+}
+
+.curser-pointer{
+  cursor: pointer;
 }
 
 mat-form-field {
@@ -104,7 +113,7 @@ mat-form-field {
 
 
 mat-grid-tile {
-  background: $base-color;
+  background: $purble-color;
   border-radius: 3px;
 }
 

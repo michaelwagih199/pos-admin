@@ -26,8 +26,9 @@ export class Arabic {
         
         saleOrderInvoce: {
             heading: "فاتوره مبيعات",
-            receivedDate: "تاريخ الاستلام",
-            finalNotes:"لا يتم التسليم إلا بموجب هذا الإصال"
+            receivedDate: "تاريخ التسليم",
+            finalNotes:"*لا يتم التسليم إلا بموجب هذا الإصال*",
+            finalNotes2:"*الاتيليه غير مسئول عن البضاعة المتروكه ﻷكثر من شهرين*"
         }
     }
 

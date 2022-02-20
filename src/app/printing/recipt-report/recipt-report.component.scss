@@ -9,7 +9,7 @@ $font-cairo: Arial, Helvetica, sans-serif;
   font-family: $font-cairo;
   border: 2px solid black;
   margin: auto;
-  padding:1mm 6mm;
+  padding: 1mm 6mm;
   .header {
     font-size: 12px;
     border: 1px solid black;
@@ -19,18 +19,33 @@ $font-cairo: Arial, Helvetica, sans-serif;
     margin: auto;
     border-radius: 25px;
   }
+  .text-sm {
+    font-size:9px;
+  }
+  .l-flex-around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: auto;
+    border-top: 1px solid black;
+    text-align: center;
+    margin-top: 5px;
+  }
   table,
   th,
   td {
     border: 1px solid black;
   }
+
   .cborder {
     border: 1px solid black;
     padding-left: 2px;
     padding-right: 2px;
     border-radius: 5px;
     font-family: $font-cairo;
+    font-size: small;
   }
+
   .mcenter {
     margin: auto;
   }
@@ -53,7 +68,7 @@ $font-cairo: Arial, Helvetica, sans-serif;
     right: 0;
     margin: auto;
     text-align: center;
-    padding:1mm 6mm;
+    padding: 1mm 6mm;
     .header {
       font-size: 14px;
       border: 1px solid black;
@@ -73,6 +88,18 @@ $font-cairo: Arial, Helvetica, sans-serif;
       border-radius: 5px;
       font-family: $font-cairo;
     }
+    .text-sm {
+      font-size: 9px;
+    }
+    .l-flex-around {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      margin: auto;
+      border-top: 1px solid black;
+      text-align: center;
+      margin-top: 5px;
+    }
     .mcenter {
       margin: auto;
     }
@@ -84,4 +111,3 @@ $font-cairo: Arial, Helvetica, sans-serif;
     size: $print-a5-width $print-a5-height; /* width height */
   }
 }
-

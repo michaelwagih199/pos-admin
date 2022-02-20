@@ -36,9 +36,9 @@
             <mat-card-content>
               <mat-grid-list cols="5" gutterSize="10px" rowHeight="50px">
                 <mat-grid-tile *ngFor="let card of categoryList">
-                  <mat-card class="my-card mt-2 ">
-                    <mat-card-title (click)="addProductCategory(card)">{{card.categoryName}}</mat-card-title>
-                  </mat-card>
+                  <p (click)="addProductCategory(card)" class="text-white text-m curser-pointer ">
+                    {{card.categoryName}}
+                  </p>
                 </mat-grid-tile>
               </mat-grid-list>
             </mat-card-content>
@@ -56,9 +56,9 @@
             <mat-card-content>
               <mat-grid-list cols="5" gutterSize="10px" rowHeight="50px">
                 <mat-grid-tile *ngFor="let card of productList">
-                  <mat-card class="my-card mt-2 ">
-                    <mat-card-title (click)="addProduct(card)">{{card.productName}}</mat-card-title>
-                  </mat-card>
+                  <p (click)="addProduct(card)" class="text-white text-m curser-pointer ">
+                    {{card.productName}}
+                  </p>
                 </mat-grid-tile>
               </mat-grid-list>
             </mat-card-content>
@@ -75,28 +75,28 @@
             <mat-card-content>
               <mat-grid-list cols="5" gutterSize="10px" rowHeight="50px">
                 <mat-grid-tile *ngFor="let card of tailerTasksList">
-                  <mat-card class="my-card mt-2 ">
-                    <mat-card-title (click)="addCard(card)">{{card.task}}</mat-card-title>
-                  </mat-card>
+                  <p (click)="addCard(card)" class="text-white text-m curser-pointer ">
+                    {{card.task}}
+                  </p>
                 </mat-grid-tile>
               </mat-grid-list>
             </mat-card-content>
           </div>
           <div class="row justify-content-between">
             <div class="yellow ">
-              <p> {{dynamcObjectSelected.task1}}</p>
+              <p class="text-white m-p-1"> {{dynamcObjectSelected.task1}}</p>
             </div>
             <div class="yellow ">
-              <p> {{dynamcObjectSelected.task2}}</p>
+              <p class="text-white m-p-1"> {{dynamcObjectSelected.task2}}</p>
             </div>
             <div class="yellow ">
-              <p> {{dynamcObjectSelected.task3}}</p>
+              <p  class="text-white m-p-1"> {{dynamcObjectSelected.task3}}</p>
             </div>
             <div class="yellow ">
-              <p> {{dynamcObjectSelected.task4}}</p>
+              <p  class="text-white m-p-1"> {{dynamcObjectSelected.task4}}</p>
             </div>
             <div class="yellow ">
-              <p> {{dynamcObjectSelected.task5}}</p>
+              <p  class="text-white m-p-1"> {{dynamcObjectSelected.task5}}</p>
             </div>
           </div>
         </mat-card>
@@ -221,7 +221,7 @@
           </div>
           <div class="col">
             <mat-form-field appearance="outline" class="full-width">
-              <mat-label>تاريخ الاستلام</mat-label>
+              <mat-label>{{arabic.printig.saleOrderInvoce.receivedDate}}</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="receivedDate"
                 [(ngModel)]="orderPayload.receivedDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
