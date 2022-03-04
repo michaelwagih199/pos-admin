@@ -8,5 +8,6 @@ export class OrderPaymentModel {
   remaining!: number;
   discount!: number;
   saleOrder!: SaleOrderModel;
+  paymentType!: string
   createdDate!: string;
 }

@@ -21,13 +21,15 @@
         </div>
         <div>
             <!--table-->
-            <nz-table #basicTable [nzData]="ordersList">
+            <nz-table #basicTable [nzData]="ordersList" class="text-center">
                 <thead>
                     <tr>
                         <th>رقم الفاتورة</th>
                         <th>التاريخ</th>
                         <th>العميل</th>
                         <th>تاريخ التسليم</th>
+                        <th>نوع الطلب</th>
+                        <th>حالة الطلب</th>
                         <th>الاجمالى</th>
                         <th></th>
                     </tr>
@@ -38,10 +40,14 @@
                         <th>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</th>
                         <th>{{ item.saleOrder.customer?.customerName }}</th>
                         <th>{{ item.saleOrder.receivedDate |date: 'yyyy-MM-dd' }}</th>
+                        <th>{{ item.saleOrder?.paymentType?.paymentType}}</th>
+                        <th [ngClass]="[ item.saleOrder?.orderType?.orderType == 'قيد التشغيل' ? 'bg-success text-white rounded m-2' : 'bg-danger text-white rounded m-2']" >{{ item.saleOrder?.orderType?.orderType}}</th>
                         <th>{{ item.totalOrder}}</th>
                         <td>
                             <button type="button" class="btn btn-primary btn-sm"
-                                (click)="details(content,item)">التفاصيل</button> 
+                                (click)="details(content,item)">التفاصيل</button> | 
+                            <button type="button" class="btn btn-warning btn-sm"
+                                (click)="onChangeStatus(item)">تغير حاله الطلب</button> 
                         </td>
                     </tr>
                 </tbody>

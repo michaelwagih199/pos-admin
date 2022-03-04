@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExcelService } from 'src/app/excel.service';
@@ -9,6 +9,7 @@ import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.s
 import { OrderService } from 'src/app/sale-orders/service/order.service';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 import { Arabic } from 'src/app/text';
+import { ChangeStatuesComponent } from '../../dialog/change-statues/change-statues.component';
 import { SalesRoportService } from '../../service/sales-roport.service';
 
 @Component({
@@ -112,6 +113,21 @@ export class SalesReportComponent implements OnInit {
     this.excelService.exportAsExcelFile(this.ordersList, 'footballer_data');
   }
   
+
+  onChangeStatus(item: OrderPaymentModel){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data ={
+      orderId: item?.saleOrder?.id
+    }
+    const dialogRef =this.dialog.open(ChangeStatuesComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.getReport()
+      }
+    );
+  }
 
    /**
    * ui ux

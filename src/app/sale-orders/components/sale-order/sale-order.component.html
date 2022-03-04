@@ -191,10 +191,10 @@
         <div class="row justify-content-between text14 mt-2">
          
 
-          <div class="col info">
+          <div class="col-3 info">
             <div class="row ">
              
-              <div class="col">
+              <div class="col-8">
                
                   <mat-form-field class="example-full-width">
                     <mat-label>{{arabic.customers.util.searchBar}}</mat-label>
@@ -211,7 +211,7 @@
                   </mat-form-field>
                
               </div>
-              <div class="col mt-1">
+              <div class="col-4 mt-1">
                 <button mat-mini-fab color="accent" (click)="addDialog()">
                   <mat-icon>add</mat-icon>
                 </button>
@@ -220,13 +220,23 @@
             </div>
           </div>
           <div class="col">
-            <mat-form-field appearance="outline" class="full-width">
+            <mat-form-field appearance="outline" class="example-full-width">
               <mat-label>{{arabic.printig.saleOrderInvoce.receivedDate}}</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="receivedDate"
                 [(ngModel)]="orderPayload.receivedDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+          </div>
+          <div class="col">
+            <mat-form-field appearance="fill">
+              <mat-label>نوع الطلب</mat-label>
+              <mat-select matNativeControl required [(ngModel)]="orderPayload.paymentTypeId"
+                  formControlName="paymentTypeId">
+                  <mat-option  value ="1">كاش</mat-option>
+                  <mat-option  value ="2">فيزا</mat-option>
+              </mat-select>
+          </mat-form-field>
           </div>
           <div class="col">
             <div class="row justify-content-around navy text-xl">

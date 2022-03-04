@@ -91,7 +91,6 @@ export class SaleOrderComponent implements OnInit {
     private categoryService: CategoryServiceService,
     private orderService: OrderService,
     private dialog: MatDialog,
-    private saleReportservice: SalesRoportService,
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
     private router: Router,
@@ -401,6 +400,7 @@ export class SaleOrderComponent implements OnInit {
 
     this.saveOrderForm = this.fb.group({
       receivedDate: [null, [Validators.required]],
+      paymentTypeId: [null, [Validators.required]],
     });
   }
 

@@ -35,5 +35,10 @@ export class OrderService {
     return this.http.put(`${this.baseUrl}/archive?id=${id}`, null);
   }
 
+  changeStatues(orderId:any,statues:any): Observable<any> {
+    //http://localhost:8080/api/saleOrders/boutique/status-type/change/order/108/status/COMPLETED
+    return this.http.patch(`${this.baseUrl}/boutique/status-type/change/order/${orderId}/status/${statues}`,null);
+  }
+
 
 }

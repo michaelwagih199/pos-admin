@@ -6,8 +6,9 @@ import { SalesRoportService } from '../../service/sales-roport.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
 import { CreateCustomerComponent } from 'src/app/customers/dialogs/create-customer/create-customer.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DynamicSOrderType } from '../../models/dynamic-sale-order-type';
+import { ChangeStatuesComponent } from '../change-statues/change-statues.component';
 
 interface data {
   orderType: DynamicSOrderType,
@@ -34,6 +35,7 @@ export class DynamicOrdersComponent {
   constructor(
     private saleReport: SalesRoportService,
     private modalService: NgbModal,
+    private dialog: MatDialog,
     private orderDetailsService: OrderDetailsService,
     private dialogRef: MatDialogRef<DynamicOrdersComponent>,
     @Inject(MAT_DIALOG_DATA) dialogData: data
@@ -82,6 +84,19 @@ export class DynamicOrdersComponent {
       });
   }
 
-
+  onChangeStatus(item: OrderPaymentModel){
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data ={
+      orderId: item?.saleOrder?.id
+    }
+    const dialogRef =this.dialog.open(ChangeStatuesComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe(
+      () => {
+        this.getTodayReport()
+      }
+    );
+  }
 
 }

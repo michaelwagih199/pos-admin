@@ -47,6 +47,7 @@ export class ReciptReportComponent
   subscription!: Subscription;
 
   sharedData!: data;
+  paymentTypeName: any
   arabic: Arabic = new Arabic();
 
 
@@ -57,7 +58,7 @@ export class ReciptReportComponent
     private orderPaymentService: OrderPaymentService,
     private orderService: OrderService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
@@ -72,6 +73,10 @@ export class ReciptReportComponent
     this.subscription = this.data.currentMessage.subscribe((message) => {
       this.sharedData = message;
       this.dynamicOrderList = this.sharedData.dynamicList;
+      if (this.sharedData.orderPayload.paymentTypeId == "1")
+        this.paymentTypeName = "كاش"
+      else
+        this.paymentTypeName = "فيزا"
     });
   }
 
