@@ -1,14 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ExcelService } from 'src/app/excel.service';
+import { SaleOrderInvoceModel } from 'src/app/printing/model/saleOrderInvocesModel';
+import { SaleOrderInvoceService } from 'src/app/printing/service/sale-order-invoce.service';
 import { SaleOrderDetails } from 'src/app/sale-orders/models/orderDetails';
 import { OrderPaymentModel } from 'src/app/sale-orders/models/orderPayment';
 import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
 import { OrderService } from 'src/app/sale-orders/service/order.service';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
+import { DataService } from 'src/app/shared/service/data.service';
 import { Arabic } from 'src/app/text';
+import { POS_Response } from 'src/app/_helpers/pos-responce';
 import { ChangeStatuesComponent } from '../../dialog/change-statues/change-statues.component';
 import { SalesRoportService } from '../../service/sales-roport.service';
 
@@ -28,6 +33,7 @@ export class SalesReportComponent implements OnInit {
 
   ordersList: OrderPaymentModel[] = [];
   ordersDetailsList!: SaleOrderDetails[];
+  invoceorderPrinting!: POS_Response<SaleOrderInvoceModel>
 
   constructor(
     private saleReport: SalesRoportService,
@@ -36,7 +42,10 @@ export class SalesReportComponent implements OnInit {
     private saleOrderService: OrderService,
     private excelService:ExcelService,
     private dialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private router: Router,
+    private dataServer: DataService,
+    private orderServiceInvoce: SaleOrderInvoceService,
   ) {}
 
   ngOnInit(): void {}
@@ -128,6 +137,21 @@ export class SalesReportComponent implements OnInit {
       }
     );
   }
+
+  onPrinting(item: OrderPaymentModel){
+    this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode).subscribe(response => {
+      this.invoceorderPrinting = response
+      this.dataServer.changeMessage(response);
+    })
+    this.redirectTo(`/printing`);
+  }
+
+  redirectTo(uri: string) {
+    this.router
+      .navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigate([uri]));
+  }
+
 
    /**
    * ui ux

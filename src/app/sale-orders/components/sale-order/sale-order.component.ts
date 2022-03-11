@@ -14,19 +14,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CreateCustomerComponent } from 'src/app/customers/dialogs/create-customer/create-customer.component';
 import { CustomerModel } from 'src/app/customers/model/customer-model';
 import { DynamicOrder } from '../../models/dynamicOrder';
-import { DynamicItemService } from '../../service/dynamic-item.service';
 import { OrderService } from '../../service/order.service';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
-import { OrderDetailsService } from '../../service/order-details.service';
-import { CheckitesResponse } from '../../models/checkitems';
 import { OrderDetailsPayload } from '../../models/orderPayload';
-import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
-import { OrderPaymentService } from '../../service/order-payment.service';
 import { OrderPaymentModel } from '../../models/orderPayment';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/service/data.service';
-import { AppConstants } from '../../../_helpers/constants';
 import { CategoryServiceService } from 'src/app/stock/service/category-service.service';
 import { CategoryModel } from 'src/app/stock/model/categoryModel';
 import { ProductModel } from 'src/app/stock/model/productModel';
@@ -34,9 +27,10 @@ import { TailerTasksModel } from 'src/app/stock/model/tailer-taskMode';
 import { TailerTasksServiceService } from 'src/app/stock/service/tailer-tasks-service.service';
 import { DatePipe } from '@angular/common';
 import { DynamicOrdersComponent } from '../../../reports/dialog/dynamic-orders/dynamic-orders.component';
-import { SalesRoportService } from 'src/app/reports/service/sales-roport.service';
 import { DynamicSOrderType } from 'src/app/reports/models/dynamic-sale-order-type';
-import { OrderType } from '../../models/saleOrder';
+import { SaleOrderInvoceService } from 'src/app/printing/service/sale-order-invoce.service';
+import { POS_Response } from 'src/app/_helpers/pos-responce';
+import { SaleOrderInvoceModel } from 'src/app/printing/model/saleOrderInvocesModel';
 
 @Component({
   selector: 'app-sale-order',
@@ -51,6 +45,8 @@ export class SaleOrderComponent implements OnInit {
   customerControl = new FormControl();
   currentDate = new Date()
   customer: CustomerModel = new CustomerModel();
+
+  invoceorderPrinting!: POS_Response<SaleOrderInvoceModel>
 
   //for autocomplete
   options!: string[];
@@ -90,6 +86,7 @@ export class SaleOrderComponent implements OnInit {
     private tailerTaskService: TailerTasksServiceService,
     private categoryService: CategoryServiceService,
     private orderService: OrderService,
+    private orderServiceInvoce: SaleOrderInvoceService,
     private dialog: MatDialog,
     private _snackBar: MatSnackBar,
     private fb: FormBuilder,
@@ -277,7 +274,7 @@ export class SaleOrderComponent implements OnInit {
       this.isLoading = true
       //saveOrder and print
       this.saveOrder()
-      this.printOrder()
+     
     } else {
       this.openSnackBar('اكمل البيانات', '');
     }
@@ -299,24 +296,18 @@ export class SaleOrderComponent implements OnInit {
     this.orderPayload.total = this.totalValue
     this.orderService.createBoutiqueOrder(this.orderPayload).subscribe(response => {
       if (response.code == 'CREATED') {
-
         this.refresh()
         this.isLoading = false
+        this.printOrder()
       }
     }, err => console.log(err))
   }
 
   printOrder() {
-    let data = {
-      dynamicList: this.dynamicOrderList,
-      date: this.currentDate,
-      total: this.totalValue,
-      code: this.orderCode,
-      customer: this.searchCustomerInout,
-      orderPayload: this.orderPayload,
-    };
-
-    this.dataServer.changeMessage(data);
+    this.orderServiceInvoce.getSaleOrderInvoce(this.orderCode).subscribe(response => {
+      this.invoceorderPrinting = response
+      this.dataServer.changeMessage(response);
+    })
     this.redirectTo(`/printing`);
   }
 

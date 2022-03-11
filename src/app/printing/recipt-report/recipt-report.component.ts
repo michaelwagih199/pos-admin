@@ -6,33 +6,13 @@ import {
   OnInit,
   ViewEncapsulation,
 } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Subscription } from 'rxjs';
-import { CustomerService } from 'src/app/customers/service/customer.service';
-import { DynamicOrder } from 'src/app/sale-orders/models/dynamicOrder';
-import { OrderDetailsPayload } from 'src/app/sale-orders/models/orderPayload';
-import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
-import { OrderPaymentService } from 'src/app/sale-orders/service/order-payment.service';
-import { OrderService } from 'src/app/sale-orders/service/order.service';
 import { DataService } from 'src/app/shared/service/data.service';
-import { ProductServiceService } from 'src/app/stock/service/product-service.service';
 import { Arabic } from 'src/app/text';
+import { POS_Response } from '../../_helpers/pos-responce';
+import { SaleOrderInvoceModel } from '../model/saleOrderInvocesModel';
 
-export interface data {
-  dynamicList: DynamicOrder[];
-  date: any;
-  discount: number;
-  total: number;
-  paid: number;
-  code: any;
-  customer: any;
-  orderTypeId: any;
-  paymentTypeId: any;
-  orderPayload: OrderDetailsPayload;
-  orderPayment: any;
-}
 
 @Component({
   selector: 'app-recipt-report',
@@ -42,77 +22,40 @@ export interface data {
 })
 export class ReciptReportComponent
   implements OnInit, OnDestroy, AfterViewChecked {
-  dynamicOrderList!: DynamicOrder[];
+
 
   subscription!: Subscription;
 
-  sharedData!: data;
-  paymentTypeName: any
   arabic: Arabic = new Arabic();
 
+  sharedData: POS_Response<SaleOrderInvoceModel> | undefined;
 
   constructor(
     private router: Router,
-    private data: DataService,
-    private orderDetailsService: OrderDetailsService,
-    private orderPaymentService: OrderPaymentService,
-    private orderService: OrderService,
-    private _snackBar: MatSnackBar
+    private data: DataService
   ) { }
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }
 
-  ngAfterViewChecked(): void {
+  async ngAfterViewChecked(): Promise<void> {
+    await this.sleep(1000);
     window.print();
   }
 
   ngOnInit(): void {
-    // this.printing();
     this.subscription = this.data.currentMessage.subscribe((message) => {
-      this.sharedData = message;
-      this.dynamicOrderList = this.sharedData.dynamicList;
-      if (this.sharedData.orderPayload.paymentTypeId == "1")
-        this.paymentTypeName = "كاش"
-      else
-        this.paymentTypeName = "فيزا"
+      this.sharedData = message
     });
   }
 
   @HostListener('window:afterprint')
   onafterprint() {
-    this.orderService
-      .createOrder(
-        this.sharedData.customer,
-        this.sharedData.orderTypeId,
-        this.sharedData.paymentTypeId
-      )
-      .subscribe(
-        (data) => {
-          this.orderDetailsService
-            .createOrderDetails(
-              this.sharedData.code,
-              this.sharedData.orderPayload
-            )
-            .subscribe();
-          this.orderPaymentService
-            .createOrderPayment(
-              this.sharedData.code,
-              this.sharedData.orderPayment
-            )
-            .subscribe();
-          this.openSnackBar('تم حفظ الطلب', '');
-          // this.toSaleOrder('saleOrder');
-        },
-        (error) => console.log(error)
-      );
+    this.toSaleOrder('saleOrder')
   }
 
-  @HostListener('window:beforeprint')
-  onBeforePrint() {
-    // this.toSaleOrder('saleOrder');
-  }
+
 
   redirectTo(uri: string) {
     this.router
@@ -124,9 +67,9 @@ export class ReciptReportComponent
     this.redirectTo(`/${val}`);
   }
 
-  openSnackBar(message: string, action: string) {
-    this._snackBar.open(message, action, {
-      duration: 2000,
+  sleep(ms: any) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
     });
   }
 }

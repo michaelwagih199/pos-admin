@@ -1,33 +1,33 @@
 $receipt: 8cm 10cm; /* width height */
-$print-a5-width: 14.8cm;
-$print-a5-height: 21cm;
+$print-a4-width: 21cm;
+$print-a4-height: 29.7cm;
 $font-cairo: Arial, Helvetica, sans-serif;
 
 .mydiv {
-  margin: auto;
-  width: $print-a5-width;
+  width: $print-a4-width;
   font-family: $font-cairo;
   border: 2px solid black;
-  margin: auto;
-  padding: 1mm 6mm;
+  height: fit-content;
+  padding: 3mm;
+  text-align: center;
   .header {
-    font-size: 12px;
-    border: 1px solid black;
+    font-size: 14px;
     padding: 2px;
-    width: calc($print-a5-width/2);
-
     margin: auto;
+    border: 1px solid black;
+    width: calc($print-a4-width/2);
+    text-align: center;
     border-radius: 25px;
   }
   .text-sm {
-    font-size:9px;
+    font-size: 11px;
+    font-weight: bold;
   }
   .l-flex-around {
     display: flex;
     justify-content: space-around;
     align-items: center;
     margin: auto;
-    border-top: 1px solid black;
     text-align: center;
     margin-top: 5px;
   }
@@ -36,7 +36,9 @@ $font-cairo: Arial, Helvetica, sans-serif;
   td {
     border: 1px solid black;
   }
-
+  .border-top{
+    border-top: 1px solid black;
+  }
   .cborder {
     border: 1px solid black;
     padding-left: 2px;
@@ -50,7 +52,8 @@ $font-cairo: Arial, Helvetica, sans-serif;
     margin: auto;
   }
   .c_table {
-    font-size: 9px;
+    font-size: 10px;
+    font-weight: bold;
   }
 }
 
@@ -59,20 +62,17 @@ $font-cairo: Arial, Helvetica, sans-serif;
     display: none !important;
   }
   .mydiv {
-    width: $print-a5-width;
+    width: $print-a4-width;
     font-family: $font-cairo;
     border: 2px solid black;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
     margin: auto;
+    padding: 3mm;
     text-align: center;
-    padding: 1mm 6mm;
+    height: fit-content;
     .header {
       font-size: 14px;
       border: 1px solid black;
-      width: calc($print-a5-width/2);
+      width: calc($print-a4-width/2);
       margin-top: 2px;
       border-radius: 25px;
     }
@@ -89,25 +89,29 @@ $font-cairo: Arial, Helvetica, sans-serif;
       font-family: $font-cairo;
     }
     .text-sm {
-      font-size: 9px;
+      font-size: 11px;
+      font-weight: bold;
     }
     .l-flex-around {
       display: flex;
       justify-content: space-around;
       align-items: center;
       margin: auto;
-      border-top: 1px solid black;
       text-align: center;
       margin-top: 5px;
+    }
+    .border-top{
+      border-top: 1px solid black;
     }
     .mcenter {
       margin: auto;
     }
     .c_table {
-      font-size: 9px;
+      font-size: 10px;
+      font-weight: bold;
     }
   }
   @page {
-    size: $print-a5-width $print-a5-height; /* width height */
+    size: $print-a4-width $print-a4-height; /* width height */
   }
 }

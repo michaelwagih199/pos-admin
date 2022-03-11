@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { OrderPaymentModel } from 'src/app/sale-orders/models/orderPayment';
 import { POS_Response } from '../../_helpers/pos-responce';
-import { catchError, retry } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

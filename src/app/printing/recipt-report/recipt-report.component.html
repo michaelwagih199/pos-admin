@@ -1,24 +1,24 @@
-<div class="mydiv text-center">
-    <p class="header ">
+<div class="mydiv">
+    <p class="header">
         {{arabic.printig.saleOrderInvoce.heading}}
     </p>
     <div class="row justify-content-between mt-1 mcenter">
         <div class="col mt-1">
             <div class="row">
                 <p class="mr-2">تاريخ الاستلام</p>
-                <p class=" mr-2">{{sharedData.date |date: 'yyyy-MM-dd'}}</p>
+                <p class=" mr-2">{{sharedData?.data?.orderCode|date: 'yyyy-MM-dd'}}</p>
             </div>
         </div>
         <div class="col mt-1">
             <div class="row">
                 <p class="mr-2">الوقت</p>
-                <p class=" mr-2">{{sharedData.date |date: 'mediumTime'}}</p>
+                <p class=" mr-2">{{sharedData?.data?.orderCode|date: 'mediumTime'}}</p>
             </div>
         </div>
         <div class="col">
             <div class="row mt-1">
                 <p>كود الفاتورة</p>
-                <p class="  mr-2">{{sharedData.code}}</p>
+                <p class="  mr-2">{{sharedData?.data?.orderCode}}</p>
             </div>
         </div>
 
@@ -27,19 +27,19 @@
         <div class="col">
             <div class="row m-auto ">
                 <p>اسم العميل</p>
-                <p class=" mr-1">{{sharedData.customer}}</p>
+                <p class=" mr-1">{{sharedData?.data?.customerName}}</p>
             </div>
         </div>
         <div class="col">
             <div class="row m-auto ">
                 <p>{{arabic.printig.saleOrderInvoce.receivedDate}}</p>
-                <p class=" mr-1">{{sharedData.orderPayload.receivedDate}}</p>
+                <p class=" mr-1">{{sharedData?.data?.reciveDate}}</p>
             </div>
         </div>
         <div class="col">
             <div class="row m-auto ">
                 <p>{{arabic.printig.saleOrderInvoce.paymentTypeName}}</p>
-                <p class=" mr-1">{{paymentTypeName}}</p>
+                <p class=" mr-1">{{sharedData?.data?.orderPaymentOrder}}</p>
             </div>
         </div>
     </div>
@@ -57,33 +57,32 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of dynamicOrderList">
-                    <th>{{ item.categoryName }}</th>
-                    <th>{{ item.productName }}</th>
-                    <th>{{ item.color }}</th>
-                    <th>{{ item.task1 }}</th>
-                    <th>{{ item.task2 }}</th>
-                    <th>{{ item.task3 }}</th>
-                    <th>{{ item.task4 }}</th>
-                    <th>{{ item.task5 }}</th>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.price }}</td>
-                    <td>{{ item.total}}</td>
+                <tr *ngFor="let item of sharedData?.data?.saleOrderDetails">
+                    <th>{{ item?.product?.productCategory?.categoryName}}</th>
+                    <th>{{ item?.product?.productName }}</th>
+                    <th>{{ item?.color }}</th>
+                    <th>{{ item?.task1 }}</th>
+                    <th>{{ item?.task2 }}</th>
+                    <th>{{ item?.task3 }}</th>
+                    <th>{{ item?.task4 }}</th>
+                    <th>{{ item?.task5 }}</th>
+                    <td>{{ item?.quantity }}</td>
+                    <td>{{ item?.price }}</td>
+                    <td>{{ item?.total}}</td>
                 </tr>
             </tbody>
         </table>
-
         <table>
             <thead>
                 <tr>
-                    <th colspan="10">الاجمالى</th>          
-                    <th>{{sharedData.total}}</th>                    
+                    <th colspan="10">الاجمالى</th>
+                    <th>{{sharedData?.data?.totalPrice}}</th>
                 </tr>
             </thead>
         </table>
     </div>
     <br>
-    <div class="row justify-content-around mcenter">
+    <div class="l-flex-around">
         <div class="col">
             <p class="mr-3">الصنايعى المسئول</p>
         </div>
@@ -92,7 +91,7 @@
         </div>
     </div>
     <br>
-    <div class="l-flex-around">
+    <div class="l-flex-around border-top">
         <p class="text-sm">{{arabic.printig.saleOrderInvoce.finalNotes}}</p>
         <p class="text-sm">{{arabic.printig.saleOrderInvoce.finalNotes2}}</p>
     </div>

@@ -9,6 +9,11 @@ import { CreateCustomerComponent } from 'src/app/customers/dialogs/create-custom
 import { MatDialog, MatDialogConfig, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DynamicSOrderType } from '../../models/dynamic-sale-order-type';
 import { ChangeStatuesComponent } from '../change-statues/change-statues.component';
+import { SaleOrderInvoceModel } from 'src/app/printing/model/saleOrderInvocesModel';
+import { POS_Response } from 'src/app/_helpers/pos-responce';
+import { Router } from '@angular/router';
+import { SaleOrderInvoceService } from 'src/app/printing/service/sale-order-invoce.service';
+import { DataService } from 'src/app/shared/service/data.service';
 
 interface data {
   orderType: DynamicSOrderType,
@@ -24,6 +29,7 @@ export class DynamicOrdersComponent {
   startDate: any;
   endDate: any;
   arabic: Arabic = new Arabic();
+  invoceorderPrinting!: POS_Response<SaleOrderInvoceModel>
 
 
   orderCounter: number = 0;
@@ -36,6 +42,9 @@ export class DynamicOrdersComponent {
     private saleReport: SalesRoportService,
     private modalService: NgbModal,
     private dialog: MatDialog,
+    private router: Router,
+    private dataServer: DataService,
+    private orderServiceInvoce: SaleOrderInvoceService,
     private orderDetailsService: OrderDetailsService,
     private dialogRef: MatDialogRef<DynamicOrdersComponent>,
     @Inject(MAT_DIALOG_DATA) dialogData: data
@@ -97,6 +106,21 @@ export class DynamicOrdersComponent {
         this.getTodayReport()
       }
     );
+  }
+
+  onPrinting(item: OrderPaymentModel){
+    this.dialogRef.close(true);
+    this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode).subscribe(response => {
+      this.invoceorderPrinting = response
+      this.dataServer.changeMessage(response);
+    })
+    this.redirectTo(`/printing`);
+  }
+
+  redirectTo(uri: string) {
+    this.router
+      .navigateByUrl('/', { skipLocationChange: true })
+      .then(() => this.router.navigate([uri]));
   }
 
 }
