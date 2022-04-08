@@ -37,11 +37,14 @@ export class ReciptReportComponent
 
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
+    window.close();
+
   }
 
   async ngAfterViewChecked(): Promise<void> {
     await this.sleep(1000);
     window.print();
+    this.toSaleOrder('saleOrder')
   }
 
   ngOnInit(): void {
@@ -51,20 +54,22 @@ export class ReciptReportComponent
   }
 
   @HostListener('window:afterprint')
-  onafterprint() {
+  async onafterprint() {
     this.toSaleOrder('saleOrder')
+    window.location.reload();
   }
-
-
 
   redirectTo(uri: string) {
     this.router
       .navigateByUrl('/', { skipLocationChange: true })
-      .then(() => this.router.navigate([uri]));
+      .then(() => {this.router.navigate([uri])
+        window.location.reload();
+      });
   }
 
   toSaleOrder(val: any) {
     this.redirectTo(`/${val}`);
+
   }
 
   sleep(ms: any) {

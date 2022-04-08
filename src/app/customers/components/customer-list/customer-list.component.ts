@@ -207,6 +207,7 @@ export class CustomerListComponent implements OnInit {
   onCustomerDetails(id: number) {
     const dialogRef = this.dialog.open(DynamicOrdersComponent, {
       width: '80%',
+      height: '80%',
       data: {
         orderType: DynamicSOrderType.CUSTOMERS_ORDERS,
         customerId: id

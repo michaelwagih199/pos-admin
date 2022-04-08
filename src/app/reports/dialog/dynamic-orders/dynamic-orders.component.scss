@@ -7,6 +7,7 @@ $font_header_size: 20px;
 
 * {
   font-family: "Cairo", sans-serif;
+  
 }
 
 .mat-card-header {
@@ -19,6 +20,7 @@ $font_header_size: 20px;
 
 .mat-card {
   background: #f4f3f0;
+  
 }
 
 .mat-raised-button {
@@ -76,4 +78,5 @@ $font_header_size: 20px;
 
 .nz-table{
   text-align: center;
+  overflow: auto;
 }

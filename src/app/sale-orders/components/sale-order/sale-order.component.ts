@@ -92,7 +92,10 @@ export class SaleOrderComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private dataServer: DataService
-  ) { }
+  ) { 
+    
+
+  }
 
   ngOnInit(): void {
     this.getAllNames();
@@ -100,6 +103,7 @@ export class SaleOrderComponent implements OnInit {
     this.validateform();
     this.retrieveAllProductCatogery()
     this.retrieveTailerTasks()
+
   }
 
   /**
@@ -206,6 +210,7 @@ export class SaleOrderComponent implements OnInit {
   viewOrderToday(): void {
     const dialogRef = this.dialog.open(DynamicOrdersComponent, {
       width: '80%',
+      height: '80%',
       data: { orderType: DynamicSOrderType.TODAY_ORDERS },
     });
     dialogRef.afterClosed().subscribe(result => {

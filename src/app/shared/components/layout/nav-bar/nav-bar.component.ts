@@ -24,7 +24,7 @@ export class NavBarComponent implements OnInit {
     suppliers: true,
     purshasing: false,
     retrival: true,
-    expenses: false,
+    expenses: true,
     reports: false,
     maintenance: false,
     setting: false,

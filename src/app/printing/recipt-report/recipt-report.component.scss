@@ -10,6 +10,7 @@ $font-cairo: Arial, Helvetica, sans-serif;
   height: fit-content;
   padding: 3mm;
   text-align: center;
+  font-weight: bold;
   .header {
     font-size: 14px;
     padding: 2px;
@@ -62,6 +63,7 @@ $font-cairo: Arial, Helvetica, sans-serif;
     display: none !important;
   }
   .mydiv {
+    font-weight: bold;
     width: $print-a4-width;
     font-family: $font-cairo;
     border: 2px solid black;
