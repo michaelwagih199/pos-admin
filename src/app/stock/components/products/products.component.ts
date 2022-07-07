@@ -140,6 +140,8 @@ export class ProductsComponent implements OnInit {
   }
 
   onBarcode(element: any) {
+    console.log(element);
+    
     // this.isLoading = true;
     const dialogRef = this.dialog.open(BarcodeComponent, {
       data: {

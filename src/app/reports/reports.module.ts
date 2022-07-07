@@ -13,6 +13,7 @@ import { DepositWithdrawelsComponent } from './components/safe/deposit-withdrawe
 import { SafeReportComponent } from './components/safe/safe-report/safe-report.component';
 import { ProfitsComponent } from './components/profit-budget/profits/profits.component';
 import { BugetComponent } from './components/profit-budget/buget/buget.component';
+import { DynamicOrdersComponent } from './components/dialog/dynamic-orders/dynamic-orders.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BugetComponent } from './components/profit-budget/buget/buget.component
     SafeReportComponent,
     ProfitsComponent,
     ProfitsListComponent,
-    BugetComponent
+    BugetComponent,
+    DynamicOrdersComponent
   ],
   imports: [CommonModule, ReportsRoutingModule, SharedModule],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],

@@ -31,7 +31,7 @@ export class ParcodeComponent implements OnInit, OnDestroy, AfterViewChecked {
 
   ngOnInit(): void {
     this.subscription = this.data.currentMessage.subscribe((message) => {
-      this.sharedData = message;
+      this.sharedData = message;      
     });
   }
 

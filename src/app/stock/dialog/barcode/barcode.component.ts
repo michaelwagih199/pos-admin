@@ -26,6 +26,7 @@ export class BarcodeComponent implements OnInit {
     let data = {
       parcode: this.model.productCode,
       name: this.model.productName,
+      price: this.model.retailPrice,
     };
     this.dataServer.changeMessage(data);
     this.redirectTo(`/printing/parcode`);

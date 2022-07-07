@@ -27,6 +27,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/service/data.service';
 import { AppConstants } from '../../../_helpers/constants';
+import { DynamicOrdersComponent } from '../../../reports/components/dialog/dynamic-orders/dynamic-orders.component';
+import { DynamicSOrderType } from 'src/app/reports/models/dynamic-sale-order-type';
 
 @Component({
   selector: 'app-sale-order',
@@ -198,6 +200,17 @@ export class SaleOrderComponent implements OnInit {
   OnProductSelected(productSelected: any) {
     this.productSearch = productSelected;
     // this.findProductByName();
+  }
+
+  viewOrderToday(): void {
+    const dialogRef = this.dialog.open(DynamicOrdersComponent, {
+      width: '80%',
+      height: '80%',
+      data: { orderType: DynamicSOrderType.TODAY_ORDERS },
+    });
+    dialogRef.afterClosed().subscribe(result => {
+
+    });
   }
 
   productSearch() {
