@@ -1,4 +1,5 @@
 <div class="doNotPrint">
+
     <div class="myContainer">
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
         <div class="row text-center rounded navy">
@@ -22,6 +23,7 @@
                     <p class="text-white bg-danger rounded p-2 mr-4 block">{{orderType}}</p>
                 </div>
             </div>
+
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white">{{arabic.saleOrder.util.paymentType}}</p>
@@ -36,8 +38,8 @@
                 </div>
             </div>
          
-
         </div>
+        
         <!--end header container-->
         <div class="row rounded">
             <!--center dive-->
@@ -229,7 +231,7 @@
                         <button mat-raised-button color="accent" class="mybtn" (click)="onSaveOrder()">حفظ</button>
                     </div>
                 </div>
-    
+
             </div>
             <!--end left-->
     

@@ -27,6 +27,10 @@ export class OrderService {
     );
   }
 
+  saveOrder(orderObj:any):Observable<any>{
+    return this.http.post(`${this.baseUrl}/save`, orderObj);
+  }
+
   delete(id: any): Observable<any> {
     return this.http.put(`${this.baseUrl}/archive?id=${id}`, null);
   }

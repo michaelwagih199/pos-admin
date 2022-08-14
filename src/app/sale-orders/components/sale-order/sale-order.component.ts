@@ -94,8 +94,6 @@ export class SaleOrderComponent implements OnInit {
   constructor(
     private customerService: CustomerService,
     private dynamicItemService: DynamicItemService,
-    private orderDetailsService: OrderDetailsService,
-    private orderPaymentService: OrderPaymentService,
     private productService: ProductServiceService,
     private orderService: OrderService,
     private dialog: MatDialog,
@@ -373,56 +371,48 @@ export class SaleOrderComponent implements OnInit {
   }
 
   onSaveOrder() {
-    if (this.canCustomer == true && this.searchCustomerInout == '') {
-      this.openSnackBar('اختر العميل', '');
-    } else {
+    if (this.isOrderValid()) {
+      this.calcTotal()
+      this.isLoading = true
       //saveOrder
-      this.orderPayload.dynamicDetailsDaoList = this.dynamicOrderList;
-      console.log(this.dynamicOrderList);
-      this.orderPayment.discount = this.discount;
-      this.orderPayment.netCost = this.totalValue - (this.discount + this.paid);
-      if (this.paymentType == 'كاش') {
-        this.orderPayment.paid = this.totalValue - (this.discount + this.paid);
-        this.orderPayment.remaining =
-          this.orderPayment.netCost - this.orderPayment.paid;
-      } else {
-        this.orderPayment.paid = this.paid;
-        this.orderPayment.remaining =
-          this.totalValue - this.discount - this.orderPayment.paid;
-      }
-
-      this.orderPayment.totalOrder = this.totalValue;
-
-      this.orderService
-        .createOrder(
-          this.searchCustomerInout,
-          this.orderTypeId,
-          this.paymentTypeId
-        )
-        .subscribe(
-          (data) => {
-            this.orderDetailsService
-              .createOrderDetails(this.orderCode, this.orderPayload)
-              .subscribe();
-            this.orderPaymentService
-              .createOrderPayment(this.orderCode, this.orderPayment)
-              .subscribe();
-            this.openSnackBar('تم حفظ الطلب', '');
-            this.reset();
-          },
-          (error) => console.log(error)
-        );
+      this.saveOrder()
+      this.openSnackBar(this.arabic.util.saved, '')
+    } else {
+      this.openSnackBar('اكمل البيانات', '');
     }
   }
 
-  //
+  saveOrder() {
+    this.orderPayload.customerName = this.searchCustomerInout
+    this.orderPayload.dynamicDetailsList = this.dynamicOrderList
+    this.orderPayload.orderCode = this.orderCode
+    this.orderPayload.paymentTypeId = this.paymentTypeId
+    this.orderPayload.orderTypeId = this.orderTypeId
+   
+    this.orderPayload.total = this.totalValue
+    this.orderService.saveOrder(this.orderPayload).subscribe(response => {
+      if (response.code == 'CREATED') {
+        this.refresh()
+        this.isLoading = false
+      }
+    }, err => console.log(err))
+  }
+
+  isOrderValid(): boolean {
+    if (this.canCustomer == true && this.searchCustomerInout == '') 
+      this.openSnackBar('اختر العميل', '');
+    if (this.dynamicOrderList.length > 0)
+      return true;
+    else
+      return false;
+  }
 
   onSaveAndPrint() {
     if (this.canCustomer == true && this.searchCustomerInout == '') {
       this.openSnackBar('اختر العميل', '');
     } else {
       //saveOrder
-      this.orderPayload.dynamicDetailsDaoList = this.dynamicOrderList;
+      this.orderPayload.dynamicDetailsList = this.dynamicOrderList;
       console.log(this.dynamicOrderList);
       this.orderPayment.discount = this.discount;
       this.orderPayment.netCost = this.totalValue - (this.discount + this.paid);
@@ -525,12 +515,13 @@ export class SaleOrderComponent implements OnInit {
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' });
     this.modalquantity = obj.quantity;
     this.dynamcObjectSelected = obj;
+    console.log(obj);
   }
 
   onupdateQuantity() {
     this.dynamicItemService
       .findDynamic(
-        this.productSearchValue,
+        this.dynamcObjectSelected.productCode,
         this.paymentTypeId,
         this.orderTypeId,
         this.modalquantity,
