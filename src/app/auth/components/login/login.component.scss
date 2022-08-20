@@ -1,28 +1,29 @@
-.my-container{
-  background-color: blue;
+.my-container {
+  background-color: #f5f2eb;
+  height: 100vh;
+  color: #f5f2eb;
+  font-family: "Almarai";
+  display: flex; /* or inline-flex */
+  align-items: center;
 }
 
 label {
   display: block;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 
 .card-container.card {
   max-width: 400px !important;
   padding: 40px 40px;
+  border: 2px solid #f5f2eb;
+  border-radius: 20px;
 }
 
 .card {
-  background-color: #f7f7f7;
+  background-color: #aec3c1;
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
-  margin-top: 50px;
-  -moz-border-radius: 2px;
-  -webkit-border-radius: 2px;
-  border-radius: 2px;
-  -moz-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  -webkit-box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
 .profile-img-card {
@@ -33,4 +34,23 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
+  border: 2px solid #e7a32f;
+  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+
+}
+
+.mybtn {
+  width: 100%;
+  background-color: #e7a32f;
+  color: white;
+  font-size: large;
+  border-radius: 20px;
+  border: 2px solid #f5f2eb;
+  font-weight: 500;
+}
+
+button:hover{
+  color: #e7a32f;
+  border: #e7a32f solid 2px;
+  background:#fff;
 }
