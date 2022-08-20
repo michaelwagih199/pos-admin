@@ -28,7 +28,7 @@
     "animate.css": "^4.1.1",
     "bootstrap": "^4.6.0",
     "file-saver": "^2.0.5",
-    "ng-zorro-antd": "^12.1.1",
+    "ng-zorro-antd": "^13.4.0",
     "ngx-barcode": "^0.3.0",
     "ngx-pagination": "^5.0.0",
     "rxjs": "~6.6.0",
