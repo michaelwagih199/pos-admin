@@ -114,8 +114,12 @@ export class Arabic {
                 installment: "تقسيط",
                 oncredit: "آجل",
                 installmentValue: "نسبه التقسيط %"
+            },
+            dynamicOrderMessage: {
+                CANT_FIND_PRODUCT: "المنتج غير موجود",
+                QUANTITY_NOT_ENOUGH_IN_STOCK: "الكمية فى المخزن لا تكفى",
+                ALERT_QUANTITY: "الكمية فى المخزن ستقل الى الاحد الادنى ",
             }
-
         },
         table: {
 

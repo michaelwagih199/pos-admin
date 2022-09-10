@@ -11,10 +11,11 @@ import { AboutAppDialogComponent } from './components/layout/dialog/about-app-di
 import { NgZorroModule } from './components/ng-zorro/ng-zorro.module';
 import { NgbCarouselModule, NgbCollapseConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsComponent } from './components/layout/dialog/notifications/notifications.component';
+import { NotFoundComponent } from './components/layout/not-found/not-found.component';
 
 
 @NgModule({
-  declarations: [...fromComponents.components, ConfirmationDialog, AboutAppDialogComponent, NotificationsComponent],
+  declarations: [...fromComponents.components, ConfirmationDialog, AboutAppDialogComponent, NotificationsComponent, NotFoundComponent],
   imports: [
     CommonModule,
     SharedRoutingModule,

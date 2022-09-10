@@ -1,0 +1,87 @@
+<mat-card class="mat-elevation-z2">
+    <mat-card-content>
+        <div class="row justify-content-center text-center m-2 p-3 ">
+            <div class="col">
+                <div class="customClass-1 p-2">
+                    <div class="row justify-content-around">
+                        <p>عدد الطلبات</p>
+                        <p class="bg-dark text-white rounded p-2">{{orderCounter}}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="customClass-2 p-2">
+                    <div class="row justify-content-around">
+                        <p>اﻷجمالى</p>
+                        <p class="bg-dark text-white rounded p-2">{{sumTotal}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <!--table-->
+            <nz-table #basicTable [nzData]="ordersList" class="text-center">
+                <thead>
+                    <tr>
+                        <th>رقم الفاتورة</th>
+                        <th>التاريخ</th>
+                        <th>العميل</th>
+                        
+                        <th>الاجمالى</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of basicTable.data">
+                        <th>{{ item.saleOrder.orderCode }}</th>
+                        <th>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</th>
+                        <th>{{ item.saleOrder.customer?.customerName }}</th>
+                        <th>{{ item.totalOrder}}</th>
+                        <td>
+                            <button type="button" class="btn btn-primary btn-sm"
+                                (click)="details(content,item)">التفاصيل</button> |
+                            <button type="button" class="btn btn-info btn-sm" (click)="onPrinting(item)"> طباعة</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </mat-card-content>
+</mat-card>
+<div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title text-center" id="modal-basic-title">التفاصيل</h4>
+        </div>
+        <div class="modal-body">
+            <div class="mt-2" style="text-align: center;">
+                <!--table-->
+                <table class="table table-bordered table-sm">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>المنتج</th>
+                            <th>التفاصيل</th>
+                            <th>الكمية</th>
+                            <th>السعر</th>
+                            <th>الاجمالى</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of ordersDetailsList">
+                            <th>{{ item.product.productName}}</th>
+                            <th>{{ item.product.productCategory.categoryName}}</th>
+                            <th>{{ item.quantity}}</th>
+                            <th>{{ item.price}}</th>
+                            <th>{{ item.total}}</th>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">اغلاق</button>
+        </div>
+    </ng-template>
+</div>

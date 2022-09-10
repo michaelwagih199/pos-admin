@@ -3,7 +3,10 @@
 </div>
 <mat-dialog-content>
     <div class="myDivToPrint">
-        <p class="title">{{model.productName}}</p>
+        <div class="row justify-content-around">
+            <p class="title">{{model.productName}}</p>
+            <p class="title"> {{model.retailPrice}}جـ</p> 
+        </div>
         <ngx-barcode style="width: 30mm ;height: 15mm;" [bc-value]="model.productCode" [bc-display-value]="true"></ngx-barcode>
     </div>
 </mat-dialog-content>
@@ -13,5 +16,4 @@
         <button mat-raised-button color="warn" (click)="onPrint()">طباعة</button>
         <button mat-raised-button color="primary" (click)="close()" tabindex="1">الغاء</button>
     </div>
-
 </mat-dialog-actions>
