@@ -4,32 +4,20 @@ import {
   HostListener,
   OnDestroy,
   OnInit,
+  SecurityContext,
   ViewEncapsulation,
 } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute, Router } from '@angular/router';
+import * as printJS from "print-js";
+
 import { Subscription } from 'rxjs';
-import { CustomerService } from 'src/app/customers/service/customer.service';
-import { DynamicOrder } from 'src/app/sale-orders/models/dynamicOrder';
-import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
-import { OrderPaymentService } from 'src/app/sale-orders/service/order-payment.service';
-import { OrderService } from 'src/app/sale-orders/service/order.service';
 import { DataService } from 'src/app/shared/service/data.service';
-import { ProductServiceService } from 'src/app/stock/service/product-service.service';
+
+import { SaleOrderInvoceService } from '../service/sale-order-invoce.service';
 
 export interface data {
-  dynamicList: DynamicOrder[];
-  date: any;
-  discount: number;
-  total: number;
-  paid: number;
-  code: any;
-  customer: any;
-  orderTypeId: any;
-  paymentTypeId: any;
-  orderPayload: any;
-  orderPayment: any;
+  orderCode: any;
 }
 
 @Component({
@@ -39,71 +27,49 @@ export interface data {
   encapsulation: ViewEncapsulation.None
 })
 export class ReciptReportComponent
-  implements OnInit, OnDestroy, AfterViewChecked {
-  dynamicOrderList!: DynamicOrder[];
-
-  subscription!: Subscription;
-
-  sharedData!: data;
+  implements OnInit,AfterViewChecked {
+    sharedData!: data;
+    subscription!: Subscription;
+  private routeSub!: Subscription;
 
   constructor(
     private router: Router,
-    private data: DataService,
-    private orderDetailsService: OrderDetailsService,
-    private orderPaymentService: OrderPaymentService,
-    private orderService: OrderService,
+    private route: ActivatedRoute,
+    private dataServer: DataService,
+    private salOrderPayment: SaleOrderInvoceService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) {  }
 
-  ngOnDestroy(): void {
-    this.subscription.unsubscribe();
-  }
-
-  ngAfterViewChecked(): void {
-    window.print();
-  }
 
   ngOnInit(): void {
-    // this.printing();
-    this.subscription = this.data.currentMessage.subscribe((message) => {
+
+    this.subscription = this.dataServer.currentMessage.subscribe((message) => {
       this.sharedData = message;
-      this.dynamicOrderList = this.sharedData.dynamicList;
     });
-  }
-
-  @HostListener('window:afterprint')
-  onafterprint() {
-    this.orderService
-      .createOrder(
-        this.sharedData.customer,
-        this.sharedData.orderTypeId,
-        this.sharedData.paymentTypeId
-      )
-      .subscribe(
-        (data) => {
-          this.orderDetailsService
-            .createOrderDetails(
-              this.sharedData.code,
-              this.sharedData.orderPayload
-            )
-            .subscribe();
-          this.orderPaymentService
-            .createOrderPayment(
-              this.sharedData.code,
-              this.sharedData.orderPayment
-            )
-            .subscribe();
-          this.openSnackBar('تم حفظ الطلب', '');
-          // this.toSaleOrder('saleOrder');
+    
+    if (this.sharedData.orderCode) {
+      this.salOrderPayment.printSaleOrderInvoice(this.sharedData.orderCode).subscribe(
+        response => {
+          let blob: any = new Blob([response], { type: 'application/pdf; charset=utf-8' });
+          const blobUrl = URL.createObjectURL(blob);
+          printJS(blobUrl);
+          this.toSaleOrder('saleOrder');
         },
-        (error) => console.log(error)
+        error => {
+          console.log(error);
+          this.openSnackBar(error.message, "error");
+        }
       );
+    }
   }
 
-  @HostListener('window:beforeprint')
-  onBeforePrint() {
-    // this.toSaleOrder('saleOrder');
+
+  ngAfterViewChecked(): void {
+   
   }
+
+
+
 
   redirectTo(uri: string) {
     this.router
@@ -111,6 +77,7 @@ export class ReciptReportComponent
       .then(() => this.router.navigate([uri]));
   }
 
+  @HostListener('window:afterprint')
   toSaleOrder(val: any) {
     this.redirectTo(`/${val}`);
   }
@@ -120,4 +87,5 @@ export class ReciptReportComponent
       duration: 2000,
     });
   }
+
 }

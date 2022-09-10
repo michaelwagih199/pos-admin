@@ -1,4 +1,4 @@
-import { DynamicOrder } from './dynamicOrder';
+import { DynamicDetailsDao } from "./dynamic-order-request"
 
 export class OrderDetailsPayload {
     customerName:any
@@ -6,5 +6,5 @@ export class OrderDetailsPayload {
     paymentTypeId:any
     orderTypeId:any
     total:any
-    dynamicDetailsList!: DynamicOrder[]
+    dynamicDetailsList!: DynamicDetailsDao[]
 }

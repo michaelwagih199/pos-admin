@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/service/data.service';
 import { DynamicSOrderType } from 'src/app/reports/models/dynamic-sale-order-type';
 import { SaleOrderInvoceModel } from 'src/app/printing/model/saleOrderInvocesModel';
-import { SaleOrderInvoceService } from 'src/app/printing/sale-order-invoce.service';
+import { SaleOrderInvoceService } from 'src/app/printing/service/sale-order-invoce.service';
 import { SalesRoportService } from 'src/app/reports/service/sales-roport.service';
 
 
@@ -97,12 +97,18 @@ export class DynamicOrdersComponent{
 
 
   onPrinting(item: OrderPaymentModel){
+
+ 
+
     this.dialogRef.close(true);
     this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode).subscribe(response => {
       this.invoceorderPrinting = response
-      this.dataServer.changeMessage(response);
+      let dataServer = {
+        orderCode: response.data.orderCode,
+      };
+      this.dataServer.changeMessage(dataServer);
     })
-    this.redirectTo(`/printing`);
+    this.redirectTo(`/printing/sale-order-invoice`);
   }
 
   redirectTo(uri: string) {

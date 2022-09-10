@@ -17,6 +17,7 @@ import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/conf
   styleUrls: ['./retrivals.component.scss'],
 })
 export class RetrivalsComponent implements OnInit {
+  
   displayedColumns: string[] = [
     'id',
     'retrievalsCode',
@@ -37,8 +38,7 @@ export class RetrivalsComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private retrivalService: RetrivalsService,
     private retrivalDetailsService: RetrivalsDetailsService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog) {}
 
   ngOnInit(): void {
     this.retrieve();
@@ -47,7 +47,6 @@ export class RetrivalsComponent implements OnInit {
   /**
    * data
    */
-
   retrieve() {
     this.isLoading = true;
     const params = this.getRequestParams(this.page, this.pageSize);

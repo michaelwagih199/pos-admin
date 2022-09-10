@@ -54,8 +54,7 @@ const routes: Routes = [
     path: 'setting',
     loadChildren: () => import('./setting/setting.module').then(m => m.SettingModule),
   },
-
-
+   {path: '**',redirectTo: '/404'}
 ];
 
 @NgModule({

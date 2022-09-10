@@ -1,6 +1,9 @@
+
 .my-container {
-  background-color: #f5f2eb;
-  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , 
+  url(/assets/login-bg.jpeg);
+  background-size: cover;
+  height: 100vh;  
   color: #f5f2eb;
   font-family: "Almarai";
   display: flex; /* or inline-flex */
@@ -20,9 +23,9 @@ label {
 }
 
 .card {
-  background-color: #aec3c1;
   padding: 20px 25px 30px;
   margin: 0 auto 25px;
+  @apply bg-gradient-to-r from-slate-500 to-slate-700 opacity-90 ;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
@@ -47,6 +50,7 @@ label {
   border-radius: 20px;
   border: 2px solid #f5f2eb;
   font-weight: 500;
+  padding: 8px;
 }
 
 button:hover{
