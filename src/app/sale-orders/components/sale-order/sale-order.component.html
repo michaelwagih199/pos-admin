@@ -11,34 +11,34 @@
             </div>
 
             <div class="col mt-2">
-                <button mat-raised-button color="accent" class="mybtn" (click)="viewOrderToday()">فواتير اليوم</button>
+                <button mat-raised-button  class="mybtn yellow-bg" (click)="viewOrderToday()">فواتير اليوم</button>
               </div>
             
               <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white">{{arabic.util.date}}</p>
-                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{currentDate|date:'yyyy-MM-dd'}}</p>
+                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{currentDate|date:'yyyy-MM-dd'}}</p>
                 </div>
             </div>
             
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white">{{arabic.saleOrder.util.orderType}}</p>
-                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{var_arabic.orderType}}</p>
+                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{var_arabic.orderType}}</p>
                 </div>
             </div>
 
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white">{{arabic.saleOrder.util.paymentType}}</p>
-                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{var_arabic.paymentType}}</p>
+                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{var_arabic.paymentType}}</p>
                 </div>
             </div>
     
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white ">{{arabic.saleOrder.util.orderCode}}</p>
-                    <p class="text-white bg-danger rounded p-2 mr-4 block">{{saleOrderObj.orderCode}}</p>
+                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{saleOrderObj.orderCode}}</p>
                 </div>
             </div>
          
@@ -209,7 +209,7 @@
                         <div class="col mt-1">
                             <div class="row ">
                                 <p class="mt-3 text-dark ">المتبقى</p>
-                                <p class="text-white red rounded p-2 mr-3 mt-2 text-l">{{totalValue-paid}}</p>
+                                <p class="text-white yellow-bg rounded p-2 mr-3 mt-2 text-l">{{totalValue-paid}}</p>
                             </div>
                         </div>
     
@@ -227,8 +227,8 @@
                     </div>
                     <mat-divider></mat-divider>
                     <div class="row justify-content-around mt-2">
-                        <button mat-raised-button color="warn" class="mybtn" (click)="onSaveAndPrint()">حفظ وطباعة</button>
-                        <button mat-raised-button color="accent" class="mybtn" (click)="onSaveOrder()">حفظ</button>
+                        <button mat-raised-button class="mybtn yellow-bg" (click)="onSaveAndPrint()">حفظ وطباعة</button>
+                        <button mat-raised-button  class="mybtn yellow-bg" (click)="onSaveOrder()">حفظ</button>
                     </div>
                 </div>
 

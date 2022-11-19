@@ -9,8 +9,8 @@
      background-color: $color_grey;
      border-radius: 5px;
      padding-top: 5px;
-     padding-bottom:5px ;
-
+     padding-bottom:5px;
+     font-family: 'El Messiri', sans-serif;
   }
 
   .blog-card {
@@ -21,7 +21,7 @@
     margin-bottom: 1.6%;
     background: $color_white;
     line-height: 1.4;
-    font-family: sans-serif;
+    font-family: 'El Messiri', sans-serif;
     border-radius: 5px;
     overflow: hidden;
     z-index: 0;
@@ -77,20 +77,20 @@
         display: inline-block;
       }
       .author:before {
-        font-family: FontAwesome;
+        font-family: 'El Messiri', sans-serif;;
         margin-right: 10px;
         content: "\f007";
       }
   
       .date:before {
-        font-family: FontAwesome;
+        font-family: 'El Messiri', sans-serif;;
         margin-right: 10px;
         content: "\f133";
       }
   
       .tags {
         ul:before {
-          font-family: FontAwesome;
+          font-family: 'El Messiri', sans-serif;;
           content: "\f02b";
           margin-right: 10px;
         }
@@ -109,7 +109,7 @@
       z-index: 1;
       h1,
       h2 {
-        font-family: Poppins, sans-serif;
+        font-family: 'El Messiri', sans-serif;;
       }
       h1 {
         line-height: 1;
@@ -131,7 +131,7 @@
           position: relative;
           &:after {
             content: "\f061";
-            font-family: FontAwesome;
+            font-family: 'El Messiri', sans-serif;;
             margin-left: -10px;
             opacity: 0;
             vertical-align: middle;

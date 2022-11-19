@@ -51,7 +51,7 @@ export class NavBarComponent implements OnInit {
       this.DynamicNavBar.purshasing = true;
       this.DynamicNavBar.expenses = true;
       this.DynamicNavBar.reports = true;
-      // this.DynamicNavBar.setting = true;
+      this.DynamicNavBar.setting = true;
       this.DynamicNavBar.maintenance = true;
     } else {
       console.log(false);

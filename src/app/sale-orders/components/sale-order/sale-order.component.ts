@@ -29,6 +29,7 @@ import { DynamicSOrderType } from 'src/app/reports/models/dynamic-sale-order-typ
 import { OrderTypeRequest, PaymentTypeRequest } from '../../models/ordersrequest';
 import { DynamicDetailsDao, DynamicOrderByCodeRequest, DynamicOrderByNameRequest } from '../../models/dynamic-order-request';
 import { SaveOrderRequest } from '../../models/save-order-request';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -350,11 +351,15 @@ export class SaleOrderComponent implements OnInit {
         total: this.totalValue
       }
       this.saleOrderObj.flags.isLoading = true
-      this.orderService.createOrder(saveOrderRequest).subscribe(data => {
+      this.orderService.createOrder(saveOrderRequest).subscribe(() => {
         this.saleOrderObj.flags.isLoading = false
         this.openSnackBar(this.arabic.util.saved, '')
         this.reset();
-      })
+      },(err: HttpErrorResponse) =>{
+        this.saleOrderObj.flags.isLoading = false
+        this.openSnackBar(err.error.message, '')
+         this.saleOrderObj.flags.isLoading = false
+      });
     }
   }
 
@@ -395,7 +400,12 @@ export class SaleOrderComponent implements OnInit {
         this.dataServer.changeMessage(dataServer);
         this.redirectTo(`/printing/sale-order-invoice`);
 
-      })
+      },
+      (err: HttpErrorResponse) =>{
+        this.saleOrderObj.flags.isLoading = false
+        this.openSnackBar(err.error.message, '')
+         this.saleOrderObj.flags.isLoading = false
+      });
     }
 
    

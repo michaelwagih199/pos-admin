@@ -24,7 +24,8 @@
   border: 1px solid #212121;
 }
 .navy{
-  background-color:#005A8D,
+  font-family: "Cairo", sans-serif;
+  background-color:#44596E,
 }
 
 .dark {
@@ -44,7 +45,7 @@
 
 .text-xl {
   font-size: x-large;
-  font-family: Arial, Helvetica, sans-serif;
+  
 }
 .text-l {
   font-size: large;
@@ -63,14 +64,15 @@ mat-form-field {
   font-weight: bold;
 }
 
-.blue-snackbar {
-  background: #2196F3;
+.yellow-bg {
+  background: #EC994B;
 }
 
 .mybtn {
   width: 40%;
   font-size: 16px;
   font-family: "Cairo";
+  color: #f4f3f0;
 }
 
 

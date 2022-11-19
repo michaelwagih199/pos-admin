@@ -26,12 +26,14 @@ export class CreateProductComponent implements OnInit {
     private categoryService: CategoryServiceService,
     private dialogRef: MatDialogRef<CreateProductComponent>,
     @Inject(MAT_DIALOG_DATA) data: any) {
+      console.log(data);
+      
     this.product = data.productModel
   }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({
-      productCode: [null, [Validators.required]],
+      productCode: [null, ],
       productName: [null, [Validators.required]],
       purchasingPrice: [null, [Validators.required]],
       retailPrice: [null, [Validators.required]],
@@ -59,7 +61,7 @@ export class CreateProductComponent implements OnInit {
   showOptions(event: MatCheckboxChange): void {
     console.log(event.checked);
     if (event.checked) {
-      // this.codeDisabled = false
+      this.codeDisabled = false
       this.product.productCode = 'automatic'
     }
     else {
