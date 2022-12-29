@@ -24,8 +24,8 @@ export class AuthService {
     }, httpOptions);
   }
 
-  register(user:any): Observable<any> {
-    return this.http.post(this.baseUrl + '/signup', {
+  register(user:any,selectedRolesValue:number): Observable<any> {
+    return this.http.post(this.baseUrl + `/signup?roleId=${selectedRolesValue}`, {
       username: user.username,
       email: user.email,
       password: user.password
