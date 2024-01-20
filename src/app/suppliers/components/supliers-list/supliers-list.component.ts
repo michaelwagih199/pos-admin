@@ -25,7 +25,7 @@ export class SupliersListComponent implements OnInit {
   isLoading: boolean = false
 
   //for tables
-  displayedColumns: string[] = ['id', 'supplierName', 'supplierPhone', 'supplierCompany','supplierAddress','notes', 'actions']
+  displayedColumns: string[] = ['id', 'supplierName', 'supplierPhone', 'supplierCompany', 'supplierAddress', 'notes', 'actions']
   myControl = new FormControl();
   //for autocomplete
   options!: string[]
@@ -131,6 +131,7 @@ export class SupliersListComponent implements OnInit {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
+    this.supplier = new Supplier()
     dialogConfig.data = {
       model: this.supplier,
     }
@@ -139,14 +140,15 @@ export class SupliersListComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateSuppliersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {
-        console.log(data)
         this.supliersService.create(data.model).subscribe(data => {
           this.openSnackBar(`${this.arabic.util.saved}`, '')
           this.refresh();
+          dialogRef.close();
         }, error => console.log(data))
-
+      
       }
     );
+
   }
 
   editeDialog(obj: any) {
@@ -176,7 +178,7 @@ export class SupliersListComponent implements OnInit {
     })
   }
 
-  onSuppliersDetails(id:number) {
+  onSuppliersDetails(id: number) {
     this.router.navigate([`suppliers/supplierDetails/${id}`])
   }
 
