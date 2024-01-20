@@ -17,7 +17,7 @@ import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/conf
 })
 
 export class ProductCategoryComponent implements OnInit {
-  
+
   arabic: Arabic = new Arabic()
   categoryList!: CategoryModel[];
   category: CategoryModel = new CategoryModel()
@@ -143,8 +143,8 @@ export class ProductCategoryComponent implements OnInit {
       }
     );
   }
-  
-  
+
+
   editeCategory(id:number) {
     this.categoryService.update(id,this.category).subscribe(data => {
       this.openSnackBar(`${this.arabic.stock.category.util.dialog.notification.saved}`, '')
@@ -165,11 +165,10 @@ export class ProductCategoryComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {
-        console.log(data)
         this.category.categoryName = data.description
         this.addCategory()
         this.getAllNames()
-        
+        this.dialog.closeAll();
       }
     );
   }
@@ -198,9 +197,9 @@ export class ProductCategoryComponent implements OnInit {
   }
 
 
- 
+
   /**
-   * ui ux 
+   * ui ux
    */
 
   openSnackBar(message: string, action: string) {

@@ -1,0 +1,62 @@
+<h2 mat-dialog-title>اضافة عميل</h2>
+<mat-divider></mat-divider>
+
+<mat-dialog-content>
+    <form nz-form [formGroup]="validateForm">
+        <div>
+            <div class="row justify-content-between mt-2">
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>اسم المتسخدم</mat-label>
+                        <input matInput required placeholder="اسم المستخدم" formControlName="username"
+                            [(ngModel)]="user.username" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>الايميل</mat-label>
+                        <input type="tel" matInput required  placeholder="pat@example.com"  formControlName="email"
+                            [(ngModel)]="user.email" autocomplete="off">
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+            <div class="row">
+            
+
+                <div class="col">
+                    <mat-form-field appearance="fill">
+                        <mat-label>كلمة المررور</mat-label>
+                        <input matInput [type]="hide ? 'password' : 'text'" required placeholder="كلمة المرور"
+                            formControlName="password" [(ngModel)]="user.password" autocomplete="off">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                    </mat-form-field>
+
+                </div>
+
+                <div class="col">
+                    <mat-form-field appearance="fill" >
+                        <mat-label>الصلاحية</mat-label>
+                        <select matNativeControl required [(ngModel)]="selectedRoles"  formControlName="userRole" >
+                          <option value="1">ADMIN</option>
+                          <option value="2">SALES_ADMIN</option>
+                        </select>
+                      </mat-form-field>
+                </div>
+
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-divider></mat-divider>
+<mat-dialog-actions align="center">
+    <button mat-raised-button (click)="save()"
+        [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
+    <button mat-raised-button color="primary" (click)="close()"
+        tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
+</mat-dialog-actions>

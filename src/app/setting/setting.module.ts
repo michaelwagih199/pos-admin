@@ -8,10 +8,11 @@ import { UsersComponent } from './components/users/users.component';
 import { UserListComponent } from './components/userComponnents/user-list/user-list.component';
 import { UserLogComponent } from './components/userComponnents/user-log/user-log.component';
 import { RolesAndpermissionComponent } from './components/userComponnents/roles-andpermission/roles-andpermission.component';
+import { AddUserDialogComponent } from './dialogs/add-user-dialog/add-user-dialog.component';
 
 
 @NgModule({
-  declarations: [SettingComponent, UsersComponent, UserListComponent, UserLogComponent, RolesAndpermissionComponent],
+  declarations: [SettingComponent, UsersComponent, UserListComponent, UserLogComponent, RolesAndpermissionComponent, AddUserDialogComponent],
   imports: [
     CommonModule,
     SharedModule,

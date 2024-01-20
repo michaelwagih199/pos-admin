@@ -44,7 +44,7 @@ export class NavBarComponent implements OnInit {
   ngOnInit() {
     let userPermission = sessionStorage.getItem('auth-permission');
     this.userName = sessionStorage.getItem('userName')?.toString();
-    if (userPermission?.includes('fullPermission')) {
+    if (userPermission?.includes('FULL_PERMISSION')) {
       this.DynamicNavBar.expenses = true;
       this.DynamicNavBar.stock = true;
       this.DynamicNavBar.suppliers = true;
