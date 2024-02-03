@@ -12,6 +12,7 @@ import { NgZorroModule } from './components/ng-zorro/ng-zorro.module';
 import { NgbCarouselModule, NgbCollapseConfig } from '@ng-bootstrap/ng-bootstrap';
 import { NotificationsComponent } from './components/layout/dialog/notifications/notifications.component';
 import { NotFoundComponent } from './components/layout/not-found/not-found.component';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 
 @NgModule({
@@ -28,7 +29,7 @@ import { NotFoundComponent } from './components/layout/not-found/not-found.compo
     NgZorroModule,
     NgbCarouselModule
    ],
-  exports: [   
+  exports: [
     CommonModule,
     ReactiveFormsModule,
     RouterModule,
@@ -39,7 +40,6 @@ import { NotFoundComponent } from './components/layout/not-found/not-found.compo
     NgZorroModule,
     NgbCarouselModule,
     NotificationsComponent
-
-  ]
+  ],
 })
 export class SharedModule { }

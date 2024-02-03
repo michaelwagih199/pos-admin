@@ -23,9 +23,9 @@ export class HomeComponent implements OnInit {
     this.config.pauseOnHover = false;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
   images: ImagesModel[] = [
-    { src: 'assets/home4.jpg', header: 'Polimigos Eco Systems', discription: '' },
+    { src: 'assets/home4.jpg', header: 'Omelnour Eco Systems', discription: '' },
     { src: 'assets/home2.jpg', header: 'Together We Can', discription: '' },
     { src: 'assets/home.jpg', header: 'Do your Work Quietly', discription: '' },
     { src: 'assets/home5.jpg', header: 'Never Stop Dreaming', discription: '' },

@@ -5,12 +5,12 @@
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2">اسم العميل</p>
-                    <p class="text-white bg-dark rounded p-2 mr-4 block">{{customer?.customerName}}</p>
+                    <p class="text-white bg-blue_primary-dark rounded p-2 mr-4 block">{{customer?.customerName}}</p>
                 </div>
             </div>
-           
+
             <div class="ml-3 mt-2">
-                <button mat-icon-button color="warn" (click)="back()">
+                <button mat-icon-button color="accent" (click)="back()">
                     <mat-icon>arrow_circle_up
                     </mat-icon>
                 </button>
@@ -22,7 +22,7 @@
             <mat-tab label="الدفعات">
                 <app-payments></app-payments>
             </mat-tab>
-            
+
         </mat-tab-group>
     </mat-card-content>
 </mat-card>

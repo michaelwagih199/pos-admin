@@ -140,12 +140,14 @@ export class SupliersListComponent implements OnInit {
     const dialogRef = this.dialog.open(CreateSuppliersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {
-        this.supliersService.create(data.model).subscribe(data => {
-          this.openSnackBar(`${this.arabic.util.saved}`, '')
-          this.refresh();
-          dialogRef.close();
-        }, error => console.log(data))
-      
+        if (data) {
+          this.supliersService.create(data.model).subscribe(data => {
+            this.openSnackBar(`${this.arabic.util.saved}`, '')
+            this.refresh();
+            this.dialog.closeAll();
+          }, error => console.log(data))
+        }
+        this.dialog.closeAll();
       }
     );
 
@@ -165,7 +167,7 @@ export class SupliersListComponent implements OnInit {
         console.log(data)
         this.supliersService.update(obj.id, data.model).subscribe(data => {
           this.openSnackBar(`${this.arabic.util.saved}`, '')
-          this.refresh();
+          this.dialog.closeAll();
         }, error => console.log(data))
       }
     );
@@ -200,7 +202,7 @@ export class SupliersListComponent implements OnInit {
 
 
   /**
-   * ui ux 
+   * ui ux
    */
 
   openSnackBar(message: string, action: string) {

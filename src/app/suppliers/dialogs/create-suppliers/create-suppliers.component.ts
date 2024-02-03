@@ -10,8 +10,8 @@ import { Supplier } from '../../models/supplier';
   templateUrl: './create-suppliers.component.html',
   styleUrls: ['./create-suppliers.component.scss']
 })
-export class CreateSuppliersComponent implements OnInit { 
-  
+export class CreateSuppliersComponent implements OnInit {
+
   arabic: Arabic = new Arabic()
   supplier: Supplier = new Supplier()
   validateForm!: FormGroup;
@@ -35,7 +35,7 @@ export class CreateSuppliersComponent implements OnInit {
   }
 
   close() {
-    this.dialogRef.close();
+    this.dialogRef.close()
   }
 
   validateform() {

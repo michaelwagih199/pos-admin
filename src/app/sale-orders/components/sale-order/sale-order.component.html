@@ -3,7 +3,7 @@
     <div class="myContainer">
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="this.saleOrderObj.flags.isLoading" value="20"></mat-progress-bar>
         <div class="row text-center rounded navy">
-            
+
             <div class="col-1 mt-2">
                 <button mat-icon-button class="fab-right" color="accent" (click)="refresh()">
                     <mat-icon>replay</mat-icon>
@@ -13,14 +13,14 @@
             <div class="col mt-2">
                 <button mat-raised-button  class="mybtn yellow-bg" (click)="viewOrderToday()">فواتير اليوم</button>
               </div>
-            
+
               <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white">{{arabic.util.date}}</p>
                     <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{currentDate|date:'yyyy-MM-dd'}}</p>
                 </div>
             </div>
-            
+
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white">{{arabic.saleOrder.util.orderType}}</p>
@@ -34,19 +34,19 @@
                     <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{var_arabic.paymentType}}</p>
                 </div>
             </div>
-    
+
             <div class="col mt-2">
                 <div class="row justify-content-center">
                     <p class="mt-2 text-white ">{{arabic.saleOrder.util.orderCode}}</p>
                     <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{saleOrderObj.orderCode}}</p>
                 </div>
             </div>
-         
+
         </div>
-        
+
         <!--end header container-->
         <div class="row rounded">
-            
+
             <!--center dive-->
             <div class="col-8 bg-light">
                 <form [formGroup]="producForm">
@@ -78,8 +78,8 @@
                                     </mat-autocomplete>
                                 </mat-form-field>
                             </form>
-                            
-                            <!-- 
+
+                            <!--
                             <mat-form-field class="example-full-width" appearance="outline">
                                 <mat-label>{{arabic.stock.products.util.searchBar}}</mat-label>
                                 <input type="text" placeholder={{arabic.stock.products.util.searchBar}} matInput
@@ -150,7 +150,7 @@
                     </div>
                 </div>
                 <mat-divider></mat-divider>
-    
+
                 <div class="row justify-content-around text-s mt-1 ">
                     <mat-form-field appearance="outline" *ngIf="this.saleOrderObj.flags.IsorderType">
                         <mat-label>{{arabic.saleOrder.util.orderType}}</mat-label>
@@ -161,7 +161,7 @@
 
                         </select>
                     </mat-form-field>
-    
+
                     <mat-form-field  appearance="outline" *ngIf="this.saleOrderObj.flags.IspaymentType">
                         <mat-label>{{arabic.saleOrder.util.paymentType}}</mat-label>
                         <select matNativeControl required [(ngModel)]="saleOrderObj.paymentType"
@@ -170,7 +170,7 @@
                                 {{item.key}}</option>
                         </select>
                     </mat-form-field>
-    
+
                     <mat-form-field appearance="outline" *ngIf="this.saleOrderObj.flags.isInstallment">
                         <mat-label>{{arabic.saleOrder.util.paymentTypeSelection.installmentValue}}</mat-label>
                         <input matInput type="number" required
@@ -178,7 +178,7 @@
                             [(ngModel)]="installmentValue" autocomplete="off">
                     </mat-form-field>
                 </div>
-    
+
                 <div class="navy rounded pb-2">
                     <!--final left div-->
                     <div class="row text-center m-1">
@@ -189,7 +189,7 @@
                             <p class="text-dark bg-light rounded p-2 text-xl">{{totalValue}}</p>
                         </div>
                     </div>
-    
+
                     <div class="row text-center justify-content-center m-1 sand text14 ">
                         <div class=" mt-1">
                             <mat-form-field appearance="outline">
@@ -198,7 +198,7 @@
                                     autocomplete="off">
                             </mat-form-field>
                         </div>
-    
+
                         <div class="col">
                             <mat-form-field appearance="outline" *ngIf="this.saleOrderObj.flags.canCustomer">
                                 <mat-label>المدفوع</mat-label>
@@ -212,7 +212,7 @@
                                 <p class="text-white yellow-bg rounded p-2 mr-3 mt-2 text-l">{{totalValue-paid}}</p>
                             </div>
                         </div>
-    
+
                     </div>
                     <div class="">
                         <div class="row text-center ">
@@ -234,12 +234,12 @@
 
             </div>
             <!--end left-->
-    
+
         </div>
-    
-    
+
+
     </div>
-    
+
     <div>
         <ng-template #updateQuantity let-modal>
             <div class="modal-header">
@@ -248,7 +248,7 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-    
+
             <div class="modal-body">
                 <form nz-form [formGroup]="quantityValidateForm">
                     <mat-form-field class="full-width">
@@ -263,5 +263,5 @@
             </div>
         </ng-template>
     </div>
-    
+
 </div>

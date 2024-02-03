@@ -1,24 +1,19 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { ExpensessModel } from 'src/app/expenses/models/expensess-model';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
-  FormGroup,
   FormBuilder,
-  Validators,
   FormControl,
+  FormGroup,
+  Validators,
 } from '@angular/forms';
-import { CategoryModel } from 'src/app/stock/model/categoryModel';
-import { Arabic } from 'src/app/text';
-import { ExpensesCategoryService } from 'src/app/expenses/service/expenses-category.service';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductModel } from 'src/app/stock/model/productModel';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
-import { PurchasesBillsService } from '../../service/purchases-bills.service';
-import { PurchasesBillsDetails } from '../../model/purchases-deteails';
-import { SupliersService } from 'src/app/suppliers/service/supliers.service';
 import { Supplier } from 'src/app/suppliers/models/supplier';
+import { SupliersService } from 'src/app/suppliers/service/supliers.service';
+import { Arabic } from 'src/app/text';
 import { PurchasesBills } from '../../model/purchases-bills';
+import { PurchasesBillsDetails } from '../../model/purchases-deteails';
+import { PurchasesBillsService } from '../../service/purchases-bills.service';
 
 @Component({
   selector: 'app-create-purchases',

@@ -1,16 +1,30 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { PurchasesBills } from '../../model/purchases-bills';
-import { PurchasesBillsService } from '../../service/purchases-bills.service';
+import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 import { Supplier } from 'src/app/suppliers/models/supplier';
 import { SupliersService } from 'src/app/suppliers/service/supliers.service';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { CreatePurchasesComponent } from '../../dialog/create-purchases/create-purchases.component';
-import { PurchasingBillsDetailsService } from '../../service/purchasing-bills-details.service';
-import { PurchasesBillsDetails } from '../../model/purchases-deteails';
-import { PurchasesBillsDetailsComponent } from '../../dialog/purchases-bills-details/purchases-bills-details.component';
-import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 import { Arabic } from 'src/app/text';
+import { CreatePurchasesComponent } from '../../dialog/create-purchases/create-purchases.component';
+import { PurchasesBillsDetailsComponent } from '../../dialog/purchases-bills-details/purchases-bills-details.component';
+import { PurchasesBills } from '../../model/purchases-bills';
+import { PurchasesBillsDetails } from '../../model/purchases-deteails';
+import { PurchasesBillsService } from '../../service/purchases-bills.service';
+import { PurchasingBillsDetailsService } from '../../service/purchasing-bills-details.service';
+import * as moment from 'moment';
+
+export interface PurchaseModel {
+  billsDate: string|null
+  paid: number
+  supplierId: number
+  purchasesBillDetails: PurchasesBillDetail[]
+}
+
+export interface PurchasesBillDetail {
+  itemQuantity: number
+  itemPrice: number
+  productId: number
+}
 
 @Component({
   selector: 'app-purchases-bills',
@@ -37,14 +51,14 @@ export class PurchasesBillsComponent implements OnInit {
   dynamic!: PurchasesBillsDetails[];
   arabic: Arabic = new Arabic()
 
-  
+
   constructor(
     private _snackBar: MatSnackBar,
     private purchasesBillsService: PurchasesBillsService,
     private purchasingBillsDetailsService: PurchasingBillsDetailsService,
     private supliersService: SupliersService,
-    private dialog: MatDialog
-  ) {}
+    private dialog: MatDialog,
+  ) { }
 
   ngOnInit(): void {
     this.retrieve();
@@ -83,7 +97,7 @@ export class PurchasesBillsComponent implements OnInit {
   /**
    * evants
    */
-  editeDialog(obj: any) {}
+  editeDialog(obj: any) { }
 
   deleteDialog(obj: PurchasesBills) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
@@ -143,25 +157,33 @@ export class PurchasesBillsComponent implements OnInit {
     this.dialog.open(CreatePurchasesComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreatePurchasesComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
+      console.log(data);
       this.dynamic = data.dynamicOrderList;
-
-      this.purchasesBillsService.create(data.model, data.supplier.id).subscribe(
+      let purchasesBillDetailList: PurchasesBillDetail[] = []
+      this.dynamic.forEach(product => {
+        purchasesBillDetailList.push(
+          {
+            itemPrice: product.itemPrice,
+            itemQuantity: product.itemQuantity,
+            productId: product.product.id
+          }
+        )
+      })
+      let purchasesBillsNew: PurchaseModel = {
+        billsDate: moment(data.model.billsDate).format('yyyy-MM-dd HH:mm:ss'),
+        paid: data.model.paid,
+        purchasesBillDetails: purchasesBillDetailList,
+        supplierId: data.supplier.id
+      };
+      this.purchasesBillsService.create(purchasesBillsNew).subscribe(
         (post) => {
-          this.dynamic.forEach((element) => {
-            let obj: PurchasesBillsDetails = new PurchasesBillsDetails();
-            obj.itemPrice = element.itemPrice;
-            obj.itemQuantity = element.itemQuantity;
-            obj.total = element.total;
-            this.purchasingBillsDetailsService
-              .create(obj, post.billCodeCode, element.product.productCode)
-              .subscribe(() => {
-                this.openSnackBar('تم الحفظ', '');
-              });
-          });
+          console.log(post);
+          this.openSnackBar('تم الحفظ', '');
           this.retrieve();
         },
         (error) => {
-          console.log(error);
+          this.openSnackBar(error.error.message, '');
+          this.dialog.closeAll();
         }
       );
     });
@@ -196,4 +218,6 @@ export class PurchasesBillsComponent implements OnInit {
     }
     return params;
   }
+
+
 }
