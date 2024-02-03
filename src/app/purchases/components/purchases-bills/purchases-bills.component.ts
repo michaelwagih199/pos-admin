@@ -170,7 +170,7 @@ export class PurchasesBillsComponent implements OnInit {
         )
       })
       let purchasesBillsNew: PurchaseModel = {
-        billsDate: moment(data.model.billsDate).format('yyyy-MM-dd HH:mm:ss'),
+        billsDate: moment(data.model.billsDate).format(),
         paid: data.model.paid,
         purchasesBillDetails: purchasesBillDetailList,
         supplierId: data.supplier.id

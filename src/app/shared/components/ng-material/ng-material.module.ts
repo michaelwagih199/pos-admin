@@ -76,17 +76,6 @@ const materialModules = [
 
 ];
 
-export const MY_DATE_FORMATS = {
-  parse: {
-    dateInput: 'DD-MM-YYYY',
-  },
-  display: {
-    dateInput: 'MMM DD, YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY'
-  },
-};
 
 @NgModule({
   imports: [
@@ -97,7 +86,7 @@ export const MY_DATE_FORMATS = {
     ...materialModules
   ],
   providers: [
-    { provide: MAT_DATE_FORMATS, useValue: MY_DATE_FORMATS }
+
   ],
 })
 export class NgMaterialModule { }
