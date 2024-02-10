@@ -37,6 +37,7 @@ export class ProductsComponent implements OnInit {
     'alertUnits',
     'productCategory',
     'wholesalePrice',
+    'expirationDate',
     'actions',
   ];
   myControl = new FormControl();
@@ -141,7 +142,7 @@ export class ProductsComponent implements OnInit {
 
   onBarcode(element: any) {
     console.log(element);
-    
+
     // this.isLoading = true;
     const dialogRef = this.dialog.open(BarcodeComponent, {
       data: {
@@ -252,7 +253,7 @@ export class ProductsComponent implements OnInit {
             this.openSnackBar(`${this.arabic.error['Product Saved In System']}`, '');
            this.dialog.closeAll();
           }
-        } 
+        }
       );
     });
   }

@@ -1,13 +1,13 @@
-$bg_dark_color: #000f27;
+$bg_dark_color: #44596E;
 $green_color: #008d60;
 $redItems: #ff0036;
-$timperItems: #ff741a;
+$accent: #EC994B;
 $ofWhite: #e5e5e5;
 $font_header_size: 20px;
 
 * {
   font-family: "Cairo", sans-serif;
-  
+
 }
 
 .mat-card-header {
@@ -20,7 +20,7 @@ $font_header_size: 20px;
 
 .mat-card {
   background: #f4f3f0;
-  
+
 }
 
 .mat-raised-button {
@@ -30,7 +30,7 @@ $font_header_size: 20px;
 
 .customClass-1 {
   background-color: white;
-  border-left: 8px solid #2b81ff;
+  border-left: 8px solid $bg_dark_color;
   height: 60px;
   border-radius: 5px;
   box-shadow: 2px 2px 3px grey;
@@ -38,7 +38,7 @@ $font_header_size: 20px;
   font-size: $font_header_size;
 
   &:hover {
-    border-left: 8px solid $redItems;
+    border-left: 8px solid $accent;
     text-decoration: none;
   }
   .customTest {
@@ -69,11 +69,11 @@ $font_header_size: 20px;
     font-size: 24px;
     text-decoration: none;
     &:hover{
-      animation: swing; 
-      animation-duration: 1s; 
+      animation: swing;
+      animation-duration: 1s;
     }
   }
-  
+
 }
 
 .nz-table{

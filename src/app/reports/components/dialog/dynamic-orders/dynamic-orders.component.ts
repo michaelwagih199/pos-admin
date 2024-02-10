@@ -60,7 +60,7 @@ export class DynamicOrdersComponent{
         break;
     }
   }
-  
+
   getCustomerReport(customerId:any) {
     this.saleReport
       .getByCusromerId(customerId)
@@ -97,9 +97,6 @@ export class DynamicOrdersComponent{
 
 
   onPrinting(item: OrderPaymentModel){
-
- 
-
     this.dialogRef.close(true);
     this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode).subscribe(response => {
       this.invoceorderPrinting = response

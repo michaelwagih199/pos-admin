@@ -75,6 +75,7 @@ export class Arabic {
                 purchasingPrice: "سعر الشراء",
                 numberUnitsInStock: "عدد القطع",
                 alertUnits: "الحد الادنى",
+                expirationDate: "انتهاء الصلاحة",
                 productCategory: "التصنيف",
                 wholesalePrice: "سعر الجملة",
                 productCode: "كود الصنف",
