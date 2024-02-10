@@ -7,6 +7,7 @@ import { Arabic } from 'src/app/text';
 import { AboutAppDialogComponent } from '../dialog/about-app-dialog/about-app-dialog.component';
 import { MaintanenceService } from '../../../../maintainence/services/maintanence.service';
 import { NotificationsComponent } from '../dialog/notifications/notifications.component';
+import { NotificationService } from '../dialog/notifications/services/notification.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -39,6 +40,7 @@ export class NavBarComponent implements OnInit {
     private router: Router,
     private takenServive: TokenStorageService,
     private maintanenceService: MaintanenceService,
+    private notificationService: NotificationService
   ) { }
 
   ngOnInit() {
@@ -97,9 +99,17 @@ export class NavBarComponent implements OnInit {
   }
 
   getNotification() {
-    this.maintanenceService.isHaveMaintenance().subscribe(data => {
-      this.isNotification = data.data;
-    });
+    // this.maintanenceService.isHaveMaintenance().subscribe(data => {
+    //   this.isNotification = data.data;
+    // });
+    this.notificationService.getExpiredProduct().subscribe(response => {
+      console.log('notifi',response.data);
+
+      if (response.data.length > 0)
+        this.isNotification = true;
+      else
+        this.isNotification = false;
+    })
   }
 
   toNotification() {
