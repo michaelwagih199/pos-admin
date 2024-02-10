@@ -10,5 +10,6 @@ export class ProductModel {
     alertUnits!: number
     productCategory!: CategoryModel
     createdDate!: string
+    expirationDate!: string
     wholesalePrice!: number
   }

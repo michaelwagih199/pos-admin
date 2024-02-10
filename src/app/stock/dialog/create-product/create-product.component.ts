@@ -27,7 +27,7 @@ export class CreateProductComponent implements OnInit {
     private dialogRef: MatDialogRef<CreateProductComponent>,
     @Inject(MAT_DIALOG_DATA) data: any) {
       console.log(data);
-      
+
     this.product = data.productModel
   }
 
@@ -41,6 +41,7 @@ export class CreateProductComponent implements OnInit {
       numberUnitsInStock: [null, [Validators.required]],
       alertUnits: [null, [Validators.required]],
       productCategory: [null, [Validators.required]],
+      cExpirationDate: [null, [Validators.required]],
     });
     this.retrieveCategory()
   }
@@ -49,7 +50,7 @@ export class CreateProductComponent implements OnInit {
    let data ={
       productModel:this.product,
       categoryId:this.checkValue
-    } 
+    }
     this.dialogRef.close(data);
   }
 

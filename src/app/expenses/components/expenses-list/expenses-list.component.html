@@ -49,7 +49,7 @@
                     <td mat-cell *matCellDef="let element">{{ element.id }}</td>
                 </ng-container>
 
-                
+
                 <ng-container matColumnDef="createdDate">
                     <th mat-header-cell *matHeaderCellDef>التاريخ</th>
                     <td mat-cell *matCellDef="let element">{{ element.createdDate|date: 'yyyy-MM-dd'}}</td>
@@ -98,11 +98,11 @@
         </mat-card-content>
         <mat-card-footer>
             <div class="container-fluid text-footer">
-                <div class="row justify-content-around bg-dark rounded m-3">
+                <div class="row justify-content-around bg-blue_primary-dark rounded m-3">
                     <div class="col mt-2">
                         <div class="row justify-content-center">
                             <p class="mt-2 text-white">الاجمالى</p>
-                            <p class="text-white bg-danger rounded p-2 mr-4 block">{{total}}</p>
+                            <p class="text-white bg-accent rounded p-2 mr-4 block">{{total}}</p>
                         </div>
                     </div>
                 </div>
