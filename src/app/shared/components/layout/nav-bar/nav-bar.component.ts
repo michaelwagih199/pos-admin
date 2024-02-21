@@ -103,7 +103,6 @@ export class NavBarComponent implements OnInit {
     //   this.isNotification = data.data;
     // });
     this.notificationService.getExpiredProduct().subscribe(response => {
-      console.log('notifi',response.data);
 
       if (response.data.length > 0)
         this.isNotification = true;

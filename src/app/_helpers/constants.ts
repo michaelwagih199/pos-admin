@@ -13,6 +13,7 @@ export class AppConstants {
         ["Cant find Product", this.arabic.saleOrder.util.dynamicOrderMessage.CANT_FIND_PRODUCT],
         ["Quantity Not Enough In Stock", this.arabic.saleOrder.util.dynamicOrderMessage.QUANTITY_NOT_ENOUGH_IN_STOCK],
         ["Quantity in stock wil be alert quantity", this.arabic.saleOrder.util.dynamicOrderMessage.ALERT_QUANTITY],
+        ["Product is Expired", this.arabic.saleOrder.util.dynamicOrderMessage.EXPIRED_PRODUCT],
         ["WHOLESALE", this.arabic.saleOrder.util.orderTypeSelection.wholesale],
         ["RETAIL", this.arabic.saleOrder.util.orderTypeSelection.retailseal],
         ["CASH", this.arabic.saleOrder.util.paymentTypeSelection.cash],

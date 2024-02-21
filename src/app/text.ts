@@ -120,6 +120,7 @@ export class Arabic {
                 CANT_FIND_PRODUCT: "المنتج غير موجود",
                 QUANTITY_NOT_ENOUGH_IN_STOCK: "الكمية فى المخزن لا تكفى",
                 ALERT_QUANTITY: "الكمية فى المخزن ستقل الى الاحد الادنى ",
+                EXPIRED_PRODUCT: "المنتج منهى الصلاحية",
             }
         },
         table: {

@@ -64,7 +64,7 @@ import { NotificationService } from './services/notification.service';
 
     <mat-tab label="المنتجات منتهيه الصلاحية">
         <div class="mt-2" style="text-align: center;">
-            <h2 class="border rounded bg-light text-blue_primary-dark">منتجات منتهيه الصلاحية</h2>
+            <h2 class="border rounded bg-light text-blue_primary-dark"> منتجات منتهيه الصلاحية لا يصلح بيعها</h2>
             <!--table-->
             <table class="table table-bordered table-sm">
                 <thead class="thead-light">
