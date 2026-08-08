@@ -31,13 +31,11 @@ export class ProductsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'productName',
-    'retailPrice',
-    'purchasingPrice',
-    'numberUnitsInStock',
-    'alertUnits',
     'productCategory',
+    'measurementUnit',
+    'unitNumber',
     'wholesalePrice',
-    'expirationDate',
+    'alertUnits',
     'actions',
   ];
   myControl = new FormControl();
@@ -50,7 +48,7 @@ export class ProductsComponent implements OnInit {
     private productService: ProductServiceService,
     private dialog: MatDialog,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.getProductNames();
@@ -248,10 +246,10 @@ export class ProductsComponent implements OnInit {
           this.refresh();
           this.dialog.closeAll();
         },
-        (error) =>{
+        (error) => {
           if (error.error.message === 'Product Saved In System') {
             this.openSnackBar(`${this.arabic.error['Product Saved In System']}`, '');
-           this.dialog.closeAll();
+            this.dialog.closeAll();
           }
         }
       );

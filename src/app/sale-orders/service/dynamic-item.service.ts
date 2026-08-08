@@ -16,11 +16,11 @@ export class DynamicItemService {
   constructor(private http: HttpClient) { }
 
   findDynamicProductByCode(request: DynamicOrderByCodeRequest){
-      return this.http.put<POS_Response<DynamicOrderResponse>>(`${this.baseUrl}/product/code`, request)
+      return this.http.post<POS_Response<DynamicOrderResponse>>(`${this.baseUrl}/product`, request)
   }
 
   findDynamicByName(request:DynamicOrderByNameRequest){
-      return this.http.put<POS_Response<DynamicOrderResponse>>(`${this.baseUrl}/product/name`, request)
+      return this.http.post<POS_Response<DynamicOrderResponse>>(`${this.baseUrl}/product`, request)
   }
 
 }

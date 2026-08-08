@@ -1,267 +1,249 @@
-<div class="doNotPrint">
+<!-- sale-order.component.html -->
+<div class="doNotPrint sale-order-fullscreen">
+  <!-- Loading indicator -->
+  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="saleOrderObj.flags.isLoading" value="20">
+  </mat-progress-bar>
 
-    <div class="myContainer">
-        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="this.saleOrderObj.flags.isLoading" value="20"></mat-progress-bar>
-        <div class="row text-center rounded navy">
+  <!-- ============================================ -->
+  <!-- HEADER PANEL                                 -->
+  <!-- ============================================ -->
+  <div class="dashboard-panel header-panel mb-3">
+    <div class="row align-items-center gy-2">
+      <div class="col-md-2 col-6 d-flex align-items-center gap-2">
+        <button mat-icon-button class="text-navy" (click)="refresh()" aria-label="تحديث">
+          <mat-icon>replay</mat-icon>
+        </button>
+        <button mat-raised-button class="btn-accent" (click)="viewOrderToday()">
+          فواتير اليوم
+        </button>
+      </div>
+      <div class="col-md-3 col-6 text-center">
+        <span class="label text-muted d-block text-s">{{ arabic.util.date }}</span>
+        <span class="value fw-bold text14">{{ currentDate | date:'yyyy-MM-dd' }}</span>
+      </div>
+      <div class="col-md-3 col-6 text-center">
+        <span class="label text-muted d-block text-s">{{ arabic.saleOrder.util.paymentType }}</span>
+        <span class="value fw-bold text14">{{ var_arabic.paymentType || '—' }}</span>
+      </div>
+      <div class="col-md-4 col-6 text-center">
+        <span class="label text-muted d-block text-s">{{ arabic.saleOrder.util.orderCode }}</span>
+        <span class="value fw-bold highlight-text text-l">{{ saleOrderObj.orderCode }}</span>
+      </div>
+    </div>
+  </div>
 
-            <div class="col-1 mt-2">
-                <button mat-icon-button class="fab-right" color="accent" (click)="refresh()">
-                    <mat-icon>replay</mat-icon>
-                </button>
+  <!-- ============================================ -->
+  <!-- MAIN CONTENT ROW                             -->
+  <!-- ============================================ -->
+  <div class="row g-3">
+
+    <!-- ========================================== -->
+    <!-- LEFT COLUMN – Products                     -->
+    <!-- ========================================== -->
+    <div class="col-lg-8 col-md-7">
+      <div class="dashboard-panel">
+
+        <!-- Search & Quantity Form -->
+        <form [formGroup]="producForm">
+          <div class="row g-2 align-items-end mb-3">
+            <div class="col-3 col-sm-2">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>الكمية (م/كجم)</mat-label>
+                <input matInput type="number" formControlName="quantityControl"
+                  (keyup.enter)="onProductEnter(productControl.value ?? '')" step="0.01" min="0.01">
+              </mat-form-field>
             </div>
 
-            <div class="col mt-2">
-                <button mat-raised-button  class="mybtn yellow-bg" (click)="viewOrderToday()">فواتير اليوم</button>
-              </div>
-
-              <div class="col mt-2">
-                <div class="row justify-content-center">
-                    <p class="mt-2 text-white">{{arabic.util.date}}</p>
-                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{currentDate|date:'yyyy-MM-dd'}}</p>
-                </div>
+            <div class="col-6 col-sm-7">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ arabic.stock.products.util.searchBar }}</mat-label>
+                <input matInput type="text" [formControl]="productControl" [matAutocomplete]="productAuto"
+                  (keyup.enter)="onProductEnter(productControl.value ?? '')"
+                    (focus)="clearProductSearch()">
+                <mat-icon matSuffix class="text-accent">search</mat-icon>
+                <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
+                  <mat-option *ngFor="let option of productFilteredOptions | async" [value]="option"
+                    (onSelectionChange)="OnProductSelected(option)">
+                    {{ option }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
             </div>
 
-            <div class="col mt-2">
-                <div class="row justify-content-center">
-                    <p class="mt-2 text-white">{{arabic.saleOrder.util.orderType}}</p>
-                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{var_arabic.orderType}}</p>
-                </div>
+            <div class="col-3 col-sm-3">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>{{ arabic.util.searchfilter }}</mat-label>
+                <select matNativeControl formControlName="productFilter" (change)="onSearchFilterChange($event)">
+                  <option value="name">{{ arabic.util.byName }}</option>
+                  <option value="code">{{ arabic.util.byCode }}</option>
+                </select>
+              </mat-form-field>
             </div>
+          </div>
+        </form>
 
-            <div class="col mt-2">
-                <div class="row justify-content-center">
-                    <p class="mt-2 text-white">{{arabic.saleOrder.util.paymentType}}</p>
-                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{var_arabic.paymentType}}</p>
-                </div>
-            </div>
-
-            <div class="col mt-2">
-                <div class="row justify-content-center">
-                    <p class="mt-2 text-white ">{{arabic.saleOrder.util.orderCode}}</p>
-                    <p class="text-white yellow-bg  rounded p-2 mr-4 block">{{saleOrderObj.orderCode}}</p>
-                </div>
-            </div>
-
+        <!-- Dynamic Order Table -->
+        <div class="table-responsive">
+          <table class="table table-bordered table-hover dashboard-table">
+            <thead>
+              <tr>
+                <th>المنتج</th>
+                <th class="text-center">عدد الاتواب</th>
+                <th class="text-center">سعر الوحدة</th>
+                <th class="text-center">وحدة القياس</th>
+                <th class="text-center">عدد الوحدات</th>
+                <th class="text-center">الإجمالى</th>
+                <th class="text-center" style="width: 100px;"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of dynamicOrderList">
+                <td class="fw-bold">{{ item.productName }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-center">{{ item.price }}</td>
+                <td class="text-center">
+                  {{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}
+                </td>
+                <td class="text-center">{{ item.unitNumber }}</td>
+                <td class="text-center text-accent fw-bold">{{ item.total }}</td>
+                <td class="text-center">
+                  <button mat-icon-button class="text-danger" (click)="deleteDynamicItem(item)" aria-label="حذف المنتج">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  <button mat-icon-button class="text-navy" (click)="openUpdateQuantity(updateQuantity, item)" aria-label="تعديل الكمية">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                </td>
+              </tr>
+              <tr *ngIf="dynamicOrderList.length === 0">
+                <td colspan="7" class="text-center text-muted py-5">
+                  <mat-icon class="d-block mx-auto mb-2 opacity-25" style="font-size: 48px; height: 48px; width: 48px;">shopping_cart</mat-icon>
+                  لا توجد منتجات مضافة
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="dynamicOrderList.length > 0">
+              <tr class="table-total-row">
+                <th colspan="3" class="text-start">الإجمالى الكلى</th>
+                <th class="text-center fs-5 text-navy">{{ totalValue }}</th>
+                <th colspan="3"></th>
+              </tr>
+            </tfoot>
+          </table>
         </div>
 
-        <!--end header container-->
-        <div class="row rounded">
+      </div>
+    </div>
 
-            <!--center dive-->
-            <div class="col-8 bg-light">
-                <form [formGroup]="producForm">
-                    <div class="row sand mt-2 text14">
-                        <div class="col-4 mt-2">
-                            <mat-form-field appearance="outline" >
-                                <mat-label>{{arabic.util.searchfilter}}</mat-label>
-                                <select matNativeControl required [(ngModel)]="productSelectedSearchFilter"
-                                    (ngModelChange)="onSearchFilterChange($event)" formControlName="productFilter">
-                                    <option value = "code" >{{arabic.util.byCode}}</option>
-                                    <option value = "name" >{{arabic.util.byName}}</option>
-                                </select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col mt-2">
+    <!-- ========================================== -->
+    <!-- RIGHT COLUMN – Customer & Payment Summary  -->
+    <!-- ========================================== -->
+    <div class="col-lg-4 col-md-5">
+      <div class="dashboard-panel summary-panel">
 
-                            <form class="example-form">
-                                <mat-form-field class="example-full-width">
-                                    <mat-label>{{arabic.stock.products.util.searchBar}}</mat-label>
-                                    <input #productSelected type="text" placeholder={{arabic.stock.products.util.searchBar}} matInput
-                                        [formControl]="myControl" [matAutocomplete]="productAuto" [(ngModel)]="productSearchValue"
-                                        [attr.disabled]="canOrder == true ? true : null" (keyup.enter)="onProductEnter(productSelected.value)">
-                                    <mat-icon color="accent" matSuffix>search</mat-icon>
-                                    <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
-                                        <mat-option *ngFor="let option of productFilteredOptions | async" [value]="option"
-                                            (click)="OnProductSelected(productSearchValue)">
-                                            {{option}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                            </form>
-
-                            <!--
-                            <mat-form-field class="example-full-width" appearance="outline">
-                                <mat-label>{{arabic.stock.products.util.searchBar}}</mat-label>
-                                <input type="text" placeholder={{arabic.stock.products.util.searchBar}} matInput
-                                    [(ngModel)]="productSearchValue" formControlName="productValueControl"
-                                    [attr.disabled]="canOrder == true ? true : null" (keyup.enter)="productSearch()"
-                                    autocomplete="off">
-                                <mat-icon color="accent" matSuffix>search</mat-icon>
-                            </mat-form-field> -->
-
-                        </div>
-                    </div>
-                </form>
-                <div class="mt-2 text-center">
-                    <!--table-->
-                    <table class="table table-bordered table-sm">
-                        <thead class="navy text-white">
-                            <tr>
-                                <th>المنتج</th>
-                                <th>الكمية</th>
-                                <th>سعر الوحدة</th>
-                                <th>الاجمالى</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let item of dynamicOrderList">
-                                <th>{{ item.productName }}</th>
-                                <td>{{ item.quantity }}</td>
-                                <td>{{ item.price }}</td>
-                                <td>{{ item.total}}</td>
-                                <td>
-                                    <button mat-icon-button color="warn" (click)="deleteDynamicItem(item)">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>|
-                                    <button mat-icon-button color="warn" (click)="openUpdateQuantity(updateQuantity,item)">
-                                        <mat-icon>edit</mat-icon>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <!--left div-->
-            <div class="col-4 greybg">
-                <div class="row justify-content-around text14" *ngIf="this.saleOrderObj.flags.canCustomer">
-                    <div class="mt-1">
-                        <form>
-                            <mat-form-field class="example-full-width">
-                                <mat-label>{{arabic.customers.util.searchBar}}</mat-label>
-                                <input type="text" placeholder={{arabic.customers.util.searchBar}} matInput
-                                    [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="searchCustomerInout"
-                                    (keyup.enter)="search()">
-                                <mat-icon color="accent" matSuffix>search</mat-icon>
-                                <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                    <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
-                                        (click)="OnHumanSelected(searchCustomerInout)">
-                                        {{option}}
-                                    </mat-option>
-                                </mat-autocomplete>
-                            </mat-form-field>
-                        </form>
-                    </div>
-                    <div class="mt-2">
-                        <button mat-mini-fab color="accent" (click)="addDialog()">
-                            <mat-icon>add</mat-icon>
-                        </button>
-                    </div>
-                </div>
-                <mat-divider></mat-divider>
-
-                <div class="row justify-content-around text-s mt-1 ">
-                    <mat-form-field appearance="outline" *ngIf="this.saleOrderObj.flags.IsorderType">
-                        <mat-label>{{arabic.saleOrder.util.orderType}}</mat-label>
-                        <select matNativeControl required [(ngModel)]="saleOrderObj.orderType"
-                            (ngModelChange)="onorderTypeChange($event)">
-                            <option *ngFor="let item of saleOrderObj.dataLake.orderTypeList" [value]="item.value">
-                                {{item.key}}</option>
-
-                        </select>
-                    </mat-form-field>
-
-                    <mat-form-field  appearance="outline" *ngIf="this.saleOrderObj.flags.IspaymentType">
-                        <mat-label>{{arabic.saleOrder.util.paymentType}}</mat-label>
-                        <select matNativeControl required [(ngModel)]="saleOrderObj.paymentType"
-                            (ngModelChange)="onPaymentTypeChange($event)">
-                            <option *ngFor="let item of saleOrderObj.dataLake.paymentType" [value]="item.value">
-                                {{item.key}}</option>
-                        </select>
-                    </mat-form-field>
-
-                    <mat-form-field appearance="outline" *ngIf="this.saleOrderObj.flags.isInstallment">
-                        <mat-label>{{arabic.saleOrder.util.paymentTypeSelection.installmentValue}}</mat-label>
-                        <input matInput type="number" required
-                            placeholder="{{arabic.saleOrder.util.paymentTypeSelection.installmentValue}}"
-                            [(ngModel)]="installmentValue" autocomplete="off">
-                    </mat-form-field>
-                </div>
-
-                <div class="navy rounded pb-2">
-                    <!--final left div-->
-                    <div class="row text-center m-1">
-                        <div class="col-4">
-                            <p class="mt-3 text-white text-xl">اﻷجمالى</p>
-                        </div>
-                        <div class="col-8 mt-2">
-                            <p class="text-dark bg-light rounded p-2 text-xl">{{totalValue}}</p>
-                        </div>
-                    </div>
-
-                    <div class="row text-center justify-content-center m-1 sand text14 ">
-                        <div class=" mt-1">
-                            <mat-form-field appearance="outline">
-                                <mat-label>الخصم بالجنية</mat-label>
-                                <input matInput type="number" required placeholder="الخصم بالجنية" [(ngModel)]="discount"
-                                    autocomplete="off">
-                            </mat-form-field>
-                        </div>
-
-                        <div class="col">
-                            <mat-form-field appearance="outline" *ngIf="this.saleOrderObj.flags.canCustomer">
-                                <mat-label>المدفوع</mat-label>
-                                <input matInput type="number" required placeholder="المدفوع" [(ngModel)]="paid"
-                                    autocomplete="off">
-                            </mat-form-field>
-                        </div>
-                        <div class="col mt-1">
-                            <div class="row ">
-                                <p class="mt-3 text-dark ">المتبقى</p>
-                                <p class="text-white yellow-bg rounded p-2 mr-3 mt-2 text-l">{{totalValue-paid}}</p>
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="">
-                        <div class="row text-center ">
-                            <div class="col-4">
-                                <p class="mt-3 text-white text-xl">الصافى</p>
-                            </div>
-                            <div class="col-8">
-                                <p class="text-dark bg-light rounded p-2 ml-2 mt-2 text-xl">{{totalValue-(discount+paid)}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <mat-divider></mat-divider>
-                    <div class="row justify-content-around mt-2">
-                        <button mat-raised-button class="mybtn yellow-bg" (click)="onSaveAndPrint()">حفظ وطباعة</button>
-                        <button mat-raised-button  class="mybtn yellow-bg" (click)="onSaveOrder()">حفظ</button>
-                    </div>
-                </div>
-
-            </div>
-            <!--end left-->
-
+        <!-- Customer (mandatory) -->
+        <div class="customer-section mb-2 d-flex align-items-center gap-2">
+          <mat-form-field appearance="outline" class="flex-grow-1 mb-0">
+            <mat-label>
+              {{ arabic.customers.util.searchBar }} <span class="text-danger">*</span>
+            </mat-label>
+            <input matInput type="text" [formControl]="myControl" [matAutocomplete]="auto" (keyup.enter)="search()">
+            <mat-icon matSuffix class="text-accent">person</mat-icon>
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
+                (onSelectionChange)="OnHumanSelected(option)">
+                {{ option }}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+          <button mat-mini-fab class="btn-navy add-customer-btn" (click)="addDialog()" aria-label="إضافة عميل جديد">
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
 
+        <!-- Payment Type -->
+        <mat-form-field appearance="outline" class="w-100 mb-2">
+          <mat-label>{{ arabic.saleOrder.util.paymentType }}</mat-label>
+          <select matNativeControl [(ngModel)]="saleOrderObj.paymentType" (change)="onPaymentTypeChange($event)">
+            <option *ngFor="let item of saleOrderObj.dataLake.paymentType" [value]="item.value">
+              {{ item.key }}
+            </option>
+          </select>
+        </mat-form-field>
 
+        <!-- Summary Calculations -->
+        <div class="summary-details">
+          <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+            <span class="text-muted fw-bold">الإجمالى</span>
+            <span class="fs-5 fw-bold">{{ totalValue }}</span>
+          </div>
+
+          <mat-form-field appearance="outline" class="w-100 mb-1">
+            <mat-label>الخصم</mat-label>
+            <input matInput type="number" [(ngModel)]="discount">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="w-100 mb-1">
+            <mat-label>المدفوع</mat-label>
+            <input matInput type="number" [(ngModel)]="paid">
+          </mat-form-field>
+
+          <div class="d-flex justify-content-between align-items-center mb-2 px-2 text-danger">
+            <span class="fw-bold">المتبقى</span>
+            <span class="fs-5 fw-bold">{{ totalValue - paid }}</span>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center p-3 net-total-box">
+            <span class="fs-5 fw-bold text-white">الصافى</span>
+            <span class="fs-4 fw-bold text-white">{{ totalValue - (discount + paid) }}</span>
+          </div>
+        </div>
+
+        <!-- Enhanced Action Buttons with Proper Touch Sizing -->
+        <div class="action-buttons mt-3 d-flex flex-column gap-2">
+          <button mat-raised-button class="btn-navy w-100 py-3 fs-6" (click)="onSaveAndPrint()"
+            [disabled]="!isOrderValid()">
+            حفظ وطباعة
+          </button>
+          <button mat-raised-button class="btn-secondary-action w-100 py-3 fs-6" (click)="onSaveOrder()"
+             [disabled]="!isOrderValid()">
+            حفظ فقط
+          </button>
+        </div>
+
+      </div>
     </div>
 
-    <div>
-        <ng-template #updateQuantity let-modal>
-            <div class="modal-header">
-                <h4 class="modal-title" id="modal-basic-title">الكمية</h4>
-                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <form nz-form [formGroup]="quantityValidateForm">
-                    <mat-form-field class="full-width">
-                        <input matInput required appearance="outline" class="full-width" placeholder="الكمية" type="number"
-                            formControlName="modalquantity" [(ngModel)]="modalquantity" autocomplete="off">
-                    </mat-form-field>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button mat-raised-button color="primary" (click)="onupdateQuantity()"
-                    [disabled]="!quantityValidateForm.valid">اضافة</button>
-            </div>
-        </ng-template>
-    </div>
-
+  </div>
 </div>
+
+<!-- ============================================ -->
+<!-- UPDATE QUANTITY MODAL                        -->
+<!-- ============================================ -->
+<ng-template #updateQuantity let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">تعديل الكمية</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="quantityValidateForm">
+      <!-- CanvasTopUnits (meters/kg) -->
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>الكمية (م/كجم)</mat-label>
+        <input matInput type="number" formControlName="modalCanvasTopUnits" step="0.01" min="0.01">
+      </mat-form-field>
+      <!-- Quantity (number of pieces) -->
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>عدد الاتواب</mat-label>
+        <input matInput type="number" formControlName="modalQuantity" step="1" min="1">
+      </mat-form-field>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button (click)="onupdateQuantity()" [disabled]="!quantityValidateForm.valid">
+      تحديث
+    </button>
+  </div>
+</ng-template>

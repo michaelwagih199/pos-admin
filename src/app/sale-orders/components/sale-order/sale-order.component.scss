@@ -1,78 +1,115 @@
-.myContainer {
+/* sale-order.component.scss */
+
+:host {
+  --theme-navy: #44596e;
+  --theme-dark: #122620;
+  --theme-dark-bg: #1e1e1e;
+  --theme-sand: #f4f3f0;
+  --theme-danger: #db1f48;
+  --theme-accent: #ec994b;
+
+  --panel-bg: #ffffff;
+  --border-color: #e0e0e0;
+}
+
+.sale-order-fullscreen {
   font-family: "Cairo", sans-serif;
   font-size: 16px;
-}
-.example-full-width {
-  width: 100%;
-}
-.example-form {
-  min-width: 300px;
-  max-width: 500px;
-  width: 100%;
+  background-color: var(--theme-sand);
+  min-height: calc(100vh - 64px);
+  padding: 1.5rem;
 }
 
-.greybg {
-  background-color: #f4f3f0;
-}
-
-.red {
-  background-color: #db1f48;
-}
-.sand {
-  background: #f4f3f0;
+.dashboard-panel {
+  background-color: var(--panel-bg);
   border-radius: 8px;
-  border: 1px solid #212121;
+  padding: 1.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border-color);
 }
-.navy{
+
+.header-panel {
+  border-top: 4px solid var(--theme-navy);
+}
+
+.summary-panel {
+  border-top: 4px solid var(--theme-accent);
+}
+
+/* Typography & Utility Colors */
+.text-navy { color: var(--theme-navy) !important; }
+.text-accent { color: var(--theme-accent) !important; }
+.text-danger { color: var(--theme-danger) !important; }
+.highlight-text { color: var(--theme-navy); }
+
+.text-s { font-size: 12px; }
+.text14 { font-size: 14px; }
+.text-l { font-size: 1.15rem; }
+
+/* Enhanced Button Sizing & Styling for POS */
+.btn-navy {
+  background-color: var(--theme-navy) !important;
+  color: #ffffff !important;
   font-family: "Cairo", sans-serif;
-  background-color:#44596E,
-}
-
-.dark {
-  background-color: #122620;
-}
-
-.dark-bg {
-  background-color: #1e1e1e;
-}
-
-.text-s {
-  font-size: 12px;
-}
-.text14 {
-  font-size: 14px;
-}
-
-.text-xl {
-  font-size: x-large;
-  
-}
-.text-l {
-  font-size: large;
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.info {
-  font-size: 20px;
-  background-color: #f4f3f0;
   font-weight: bold;
+}
+
+.btn-accent {
+  background-color: var(--theme-accent) !important;
+  color: #ffffff !important;
+  font-family: "Cairo", sans-serif;
+  font-weight: bold;
+}
+
+.btn-secondary-action {
+  background-color: #e2e8f0 !important;
+  color: var(--theme-navy) !important;
+  font-family: "Cairo", sans-serif;
+  font-weight: bold;
+
+  &:hover:not(:disabled) {
+    background-color: #cbd5e1 !important;
+  }
+}
+
+/* Align customer add button height with form field */
+.add-customer-btn {
+  height: 52px;
+  width: 52px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Table Styling */
+.dashboard-table {
+  border-color: var(--border-color);
+
+  thead th {
+    background-color: var(--theme-navy);
+    color: #ffffff;
+    font-weight: 600;
+    border-bottom: none;
+    padding: 12px;
+  }
+
+  tbody td {
+    vertical-align: middle;
+    padding: 12px;
+  }
+
+  .table-total-row th {
+    background-color: var(--theme-sand);
+    padding: 16px 12px;
+  }
+}
+
+.net-total-box {
+  background-color: var(--theme-navy);
+  border-radius: 6px;
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
 }
 
 mat-form-field {
-  width: 150px;
   font-family: "Cairo", sans-serif;
-  font-weight: bold;
+  font-weight: 600;
 }
-
-.yellow-bg {
-  background: #EC994B;
-}
-
-.mybtn {
-  width: 40%;
-  font-size: 16px;
-  font-family: "Cairo";
-  color: #f4f3f0;
-}
-
-

@@ -1,15 +1,16 @@
 import { CategoryModel } from './categoryModel'
 
 export class ProductModel {
-    id!: number
-    productCode!: string
-    productName!: string
-    retailPrice!: number
-    purchasingPrice!: number
-    numberUnitsInStock!: number
-    alertUnits!: number
-    productCategory!: CategoryModel
-    createdDate!: string
-    expirationDate!: string
-    wholesalePrice!: number
-  }
+  id!: number
+  productCode!: string
+  productName!: string
+  retailPrice!: number
+  purchasingPrice!: number
+  numberUnitsInStock!: number
+  alertUnits!: number
+  productCategory!: CategoryModel
+  createdDate!: string
+  expirationDate!: string
+  wholesalePrice!: number
+  measurementUnit!: string;
+}

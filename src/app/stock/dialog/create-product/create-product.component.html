@@ -1,102 +1,85 @@
-<h2 mat-dialog-title>{{arabic.stock.products.table.title}}</h2>
+<h2 mat-dialog-title>{{ arabic.stock.products.table.title }}</h2>
 <mat-divider></mat-divider>
 
 <mat-dialog-content>
-  <form nz-form [formGroup]="validateForm">
-    <div>
-      <div class="row justify-content-between mt-2">
-        <div class="col mt-3">
-          <mat-checkbox (change)="showOptions($event)">{{arabic.stock.products.util.automaticCode}}
-          </mat-checkbox>
-        </div>
-        <div class="col">
-          <mat-form-field appearance="fill" *ngIf="codeDisabled">
-            <mat-label>{{arabic.stock.products.table.productCode}}</mat-label>
-            <input matInput placeholder="{{arabic.stock.products.table.productCode}}" formControlName="productCode"
-              [(ngModel)]="product.productCode" autocomplete="off">
-          </mat-form-field>
-        </div>
+  <form nz-form [formGroup]="validateForm" class="product-form">
 
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.productName}}</mat-label>
-            <input matInput required placeholder="{{arabic.stock.products.table.productName}}"
-              formControlName="productName" [(ngModel)]="product.productName" autocomplete="off">
-          </mat-form-field>
-        </div>
+    <!-- ===== Section 1: Basic Information ===== -->
+    <div class="row g-3 align-items-end mb-3">
+      <div class="col-md-3">
+        <mat-checkbox (change)="showOptions($event)">
+          {{ arabic.stock.products.util.automaticCode }}
+        </mat-checkbox>
       </div>
-
-      <div class="row justify-content-between">
-
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.purchasingPrice}}</mat-label>
-            <input matInput type="number" required placeholder="{{arabic.stock.products.table.purchasingPrice}}"
-              formControlName="purchasingPrice" [(ngModel)]="product.purchasingPrice" autocomplete="off">
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.retailPrice}}</mat-label>
-            <input matInput type="number" required placeholder="{{arabic.stock.products.table.retailPrice}}"
-              formControlName="retailPrice" [(ngModel)]="product.retailPrice" autocomplete="off">
-          </mat-form-field>
-        </div>
-
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.wholesalePrice}}</mat-label>
-            <input matInput type="number" required placeholder="{{arabic.stock.products.table.wholesalePrice}}"
-              formControlName="wholesalePrice" [(ngModel)]="product.wholesalePrice" autocomplete="off">
-          </mat-form-field>
-        </div>
+      <div class="col-md-4" *ngIf="codeDisabled">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>{{ arabic.stock.products.table.productCode }}</mat-label>
+          <input matInput formControlName="productCode" [(ngModel)]="product.productCode" autocomplete="off">
+        </mat-form-field>
       </div>
-      <div class="row justify-content-between">
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.numberUnitsInStock}}</mat-label>
-            <input matInput type="number" required placeholder="{{arabic.stock.products.table.numberUnitsInStock}}"
-              formControlName="numberUnitsInStock" [(ngModel)]="product.numberUnitsInStock" autocomplete="off">
-          </mat-form-field>
-        </div>
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.alertUnits}}</mat-label>
-            <input matInput type="number" required placeholder="{{arabic.stock.products.table.alertUnits}}"
-              formControlName="alertUnits" [(ngModel)]="product.alertUnits" autocomplete="off">
-          </mat-form-field>
-        </div>
-
-        <div class="col">
-          <mat-form-field appearance="fill">
-            <mat-label>{{arabic.stock.products.table.productCategory}}</mat-label>
-            <mat-select matNativeControl required [(ngModel)]="checkValue" formControlName="productCategory">
-              <mat-option *ngFor="let item of categoryList" [value]="item?.id">
-                {{item?.categoryName}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
+      <div class="col-md-5">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>{{ arabic.stock.products.table.productName }}</mat-label>
+          <input matInput required formControlName="productName" [(ngModel)]="product.productName" autocomplete="off">
+        </mat-form-field>
       </div>
-      <div class="row">
-        <div class="col">
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>انتهاء الصلاحية</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="cExpirationDate" [(ngModel)]="product.expirationDate"
-              autocomplete="off">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
-
     </div>
+
+    <!-- ===== Section 2: Pricing & Alert ===== -->
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>السعر</mat-label>
+          <input matInput type="number" required formControlName="wholesalePrice" [(ngModel)]="product.wholesalePrice" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-md-6">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>الحد الأدنى</mat-label>
+          <input matInput type="number" required formControlName="alertUnits" [(ngModel)]="product.alertUnits" autocomplete="off">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- ===== Section 3: Unit & Category ===== -->
+    <div class="row g-3">
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>وحدة القياس</mat-label>
+          <mat-select required formControlName="measurementUnit" [(ngModel)]="product.measurementUnit">
+            <mat-option value="METER">متر</mat-option>
+            <mat-option value="KILOGRAM">كيلو جرام</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label> عدد الاتواب</mat-label>
+          <input matInput type="number" required formControlName="numberUnitsInStock" [(ngModel)]="product.numberUnitsInStock" autocomplete="off">
+        </mat-form-field>
+      </div>
+      <div class="col-md-4">
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>{{ arabic.stock.products.table.productCategory }}</mat-label>
+          <mat-select required [(ngModel)]="checkValue" formControlName="productCategory">
+            <mat-option *ngFor="let item of categoryList" [value]="item?.id">
+              {{ item?.categoryName }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
   </form>
 </mat-dialog-content>
+
 <mat-divider></mat-divider>
+
 <mat-dialog-actions align="center">
-  <button mat-raised-button (click)="save()"
-    [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
-  <button mat-raised-button color="primary" (click)="close()"
-    tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
+  <button mat-raised-button (click)="save()" [disabled]="!validateForm.valid">
+    {{ arabic.stock.category.util.dialog.addDialog.buttons.save }}
+  </button>
+  <button mat-raised-button color="primary" (click)="close()" tabindex="1">
+    {{ arabic.stock.category.util.dialog.addDialog.buttons.cancel }}
+  </button>
 </mat-dialog-actions>
