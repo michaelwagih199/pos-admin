@@ -32,6 +32,10 @@ export class CustomerService {
     return this.http.get(`${this.baseUrl}/names`);
   }
 
+  getOrders(customerId: number, params: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${customerId}/orders`, { params });
+  }
+
   findByName(name: any): Observable<any> {
     return this.http.get(`${this.baseUrl}/customerName?customerName=${name}`);
   }

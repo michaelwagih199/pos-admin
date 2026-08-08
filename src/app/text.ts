@@ -99,7 +99,22 @@ export class Arabic {
       paymentDate: "تاريخ الدفعه",
       addPayment: "اضافة الدفعة",
       allPayment: "اجمالى المدفوعات",
-      remaining: "المتبقى"
+      remaining: "المتبقى",
+      orders: "الطلبات",
+      fromDate: "من تاريخ",
+      toDate: "الى تاريخ",
+      search: "بحث",
+      reset: "مسح",
+      orderCode: "رقم الفاتورة",
+      orderDate: "تاريخ الطلب",
+      totalOrder: "اجمالى الطلب",
+      paid: "المدفوع",
+      paymentType: "طريقة الدفع",
+      orderType: "نوع الطلب",
+      totalOrders: "عدد الطلبات",
+      totalOrderAmount: "اجمالى الطلبات",
+      totalPaid: "اجمالى المدفوع",
+      totalRemaining: "اجمالى المتبقى"
     }
   }
 
