@@ -5,7 +5,7 @@ import {
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
-import { ReturnableProduct } from '../../models/returnable-product';
+import { ReturnableInvoiceLine, ReturnableProduct } from '../../models/returnable-product';
 import { ReturnType } from '../../models/retrivals-model';
 
 interface DialogData {
@@ -31,7 +31,7 @@ export class ReturnProductDialogComponent implements OnInit {
 
   maxQty = 0;
   maxUnits = 0;
-  multiInvoiceInvoices: Array<any> = [];
+  multiInvoiceInvoices: ReturnableInvoiceLine[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -41,40 +41,35 @@ export class ReturnProductDialogComponent implements OnInit {
 
   ngOnInit(): void {
     const p = this.data.product;
-    this.multiInvoiceInvoices = p.invoices ?? [];
-
-    const firstAvailable = this.multiInvoiceInvoices.find(
-      (inv) => Number(inv.returnableQty) > 0
+    this.multiInvoiceInvoices = (p.invoices ?? []).filter(
+      (inv) => Number(inv.returnableUnits ?? 0) > 0
     );
-    const initialInvoice = firstAvailable ?? this.multiInvoiceInvoices[0];
+
+    const initialInvoice = this.multiInvoiceInvoices[0];
 
     // Rolls ceiling
     this.maxQty = Number(initialInvoice?.returnableQty ?? p.availableCanvases ?? 0);
 
-    // Units ceiling — comes from the DTO, NOT computed from rolls
-    this.maxUnits = Number(
-      (initialInvoice as any)?.returnableUnits
-      ?? (p as any).availableUnits
-      ?? 0
-    );
+    // Units ceiling
+    this.maxUnits = Number(initialInvoice?.returnableUnits ?? p.availableUnits ?? 0);
 
-    // Default per-unit value = the whole remaining units (user can lower it)
-    const defaultUnitValue = this.maxUnits > 0 ? this.maxUnits : 1;
-    const rollsMin = this.maxQty > 0 ? 1 : 0;
     const rollsDefault = this.maxQty > 0 ? 1 : 0;
+    const unitDefault = this.maxUnits > 0 ? this.maxUnits : 0;
+
     this.form = this.fb.group(
       {
         sourceDetailId: [
           initialInvoice?.saleOrderDetailId
           ?? initialInvoice?.purchasesBillDetailId
           ?? null,
+          Validators.required,
         ],
         quantity: [
           rollsDefault,
-          [Validators.required, Validators.min(rollsMin), Validators.max(this.maxQty)],
+          [Validators.required, Validators.min(0), Validators.max(this.maxQty)],
         ],
         unitNumber: [
-          defaultUnitValue,
+          unitDefault,
           [Validators.required, Validators.min(0.001), Validators.max(this.maxUnits)],
         ],
         condition: ['GOOD', Validators.required],
@@ -83,6 +78,7 @@ export class ReturnProductDialogComponent implements OnInit {
       },
       { validators: this.returnableValidator() }
     );
+
     this.form.get('sourceDetailId')?.valueChanges.subscribe((id) => {
       const inv = this.multiInvoiceInvoices.find(
         (i) => (i.saleOrderDetailId ?? i.purchasesBillDetailId) === id
@@ -92,14 +88,12 @@ export class ReturnProductDialogComponent implements OnInit {
       this.maxQty = Number(inv.returnableQty) || 0;
       this.maxUnits = Number(inv.returnableUnits) || 0;
 
-      const rollsMin = this.maxQty > 0 ? 1 : 0;      // ← add
-
       const qtyCtrl = this.form.get('quantity');
       const unitCtrl = this.form.get('unitNumber');
 
       qtyCtrl?.setValidators([
         Validators.required,
-        Validators.min(rollsMin),                    // ← was min(1)
+        Validators.min(0),
         Validators.max(this.maxQty),
       ]);
       unitCtrl?.setValidators([
@@ -107,6 +101,10 @@ export class ReturnProductDialogComponent implements OnInit {
         Validators.min(0.001),
         Validators.max(this.maxUnits),
       ]);
+
+      qtyCtrl?.setValue(this.maxQty > 0 ? 1 : 0, { emitEvent: false });
+      unitCtrl?.setValue(this.maxUnits > 0 ? this.maxUnits : 0, { emitEvent: false });
+
       qtyCtrl?.updateValueAndValidity();
       unitCtrl?.updateValueAndValidity();
       this.form.updateValueAndValidity();
@@ -122,6 +120,11 @@ export class ReturnProductDialogComponent implements OnInit {
       // Rolls and units are INDEPENDENT ceilings — no multiplication
       if (qty > this.maxQty) errs['quantityOverflow'] = true;
       if (unit > this.maxUnits) errs['unitsOverflow'] = true;
+
+      // Both dimensions cannot be zero simultaneously (returning nothing)
+      if (qty === 0 && unit === 0) {
+        errs['bothEmpty'] = true;
+      }
 
       return Object.keys(errs).length ? errs : null;
     };
@@ -148,6 +151,13 @@ export class ReturnProductDialogComponent implements OnInit {
   }
 
   save(): void {
+    // Both dimensions must have at least one non-zero value
+    const qty  = Number(this.form.get('quantity')?.value ?? 0);
+    const unit = Number(this.form.get('unitNumber')?.value ?? 0);
+    if (qty === 0 && unit === 0) {
+      this.form.markAllAsTouched();
+      return;
+    }
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;

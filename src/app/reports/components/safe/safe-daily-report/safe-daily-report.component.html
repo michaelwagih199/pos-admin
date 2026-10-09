@@ -1,12 +1,22 @@
 <div class="daily-safe-screen" dir="rtl">
 
+  <!-- ============ SCREEN HEADER ============ -->
   <div class="screen-header no-print">
     <mat-icon class="header-icon">point_of_sale</mat-icon>
     <h2>{{ arabic.dailySafeReport.title }}</h2>
   </div>
 
+  <div class="print-header">
+    <h2>{{ arabic.dailySafeReport.title }}</h2>
+    <div class="print-date">
+      {{ arabic.dailySafeReport.reportDate }}:
+      {{ report?.date | date:'yyyy-MM-dd' }}
+    </div>
+  </div>
+
   <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
 
+  <!-- ============ FILTERS ============ -->
   <mat-card class="filter-card no-print">
     <mat-card-content>
       <div class="filters-row">
@@ -28,63 +38,259 @@
     </mat-card-content>
   </mat-card>
 
+  <!-- ============ REPORT BODY ============ -->
   <div *ngIf="loaded && report" class="report-body">
 
-    <div class="info-card">
-      <div class="info-row">
-        <mat-icon>event</mat-icon>
-        <span class="info-label">{{ arabic.dailySafeReport.reportDate }}:</span>
-        <span class="info-value">{{ report.date | date:'yyyy-MM-dd' }}</span>
-      </div>
-    </div>
-
-    <div class="line-card income">
-      <div class="line-left">
+    <!-- KPI summary strip -->
+    <div class="summary-row">
+      <!-- 1. Customer Collections -->
+      <div class="summary-card income">
         <mat-icon>payments</mat-icon>
-        <span>{{ arabic.dailySafeReport.customerPayments }}</span>
+        <div class="summary-body">
+          <span class="label">{{ arabic.dailySafeReport.customerPayments }}</span>
+          <span class="value">
+            +{{ report.customerPayments | number:'1.2-2' }}
+            <small>{{ arabic.dailySafeReport.currency }}</small>
+          </span>
+        </div>
       </div>
-      <div class="line-right">
-        <span class="sign">+</span>
-        <span class="amount">{{ report.customerPayments | number:'1.2-2' }}</span>
-        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
-      </div>
-    </div>
 
-    <div class="line-card income">
-      <div class="line-left">
+      <!-- 2. Total Sales (Cash + Credit) -->
+      <div class="summary-card income">
         <mat-icon>shopping_cart</mat-icon>
-        <span>{{ arabic.dailySafeReport.cashSales }}</span>
+        <div class="summary-body">
+          <span class="label">{{ arabic.dailySafeReport.allSales }}</span>
+          <span class="value">
+            {{ report.totalSales | number:'1.2-2' }}
+            <small>{{ arabic.dailySafeReport.currency }}</small>
+          </span>
+        </div>
       </div>
-      <div class="line-right">
-        <span class="sign">+</span>
-        <span class="amount">{{ report.cashSales | number:'1.2-2' }}</span>
-        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
-      </div>
-    </div>
 
-    <div class="line-card outcome">
-      <div class="line-left">
+      <!-- 3. Total Purchases -->
+      <div class="summary-card outcome">
+        <mat-icon>inventory_2</mat-icon>
+        <div class="summary-body">
+          <span class="label">{{ arabic.dailySafeReport.allPurchases }}</span>
+          <span class="value">
+            {{ report.totalPurchases | number:'1.2-2' }}
+            <small>{{ arabic.dailySafeReport.currency }}</small>
+          </span>
+        </div>
+      </div>
+
+      <!-- 4. Total Returns -->
+      <div class="summary-card outcome">
         <mat-icon>autorenew</mat-icon>
-        <span>{{ arabic.dailySafeReport.cashRetrievals }}</span>
+        <div class="summary-body">
+          <span class="label">{{ arabic.dailySafeReport.allRetrievals }}</span>
+          <span class="value">
+            −{{ report.totalRetrievals | number:'1.2-2' }}
+            <small>{{ arabic.dailySafeReport.currency }}</small>
+          </span>
+        </div>
       </div>
-      <div class="line-right">
-        <span class="sign">−</span>
-        <span class="amount">{{ report.cashRetrievals | number:'1.2-2' }}</span>
-        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
+
+      <!-- 5. Net Cash Safe Balance -->
+      <div class="summary-card total">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <div class="summary-body">
+          <span class="label">صافي نقدية الخزنة</span>
+          <span class="value">
+            {{ report.total | number:'1.2-2' }}
+            <small>{{ arabic.dailySafeReport.currency }}</small>
+          </span>
+        </div>
       </div>
     </div>
 
-    <div class="total-card">
-      <div class="line-left">
-        <mat-icon>check_circle</mat-icon>
-        <span>{{ arabic.dailySafeReport.total }}</span>
+    <!-- ============ SECTION 1: Customer payments ============ -->
+    <div class="section-card" *ngIf="report.customerPaymentsDetails?.length">
+      <div class="section-header navy">
+        <mat-icon>receipt_long</mat-icon>
+        <span>{{ arabic.dailySafeReport.customerPayments }}</span>
+        <span class="count">
+          {{ report.customerPaymentsDetails.length }} {{ arabic.dailySafeReport.sectionCount }}
+        </span>
       </div>
-      <div class="line-right">
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th style="width: 14%;">{{ arabic.dailySafeReport.receiptCode }}</th>
+            <th style="width: 26%;">{{ arabic.dailySafeReport.customer }}</th>
+            <th style="width: 16%;">{{ arabic.dailySafeReport.dateCol }}</th>
+            <th style="width: 28%;">{{ arabic.dailySafeReport.reference }}</th>
+            <th style="width: 16%;" class="num">{{ arabic.dailySafeReport.amount }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let p of report.customerPaymentsDetails">
+            <td>{{ p.receiptCode }}</td>
+            <td>
+              {{ p.customerName }}
+              <small *ngIf="p.customerPhone" class="muted">— {{ p.customerPhone }}</small>
+            </td>
+            <td>{{ p.paymentDate | date:'yyyy-MM-dd' }}</td>
+            <td>{{ p.reference }}</td>
+            <td class="num credit">
+              +{{ p.amount | number:'1.2-2' }}
+            </td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">{{ arabic.dailySafeReport.total }}</td>
+            <td class="num credit">+{{ report.customerPayments | number:'1.2-2' }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- ============ SECTION 2: All Sales (Cash & Credit) ============ -->
+    <div class="section-card" *ngIf="report.cashSalesDetails?.length">
+      <div class="section-header green">
+        <mat-icon>shopping_cart</mat-icon>
+        <span>{{ arabic.dailySafeReport.allSales }}</span>
+        <span class="count">
+          {{ report.cashSalesDetails.length }} {{ arabic.dailySafeReport.sectionCount }}
+        </span>
+      </div>
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th style="width: 16%;">{{ arabic.dailySafeReport.invoiceCode }}</th>
+            <th style="width: 30%;">{{ arabic.dailySafeReport.customer }}</th>
+            <th style="width: 16%;">{{ arabic.dailySafeReport.paymentType }}</th>
+            <th style="width: 18%;">{{ arabic.dailySafeReport.dateCol }}</th>
+            <th style="width: 20%;" class="num">{{ arabic.dailySafeReport.amount }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of report.cashSalesDetails">
+            <td>{{ s.invoiceCode }}</td>
+            <td>
+              {{ s.customerName }}
+              <small *ngIf="s.customerPhone" class="muted">— {{ s.customerPhone }}</small>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="s.paymentType === 'CASH' ? 'badge-cash' : 'badge-credit'">
+                {{ s.paymentType === 'CASH' ? 'كاش' : 'آجل' }}
+              </span>
+            </td>
+            <td>{{ s.orderDate | date:'yyyy-MM-dd' }}</td>
+            <td class="num credit">{{ s.amount | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="4">{{ arabic.dailySafeReport.total }}</td>
+            <td class="num credit">{{ report.totalSales | number:'1.2-2' }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- ============ SECTION 3: Purchases (المشتريات) ============ -->
+    <div class="section-card" *ngIf="report.purchasesDetails?.length">
+      <div class="section-header purple">
+        <mat-icon>inventory_2</mat-icon>
+        <span>{{ arabic.dailySafeReport.allPurchases }}</span>
+        <span class="count">
+          {{ report.purchasesDetails.length }} {{ arabic.dailySafeReport.sectionCount }}
+        </span>
+      </div>
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th style="width: 16%;">{{ arabic.dailySafeReport.billCode }}</th>
+            <th style="width: 28%;">{{ arabic.dailySafeReport.supplier }}</th>
+            <th style="width: 16%;">{{ arabic.dailySafeReport.dateCol }}</th>
+            <th style="width: 13%;" class="num">{{ arabic.dailySafeReport.paid }}</th>
+            <th style="width: 13%;" class="num">{{ arabic.dailySafeReport.remaining }}</th>
+            <th style="width: 14%;" class="num">{{ arabic.dailySafeReport.totalBill }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let pb of report.purchasesDetails">
+            <td>{{ pb.billCode }}</td>
+            <td>
+              {{ pb.supplierName }}
+              <small *ngIf="pb.supplierPhone" class="muted">— {{ pb.supplierPhone }}</small>
+            </td>
+            <td>{{ pb.billDate | date:'yyyy-MM-dd' }}</td>
+            <td class="num">{{ pb.paid | number:'1.2-2' }}</td>
+            <td class="num">{{ pb.remaining | number:'1.2-2' }}</td>
+            <td class="num debit">{{ pb.total | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">{{ arabic.dailySafeReport.total }}</td>
+            <td class="num debit">{{ report.totalPurchases | number:'1.2-2' }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- ============ SECTION 4: All Retrievals (المرتجعات) ============ -->
+    <div class="section-card" *ngIf="report.cashRetrievalsDetails?.length">
+      <div class="section-header danger">
+        <mat-icon>autorenew</mat-icon>
+        <span>{{ arabic.dailySafeReport.allRetrievals }}</span>
+        <span class="count">
+          {{ report.cashRetrievalsDetails.length }} {{ arabic.dailySafeReport.sectionCount }}
+        </span>
+      </div>
+      <table class="detail-table">
+        <thead>
+          <tr>
+            <th style="width: 14%;">{{ arabic.dailySafeReport.returnCode }}</th>
+            <th style="width: 28%;">{{ arabic.dailySafeReport.party }}</th>
+            <th style="width: 14%;">{{ arabic.dailySafeReport.returnType }}</th>
+            <th style="width: 14%;">{{ arabic.dailySafeReport.dateCol }}</th>
+            <th style="width: 14%;">{{ arabic.dailySafeReport.reason }}</th>
+            <th style="width: 16%;" class="num">{{ arabic.dailySafeReport.amount }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let r of report.cashRetrievalsDetails">
+            <td>{{ r.returnCode }}</td>
+            <td>
+              {{ r.partyName }}
+              <small *ngIf="r.partyPhone" class="muted">— {{ r.partyPhone }}</small>
+            </td>
+            <td>
+              <span class="badge" [ngClass]="r.returnType === 'CUSTOMER' ? 'badge-credit' : 'badge-supplier'">
+                {{ r.returnType === 'CUSTOMER' ? 'مرتجع عميل' : 'مرتجع لمورد' }}
+              </span>
+            </td>
+            <td>{{ r.returnDate | date:'yyyy-MM-dd' }}</td>
+            <td>{{ r.reason }}</td>
+            <td class="num debit">−{{ r.netCost | number:'1.2-2' }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5">{{ arabic.dailySafeReport.total }}</td>
+            <td class="num debit">−{{ report.totalRetrievals | number:'1.2-2' }}</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- ============ Grand total ============ -->
+    <div class="grand-total-card">
+      <div class="grand-left">
+        <mat-icon>account_balance_wallet</mat-icon>
+        <span>صافي نقدية الخزنة (تحصيلات نقدية + مبيعات كاش − مرتجعات كاش)</span>
+      </div>
+      <div class="grand-right">
         <span class="amount">{{ report.total | number:'1.2-2' }}</span>
         <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
       </div>
     </div>
 
+    <!-- ============ Notes ============ -->
     <mat-form-field appearance="outline" class="notes-field no-print">
       <mat-label>{{ arabic.dailySafeReport.notes }}</mat-label>
       <textarea matInput rows="3" [(ngModel)]="notes"></textarea>
@@ -95,6 +301,7 @@
       <div class="notes-body">{{ notes }}</div>
     </div>
 
+    <!-- ============ Actions ============ -->
     <div class="footer-actions no-print">
       <button mat-raised-button color="primary" class="action-btn" (click)="print()">
         <mat-icon>print</mat-icon> {{ arabic.dailySafeReport.print }}
@@ -102,5 +309,18 @@
     </div>
 
   </div>
+
+  <!-- ============ Empty state ============ -->
+  <mat-card class="empty-card no-print"
+            *ngIf="loaded && report && !report.customerPaymentsDetails?.length
+                    && !report.cashSalesDetails?.length
+                    && !report.cashRetrievalsDetails?.length
+                    && !report.purchasesDetails?.length">
+    <mat-card-content>
+      <mat-icon class="empty-icon">event_busy</mat-icon>
+      <h3>لا توجد حركات في هذا اليوم</h3>
+      <p>لم يتم تسجيل أي مبيعات أو مشتريات أو تحصيلات أو مرتجعات في هذا التاريخ.</p>
+    </mat-card-content>
+  </mat-card>
 
 </div>

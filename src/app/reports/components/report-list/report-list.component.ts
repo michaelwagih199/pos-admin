@@ -35,6 +35,10 @@ export class ReportListComponent implements OnInit {
  toCustomerStatement() {
     this.router.navigateByUrl('customers/statement');
   }
+
+  toSupplierStatement() {
+    this.router.navigateByUrl('reports/supplier-statement');
+  }
 toDailySafe() {
   this.router.navigateByUrl('reports/daily-safe');
 }

@@ -99,6 +99,50 @@ export class Arabic {
     },
   };
 
+  supplierStatement = {
+    title: "كشف حساب مورد",
+    supplier: "المورد",
+    from: "من تاريخ",
+    to: "إلى تاريخ",
+    show: "عرض الكشف",
+    print: "طباعة",
+    detailedReport: "كشف مفصل",
+    openingBalance: "رصيد افتتاحي (ما علينا له)",
+    totalPurchases: "إجمالي المشتريات",
+    totalPayments: "إجمالي السداد",
+    totalReturns: "إجمالي المرتجعات",
+    closingBalance: "الرصيد المتبقي النهائي",
+    purchasesSection: "تفاصيل فواتير المشتريات",
+    paymentsSection: "تفاصيل عمليات السداد والمدفوعات",
+    retrievalsSection: "تفاصيل مرتجعات المشتريات",
+    refundCredit: "رصيد",
+    refundCash: "كاش",
+    noPurchases: "لا توجد فواتير مشتريات في هذه الفترة",
+    noPayments: "لا توجد مدفوعات في هذه الفترة",
+    noRetrievals: "لا توجد مرتجعات في هذه الفترة",
+    emptyTitle: "لم يتم العثور على بيانات",
+    emptyHint: "تأكد من اختيار مورد ثم اضغط «عرض الكشف»",
+    generatedAt: "تم الإنشاء في",
+    table: {
+      date: "التاريخ",
+      code: "الكود",
+      total: "الإجمالي",
+      paid: "المدفوع",
+      remaining: "المتبقي",
+      value: "القيمة",
+      notes: "ملاحظات",
+      net: "الصافي",
+      refund: "طريقة الرد",
+      lineCount: "عدد البنود",
+      product: "الصنف",
+      rolls: "الأتواب",
+      quantity: "الكمية",
+      unitPrice: "سعر الوحدة",
+      reason: "السبب",
+      method: "طريقة الدفع",
+    },
+  };
+
 
   dailySafeReport = {
     title: "تقرير الخزنة اليومي",
@@ -113,6 +157,32 @@ export class Arabic {
     notes: "ملاحظات",
     print: "طباعة",
     currency: "ج.م",
+
+    // Labels
+    allSales: "إجمالي المبيعات",
+    purchases: "المشتريات",
+    allPurchases: "إجمالي المشتريات",
+    allRetrievals: "إجمالي المرتجعات",
+    supplier: "المورد",
+    party: "الطرف (عميل / مورد)",
+    paymentType: "طريقة الدفع",
+    paid: "المدفوع",
+    remaining: "المتبقي",
+    totalBill: "إجمالي الفاتورة",
+    returnType: "نوع المرتجع",
+
+    receiptCode: "رقم الإيصال",
+    invoiceCode: "رقم الفاتورة",
+    billCode: "رقم فاتورة الشراء",
+    returnCode: "رقم المرتجع",
+    customer: "العميل",
+    phone: "الهاتف",
+    reference: "البيان / المرجع",
+    dateCol: "التاريخ",
+    amount: "المبلغ",
+    reason: "السبب / النوع",
+    sectionCount: "عدد الحركات",
+    empty: "لا توجد حركات في هذا القسم",
   };
 
 

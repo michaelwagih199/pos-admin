@@ -63,13 +63,15 @@
       <div class="returnable-qty">
         <b>{{ p.availableCanvases ?? 0 }}</b>
         <span class="unit-label">توب</span>
-        <span class="divider">·</span>
-        <b style="color:#4f46e5;">
-          {{ (p.availableUnits ?? 0) | number:'1.0-3' }}
-        </b>
-        <span class="unit-label">
-          {{ p.measurementUnit === 'METER' ? 'متر' : 'كجم' }}
-        </span>
+        <ng-container *ngIf="(p.availableUnits ?? 0) > 0">
+          <span class="divider">·</span>
+          <b style="color:#4f46e5;">
+            {{ (p.availableUnits ?? 0) | number:'1.0-3' }}
+          </b>
+          <span class="unit-label">
+            {{ p.measurementUnit === 'METER' ? 'متر' : 'كجم' }}
+          </span>
+        </ng-container>
       </div>
       <div class="return-history">
         تم إرجاع {{ p.totalReturned ?? 0 }} من {{ p.totalPurchased ?? 0 }} توب

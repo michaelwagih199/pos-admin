@@ -10,6 +10,7 @@ import { ReportListComponent } from './components/report-list/report-list.compon
 import { TreasuryComponent } from './components/safe/treasury/treasury.component';
 import { CollectorReportComponent } from './components/collector-report/collector-report.component';
 import { SafeDailyReportComponent } from './components/safe/safe-daily-report/safe-daily-report.component';
+import { SupplierStatementComponent } from './components/supplier-statement/supplier-statement.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,7 @@ const routes: Routes = [
       },
 
             { path: 'daily-safe', component: SafeDailyReportComponent, canActivate: [AuthGaurdService] },  // 👈 new
+            { path: 'supplier-statement', component: SupplierStatementComponent, canActivate: [AuthGaurdService] },
 
     ]
   }

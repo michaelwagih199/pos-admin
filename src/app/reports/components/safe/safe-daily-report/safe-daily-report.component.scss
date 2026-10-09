@@ -65,123 +65,221 @@
   }
 }
 
-.info-card {
-  background: #fff;
-  border-inline-start: 6px solid var(--navy);
+/* ============ SUMMARY ROW ============ */
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1rem;
   border-radius: 8px;
-  padding: 0.85rem 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  background: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  border-inline-start: 5px solid #cbd5e1;
 
-  .info-row {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: #333;
-
-    mat-icon {
-      color: var(--navy);
-    }
+  mat-icon {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
   }
 
-  .info-label {
+  .label {
+    display: block;
+    font-size: 0.85rem;
+    color: #64748b;
     font-weight: 600;
   }
 
-  .info-value {
+  .value {
+    display: block;
+    font-size: 1.35rem;
     font-weight: 800;
-    color: var(--navy);
-    margin-inline-start: 0.5rem;
-    font-size: 1.1rem;
-  }
-}
-
-.line-card,
-.total-card {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #fff;
-  border-radius: 10px;
-  padding: 1rem 1.5rem;
-  margin-bottom: 0.75rem;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
-  border-inline-start: 6px solid #94a3b8;
-
-  .line-left {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #334155;
-
-    mat-icon {
-      font-size: 26px;
-      height: 26px;
-      width: 26px;
-    }
-  }
-
-  .line-right {
-    display: flex;
-    align-items: baseline;
-    gap: 0.4rem;
     font-variant-numeric: tabular-nums;
+    margin-top: 2px;
 
-    .sign {
-      font-size: 1.5rem;
-      font-weight: 800;
-      margin-inline-end: 0.25rem;
-    }
-
-    .amount {
-      font-size: 1.6rem;
-      font-weight: 800;
-    }
-
-    .currency {
-      font-size: 0.85rem;
+    small {
+      font-size: 0.75rem;
       color: #94a3b8;
+      font-weight: 500;
+      margin-inline-start: 4px;
     }
   }
 
   &.income {
     border-inline-start-color: var(--success);
-
-    .line-left mat-icon { color: var(--success); }
-    .line-right .sign { color: var(--success); }
-    .line-right .amount { color: var(--navy); }
+    mat-icon { color: var(--success); }
+    .value { color: var(--navy); }
   }
 
   &.outcome {
     border-inline-start-color: var(--danger);
+    mat-icon { color: var(--danger); }
+    .value { color: var(--danger); }
+  }
 
-    .line-left mat-icon { color: var(--danger); }
-    .line-right .sign { color: var(--danger); }
-    .line-right .amount { color: var(--danger); }
+  &.total {
+    background: var(--navy);
+    border-inline-start-color: var(--accent);
+    mat-icon { color: var(--accent); }
+    .label { color: #cbd5e1; }
+    .value { color: #fff; }
+    .value small { color: #94a3b8; }
   }
 }
 
-.total-card {
-  background: var(--navy);
-  border-inline-start-color: var(--accent);
-  margin-top: 1rem;
-  padding: 1.25rem 1.5rem;
+/* ============ DETAIL SECTION CARDS ============ */
+.section-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  page-break-inside: avoid;
+}
 
-  .line-left {
-    color: #fff;
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1rem;
+  font-weight: 700;
+  color: #fff;
+  font-family: "Cairo", sans-serif;
+
+  mat-icon { font-size: 20px; height: 20px; width: 20px; }
+
+  .count {
+    margin-inline-start: auto;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+  }
+
+  &.navy   { background: var(--navy); }
+  &.green  { background: var(--success); }
+  &.danger { background: var(--danger); }
+  &.purple { background: #7c3aed; }
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 700;
+
+  &.badge-cash {
+    background: #dcfce7;
+    color: #15803d;
+  }
+
+  &.badge-credit {
+    background: #fef3c7;
+    color: #b45309;
+  }
+
+  &.badge-supplier {
+    background: #ede9fe;
+    color: #6d28d9;
+  }
+}
+
+/* ============ DETAIL TABLE ============ */
+.detail-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead th {
+    background: #f1f5f9;
+    color: var(--navy);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 10px 12px;
+    text-align: start;
+    border-bottom: 2px solid #cbd5e1;
+  }
+
+  tbody td {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+    color: #334155;
+    border-bottom: 1px solid #eef0f2;
+    vertical-align: middle;
+  }
+
+  tbody tr:hover td {
+    background: #f8fafc;
+  }
+
+  .num {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+  }
+
+  .credit { color: var(--success); }
+  .debit  { color: var(--danger); }
+
+  .muted {
+    color: #94a3b8;
+    font-size: 0.78rem;
+    margin-inline-start: 4px;
+  }
+
+  tfoot td {
+    background: #f8fafc;
+    font-weight: 800;
+    padding: 10px 12px;
+    color: var(--navy);
+    border-top: 2px solid #cbd5e1;
+    text-align: end;
+  }
+
+  tfoot td:first-child {
+    text-align: start;
+  }
+}
+
+/* ============ GRAND TOTAL ============ */
+.grand-total-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--navy);
+  color: #fff;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  border-inline-start: 6px solid var(--accent);
+  margin-top: 1.25rem;
+  box-shadow: 0 6px 14px rgba(68, 89, 110, 0.2);
+
+  .grand-left {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
 
     mat-icon { color: var(--accent); }
   }
 
-  .line-right .amount {
-    color: #fff;
+  .grand-right .amount {
     font-size: 1.9rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
   }
 
-  .line-right .currency {
+  .grand-right .currency {
+    font-size: 0.9rem;
     color: #cbd5e1;
+    margin-inline-start: 6px;
   }
 }
 
@@ -223,21 +321,76 @@
   }
 }
 
+/* ============ PRINT HEADER ============ */
+.print-header {
+  display: none;
+}
+
+/* ============ PRINT MODE ============ */
 @media print {
   .no-print {
     display: none !important;
   }
 
   .daily-safe-screen {
-    background: #fff;
-    padding: 0;
+    background: #fff !important;
+    padding: 0 !important;
   }
 
-  .line-card,
-  .total-card,
-  .info-card {
-    box-shadow: none;
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--navy);
+
+    h2 {
+      margin: 0;
+      color: var(--navy);
+      font-family: "Cairo", sans-serif;
+    }
+
+    .print-date {
+      font-size: 0.85rem;
+      color: #64748b;
+    }
+  }
+
+  .summary-card,
+  .section-card,
+  .grand-total-card {
+    box-shadow: none !important;
     page-break-inside: avoid;
+  }
+
+  .section-header {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .detail-table thead th {
+    background: #e2e8f0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    border: 1px solid #94a3b8 !important;
+  }
+
+  .detail-table tbody td {
+    border: 1px solid #e2e8f0 !important;
+  }
+
+  .grand-total-card {
+    background: #fff !important;
+    color: var(--navy) !important;
+    border: 2px solid var(--navy) !important;
+  }
+
+  .grand-total-card .grand-right .amount {
+    color: var(--navy);
+  }
+
+  .grand-total-card .grand-right .currency {
+    color: #64748b;
   }
 
   .print-notes {

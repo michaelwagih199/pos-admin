@@ -429,8 +429,8 @@ isOrderValid(): boolean {
 
   openUpdateQuantity(content: any, item: DynamicDetailsDao) {
     this.modalService.open(content);
-    this.quantityValidateForm.get('modalCanvasTopUnits')?.setValue(item.quantity);
-    this.quantityValidateForm.get('modalQuantity')?.setValue(1);
+    this.quantityValidateForm.get('modalCanvasTopUnits')?.setValue(item.unitNumber);
+    this.quantityValidateForm.get('modalQuantity')?.setValue(item.quantity);
     this.dynamcObjectSelected = item;
     this.deleteDynamicItem(item);
   }

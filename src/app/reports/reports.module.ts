@@ -16,6 +16,7 @@ import { BugetComponent } from './components/profit-budget/buget/buget.component
 import { DynamicOrdersComponent } from './components/dialog/dynamic-orders/dynamic-orders.component';
 import { CollectorReportComponent } from './components/collector-report/collector-report.component';
 import { SafeDailyReportComponent } from './components/safe/safe-daily-report/safe-daily-report.component';
+import { SupplierStatementComponent } from './components/supplier-statement/supplier-statement.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { SafeDailyReportComponent } from './components/safe/safe-daily-report/sa
     BugetComponent,
     DynamicOrdersComponent,
     CollectorReportComponent,
-    SafeDailyReportComponent
+    SafeDailyReportComponent,
+    SupplierStatementComponent
   ],
   imports: [CommonModule, ReportsRoutingModule, SharedModule],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' }],
