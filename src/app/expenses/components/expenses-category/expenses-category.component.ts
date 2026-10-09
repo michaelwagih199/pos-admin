@@ -140,7 +140,6 @@ export class ExpensesCategoryComponent implements OnInit {
       id: obj.id,
       description: obj.categoryName,
     };
-    this.dialog.open(CreateCategoryComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);
@@ -171,7 +170,7 @@ export class ExpensesCategoryComponent implements OnInit {
     this.dialog.open(CreateCategoryComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
+      if (!data) return;
       this.category.categoryName = data.description;
       this.addCategory();
       this.getAllNames();

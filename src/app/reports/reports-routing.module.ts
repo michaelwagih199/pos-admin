@@ -8,6 +8,8 @@ import { AuthGaurdService } from '../core/services/auth-gaurd.service';
 import { LayoutComponent } from '../shared/components';
 import { ReportListComponent } from './components/report-list/report-list.component';
 import { TreasuryComponent } from './components/safe/treasury/treasury.component';
+import { CollectorReportComponent } from './components/collector-report/collector-report.component';
+import { SafeDailyReportComponent } from './components/safe/safe-daily-report/safe-daily-report.component';
 
 const routes: Routes = [
   {
@@ -35,9 +37,17 @@ const routes: Routes = [
         path: 'profit',
         component: ProfitsListComponent, canActivate: [AuthGaurdService]
       },
+       {
+        path: 'collector',
+        component: CollectorReportComponent,
+        canActivate: [AuthGaurdService],
+      },
+
+            { path: 'daily-safe', component: SafeDailyReportComponent, canActivate: [AuthGaurdService] },  // 👈 new
+
     ]
   }
-  
+
 ];
 
 @NgModule({

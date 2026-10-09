@@ -14,17 +14,18 @@ import { PurchasingBillsDetailsService } from '../../service/purchasing-bills-de
 import * as moment from 'moment';
 
 export interface PurchaseModel {
-  billsDate: string|null
-  paid: number
-  supplierId: number
-  purchasesBillDetails: PurchasesBillDetail[]
+  billsDate: string | null;
+  supplierId: number;
+  notes: string | undefined;
+  purchasesBillDetails: PurchasesBillDetail[];
 }
 
 export interface PurchasesBillDetail {
-  itemQuantity: number
-  itemPrice: number
-  productId: number
+  productId: number;
+  itemQuantity: number;
+  numberOfPieces: number;
 }
+
 
 @Component({
   selector: 'app-purchases-bills',
@@ -129,16 +130,12 @@ export class PurchasesBillsComponent implements OnInit {
   }
 
   Ondetails(obj: any) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      id: obj.id,
-    };
+   const dialogConfig = new MatDialogConfig();
+  dialogConfig.data = {
+    id: obj.id,
+  };
+  const dialogRef = this.dialog.open(PurchasesBillsDetailsComponent, dialogConfig);
 
-    this.dialog.open(PurchasesBillsDetailsComponent, dialogConfig);
-    const dialogRef = this.dialog.open(
-      PurchasesBillsDetailsComponent,
-      dialogConfig
-    );
   }
 
   refresh() {
@@ -146,48 +143,48 @@ export class PurchasesBillsComponent implements OnInit {
     this.getAllSuppliers();
   }
 
-  addDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      model: this.purchasesBills,
-    };
+addDialog() {
+  const dialogConfig = new MatDialogConfig();
+  dialogConfig.disableClose = true;
+  dialogConfig.autoFocus = true;
+  dialogConfig.data = {
+    model: this.purchasesBills,
+  };
 
-    this.dialog.open(CreatePurchasesComponent, dialogConfig);
-    const dialogRef = this.dialog.open(CreatePurchasesComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((data) => {
-      console.log(data);
-      this.dynamic = data.dynamicOrderList;
-      let purchasesBillDetailList: PurchasesBillDetail[] = []
-      this.dynamic.forEach(product => {
-        purchasesBillDetailList.push(
-          {
-            itemPrice: product.itemPrice,
-            itemQuantity: product.itemQuantity,
-            productId: product.product.id
-          }
-        )
-      })
-      let purchasesBillsNew: PurchaseModel = {
-        billsDate: moment(data.model.billsDate).format(),
-        paid: data.model.paid,
+  this.dialog.open(CreatePurchasesComponent, dialogConfig);
+  const dialogRef = this.dialog.open(CreatePurchasesComponent, dialogConfig);
+  dialogRef.afterClosed().subscribe((data) => {
+    if (data) {
+      // Build the details array from the dynamic order list
+      const purchasesBillDetailList: PurchasesBillDetail[] = data.dynamicOrderList.map((item: any) => ({
+        productId: item.product.id,
+        itemQuantity: item.itemQuantity,
+        numberOfPieces: item.numberOfPieces,
+      }));
+
+      const payload: PurchaseModel = {
+        billsDate: data.model.billsDate, // Already in correct format (ISO)
+        supplierId: data.supplier.id,
+        notes: data.model.notes || '',
         purchasesBillDetails: purchasesBillDetailList,
-        supplierId: data.supplier.id
       };
-      this.purchasesBillsService.create(purchasesBillsNew).subscribe(
-        (post) => {
-          console.log(post);
-          this.openSnackBar('تم الحفظ', '');
+
+      this.purchasesBillsService.create(payload).subscribe(
+        (response) => {
+          // Response: { code: "ACCEPTED", message: "SAVED_SUCCESSFULLY", data: "210016" }
+          const billCode = response.data || '';
+          this.openSnackBar(`تم الحفظ - كود الفاتورة: ${billCode}`, '');
           this.retrieve();
+          this.dialog.closeAll();
         },
         (error) => {
-          this.openSnackBar(error.error.message, '');
+          this.openSnackBar(error.error?.message || 'حدث خطأ أثناء الحفظ', '');
           this.dialog.closeAll();
         }
       );
-    });
-  }
+    }
+  });
+}
 
   /**
    * ui ux

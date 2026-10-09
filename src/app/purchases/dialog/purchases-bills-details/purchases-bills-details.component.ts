@@ -13,11 +13,9 @@ export class PurchasesBillsDetailsComponent implements OnInit {
   id: any;
 
   displayedColumns: string[] = [
-    'id',
     'product',
     'itemQuantity',
-    'itemPrice',
-    'total',
+    'numberOfPieces',
   ];
 
   constructor(

@@ -1,0 +1,342 @@
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --danger: #db1f48;
+  --credit: #2563eb;
+}
+
+.collector-screen {
+  font-family: "Cairo", sans-serif;
+  background: var(--sand);
+  min-height: calc(100vh - 64px);
+  padding: 1.25rem;
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border-top: 4px solid var(--navy);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  .header-icon {
+    color: var(--navy);
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+
+    h2 {
+    margin: 0;
+    color: var(--navy);
+    font-weight: 700;
+    flex: 1;   // ← NEW: pushes actions to the end
+  }
+
+  .header-actions {           // ← NEW
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-inline-start: auto;
+
+    button {
+      font-family: "Cairo", sans-serif;
+      font-weight: 700;
+    }
+  }
+}
+
+.filter-card,
+.table-card,
+.empty-card {
+  background: #fff;
+  border-radius: 8px;
+  border-top: 4px solid var(--accent);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1rem;
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+
+  .date-field {
+    min-width: 220px;
+    flex: 1 1 220px;
+  }
+
+  .action-btn {
+    height: 52px;
+    min-width: 160px;
+    font-family: "Cairo", sans-serif;
+    font-weight: 700;
+  }
+}
+
+.summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.summary-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+
+  mat-icon {
+    font-size: 42px;
+    height: 42px;
+    width: 42px;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    padding: 8px;
+  }
+
+  .summary-body {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .summary-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+  }
+
+  .summary-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin-top: 4px;
+  }
+
+  &.navy {
+    background: var(--navy);
+  }
+
+  &.accent {
+    background: var(--accent);
+  }
+}
+
+.collector-table {
+  width: 100%;
+
+  th.mat-header-cell {
+    background: var(--navy);
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 12px 8px;
+    border: none;
+  }
+
+  td.mat-cell {
+    padding: 12px 8px;
+    font-size: 1rem;
+    border-bottom: 1px solid #eef0f2;
+  }
+
+  tr.mat-row:hover {
+    background: #f9fbfc;
+  }
+}
+
+.customer-cell {
+  display: flex;
+  flex-direction: column;
+
+  .customer-name {
+    font-weight: 700;
+    color: #1a1a1a;
+  }
+
+  .customer-phone {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 2px;
+
+    mat-icon {
+      font-size: 14px;
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+.amount-cell {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+
+  .currency {
+    color: #94a3b8;
+    font-size: 0.8rem;
+    margin-inline-start: 4px;
+  }
+
+  &.debt {
+    color: var(--danger);
+  }
+
+  &.credit {
+    color: var(--credit);
+  }
+}
+
+.muted {
+  color: #cbd5e1;
+}
+
+.empty-card {
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+    color: #94a3b8;
+
+    .empty-icon {
+      font-size: 64px;
+      width: 64px;
+      height: 64px;
+      opacity: 0.5;
+    }
+
+    h3 {
+      margin: 1rem 0 0.25rem;
+      color: var(--navy);
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+
+
+/* ============================================ */
+/* PRINT HEADER (hidden on screen)              */
+/* ============================================ */
+.print-header {
+  display: none;
+}
+
+/* ============================================ */
+/* PRINT MODE                                   */
+/* ============================================ */
+@media print {
+  /* Hide chrome */
+  .no-print {
+    display: none !important;
+  }
+
+  /* Reset page background */
+  .collector-screen {
+    background: #fff !important;
+    padding: 0 !important;
+    min-height: auto !important;
+  }
+
+  /* Show the print-only header */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid #44596e;
+
+    h2 {
+      margin: 0 0 0.25rem;
+      color: #44596e;
+      font-family: "Cairo", sans-serif;
+      font-weight: 800;
+      font-size: 1.5rem;
+    }
+
+    .print-date {
+      font-size: 0.85rem;
+      color: #64748b;
+      font-family: "Cairo", sans-serif;
+    }
+  }
+
+  /* Summary cards — print-friendly (thin borders, no shadow) */
+  .summary-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .summary-card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1;
+    padding: 0.75rem 1rem;
+
+    mat-icon {
+      background: transparent !important;
+      font-size: 26px !important;
+      height: 26px !important;
+      width: 26px !important;
+      padding: 0 !important;
+    }
+
+    .summary-value {
+      font-size: 1.15rem !important;
+    }
+  }
+
+  /* Table — full borders, no shadow */
+  .table-card {
+    box-shadow: none !important;
+    border: 1px solid #cbd5e1;
+
+    mat-card-content {
+      padding: 0 !important;
+    }
+  }
+
+  .collector-table {
+    th.mat-header-cell {
+      background: #44596e !important;
+      color: #fff !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      border: 1px solid #44596e !important;
+      padding: 8px !important;
+      font-size: 0.9rem !important;
+    }
+
+    td.mat-cell {
+      border: 1px solid #cbd5e1 !important;
+      padding: 8px !important;
+      font-size: 0.9rem !important;
+    }
+
+    tr.mat-row:hover {
+      background: transparent !important;
+    }
+  }
+
+  /* Keep summary + table on the same page where possible */
+  .summary-row,
+  .table-card {
+    page-break-inside: avoid;
+  }
+}

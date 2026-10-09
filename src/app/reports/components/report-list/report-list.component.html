@@ -1,47 +1,88 @@
 <div class="container ">
-    <div class="box" >
-        <div class="card" (click)="toTresury()" >
-            <div class="imgBx">
-                <img src="https://images.unsplash.com/photo-1573325743508-f6eef36bb65f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
-                    alt="images">
-            </div>
-            <div class="details">
-                <h2>تقرير الخزنة</h2>
-            </div>
-        </div>
-
-        <div class="card" (click)="toCompound()" >
-            <div class="imgBx">
-                <img src="https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg" alt="images">
-            </div>
-            <div class="details">
-                <!-- <h2>تقرير المخزن<br><span>Producer</span></h2> -->
-                <h2>تقرير مجمع</h2>
-            </div>
-        </div>
-
-        <div class="card" (click)="toSales()">
-            <div class="imgBx">
-                <img src="https://images.pexels.com/photos/34577/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&w=500" alt="images">
-            </div>
-            <div class="details">
-                <!-- <h2>تقرير المخزن<br><span>Producer</span></h2> -->
-                <h2>تقرير مبيعات</h2>
-            </div>
-        </div>
-
-        <div class="card" (click)="toProfits()" >
-            <div class="imgBx">
-                <!-- <img src="https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_960_720.jpg" alt="images"> -->
-                <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="images">
-            </div>
-            <div class="details">
-                <!-- <h2>تقرير المخزن<br><span>Producer</span></h2> -->
-                <h2>تقرير ارباح وميزانية</h2>
-            </div>
-        </div>
-
-
-
+  <div class="box">
+    <div class="card" (click)="toTresury()">
+      <div class="imgBx">
+        <img
+          src="https://images.unsplash.com/photo-1573325743508-f6eef36bb65f?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+          alt="images">
+      </div>
+      <div class="details">
+        <h2>تقرير الخزنة</h2>
+      </div>
     </div>
+
+    <div class="card" (click)="toCompound()">
+      <div class="imgBx">
+        <img src="https://images.pexels.com/photos/6801648/pexels-photo-6801648.jpeg" alt="images">
+      </div>
+      <div class="details">
+        <!-- <h2>تقرير المخزن<br><span>Producer</span></h2> -->
+        <h2>تقرير مجمع</h2>
+      </div>
+    </div>
+
+    <div class="card" (click)="toSales()">
+      <div class="imgBx">
+        <img src="https://images.pexels.com/photos/34577/pexels-photo.jpg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+          alt="images">
+      </div>
+      <div class="details">
+        <!-- <h2>تقرير المخزن<br><span>Producer</span></h2> -->
+        <h2>تقرير مبيعات</h2>
+      </div>
+    </div>
+
+    <div class="card" (click)="toProfits()">
+      <div class="imgBx">
+        <!-- <img src="https://cdn.pixabay.com/photo/2016/11/22/19/24/archive-1850170_960_720.jpg" alt="images"> -->
+        <img
+          src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80"
+          alt="images">
+      </div>
+      <div class="details">
+        <!-- <h2>تقرير المخزن<br><span>Producer</span></h2> -->
+        <h2>تقرير ارباح وميزانية</h2>
+      </div>
+    </div>
+
+    <div class="card" (click)="toCollector()">
+      <div class="imgBx">
+        <img src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=750&q=80"
+          alt="images">
+      </div>
+      <div class="details">
+        <h2>تقرير المحصّل اليومي</h2>
+      </div>
+    </div>
+
+    <div class="card" (click)="toCustomerStatement()">
+      <div class="imgBx">
+        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=750&q=80"
+          alt="كشف حساب عميل">
+      </div>
+      <div class="details">
+        <h2>كشف حساب عميل</h2>
+      </div>
+    </div>
+
+    <div class="card" (click)="toDailySafe()">
+      <div class="imgBx">
+        <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&w=750&q=80"
+          alt="تقرير يومي">
+      </div>
+      <div class="details">
+        <h2>تقرير يومي</h2>
+      </div>
+    </div>
+
+    <div class="card" (click)="openStockReport()">
+      <div class="imgBx">
+        <img src="https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=750&q=80"
+          alt="تقرير المخازن">
+      </div>
+      <div class="details">
+        <h2>تقرير المخازن</h2>
+      </div>
+    </div>
+  </div>
 </div>

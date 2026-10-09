@@ -34,6 +34,7 @@ import { OrderService } from '../../service/order.service';
   templateUrl: './sale-order.component.html',
   styleUrls: ['./sale-order.component.scss'],
 })
+
 export class SaleOrderComponent implements OnInit {
   quantityValidateForm!: FormGroup;
   arabic: Arabic = new Arabic();
@@ -206,12 +207,19 @@ export class SaleOrderComponent implements OnInit {
       return;
     }
 
+    const pieceQuantity = this.producForm?.get('pieceQuantityControl')?.value ?? 1;
+    if (pieceQuantity <= 0) {
+      this.openSnackBar('يرجى إدخال عدد صحيح للاتواب', '');
+      return;
+    }
+this.producForm.get('quantityControl')?.setValue(1);
+this.producForm.get('pieceQuantityControl')?.setValue(1);
     const searchBy = this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE ? 'CODE' : 'NAME';
 
     if (this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE) {
-      this.findDynamicByCode(searchKey.trim(), canvasTopUnits, searchBy,1);
+      this.findDynamicByCode(searchKey.trim(), canvasTopUnits, searchBy, pieceQuantity);
     } else {
-      this.findDynamicByName(searchKey.trim(), canvasTopUnits, searchBy,1);
+      this.findDynamicByName(searchKey.trim(), canvasTopUnits, searchBy, pieceQuantity);
     }
   }
 
@@ -231,7 +239,9 @@ export class SaleOrderComponent implements OnInit {
         if (response?.data) {
           this.dynamicOrderList = response.data.dynamicDetailsDao || [];
           this.totalValue = response.data.totalPrice || 0;
-          if (response.data.code && response.data.code !== 200) {
+
+          // FIX: Show message even if code is 200 (for soft alerts)
+          if (response.data.message && response.data.message !== 'Can Order Product') {
             const message = AppConstants.translate(response.data.message) || response.data.message;
             this.openSnackBar(message, '');
           }
@@ -313,12 +323,12 @@ export class SaleOrderComponent implements OnInit {
     this.productSearchValue = '';
   }
 
-  isOrderValid(): boolean {
-    const hasProducts = this.dynamicOrderList.length > 0;
-    const hasPaymentType = !!this.saleOrderObj.paymentType;
-    const hasCustomer = this.searchCustomerInout?.trim() !== '';
-    return hasProducts && hasPaymentType && hasCustomer;
-  }
+isOrderValid(): boolean {
+  const hasProducts = this.dynamicOrderList.length > 0;
+  const hasPaymentType = !!this.saleOrderObj.paymentType;
+  const hasCustomer = this.searchCustomerInout?.trim() !== '';
+  return hasProducts && hasPaymentType && hasCustomer;
+}
 
   private saveOrder(print: boolean) {
     if (!this.searchCustomerInout || this.searchCustomerInout.trim() === '') {
@@ -351,7 +361,7 @@ export class SaleOrderComponent implements OnInit {
         this.saleOrderObj.flags.isLoading = false;
         this.openSnackBar(this.arabic.util.saved, '');
         if (print) {
-          const dataServer = { orderCode: this.saleOrderObj.orderCode };
+          const dataServer = { orderCode: this.saleOrderObj.orderCode, excludeOrder: "Y" };
           this.dataServer.changeMessage(dataServer);
           this.redirectTo('/printing/sale-order-invoice');
         }
@@ -373,6 +383,7 @@ export class SaleOrderComponent implements OnInit {
     this.productSearchValue = '';
     this.searchCustomerInout = '';
     this.producForm?.get('quantityControl')?.setValue(1);
+    this.producForm?.get('pieceQuantityControl')?.setValue(1);
     this.getOrderCode();
   }
 
@@ -401,6 +412,11 @@ export class SaleOrderComponent implements OnInit {
     const value = (event.target as HTMLSelectElement).value;
     this.var_arabic.paymentType = AppConstants.translate(value) || value;
     this.saleOrderObj.paymentType = value;
+
+    // If CASH, set paid = total (and disable the field)
+    if (value === 'CASH') {
+      this.paid = this.totalValue;
+    }
   }
   // ----- Dynamic List Management -----
   deleteDynamicItem(item: DynamicDetailsDao) {
@@ -411,43 +427,43 @@ export class SaleOrderComponent implements OnInit {
     }
   }
 
-openUpdateQuantity(content: any, item: DynamicDetailsDao) {
-  this.modalService.open(content);
-  this.quantityValidateForm.get('modalCanvasTopUnits')?.setValue(item.quantity);
-  this.quantityValidateForm.get('modalQuantity')?.setValue(1);
-  this.dynamcObjectSelected = item;
-  this.deleteDynamicItem(item);
-}
-
-onupdateQuantity() {
-  // Read values directly from the form controls
-  const canvasTopUnits = this.quantityValidateForm.get('modalCanvasTopUnits')?.value ?? 0;
-  const quantity = this.quantityValidateForm.get('modalQuantity')?.value ?? 0;
-
-  console.log(canvasTopUnits,quantity);
-
-  if (this.dynamcObjectSelected && canvasTopUnits > 0 && quantity > 0) {
-    const searchBy = this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE ? 'CODE' : 'NAME';
-    if (this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE) {
-      this.findDynamicByCode(
-        this.dynamcObjectSelected.productCode,
-        canvasTopUnits,
-        searchBy,
-        quantity
-      );
-    } else {
-      this.findDynamicByName(
-        this.dynamcObjectSelected.productName,
-        canvasTopUnits,
-        searchBy,
-        quantity
-      );
-    }
-  } else {
-    this.openSnackBar('يرجى إدخال قيم صحيحة', '');
+  openUpdateQuantity(content: any, item: DynamicDetailsDao) {
+    this.modalService.open(content);
+    this.quantityValidateForm.get('modalCanvasTopUnits')?.setValue(item.quantity);
+    this.quantityValidateForm.get('modalQuantity')?.setValue(1);
+    this.dynamcObjectSelected = item;
+    this.deleteDynamicItem(item);
   }
-  this.modalService.dismissAll();
-}
+
+  onupdateQuantity() {
+    // Read values directly from the form controls
+    const canvasTopUnits = this.quantityValidateForm.get('modalCanvasTopUnits')?.value ?? 0;
+    const quantity = this.quantityValidateForm.get('modalQuantity')?.value ?? 0;
+
+    console.log(canvasTopUnits, quantity);
+
+    if (this.dynamcObjectSelected && canvasTopUnits > 0 && quantity > 0) {
+      const searchBy = this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE ? 'CODE' : 'NAME';
+      if (this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE) {
+        this.findDynamicByCode(
+          this.dynamcObjectSelected.productCode,
+          canvasTopUnits,
+          searchBy,
+          quantity
+        );
+      } else {
+        this.findDynamicByName(
+          this.dynamcObjectSelected.productName,
+          canvasTopUnits,
+          searchBy,
+          quantity
+        );
+      }
+    } else {
+      this.openSnackBar('يرجى إدخال قيم صحيحة', '');
+    }
+    this.modalService.dismissAll();
+  }
 
   // ----- Utilities -----
   private _filter(value: string): string[] {
@@ -479,7 +495,8 @@ onupdateQuantity() {
   validateForm() {
     this.producForm = this.fb.group({
       productFilter: ['code', [Validators.required]],
-      quantityControl: [1, [Validators.required, Validators.min(0.01)]],
+      quantityControl: [1, [Validators.required, Validators.min(0.001)]],
+      pieceQuantityControl: [1, [Validators.required, Validators.min(1)]],
     });
 
     this.quantityValidateForm = this.fb.group({
@@ -494,6 +511,11 @@ onupdateQuantity() {
       this.totalValue = 0;
     } else {
       this.totalValue = this.dynamicOrderList.reduce((sum, item) => sum + (item.total || 0), 0);
+    }
+
+    // If payment type is CASH, set paid = total automatically
+    if (this.saleOrderObj.paymentType === 'CASH') {
+      this.paid = this.totalValue;
     }
   }
 }

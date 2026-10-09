@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerService } from '../../service/customer.service';
 import { CustomerOrderModel } from '../../model/customer-order';
 import { AppConstants } from 'src/app/_helpers/constants';
+import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
+import { SaleOrderDetails } from 'src/app/sale-orders/models/orderDetails';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Arabic } from 'src/app/text';
 
 @Component({
@@ -19,6 +22,7 @@ export class OrdersComponent implements OnInit {
   isLoading: boolean = false
 
   customerOrderList: CustomerOrderModel[] = []
+  ordersDetailsList!: SaleOrderDetails[]
   totalOrders: number = 0
   totalOrderAmount: number = 0
   totalPaid: number = 0
@@ -28,12 +32,14 @@ export class OrdersComponent implements OnInit {
   endDate: any
 
   //for tables
-  displayedColumns: string[] = ['orderCode', 'orderDate', 'totalOrder', 'paid', 'remaining', 'paymentType']
+  displayedColumns: string[] = ['orderCode', 'orderDate', 'totalOrder', 'paid', 'remaining', 'paymentType', 'details']
 
   constructor(
     private customerService: CustomerService,
     private route: ActivatedRoute,
     private router: Router,
+    private modalService: NgbModal,
+    private orderDetailsService: OrderDetailsService,
   ) { }
 
   ngOnInit(): void {
@@ -99,6 +105,13 @@ export class OrdersComponent implements OnInit {
 
   translatePaymentType(paymentType: string): string {
     return AppConstants.translate(paymentType) || paymentType;
+  }
+
+  details(content: any, item: CustomerOrderModel) {
+    this.modalService.open(content, { size: 'lg' });
+    this.orderDetailsService.getByCode(item.orderCode).subscribe(data => {
+      this.ordersDetailsList = data;
+    }, error => console.log(error));
   }
 
   page = 1;

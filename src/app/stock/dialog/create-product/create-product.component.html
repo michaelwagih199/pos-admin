@@ -54,10 +54,18 @@
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="fill" class="w-100">
-          <mat-label> عدد الاتواب</mat-label>
+      <mat-label>عدد الوحدات (م/كجم)</mat-label>
           <input matInput type="number" required formControlName="numberUnitsInStock" [(ngModel)]="product.numberUnitsInStock" autocomplete="off">
         </mat-form-field>
       </div>
+      <div class="col-md-3">
+  <mat-form-field appearance="fill" class="w-100">
+    <mat-label>عدد الاتواب</mat-label>
+    <input matInput type="number" step="1" min="0" required
+           formControlName="numberOfCanvasesInStock"
+           [(ngModel)]="product.numberOfCanvasesInStock">
+  </mat-form-field>
+</div>
       <div class="col-md-4">
         <mat-form-field appearance="fill" class="w-100">
           <mat-label>{{ arabic.stock.products.table.productCategory }}</mat-label>

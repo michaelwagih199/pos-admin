@@ -13,14 +13,13 @@ export class SaleOrderInvoceService {
 
   constructor(private http: HttpClient) { }
 
-  getSaleOrderInvoce(orderCode: any): Observable<POS_Response<SaleOrderInvoceModel>> {
-    return this.http.get<POS_Response<SaleOrderInvoceModel>>(`${this.baseUrl}/sale-order/${orderCode}`);
+  getSaleOrderInvoce(orderCode: any,excludeOrder: string = "Y"): Observable<POS_Response<SaleOrderInvoceModel>> {
+    return this.http.get<POS_Response<SaleOrderInvoceModel>>(`${this.baseUrl}/sale-order/${orderCode}?excludeOrder=${excludeOrder}`);
   }
 
 
-  printSaleOrderInvoice(orderCode: any): Observable<Blob> {
-    return this.http.get(`${this.baseUrl}/pdf/${orderCode}`, { responseType: "blob" });
-  }
-
+printSaleOrderInvoice(orderCode: any, excludeOrder: string = "Y"): Observable<Blob> {
+  return this.http.get(`${this.baseUrl}/pdf/${orderCode}?excludeOrder=${excludeOrder}`, { responseType: "blob" });
+}
 
 }

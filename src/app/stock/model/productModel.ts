@@ -6,11 +6,12 @@ export class ProductModel {
   productName!: string
   retailPrice!: number
   purchasingPrice!: number
-  numberUnitsInStock!: number
   alertUnits!: number
   productCategory!: CategoryModel
   createdDate!: string
   expirationDate!: string
   wholesalePrice!: number
   measurementUnit!: string;
+   numberUnitsInStock!: number;
+    numberOfCanvasesInStock!: number;
 }

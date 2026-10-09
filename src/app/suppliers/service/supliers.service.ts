@@ -33,6 +33,10 @@ export class SupliersService {
     return this.http.get(`${this.baseUrl}/supplierName?supplierName=${name}`);
   }
 
+  getOrders(supplierId: number, params: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${supplierId}/orders`, { params });
+  }
+
   create(object: any): Observable<any>  {
     return this.http.post(`${this.baseUrl}`, object);
   }

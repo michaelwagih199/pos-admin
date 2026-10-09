@@ -9,4 +9,5 @@ export class PurchasesBillsDetails {
     purchasesBill!: PurchasesBills
     product!: ProductModel
     createdDate: any
+    numberOfPieces!:number
 }

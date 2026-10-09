@@ -19,9 +19,13 @@ export class RerivalDetailsComponent implements OnInit {
   displayedColumns: string[] = [
     'id',
     'product',
-    'quantity',
+    'sourceInvoice',     // ← new
+    'rolls',
+    'units',
     'price',
     'total',
+    'condition',
+    'reason',
   ];
 
   constructor(

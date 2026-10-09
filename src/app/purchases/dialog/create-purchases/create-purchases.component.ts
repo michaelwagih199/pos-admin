@@ -1,10 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { ProductModel } from 'src/app/stock/model/productModel';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
@@ -33,10 +28,7 @@ export class CreatePurchasesComponent implements OnInit {
 
   dynamicOrderList: PurchasesBillsDetails[] = [];
   obj: PurchasesBills = new PurchasesBills();
-  total: number = 0;
-  paid: number = 0;
   purchasingDetails: PurchasesBillsDetails = new PurchasesBillsDetails();
-  myControl = new FormControl();
   billsCode: any;
 
   constructor(
@@ -57,15 +49,10 @@ export class CreatePurchasesComponent implements OnInit {
     this.getAllSuppliers();
   }
 
-  /**
-   * events
-   */
-
+  // ----- Events -----
   save() {
     this.obj.billCodeCode = this.billsCode;
-    this.obj.paid = this.paid;
-    this.obj.total = this.total;
-    this.obj.remaining = this.total - this.paid;
+
     let data = {
       model: this.obj,
       supplier: this.selectedSupllier,
@@ -79,32 +66,33 @@ export class CreatePurchasesComponent implements OnInit {
   }
 
   deleteDynamicItem(obj: any) {
-    for (var i = 0; i < this.dynamicOrderList.length; i++) {
-      if (this.dynamicOrderList[i] === obj) {
-        this.dynamicOrderList.splice(i, 1);
-      }
+    const index = this.dynamicOrderList.indexOf(obj);
+    if (index > -1) {
+      this.dynamicOrderList.splice(index, 1);
     }
   }
 
-  orderDetails() {}
-
   addDynamic() {
-    this.total = 0
+    if (!this.product || !this.purchasingDetails.itemQuantity || !this.purchasingDetails.numberOfPieces) {
+      return;
+    }
+    // Store product and pieces
     this.purchasingDetails.product = this.product;
-    this.purchasingDetails.total =
-      this.purchasingDetails.itemPrice * this.purchasingDetails.itemQuantity;
-    this.dynamicOrderList.push(this.purchasingDetails);
-
-    this.dynamicOrderList.forEach((element) => {
-      this.total += element.total;
-    });
+    // (Optional) store price if needed internally
+    this.purchasingDetails.itemPrice = this.product.purchasingPrice;
+    // The total will be calculated in the template, but we can also compute here
+    this.dynamicOrderList.push({ ...this.purchasingDetails });
+    // Reset form
     this.purchasingDetails = new PurchasesBillsDetails();
+    this.product = new ProductModel();
   }
 
-  /**
-   * data
-   */
+  // ----- Utility -----
+getTotalSum(): number {
+    return this.dynamicOrderList.reduce((sum, item) => sum + (item.itemQuantity * item.itemPrice), 0);
+}
 
+  // ----- Data -----
   getProducts() {
     this.productService.findAll().subscribe((data) => {
       this.productList = data;
@@ -130,20 +118,18 @@ export class CreatePurchasesComponent implements OnInit {
     );
   }
 
-  // uiux
-
+  // ----- Validation -----
   validate() {
     this.validateForm = this.fb.group({
       billsDate: [null, [Validators.required]],
       supplierName: [null, [Validators.required]],
-      paid: [null, [Validators.required]],
       notes: [null],
     });
 
     this.validateDynamicForm = this.fb.group({
       product: [null, [Validators.required]],
-      quantity: [null, [Validators.required]],
-      price: [null, [Validators.required]],
+      quantity: [null, [Validators.required, Validators.min(0.01)]],
+      numberOfPieces: [null, [Validators.required, Validators.min(1)]],
     });
   }
 }

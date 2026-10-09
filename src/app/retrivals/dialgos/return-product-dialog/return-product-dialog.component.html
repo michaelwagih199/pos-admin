@@ -1,0 +1,110 @@
+<div class="dialog-container" dir="rtl">
+
+  <div class="dialog-header">
+    <div class="title-row">
+      <h2>{{ data.product.productName }}</h2>
+      <button mat-icon-button (click)="close()" class="close-btn" aria-label="إغلاق">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <div class="subtitle">
+      <span *ngIf="selectedInvoiceCode" class="chip">
+        <mat-icon inline>receipt_long</mat-icon>
+        {{ selectedInvoiceCode }}
+      </span>
+      <span class="chip available">
+        <mat-icon inline>inventory_2</mat-icon>
+        المتاح من هذه الفاتورة:
+        <b>{{ maxQty }}</b> توب
+        <span class="divider">·</span>
+        <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
+      </span>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="dialog-body">
+    <form [formGroup]="form">
+
+      <mat-form-field appearance="outline" class="w-100" *ngIf="multiInvoiceInvoices.length > 0">
+        <mat-label>فاتورة الاسترجاع</mat-label>
+        <mat-select formControlName="sourceDetailId">
+          <mat-option *ngFor="let inv of multiInvoiceInvoices"
+            [value]="inv.saleOrderDetailId ?? inv.purchasesBillDetailId"
+            [disabled]="(inv.returnableQty ?? 0) <= 0 && (inv.returnableUnits ?? 0) <= 0">
+            {{ inv.orderCode }} — {{ inv.orderDate | date:'yyyy-MM-dd' }}
+            (متاح: {{ inv.returnableQty }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="dual-row">
+        <!-- Rolls -->
+        <mat-form-field appearance="outline">
+          <mat-label>عدد الأتواب *</mat-label>
+          <input matInput type="number" [max]="maxQty" formControlName="quantity">
+          <mat-hint>
+            الحد الأقصى: <b>{{ maxQty }}</b> توب
+          </mat-hint>
+          <mat-error *ngIf="form.get('quantity')?.hasError('required')">مطلوب</mat-error>
+          <mat-error *ngIf="form.get('quantity')?.hasError('min')">1 على الأقل</mat-error>
+          <mat-error *ngIf="form.get('quantity')?.hasError('max')
+                       || form.hasError('quantityOverflow')">
+            أكبر من المتاح ({{ maxQty }})
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Units -->
+        <mat-form-field appearance="outline">
+          <mat-label>عدد الوحدات *</mat-label>
+          <input matInput type="number" step="0.001" min="0.001" [max]="maxUnits" formControlName="unitNumber">
+          <mat-hint>
+            الحد الأقصى: <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
+          </mat-hint>
+          <mat-error *ngIf="form.get('unitNumber')?.hasError('required')">مطلوب</mat-error>
+          <mat-error *ngIf="form.get('unitNumber')?.hasError('min')">أكبر من 0</mat-error>
+          <mat-error *ngIf="form.get('unitNumber')?.hasError('max')
+                       || form.hasError('unitsOverflow')">
+            أكبر من المتاح ({{ maxUnits | number:'1.0-3' }} {{ measurementUnitLabel }})
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-radio-group formControlName="condition" class="condition-toggle">
+        <mat-radio-button value="GOOD" class="cond-good">
+          <mat-icon>check_circle</mat-icon>
+          <span>سليم</span>
+        </mat-radio-button>
+        <mat-radio-button value="DAMAGED" class="cond-damaged">
+          <mat-icon>cancel</mat-icon>
+          <span>تالف</span>
+        </mat-radio-button>
+      </mat-radio-group>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>سبب الإرجاع *</mat-label>
+        <mat-select formControlName="reason">
+          <mat-option *ngFor="let r of reasons" [value]="r.value">{{ r.label }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('reason')?.hasError('required')">مطلوب</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>ملاحظات (اختياري)</mat-label>
+        <textarea matInput formControlName="notes" rows="2"></textarea>
+      </mat-form-field>
+
+    </form>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="close()">إلغاء</button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
+      <mat-icon>add</mat-icon>
+      إضافة للمرتجع
+    </button>
+  </div>
+
+</div>

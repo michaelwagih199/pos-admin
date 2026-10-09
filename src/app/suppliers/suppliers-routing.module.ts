@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LayoutComponent } from '../shared/components';
 import { AuthGaurdService } from '../core/services/auth-gaurd.service';
 import { SupliersListComponent } from './components/supliers-list/supliers-list.component';
-import { SupliersPaymentComponent } from './components/supliers-payment/supliers-payment.component';
+import { SupplierDetailsComponent } from './components/supplier-details/supplier-details.component';
 
 const routes: Routes = [
   {
@@ -16,7 +16,7 @@ const routes: Routes = [
       },
       {
         path: 'supplierDetails/:id',
-        component:SupliersPaymentComponent,canActivate:[AuthGaurdService]
+        component: SupplierDetailsComponent,canActivate:[AuthGaurdService]
       },
     ]
   }

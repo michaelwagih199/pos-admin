@@ -33,10 +33,11 @@ export class ProductsComponent implements OnInit {
     'productName',
     'productCategory',
     'measurementUnit',
-    'unitNumber',
+    'numberUnitsInStock',
+    'numberOfCanvasesInStock',
     'wholesalePrice',
     'alertUnits',
-    'actions',
+    'actions'
   ];
   myControl = new FormControl();
   //for autocomplete

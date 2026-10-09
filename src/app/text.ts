@@ -20,10 +20,106 @@ export class Arabic {
       cancel: "إلغاء",
     },
   }
+  customerPayment = {
+    title: "دفعة عميل",
+    customerSection: "بيانات العميل",
+    paymentSection: "بيانات الدفعة",
+    customer: "العميل",
+    searchPlaceholder: "ابحث باسم العميل...",
+    paymentDate: "تاريخ الدفعة",
+    paymentValue: "قيمة الدفعة",
+    notes: "ملاحظات",
+    currentBalance: "المتبقي الحالي",
+    remainingAfter: "المتبقي بعد الدفعة",
+    currency: "ج.م",
+    save: "حفظ",
+    reset: "مسح",
+    close: "إغلاق",
+    savedSuccess: "✅ تم حفظ الدفعة بنجاح",
+    saveFailed: "فشل حفظ الدفعة",
+    customerNotFound: "لم يتم العثور على العميل",
+    customerRequired: "يجب اختيار العميل",
+    overPaymentWarning: "⚠️ قيمة الدفعة أكبر من المتبقي الحالي",
+
+  };
+
+
+  collectorReport = {
+    title: "تقرير المحصّل",
+    print: "طباعة",              // ← NEW
+    printedAt: "تم الطباعة في",  // ← NEW
+    exportExcel: "تصدير Excel",
+    totalCollected: "إجمالي التحصيلات",
+    customerCount: "عدد العملاء",
+    currency: "ج.م",
+    emptyTitle: "لا يوجد عملاء",
+    emptyHint: "لا توجد بيانات لعرضها",
+    table: {
+      index: "م",
+      customerName: "اسم العميل",
+      lastPaymentDate: "آخر دفعة",
+      collectedAmount: "إجمالي المحصل",
+      remainingDebt: "المديونية",
+    },
+  };
+
+  customerStatement = {
+    title: "كشف حساب عميل",
+    customer: "العميل",
+    from: "من تاريخ",
+    to: "إلى تاريخ",
+    show: "عرض الكشف",
+    print: "طباعة",
+    openingBalance: "رصيد افتتاحي",
+    totalOrders: "إجمالي الطلبات",
+    totalPayments: "إجمالي الدفعات",
+    totalReturns: "إجمالي المرتجعات",
+    closingBalance: "الرصيد الحالي",
+    ordersSection: "تفاصيل الطلبات",
+    paymentsSection: "تفاصيل الدفعات",
+    retrievalsSection: "تفاصيل المرتجعات",
+    refundCredit: "رصيد",
+    refundCash: "كاش",
+    noOrders: "لا توجد طلبات في هذه الفترة",
+    noPayments: "لا توجد دفعات في هذه الفترة",
+    noRetrievals: "لا توجد مرتجعات في هذه الفترة",
+    emptyTitle: "لم يتم العثور على بيانات",
+    emptyHint: "تأكد من اختيار عميل ثم اضغط «عرض الكشف»",
+    generatedAt: "تم الإنشاء في",
+    table: {
+      date: "التاريخ",
+      code: "الكود",
+      total: "الإجمالي",
+      paid: "المدفوع",
+      remaining: "المتبقي",
+      value: "القيمة",
+      notes: "ملاحظات",
+      net: "الصافي",
+      refund: "طريقة الرد",
+    },
+  };
+
+
+  dailySafeReport = {
+    title: "تقرير الخزنة اليومي",
+    date: "التاريخ",
+    show: "عرض التقرير",
+    today: "اليوم",
+    reportDate: "تاريخ التقرير",
+    customerPayments: "دفعات العملاء",
+    cashSales: "مبيعات كاش",
+    cashRetrievals: "مرتجعات العملاء (كاش)",
+    total: "الإجمالي",
+    notes: "ملاحظات",
+    print: "طباعة",
+    currency: "ج.م",
+  };
+
 
   navBarList = {
     seling: "بيع",
     customers: "العملاء",
+    customerPayment: "دفعة عميل",
     suppliers: "الموردين",
     purshasing: "المشتريات",
     retrival: "المرتجع",

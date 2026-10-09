@@ -1,0 +1,246 @@
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --success: #16a34a;
+  --danger: #db1f48;
+}
+
+.daily-safe-screen {
+  font-family: "Cairo", sans-serif;
+  background: var(--sand);
+  min-height: calc(100vh - 64px);
+  padding: 1.25rem;
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border-top: 4px solid var(--navy);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  .header-icon {
+    color: var(--navy);
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--navy);
+    font-weight: 700;
+  }
+}
+
+.filter-card {
+  background: #fff;
+  border-radius: 8px;
+  border-top: 4px solid var(--accent);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1rem;
+}
+
+.filters-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+
+  .date-field {
+    min-width: 220px;
+    flex: 1 1 220px;
+  }
+
+  .action-btn {
+    height: 52px;
+    min-width: 150px;
+    font-family: "Cairo", sans-serif;
+    font-weight: 700;
+  }
+}
+
+.info-card {
+  background: #fff;
+  border-inline-start: 6px solid var(--navy);
+  border-radius: 8px;
+  padding: 0.85rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #333;
+
+    mat-icon {
+      color: var(--navy);
+    }
+  }
+
+  .info-label {
+    font-weight: 600;
+  }
+
+  .info-value {
+    font-weight: 800;
+    color: var(--navy);
+    margin-inline-start: 0.5rem;
+    font-size: 1.1rem;
+  }
+}
+
+.line-card,
+.total-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border-radius: 10px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+  border-inline-start: 6px solid #94a3b8;
+
+  .line-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #334155;
+
+    mat-icon {
+      font-size: 26px;
+      height: 26px;
+      width: 26px;
+    }
+  }
+
+  .line-right {
+    display: flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    font-variant-numeric: tabular-nums;
+
+    .sign {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-inline-end: 0.25rem;
+    }
+
+    .amount {
+      font-size: 1.6rem;
+      font-weight: 800;
+    }
+
+    .currency {
+      font-size: 0.85rem;
+      color: #94a3b8;
+    }
+  }
+
+  &.income {
+    border-inline-start-color: var(--success);
+
+    .line-left mat-icon { color: var(--success); }
+    .line-right .sign { color: var(--success); }
+    .line-right .amount { color: var(--navy); }
+  }
+
+  &.outcome {
+    border-inline-start-color: var(--danger);
+
+    .line-left mat-icon { color: var(--danger); }
+    .line-right .sign { color: var(--danger); }
+    .line-right .amount { color: var(--danger); }
+  }
+}
+
+.total-card {
+  background: var(--navy);
+  border-inline-start-color: var(--accent);
+  margin-top: 1rem;
+  padding: 1.25rem 1.5rem;
+
+  .line-left {
+    color: #fff;
+
+    mat-icon { color: var(--accent); }
+  }
+
+  .line-right .amount {
+    color: #fff;
+    font-size: 1.9rem;
+  }
+
+  .line-right .currency {
+    color: #cbd5e1;
+  }
+}
+
+.notes-field {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.print-notes {
+  display: none;
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px dashed #94a3b8;
+  border-radius: 8px;
+  background: #f8fafc;
+
+  .notes-title {
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+  }
+
+  .notes-body {
+    white-space: pre-wrap;
+    color: #334155;
+  }
+}
+
+.footer-actions {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+
+  .action-btn {
+    min-width: 200px;
+    height: 50px;
+    font-family: "Cairo", sans-serif;
+    font-weight: 700;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+
+  .daily-safe-screen {
+    background: #fff;
+    padding: 0;
+  }
+
+  .line-card,
+  .total-card,
+  .info-card {
+    box-shadow: none;
+    page-break-inside: avoid;
+  }
+
+  .print-notes {
+    display: block;
+  }
+}

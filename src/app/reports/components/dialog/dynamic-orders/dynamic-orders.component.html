@@ -50,38 +50,40 @@
     </mat-card-content>
 </mat-card>
 <div>
+<div>
     <ng-template #content let-modal>
         <div class="modal-header">
             <h4 class="modal-title text-center" id="modal-basic-title">التفاصيل</h4>
         </div>
         <div class="modal-body">
             <div class="mt-2" style="text-align: center;">
-                <!--table-->
                 <table class="table table-bordered table-sm">
-                    <thead class="thead-light">
+                    <thead class="thead-dark">
                         <tr>
                             <th>المنتج</th>
-                            <th>التفاصيل</th>
-                            <th>الكمية</th>
-                            <th>السعر</th>
-                            <th>الاجمالى</th>
+                            <th>عدد الاتواب</th>
+                            <th>سعر الوحدة</th>
+                            <th>وحدة القياس</th>
+                            <th>عدد الوحدات</th>
+                            <th>الإجمالى</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let item of ordersDetailsList">
-                            <th>{{ item.product.productName}}</th>
-                            <th>{{ item.product.productCategory.categoryName}}</th>
-                            <th>{{ item.quantity}}</th>
-                            <th>{{ item.price}}</th>
-                            <th>{{ item.total}}</th>
+                            <td>{{ item.productName }}</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.price }}</td>
+                            <td>{{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}</td>
+                            <td>{{ item.unitNumber }}</td>
+                            <td>{{ item.total }}</td>
                         </tr>
                     </tbody>
                 </table>
-
             </div>
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-outline-dark" (click)="modal.close()">اغلاق</button>
         </div>
     </ng-template>
+</div>
 </div>

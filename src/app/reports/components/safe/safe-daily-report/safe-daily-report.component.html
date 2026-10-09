@@ -1,0 +1,106 @@
+<div class="daily-safe-screen" dir="rtl">
+
+  <div class="screen-header no-print">
+    <mat-icon class="header-icon">point_of_sale</mat-icon>
+    <h2>{{ arabic.dailySafeReport.title }}</h2>
+  </div>
+
+  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+
+  <mat-card class="filter-card no-print">
+    <mat-card-content>
+      <div class="filters-row">
+        <mat-form-field appearance="outline" class="date-field">
+          <mat-label>{{ arabic.dailySafeReport.date }}</mat-label>
+          <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" class="action-btn" (click)="loadReport()">
+          <mat-icon>search</mat-icon> {{ arabic.dailySafeReport.show }}
+        </button>
+
+        <button mat-stroked-button class="action-btn" (click)="goToday()">
+          <mat-icon>today</mat-icon> {{ arabic.dailySafeReport.today }}
+        </button>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="loaded && report" class="report-body">
+
+    <div class="info-card">
+      <div class="info-row">
+        <mat-icon>event</mat-icon>
+        <span class="info-label">{{ arabic.dailySafeReport.reportDate }}:</span>
+        <span class="info-value">{{ report.date | date:'yyyy-MM-dd' }}</span>
+      </div>
+    </div>
+
+    <div class="line-card income">
+      <div class="line-left">
+        <mat-icon>payments</mat-icon>
+        <span>{{ arabic.dailySafeReport.customerPayments }}</span>
+      </div>
+      <div class="line-right">
+        <span class="sign">+</span>
+        <span class="amount">{{ report.customerPayments | number:'1.2-2' }}</span>
+        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
+      </div>
+    </div>
+
+    <div class="line-card income">
+      <div class="line-left">
+        <mat-icon>shopping_cart</mat-icon>
+        <span>{{ arabic.dailySafeReport.cashSales }}</span>
+      </div>
+      <div class="line-right">
+        <span class="sign">+</span>
+        <span class="amount">{{ report.cashSales | number:'1.2-2' }}</span>
+        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
+      </div>
+    </div>
+
+    <div class="line-card outcome">
+      <div class="line-left">
+        <mat-icon>autorenew</mat-icon>
+        <span>{{ arabic.dailySafeReport.cashRetrievals }}</span>
+      </div>
+      <div class="line-right">
+        <span class="sign">−</span>
+        <span class="amount">{{ report.cashRetrievals | number:'1.2-2' }}</span>
+        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
+      </div>
+    </div>
+
+    <div class="total-card">
+      <div class="line-left">
+        <mat-icon>check_circle</mat-icon>
+        <span>{{ arabic.dailySafeReport.total }}</span>
+      </div>
+      <div class="line-right">
+        <span class="amount">{{ report.total | number:'1.2-2' }}</span>
+        <span class="currency">{{ arabic.dailySafeReport.currency }}</span>
+      </div>
+    </div>
+
+    <mat-form-field appearance="outline" class="notes-field no-print">
+      <mat-label>{{ arabic.dailySafeReport.notes }}</mat-label>
+      <textarea matInput rows="3" [(ngModel)]="notes"></textarea>
+    </mat-form-field>
+
+    <div class="print-notes" *ngIf="notes">
+      <div class="notes-title">{{ arabic.dailySafeReport.notes }}:</div>
+      <div class="notes-body">{{ notes }}</div>
+    </div>
+
+    <div class="footer-actions no-print">
+      <button mat-raised-button color="primary" class="action-btn" (click)="print()">
+        <mat-icon>print</mat-icon> {{ arabic.dailySafeReport.print }}
+      </button>
+    </div>
+
+  </div>
+
+</div>

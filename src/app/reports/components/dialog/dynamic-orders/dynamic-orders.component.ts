@@ -79,9 +79,7 @@ export class DynamicOrdersComponent{
       .subscribe((data) => {
         this.ordersList = data.data;
         this.orderCounter = this.ordersList.length
-        this.sumTotal = this.ordersList.map(a => a.totalOrder).reduce(function (a, b) {
-          return a + b;
-        });
+        this.sumTotal = this.ordersList.map(a => a.totalOrder).reduce((a, b) => a + b, 0);
       });
   }
 
@@ -98,10 +96,11 @@ export class DynamicOrdersComponent{
 
   onPrinting(item: OrderPaymentModel){
     this.dialogRef.close(true);
-    this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode).subscribe(response => {
+    this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode,"N").subscribe(response => {
       this.invoceorderPrinting = response
       let dataServer = {
         orderCode: response.data.orderCode,
+           excludeOrder: "Y"
       };
       this.dataServer.changeMessage(dataServer);
     })

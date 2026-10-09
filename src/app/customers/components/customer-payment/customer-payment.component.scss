@@ -1,0 +1,160 @@
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --danger: #db1f48;
+}
+
+.payment-screen {
+  font-family: "Cairo", sans-serif;
+  background: var(--sand);
+  min-height: calc(100vh - 64px);
+  padding: 1.5rem;
+}
+
+.screen-header {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  background: #fff;
+  border-top: 4px solid var(--navy);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, .05);
+
+  .header-icon { color: var(--navy); font-size: 32px; height: 32px; width: 32px; }
+  h2 { margin: 0; color: var(--navy); font-weight: 700; }
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 8px;
+  border-top: 4px solid var(--accent);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, .04);
+  padding: 1.25rem 1.5rem;
+}
+
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  padding-bottom: .35rem;
+  margin-bottom: .75rem;
+  border-bottom: 2px dashed #d9d9d9;
+}
+
+.required { color: var(--danger); }
+
+/* --- Customer card --- */
+.customer-card {
+  background: var(--sand);
+  border-inline-start: 6px solid var(--navy);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-top: .5rem;
+}
+
+.customer-row {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: 1rem;
+  color: #333;
+
+  mat-icon { color: var(--navy); }
+  &.muted { color: #777; font-size: .9rem; margin-top: .25rem; }
+  .customer-name { font-weight: 700; font-size: 1.1rem; }
+}
+
+.balance-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.05rem;
+  color: #333;
+  font-weight: 600;
+
+  .balance-value {
+    color: var(--danger);
+    font-size: 1.35rem;
+    font-weight: 800;
+    background: #fff;
+    padding: .25rem .75rem;
+    border-radius: 6px;
+    border: 1px solid #eee;
+  }
+
+   .balance-value.credit {
+    color: #2563eb;          /* blue = credit, not debt */
+    border-color: #bfdbfe;
+    background: #eff6ff;
+  }
+}
+
+/* --- Remaining after --- */
+.remaining-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--navy);
+  color: #fff;
+  padding: .75rem 1.25rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-weight: 700;
+
+  .remaining-value { font-size: 1.4rem; color: var(--accent); }
+}
+
+/* --- Actions --- */
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: .75rem;
+  margin-top: 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+
+  button {
+    min-width: 160px;
+    height: 48px;
+    font-size: 1rem;
+    font-weight: 700;
+    font-family: "Cairo", sans-serif;
+
+    mat-icon { vertical-align: middle; }
+  }
+}
+
+.suffix-text { color: #888; font-size: .85rem; }
+
+.w-100 { width: 100%; }
+
+
+/* --- Over-payment warning --- */
+.warning-card {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  color: #92400e;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-weight: 600;
+  font-family: "Cairo", sans-serif;
+
+  mat-icon { color: #f59e0b; }
+}
+
+/* Phone hint inside autocomplete */
+.customer-phone {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  margin-inline-start: 0.5rem;
+}
+
+/* RTL fix for Material */
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix { padding-right: .5rem; }

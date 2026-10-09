@@ -3,6 +3,7 @@ import { Arabic } from 'src/app/text';
 import { CustomerModel } from '../../model/customer-model';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-create-customer',

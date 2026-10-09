@@ -1,15 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { RetrivalsModel } from '../../models/retrivals-model';
-import { RetrivalsService } from '../../service/retrivals.service';
-import { RerivalDetailsComponent } from '../../dialgos/rerival-details/rerival-details.component';
-import { CreateRetrivalsComponent } from '../../dialgos/create-retrivals/create-retrivals.component';
-import { Arabic } from 'src/app/text';
-import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
-import { SaleOrderDetails } from 'src/app/sale-orders/models/orderDetails';
-import { RetrivalsDetailsService } from '../../service/retrivals-details.service';
+import { Router } from '@angular/router';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
+import { Arabic } from 'src/app/text';
+import { RerivalDetailsComponent } from '../../dialgos/rerival-details/rerival-details.component';
+import { RetrivalsModel } from '../../models/retrivals-model';
+import { RetrivalsDetailsService } from '../../service/retrivals-details.service';
+import { RetrivalsService } from '../../service/retrivals.service';
 
 @Component({
   selector: 'app-retrivals',
@@ -17,14 +15,14 @@ import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/conf
   styleUrls: ['./retrivals.component.scss'],
 })
 export class RetrivalsComponent implements OnInit {
-  
+
   displayedColumns: string[] = [
     'id',
     'retrievalsCode',
     'totalCost',
     'discount',
     'netCost',
-    'customer',
+    'person',          // ← changed
     'createdDate',
     'actions',
   ];
@@ -38,7 +36,8 @@ export class RetrivalsComponent implements OnInit {
     private _snackBar: MatSnackBar,
     private retrivalService: RetrivalsService,
     private retrivalDetailsService: RetrivalsDetailsService,
-    private dialog: MatDialog) {}
+    private router: Router,
+    private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.retrieve();
@@ -66,8 +65,8 @@ export class RetrivalsComponent implements OnInit {
   /**
    * evants
    */
-  editeDialog(obj: any) {}
-  
+  editeDialog(obj: any) { }
+
   deleteDialog(obj: RetrivalsModel) {
     const dialogRef = this.dialog.open(ConfirmationDialog, {
       data: {
@@ -92,55 +91,11 @@ export class RetrivalsComponent implements OnInit {
   }
 
   Ondetails(obj: any) {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {
-      id: obj.id,
-    };
-    this.dialog.open(RerivalDetailsComponent, dialogConfig);
-    const dialogRef = this.dialog.open(RerivalDetailsComponent, dialogConfig);
-  }
-
-  addDialog() {
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      retriveModel: this.retriveModel,
-    };
-
-    this.dialog.open(CreateRetrivalsComponent, dialogConfig);
-    const dialogRef = this.dialog.open(CreateRetrivalsComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((data) => {
-      let retrivalDetails: RetrivalsDetailsModel = new RetrivalsDetailsModel();
-      let dynamicList: SaleOrderDetails[] = data.dynamicList;
-      let billsCode = data.billsCode
-      //insert retrival
-      this.retrivalService.create(data.model, data.codeSearch).subscribe(
-        (data) => {
-          //insert retrival details
-          dynamicList.forEach((element) => {
-            console.log(element);
-            
-            retrivalDetails.price = element.price;
-            retrivalDetails.quantity = element.quantity;
-            retrivalDetails.total = element.total;
-            //create details
-            console.log(billsCode);
-            
-            this.retrivalDetailsService
-              .create(retrivalDetails, billsCode, element.product.productCode)
-              .subscribe((data) => {
-                this.openSnackBar(`${this.arabic.util.saved}`, '');
-                this.retrieve();
-              });
-          });
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    this.dialog.open(RerivalDetailsComponent, {
+      data: { id: obj.id },
     });
   }
+
 
   /**
    * ui ux
@@ -170,5 +125,10 @@ export class RetrivalsComponent implements OnInit {
       params[`size`] = pageSize;
     }
     return params;
+  }
+
+
+  addDialog() {
+    this.router.navigate(['/retrivals/new']);
   }
 }

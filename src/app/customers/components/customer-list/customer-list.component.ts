@@ -10,6 +10,7 @@ import { CustomerService } from '../../service/customer.service';
 import { CustomerModel } from '../../model/customer-model';
 import { CreateCustomerComponent } from '../../dialogs/create-customer/create-customer.component';
 import { Router } from '@angular/router';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-customer-list',
@@ -224,7 +225,7 @@ export class CustomerListComponent implements OnInit {
 
 
   /**
-   * ui ux 
+   * ui ux
    */
 
   openSnackBar(message: string, action: string) {

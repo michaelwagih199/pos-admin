@@ -1,0 +1,1330 @@
+# Angular POS — Frontend Context
+# Generated: 04 أكت, 2026 EEST 01:01:33 ص
+# Source:    ./src/app/retrivals
+
+### ./components/retrivals/retrivals.component.ts
+import { Component, OnInit } from '@angular/core';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
+import { Arabic } from 'src/app/text';
+import { RerivalDetailsComponent } from '../../dialgos/rerival-details/rerival-details.component';
+import { RetrivalsModel } from '../../models/retrivals-model';
+import { RetrivalsDetailsService } from '../../service/retrivals-details.service';
+import { RetrivalsService } from '../../service/retrivals.service';
+@Component({
+  selector: 'app-retrivals',
+  templateUrl: './retrivals.component.html',
+  styleUrls: ['./retrivals.component.scss'],
+})
+export class RetrivalsComponent implements OnInit {
+  displayedColumns: string[] = [
+    'id',
+    'retrievalsCode',
+    'totalCost',
+    'discount',
+    'netCost',
+    'person',          // ← changed
+    'createdDate',
+    'actions',
+  ];
+  arabic: Arabic = new Arabic();
+  retrivalsList!: RetrivalsModel[];
+  retriveModel: RetrivalsModel = new RetrivalsModel();
+  isLoading = false;
+  constructor(
+    private _snackBar: MatSnackBar,
+    private retrivalService: RetrivalsService,
+    private retrivalDetailsService: RetrivalsDetailsService,
+    private router: Router,
+    private dialog: MatDialog) { }
+  ngOnInit(): void {
+    this.retrieve();
+  }
+  /**
+   * data
+   */
+  retrieve() {
+    this.isLoading = true;
+    const params = this.getRequestParams(this.page, this.pageSize);
+    this.retrivalService.getAllPagination(params).subscribe(
+      (data) => {
+        this.isLoading = false;
+        this.retrivalsList = data.retrievalsBills;
+        this.count = data.totalItems;
+      },
+      (error) => {
+        this.isLoading = false;
+        console.log(error);
+      }
+    );
+  }
+  /**
+   * evants
+   */
+  editeDialog(obj: any) { }
+  deleteDialog(obj: RetrivalsModel) {
+    const dialogRef = this.dialog.open(ConfirmationDialog, {
+      data: {
+        message: `${this.arabic.stock.category.util.dialog.deleteDialog.title}: ${obj.retrievalsCode}`,
+        buttonText: {
+          ok: `${this.arabic.stock.category.util.dialog.dialogButtons.ok}`,
+          cancel: `${this.arabic.stock.category.util.dialog.dialogButtons.cancel}`
+        }
+      }
+    });
+    dialogRef.afterClosed().subscribe((confirmed: boolean) => {
+      if (confirmed) {
+        this.retrivalService.delete(obj.id).subscribe(data => {
+          this.openSnackBar(`${this.arabic.stock.category.util.dialog.notification.deleted}`, '')
+          this.retrieve()
+        }, error => console.log(error))
+        const a = document.createElement('a');
+        a.click();
+        a.remove();
+      }
+    });
+  }
+  Ondetails(obj: any) {
+    this.dialog.open(RerivalDetailsComponent, {
+      data: { id: obj.id },
+    });
+  }
+  /**
+   * ui ux
+   */
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
+  }
+  page = 1;
+  count = 0;
+  pageSize = 6;
+  handlePageChange(event: any) {
+    this.page = event;
+    this.retrieve();
+  }
+  getRequestParams(page: any, pageSize: any) {
+    // tslint:disable-next-line:prefer-const
+    let params: any = {};
+    if (page) {
+      params[`page`] = page - 1;
+    }
+    if (pageSize) {
+      params[`size`] = pageSize;
+    }
+    return params;
+  }
+  addDialog() {
+    this.router.navigate(['/retrivals/new']);
+  }
+}
+
+### ./components/retrivals/retrivals.component.html
+<mat-card class="mat-elevation-z2">
+  <mat-card-header>
+    <div class="container-fluid ">
+      <div class="row justify-content-center p-2">
+        <!-- <div class="col-4">
+                    <mat-form-field appearance="outline" class="full-width">
+                        <mat-label>المصروفات خلال فترة</mat-label>
+                        <mat-date-range-input [rangePicker]="picker">
+                            <input matStartDate placeholder="البداية">
+                            <input matEndDate placeholder="النهاية">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                </div> -->
+        <div class="col-2 mt-2">
+          <button mat-icon-button color="primary" (click)="retrieve()">
+            <mat-icon>replay</mat-icon>
+          </button>
+        </div>
+        <div class="col-2 mt-2">
+          <button mat-mini-fab (click)="addDialog()" color="accent">
+            <mat-icon>add</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
+    <table mat-table
+      [dataSource]="retrivalsList| paginate: { itemsPerPage: pageSize, currentPage: page, totalItems: count }">
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>م</th>
+        <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+      </ng-container>
+      <ng-container matColumnDef="createdDate">
+        <th mat-header-cell *matHeaderCellDef>التاريخ</th>
+        <td mat-cell *matCellDef="let element">{{ element.createdDate | date: 'yyyy-MM-dd'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="retrievalsCode">
+        <th mat-header-cell *matHeaderCellDef>كود</th>
+        <td mat-cell *matCellDef="let element">{{ element.retrievalsCode}}</td>
+      </ng-container>
+      <ng-container matColumnDef="totalCost">
+        <th mat-header-cell *matHeaderCellDef>الاجمالى</th>
+        <td mat-cell *matCellDef="let element">{{ element.totalCost}}</td>
+      </ng-container>
+      <ng-container matColumnDef="netCost">
+        <th mat-header-cell *matHeaderCellDef>الصافى</th>
+        <td mat-cell *matCellDef="let element">{{ element.netCost}}</td>
+      </ng-container>
+      <ng-container matColumnDef="discount">
+        <th mat-header-cell *matHeaderCellDef>الخصم</th>
+        <td mat-cell *matCellDef="let element">{{ element.discount}}</td>
+      </ng-container>
+      <ng-container matColumnDef="person">
+        <th mat-header-cell *matHeaderCellDef> الشخص </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="element.returnType === 'CUSTOMER'">
+            {{ element.customer?.customerName }}
+          </span>
+          <span *ngIf="element.returnType === 'SUPPLIER'">
+            {{ element.supplier?.supplierName }}
+          </span>
+          <span class="badge" [class.badge-cust]="element.returnType === 'CUSTOMER'"
+            [class.badge-sup]="element.returnType === 'SUPPLIER'">
+            {{ element.returnType === 'CUSTOMER' ? 'عميل' : 'مورد' }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let element" class="action-link">
+          <!-- <button mat-icon-button color="primary" (click)="editeDialog(element)">
+                        <mat-icon>create</mat-icon>
+                    </button>
+                    | -->
+          <button mat-icon-button color="warn" (click)="deleteDialog(element)">
+            <mat-icon>delete</mat-icon>
+          </button>
+          |
+          <button mat-icon-button color="primary" (click)="Ondetails(element)">
+            <mat-icon>shopping_cart</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+    <div class="text-center mt-3" style="direction: ltr;">
+      <pagination-controls (pageChange)="handlePageChange($event)"></pagination-controls>
+    </div>
+  </mat-card-content>
+</mat-card>
+
+### ./components/retrivals/retrivals.component.scss
+.mat-card-header {
+    background: #F4F3F0;
+    border-radius: 8px;
+    border: 1px solid #212121;
+}
+.mat-form-field{
+    font-family: 'Cairo',Arial, Helvetica, sans-serif;
+    font-weight: bold;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  margin-inline-start: 6px;
+}
+.badge-cust { background: #dbeafe; color: #1e40af; }
+.badge-sup  { background: #fce7f3; color: #9d174d; }
+
+### ./models/retrivals-details-model.ts
+import { ProductModel } from "src/app/stock/model/productModel"
+import { RetrivalsModel } from "./retrivals-model"
+// src/app/retrivals/models/retrivals-details-model.ts
+export class RetrivalsDetailsModel {
+  id!: number;
+  productId!: number;
+  productName!: string;
+  productCode!: string;
+  // Dual Unit Tracking
+  quantity!: number;           // Number of Canvases/Pieces
+  unitNumber!: number;         // Meters/Kg per Canvas
+  price!: number;
+  total!: number;
+  // Condition & Reason
+  returnCondition!: 'GOOD' | 'DAMAGED';
+  returnReason?: string;       // DEFECT, WRONG_ITEM, EXPIRED, etc.
+  // Traceability (Optional - populated if user selects specific invoice line)
+  sourceSaleOrderDetailId?: number;
+  sourcePurchasesBillDetailId?: number;
+}
+
+### ./models/retrivals-model.ts
+import { CustomerModel } from 'src/app/customers/model/customer-model';
+import { Supplier } from 'src/app/suppliers/models/supplier';
+export type ReturnType   = 'CUSTOMER' | 'SUPPLIER';
+export type RefundMethod = 'CASH' | 'CREDIT';
+export class RetrivalsModel {
+  id!: number;
+  retrievalsCode!: string;
+  totalCost!: number;
+  discount!: number;
+  netCost!: number;
+  createdDate!: string;
+  returnType!: ReturnType;
+  refundMethod?: RefundMethod;
+  customer?: CustomerModel | null;
+  supplier?: Supplier | null;
+}
+
+### ./models/returnable-product.ts
+export interface ReturnableProduct {
+  productId: number;
+  productName: string;
+  productCode?: string;
+  measurementUnit?: 'METER' | 'KILOGRAM';
+  availableUnits?: number;      // m/kg available to return
+  availableCanvases?: number;   // pieces available to return
+  unitNumber?: number;          // m/kg per canvas (from original invoice)
+  lastPrice?: number;           // price on original invoice
+  invoices?: Array<{            // optional: original invoice lines
+    saleOrderDetailId?: number;
+    purchasesBillDetailId?: number;
+    orderCode: string;
+    orderDate: string;
+    returnableQty: number;              // rolls ceiling
+    returnableUnits?: number;           // ← NEW: units ceiling
+  }>;
+  totalPurchased?: number;
+  totalReturned?: number;
+}
+
+### ./retrivals.module.ts
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RetrivalsRoutingModule } from './retrivals-routing.module';
+import { SharedModule } from '../shared/shared.module';
+import { RetrivalsComponent } from './components/retrivals/retrivals.component';
+import { RerivalDetailsComponent } from './dialgos/rerival-details/rerival-details.component';
+import { ReturnProductDialogComponent } from './dialgos/return-product-dialog/return-product-dialog.component';
+import { RetrievalWizardComponent } from './dialgos/retrieval-wizard/retrieval-wizard.component';
+@NgModule({
+  declarations: [
+    RetrivalsComponent,
+    RerivalDetailsComponent,
+    ReturnProductDialogComponent,
+    RetrievalWizardComponent,
+  ],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RetrivalsRoutingModule,
+    SharedModule,
+  ],
+})
+export class RetrivalsModule {}
+
+### ./retrivals-routing.module.ts
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { AuthGaurdService } from '../core/services/auth-gaurd.service';
+import { LayoutComponent } from '../shared/components';
+import { RetrivalsComponent } from './components/retrivals/retrivals.component';
+import { RetrievalWizardComponent } from './dialgos/retrieval-wizard/retrieval-wizard.component';
+const routes: Routes = [
+  {
+    path:'',
+    component: LayoutComponent,
+    children: [
+      {
+        path: '',
+        component: RetrivalsComponent,canActivate:[AuthGaurdService]
+      },
+      {
+        path: 'new',                                  // 👈 ADD
+        component: RetrievalWizardComponent,
+        canActivate: [AuthGaurdService]
+      },
+    ]
+  }
+];
+@NgModule({
+  imports: [RouterModule.forChild(routes)],
+  exports: [RouterModule]
+})
+export class RetrivalsRoutingModule { }
+
+### ./dialgos/rerival-details/rerival-details.component.scss
+.mat-table {
+  width: 700px;
+}
+h1,
+h2,
+h3 {
+  font-family: "El Messiri", sans-serif;
+}
+
+### ./dialgos/rerival-details/rerival-details.component.ts
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PurchasesBillsDetailsComponent } from 'src/app/purchases/dialog/purchases-bills-details/purchases-bills-details.component';
+import { PurchasesBillsDetails } from 'src/app/purchases/model/purchases-deteails';
+import { PurchasingBillsDetailsService } from 'src/app/purchases/service/purchasing-bills-details.service';
+import { RetrivalsDetailsModel } from 'src/app/retrivals/models/retrivals-details-model';
+import { RetrivalsDetailsService } from 'src/app/retrivals/service/retrivals-details.service';
+@Component({
+  selector: 'app-rerival-details',
+  templateUrl: './rerival-details.component.html',
+  styleUrls: ['./rerival-details.component.scss']
+})
+export class RerivalDetailsComponent implements OnInit {
+  listDetails!: RetrivalsDetailsModel[];
+  id: any;
+  displayedColumns: string[] = [
+    'id',
+    'product',
+    'sourceInvoice',     // ← new
+    'rolls',
+    'units',
+    'price',
+    'total',
+    'condition',
+    'reason',
+  ];
+  constructor(
+    private dialogRef: MatDialogRef<RerivalDetailsComponent>,
+    @Inject(MAT_DIALOG_DATA) data: any,
+    private service: RetrivalsDetailsService
+  ) {
+    this.id = data.id;
+    console.log(data.id);
+  }
+  ngOnInit(): void {
+    this.service.getAllByBillId(this.id).subscribe(
+      (data) => {
+        this.listDetails = data;
+      },
+      (error) => console.log(error)
+    );
+  }
+  close() {
+    this.dialogRef.close();
+  }
+}
+
+### ./dialgos/rerival-details/rerival-details.component.html
+<div class="bg-dark rounded text-center text-white mt-2 mb-2">
+    <h1> تفاصيل الفاتورة</h1>
+  </div>
+  <mat-dialog-content>
+<table mat-table [dataSource]="listDetails" class="mat-elevation-z2">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> م </th>
+    <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
+  </ng-container>
+  <ng-container matColumnDef="product">
+    <th mat-header-cell *matHeaderCellDef> المنتج </th>
+    <td mat-cell *matCellDef="let element"> {{ element.product.productName }} </td>
+  </ng-container>
+<ng-container matColumnDef="sourceInvoice">
+  <th mat-header-cell *matHeaderCellDef> الفاتورة الأصلية </th>
+  <td mat-cell *matCellDef="let element">
+    {{ element.sourceSaleOrderDetail?.saleOrder?.orderCode
+       ?? element.sourcePurchasesBillDetail?.purchasesBill?.billCodeCode
+       ?? '—' }}
+  </td>
+</ng-container>
+  <ng-container matColumnDef="rolls">
+    <th mat-header-cell *matHeaderCellDef> عدد الأتواب </th>
+    <td mat-cell *matCellDef="let element"> {{ element.quantity }} </td>
+  </ng-container>
+  <ng-container matColumnDef="units">
+    <th mat-header-cell *matHeaderCellDef> عدد الوحدات </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.unitNumber | number:'1.0-3' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="price">
+    <th mat-header-cell *matHeaderCellDef> سعر الوحدة </th>
+    <td mat-cell *matCellDef="let element"> {{ element.price }} </td>
+  </ng-container>
+  <ng-container matColumnDef="total">
+    <th mat-header-cell *matHeaderCellDef> الإجمالي </th>
+    <td mat-cell *matCellDef="let element"> {{ element.total }} </td>
+  </ng-container>
+  <ng-container matColumnDef="condition">
+    <th mat-header-cell *matHeaderCellDef> الحالة </th>
+    <td mat-cell *matCellDef="let element">
+      {{ element.returnCondition === 'GOOD' ? 'سليم' : 'تالف' }}
+    </td>
+  </ng-container>
+  <ng-container matColumnDef="reason">
+    <th mat-header-cell *matHeaderCellDef> السبب </th>
+    <td mat-cell *matCellDef="let element"> {{ element.returnReason }} </td>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
+  </mat-dialog-content>
+  <mat-divider></mat-divider>
+  <mat-dialog-actions align="center">
+    <button mat-raised-button color="primary" (click)="close()" tabindex="1">الغاء</button>
+  </mat-dialog-actions>
+
+### ./dialgos/return-product-dialog/return-product-dialog.component.html
+<div class="dialog-container" dir="rtl">
+  <div class="dialog-header">
+    <div class="title-row">
+      <h2>{{ data.product.productName }}</h2>
+      <button mat-icon-button (click)="close()" class="close-btn" aria-label="إغلاق">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+    <div class="subtitle">
+      <span *ngIf="selectedInvoiceCode" class="chip">
+        <mat-icon inline>receipt_long</mat-icon>
+        {{ selectedInvoiceCode }}
+      </span>
+      <span class="chip available">
+        <mat-icon inline>inventory_2</mat-icon>
+        المتاح من هذه الفاتورة:
+        <b>{{ maxQty }}</b> توب
+        <span class="divider">·</span>
+        <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
+      </span>
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="dialog-body">
+    <form [formGroup]="form">
+      <mat-form-field appearance="outline" class="w-100" *ngIf="multiInvoiceInvoices.length > 0">
+        <mat-label>فاتورة الاسترجاع</mat-label>
+        <mat-select formControlName="sourceDetailId">
+          <mat-option *ngFor="let inv of multiInvoiceInvoices"
+            [value]="inv.saleOrderDetailId ?? inv.purchasesBillDetailId"
+            [disabled]="(inv.returnableQty ?? 0) <= 0 && (inv.returnableUnits ?? 0) <= 0">
+            {{ inv.orderCode }} — {{ inv.orderDate | date:'yyyy-MM-dd' }}
+            (متاح: {{ inv.returnableQty }})
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <div class="dual-row">
+        <!-- Rolls -->
+        <mat-form-field appearance="outline">
+          <mat-label>عدد الأتواب *</mat-label>
+          <input matInput type="number" [max]="maxQty" formControlName="quantity">
+          <mat-hint>
+            الحد الأقصى: <b>{{ maxQty }}</b> توب
+          </mat-hint>
+          <mat-error *ngIf="form.get('quantity')?.hasError('required')">مطلوب</mat-error>
+          <mat-error *ngIf="form.get('quantity')?.hasError('min')">1 على الأقل</mat-error>
+          <mat-error *ngIf="form.get('quantity')?.hasError('max')
+                       || form.hasError('quantityOverflow')">
+            أكبر من المتاح ({{ maxQty }})
+          </mat-error>
+        </mat-form-field>
+        <!-- Units -->
+        <mat-form-field appearance="outline">
+          <mat-label>عدد الوحدات *</mat-label>
+          <input matInput type="number" step="0.001" min="0.001" [max]="maxUnits" formControlName="unitNumber">
+          <mat-hint>
+            الحد الأقصى: <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
+          </mat-hint>
+          <mat-error *ngIf="form.get('unitNumber')?.hasError('required')">مطلوب</mat-error>
+          <mat-error *ngIf="form.get('unitNumber')?.hasError('min')">أكبر من 0</mat-error>
+          <mat-error *ngIf="form.get('unitNumber')?.hasError('max')
+                       || form.hasError('unitsOverflow')">
+            أكبر من المتاح ({{ maxUnits | number:'1.0-3' }} {{ measurementUnitLabel }})
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <mat-radio-group formControlName="condition" class="condition-toggle">
+        <mat-radio-button value="GOOD" class="cond-good">
+          <mat-icon>check_circle</mat-icon>
+          <span>سليم</span>
+        </mat-radio-button>
+        <mat-radio-button value="DAMAGED" class="cond-damaged">
+          <mat-icon>cancel</mat-icon>
+          <span>تالف</span>
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>سبب الإرجاع *</mat-label>
+        <mat-select formControlName="reason">
+          <mat-option *ngFor="let r of reasons" [value]="r.value">{{ r.label }}</mat-option>
+        </mat-select>
+        <mat-error *ngIf="form.get('reason')?.hasError('required')">مطلوب</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class="w-100">
+        <mat-label>ملاحظات (اختياري)</mat-label>
+        <textarea matInput formControlName="notes" rows="2"></textarea>
+      </mat-form-field>
+    </form>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="dialog-actions">
+    <button mat-stroked-button (click)="close()">إلغاء</button>
+    <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
+      <mat-icon>add</mat-icon>
+      إضافة للمرتجع
+    </button>
+  </div>
+</div>
+
+### ./dialgos/return-product-dialog/return-product-dialog.component.ts
+import { Component, Inject, OnInit } from '@angular/core';
+import {
+  AbstractControl, FormBuilder, FormGroup,
+  ValidationErrors, ValidatorFn, Validators
+} from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
+import { ReturnableProduct } from '../../models/returnable-product';
+import { ReturnType } from '../../models/retrivals-model';
+interface DialogData {
+  product: ReturnableProduct;
+  returnType: ReturnType;
+}
+@Component({
+  selector: 'app-return-product-dialog',
+  templateUrl: './return-product-dialog.component.html',
+  styleUrls: ['./return-product-dialog.component.scss'],
+})
+export class ReturnProductDialogComponent implements OnInit {
+  form!: FormGroup;
+  reasons = [
+    { value: 'DEFECT', label: 'عيب صناعة' },
+    { value: 'WRONG_ITEM', label: 'منتج خاطئ' },
+    { value: 'EXPIRED', label: 'منتهي الصلاحية' },
+    { value: 'NOT_NEEDED', label: 'غير مطلوب' },
+    { value: 'OTHER', label: 'أخرى' },
+  ];
+  maxQty = 0;
+  maxUnits = 0;
+  multiInvoiceInvoices: Array<any> = [];
+  constructor(
+    private fb: FormBuilder,
+    private ref: MatDialogRef<ReturnProductDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: DialogData
+  ) { }
+  ngOnInit(): void {
+    const p = this.data.product;
+    this.multiInvoiceInvoices = p.invoices ?? [];
+    const firstAvailable = this.multiInvoiceInvoices.find(
+      (inv) => Number(inv.returnableQty) > 0
+    );
+    const initialInvoice = firstAvailable ?? this.multiInvoiceInvoices[0];
+    // Rolls ceiling
+    this.maxQty = Number(initialInvoice?.returnableQty ?? p.availableCanvases ?? 0);
+    // Units ceiling — comes from the DTO, NOT computed from rolls
+    this.maxUnits = Number(
+      (initialInvoice as any)?.returnableUnits
+      ?? (p as any).availableUnits
+      ?? 0
+    );
+    // Default per-unit value = the whole remaining units (user can lower it)
+    const defaultUnitValue = this.maxUnits > 0 ? this.maxUnits : 1;
+    const rollsMin = this.maxQty > 0 ? 1 : 0;
+    const rollsDefault = this.maxQty > 0 ? 1 : 0;
+    this.form = this.fb.group(
+      {
+        sourceDetailId: [
+          initialInvoice?.saleOrderDetailId
+          ?? initialInvoice?.purchasesBillDetailId
+          ?? null,
+        ],
+        quantity: [
+          rollsDefault,
+          [Validators.required, Validators.min(rollsMin), Validators.max(this.maxQty)],
+        ],
+        unitNumber: [
+          defaultUnitValue,
+          [Validators.required, Validators.min(0.001), Validators.max(this.maxUnits)],
+        ],
+        condition: ['GOOD', Validators.required],
+        reason: ['', Validators.required],
+        notes: [''],
+      },
+      { validators: this.returnableValidator() }
+    );
+    this.form.get('sourceDetailId')?.valueChanges.subscribe((id) => {
+      const inv = this.multiInvoiceInvoices.find(
+        (i) => (i.saleOrderDetailId ?? i.purchasesBillDetailId) === id
+      );
+      if (!inv) return;
+      this.maxQty = Number(inv.returnableQty) || 0;
+      this.maxUnits = Number(inv.returnableUnits) || 0;
+      const rollsMin = this.maxQty > 0 ? 1 : 0;      // ← add
+      const qtyCtrl = this.form.get('quantity');
+      const unitCtrl = this.form.get('unitNumber');
+      qtyCtrl?.setValidators([
+        Validators.required,
+        Validators.min(rollsMin),                    // ← was min(1)
+        Validators.max(this.maxQty),
+      ]);
+      unitCtrl?.setValidators([
+        Validators.required,
+        Validators.min(0.001),
+        Validators.max(this.maxUnits),
+      ]);
+      qtyCtrl?.updateValueAndValidity();
+      unitCtrl?.updateValueAndValidity();
+      this.form.updateValueAndValidity();
+    });
+  }
+  private returnableValidator(): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const qty = Number(group.get('quantity')?.value ?? 0);
+      const unit = Number(group.get('unitNumber')?.value ?? 0);
+      const errs: ValidationErrors = {};
+      // Rolls and units are INDEPENDENT ceilings — no multiplication
+      if (qty > this.maxQty) errs['quantityOverflow'] = true;
+      if (unit > this.maxUnits) errs['unitsOverflow'] = true;
+      return Object.keys(errs).length ? errs : null;
+    };
+  }
+  get totalUnits(): number {
+    return Number(this.form?.get('unitNumber')?.value ?? 0);
+  }
+  get remainingUnits(): number {
+    return Math.max(0, this.maxUnits - this.totalUnits);
+  }
+  get selectedInvoiceCode(): string | null {
+    const id = this.form?.get('sourceDetailId')?.value;
+    const inv = this.multiInvoiceInvoices.find(
+      (i) => (i.saleOrderDetailId ?? i.purchasesBillDetailId) === id
+    );
+    return inv?.orderCode ?? null;
+  }
+  get measurementUnitLabel(): string {
+    return this.data.product.measurementUnit === 'METER' ? 'متر' : 'كجم';
+  }
+  save(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    const v = this.form.value;
+    const p = this.data.product;
+    const unitPrice = p.lastPrice ?? 0;
+    const line: RetrivalsDetailsModel = {
+      id: 0,
+      productId: p.productId,
+      productName: p.productName,
+      productCode: p.productCode ?? '',
+      quantity: v.quantity,
+      unitNumber: v.unitNumber,
+      price: unitPrice,
+      total: v.unitNumber * unitPrice,
+      returnCondition: v.condition,
+      returnReason: v.reason,
+      sourceSaleOrderDetailId:
+        this.data.returnType === 'CUSTOMER'
+          ? v.sourceDetailId ?? undefined
+          : undefined,
+      sourcePurchasesBillDetailId:
+        this.data.returnType === 'SUPPLIER'
+          ? v.sourceDetailId ?? undefined
+          : undefined,
+    };
+    this.ref.close(line);
+  }
+  close(): void {
+    this.ref.close();
+  }
+}
+
+### ./dialgos/return-product-dialog/return-product-dialog.component.scss
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --danger: #db1f48;
+  --success: #16a34a;
+}
+.dialog-container {
+  font-family: "Cairo", sans-serif;
+  min-width: 500px;
+  max-width: 560px;
+}
+/* ===== HEADER ===== */
+.dialog-header .subtitle .chip {
+  padding: 16px 20px 12px;
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    h2 {
+      margin: 0;
+      color: var(--navy);
+      font-weight: 700;
+      font-size: 1.25rem;
+    }
+    .close-btn {
+      color: #94a3b8;
+      flex-shrink: 0;
+    }
+     b {
+    font-weight: 700;
+    color: inherit;
+    margin: 0 2px;
+  }
+  .divider {
+    margin: 0 6px;
+    opacity: 0.5;
+  }
+  }
+  .subtitle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      mat-icon {
+        font-size: 14px;
+        width: 14px;
+        height: 14px;
+      }
+      &.available {
+        background: #eef2ff;
+        color: #4f46e5;
+      }
+    }
+  }
+}
+/* ===== BODY ===== */
+.dialog-body {
+  padding: 16px 20px;
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .dual-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .total-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8fafc;
+    border-inline-start: 4px solid var(--accent);
+    padding: 10px 16px;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #475569;
+    b {
+      color: var(--navy);
+      font-size: 1.1rem;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+  .condition-toggle {
+    display: flex;
+    gap: 12px;
+    background: #f8fafc;
+    padding: 12px 16px;
+    border-radius: 8px;
+    mat-radio-button {
+      flex: 1;
+      ::ng-deep .mat-radio-label-content {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font-weight: 700;
+        font-size: 0.95rem;
+      }
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+      &.cond-good ::ng-deep .mat-radio-label-content {
+        color: var(--success);
+      }
+      &.cond-damaged ::ng-deep .mat-radio-label-content {
+        color: var(--danger);
+      }
+    }
+  }
+}
+.w-100 {
+  width: 100%;
+}
+/* ===== ACTIONS ===== */
+.dialog-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 20px;
+  button {
+    min-width: 140px;
+    height: 44px;
+    font-family: "Cairo", sans-serif;
+    font-weight: 700;
+    mat-icon {
+      vertical-align: middle;
+      margin-inline-end: 4px;
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+/* Form field rounding */
+::ng-deep .mat-form-field-outline {
+  border-radius: 8px !important;
+}
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  padding-right: 0.5rem;
+}
+
+### ./dialgos/retrieval-wizard/retrieval-wizard.component.ts
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';                                  // 👈 add
+import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, map, catchError, startWith } from 'rxjs/operators';
+import { CustomerService } from 'src/app/customers/service/customer.service';
+import { SupliersService } from 'src/app/suppliers/service/supliers.service';
+import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
+import { RetrivalsModel, ReturnType, RefundMethod } from '../../models/retrivals-model';
+import { ReturnableProduct } from '../../models/returnable-product';
+import { RetrivalsService } from '../../service/retrivals.service';
+import { ReturnProductDialogComponent } from '../return-product-dialog/return-product-dialog.component';
+interface Person { id: number; name: string; phone?: string; }
+@Component({
+  selector: 'app-retrieval-wizard',
+  templateUrl: './retrieval-wizard.component.html',
+  styleUrls: ['./retrieval-wizard.component.scss'],
+})
+export class RetrievalWizardComponent implements OnInit {
+  step = 0;
+  returnType: ReturnType = 'CUSTOMER';
+  selectedPerson: Person | null = null;
+  searchCtrl = new FormControl();
+  filteredPeople: Observable<Person[]> = of([]);
+  products: ReturnableProduct[] = [];
+  loadingProducts = false;
+  cart: RetrivalsDetailsModel[] = [];
+  discount = 0;
+  refundMethod: RefundMethod = 'CREDIT';
+  saving = false;
+  reviewColumns: string[] = ['product', 'pieces', 'units', 'condition', 'total'];
+  constructor(
+    private dialog: MatDialog,
+    private router: Router,                    // 👈 was MatDialogRef
+    private snack: MatSnackBar,
+    private customerService: CustomerService,
+    private supplierService: SupliersService,
+    private retrievalService: RetrivalsService
+  ) { }
+  ngOnInit(): void {
+    this.filteredPeople = this.searchCtrl.valueChanges.pipe(
+      startWith(''),
+      debounceTime(250),
+      distinctUntilChanged(),
+      switchMap((term: string) => {
+        const q = (term ?? '').trim();
+        if (q.length < 2) return of([]);
+        const obs$ = this.returnType === 'CUSTOMER'
+          ? this.customerService.findByName(q)
+          : this.supplierService.findByName(q);
+        return obs$.pipe(catchError(() => of([])));
+      }),
+      map((res: any) => this.normalizePeople(res))
+    );
+  }
+  private normalizePeople(res: any): Person[] {
+    const list: any[] = Array.isArray(res) ? res : (res?.data ?? []);
+    return list.map((p) => ({
+      id: p.id,
+      name: p.customerName ?? p.supplierName ?? '',
+      phone: p.customerPhone ?? p.supplierPhone ?? '',
+    }));
+  }
+  onPersonSelected(p: Person) {
+    this.selectedPerson = p;
+    this.step = 2;
+    this.loadReturnable();
+  }
+  loadReturnable() {
+    if (!this.selectedPerson) return;
+    this.loadingProducts = true;
+    this.retrievalService.getReturnableProducts(this.selectedPerson.id, this.returnType).subscribe({
+      next: (res) => {
+        const list: ReturnableProduct[] = res?.data ?? [];
+        this.products = list.filter(p =>
+          (p.availableCanvases ?? 0) > 0 || (p.availableUnits ?? 0) > 0
+        );
+        this.loadingProducts = false;
+        if (this.products.length === 0) {
+          this.snack.open('لا توجد منتجات قابلة للإرجاع لهذا الشخص', '', { duration: 3000 });
+        }
+      },
+      error: () => (this.loadingProducts = false),
+    });
+  }
+  openReturnDialog(p: ReturnableProduct) {
+    const ref = this.dialog.open(ReturnProductDialogComponent, {
+      width: '560px',
+      disableClose: true,
+      data: { product: p, returnType: this.returnType },
+    });
+    ref.afterClosed().subscribe((line?: RetrivalsDetailsModel) => {
+      if (!line) return;
+      const i = this.cart.findIndex(l =>
+        l.productId === line.productId
+        && l.returnCondition === line.returnCondition
+        && l.sourceSaleOrderDetailId === line.sourceSaleOrderDetailId
+        && l.sourcePurchasesBillDetailId === line.sourcePurchasesBillDetailId
+      );
+      if (i > -1) {
+        this.cart[i].quantity += line.quantity;      // rolls — metadata
+        this.cart[i].unitNumber += line.unitNumber;    // units — accumulate
+        this.cart[i].total = this.cart[i].unitNumber * this.cart[i].price;
+      } else {
+        this.cart.push(line);
+      }
+    });
+  }
+  removeLine(i: number) { this.cart.splice(i, 1); }
+  get subtotal() { return this.cart.reduce((s, l) => s + (l.total || 0), 0); }
+  get netTotal() { return Math.max(0, this.subtotal - (this.discount || 0)); }
+  submit() {
+    if (!this.selectedPerson || this.cart.length === 0) return;
+    this.saving = true;
+    const model: RetrivalsModel = {
+      id: 0,
+      retrievalsCode: '',
+      totalCost: this.subtotal,
+      discount: this.discount || 0,
+      netCost: this.netTotal,
+      createdDate: '',
+      returnType: this.returnType,
+      refundMethod: this.refundMethod,
+      customer: this.returnType === 'CUSTOMER' ? (this.selectedPerson as any) : null,
+      supplier: this.returnType === 'SUPPLIER' ? (this.selectedPerson as any) : null,
+    };
+    const payload = {
+      model,
+      returnType: this.returnType,
+      refundMethod: this.refundMethod,
+      notes: '',
+      details: this.cart.map(l => ({
+        productId: l.productId,
+        quantity: l.quantity,
+        unitNumber: l.unitNumber,
+        price: l.price,
+        returnCondition: l.returnCondition,
+        returnReason: l.returnReason,
+        sourceSaleOrderDetailId: l.sourceSaleOrderDetailId,
+        sourcePurchasesBillDetailId: l.sourcePurchasesBillDetailId,
+      })),
+    };
+    this.retrievalService.createRetrieval(payload, this.selectedPerson.id, this.returnType).subscribe({
+      next: (res) => {
+        this.saving = false;
+        const code = res?.data?.retrievalsCode ?? '';
+        this.snack.open(`تم حفظ المرتجع: ${code}`, '', { duration: 3000 });
+        this.router.navigate(['/retrivals']);            // 👈 was dialogRef.close(true)
+      },
+      error: (e) => {
+        this.saving = false;
+        this.snack.open(e?.error?.message || 'فشل الحفظ', '', { duration: 4000 });
+      },
+    });
+  }
+  close() { this.router.navigate(['/retrivals']); }       // 👈 was dialogRef.close(false)
+}
+
+### ./dialgos/retrieval-wizard/retrieval-wizard.component.html
+<!-- src/app/retrivals/dialgos/retrieval-wizard/retrieval-wizard.component.html -->
+<div class="wizard-container" dir="rtl">
+  <!-- STEP HEADER -->
+  <div class="steps-indicator">
+    <div class="step" [class.active]="step >= 0">1. النوع</div>
+    <mat-icon>chevron_left</mat-icon>
+    <div class="step" [class.active]="step >= 1">2. الشخص</div>
+    <mat-icon>chevron_left</mat-icon>
+    <div class="step" [class.active]="step >= 2">3. المنتجات</div>
+    <mat-icon>chevron_left</mat-icon>
+    <div class="step" [class.active]="step >= 3">4. المراجعة</div>
+  </div>
+  <!-- STEP 0: RETURN TYPE -->
+  <div *ngIf="step === 0" class="wizard-step">
+    <h3>اختر نوع المرتجع</h3>
+    <mat-button-toggle-group [(ngModel)]="returnType" class="full-width-toggle">
+      <mat-button-toggle value="CUSTOMER">
+        <mat-icon>person</mat-icon> مرتجع مبيعات (عميل)
+      </mat-button-toggle>
+      <mat-button-toggle value="SUPPLIER">
+        <mat-icon>business</mat-icon> مرتجع مشتريات (مورد)
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+    <button mat-raised-button color="primary" class="next-btn" (click)="step = 1">التالي</button>
+  </div>
+  <!-- STEP 1: PERSON SELECTION -->
+  <div *ngIf="step === 1" class="wizard-step">
+    <h3>بحث عن {{ returnType === 'CUSTOMER' ? 'عميل' : 'مورد' }}</h3>
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>الاسم أو رقم الهاتف</mat-label>
+      <input matInput [formControl]="searchCtrl" [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPersonSelected($event.option.value)">
+        <mat-option *ngFor="let p of filteredPeople | async" [value]="p">
+          {{ p.name }} <small class="text-muted">{{ p.phone }}</small>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+  <!-- STEP 2: PRODUCTS GRID -->
+  <div *ngIf="step === 2" class="wizard-step">
+    <div class="person-badge">
+      <mat-icon>check_circle</mat-icon> {{ selectedPerson?.name }}
+    </div>
+    <table mat-table [dataSource]="products" class="mat-elevation-z0 products-table">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> المنتج </th>
+        <td mat-cell *matCellDef="let p">
+          <div class="product-name">{{ p.productName }}</div>
+          <div class="product-meta">آخر سعر: {{ p.lastPrice }} ج.م</div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="returnable">
+        <th mat-header-cell *matHeaderCellDef> متاح للإرجاع </th>
+        <td mat-cell *matCellDef="let p">
+          <div class="returnable-qty">
+            <b>{{ p.availableCanvases ?? 0 }}</b>
+            <span class="unit-label">توب</span>
+            <span class="divider">·</span>
+            <b style="color:#4f46e5;">
+              {{ (p.availableUnits ?? 0) | number:'1.0-3' }}
+            </b>
+            <span class="unit-label">
+              {{ p.measurementUnit === 'METER' ? 'متر' : 'كجم' }}
+            </span>
+          </div>
+          <div class="return-history">
+            تم إرجاع {{ p.totalReturned ?? 0 }} من {{ p.totalPurchased ?? 0 }} توب
+          </div>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p">
+          <button mat-raised-button color="primary" (click)="openReturnDialog(p)" [disabled]="(p.availableCanvases ?? 0) <= 0
+                      && (p.availableUnits ?? 0) <= 0">
+            <mat-icon>autorenew</mat-icon> إرجاع
+          </button>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="action">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p">
+          <div class="returnable-qty">
+            <b>{{ p.availableCanvases ?? 0 }}</b>
+            <span class="unit-label">توب</span>
+            <span class="divider">·</span>
+            <b style="color:#4f46e5;">
+              {{ (p.availableUnits ?? 0) | number:'1.0-3' }}
+            </b>
+            <span class="unit-label">
+              {{ p.measurementUnit === 'METER' ? 'متر' : 'كجم' }}
+            </span>
+          </div>
+          <div class="return-history">
+            تم إرجاع {{ p.totalReturned ?? 0 }} من {{ p.totalPurchased ?? 0 }} توب
+          </div>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="['name','returnable','action']"></tr>
+      <tr mat-row *matRowDef="let row; columns: ['name','returnable','action'];"></tr>
+    </table>
+    <div class="step-actions">
+      <button mat-stroked-button (click)="step = 1">رجوع</button>
+      <button mat-raised-button color="accent" (click)="step = 3" [disabled]="cart.length === 0">
+        مراجعة السلة ({{ cart.length }})
+      </button>
+    </div>
+  </div>
+  <!-- STEP 3: REVIEW & CONFIRM -->
+  <div *ngIf="step === 3" class="wizard-step">
+    <h3>مراجعة المرتجع</h3>
+    <table mat-table [dataSource]="cart" class="mat-elevation-z0 review-table">
+      <ng-container matColumnDef="product">
+        <th mat-header-cell *matHeaderCellDef> المنتج </th>
+        <td mat-cell *matCellDef="let e"> {{ e.productName }} </td>
+      </ng-container>
+      <ng-container matColumnDef="pieces">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الاتواب </th>
+        <td mat-cell *matCellDef="let e" class="text-center"> {{ e.quantity }} </td>
+      </ng-container>
+      <ng-container matColumnDef="units">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الوحدات </th>
+        <td mat-cell *matCellDef="let e" class="text-center">
+          {{ e.unitNumber | number:'1.0-3' }}
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="condition">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> الحالة </th>
+        <td mat-cell *matCellDef="let e" class="text-center">
+          <span class="badge" [class.badge-good]="e.returnCondition==='GOOD'"
+            [class.badge-damaged]="e.returnCondition==='DAMAGED'">
+            {{ e.returnCondition === 'GOOD' ? 'سليم' : 'تالف' }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-container matColumnDef="total">
+        <th mat-header-cell *matHeaderCellDef class="text-center"> الإجمالي </th>
+        <td mat-cell *matCellDef="let e" class="text-center">
+          {{ e.total | currency:'EGP':'symbol':'1.2-2' }}
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="reviewColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: reviewColumns;"></tr>
+    </table>
+    <div class="review-options">
+      <mat-form-field appearance="outline">
+        <mat-label>الخصم</mat-label>
+        <input matInput type="number" [(ngModel)]="discount">
+      </mat-form-field>
+      <mat-form-field appearance="outline">
+        <mat-label>طريقة الرد</mat-label>
+        <mat-select [(ngModel)]="refundMethod">
+          <mat-option value="CREDIT">رصيد (خصم من الحساب)</mat-option>
+          <mat-option value="CASH">كاش (سحب من الخزنة)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="footer-actions">
+      <div class="total-display">الصافي: {{ netTotal | currency:'EGP':'symbol':'1.2-2' }}</div>
+      <div class="action-buttons">
+        <button mat-stroked-button (click)="step = 2">رجوع</button>
+        <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0">
+          <mat-icon>check_circle</mat-icon> تأكيد وحفظ
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+### ./dialgos/retrieval-wizard/retrieval-wizard.component.scss
+// retrieval-wizard.component.scss
+.wizard-container { padding: 1.5rem; min-width: 800px; font-family: 'Cairo', sans-serif; }
+.steps-indicator { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; color: #9ca3af; }
+.steps-indicator .step.active { color: #4f46e5; font-weight: 700; }
+.steps-indicator mat-icon { font-size: 18px; width: 18px; height: 18px; }
+.wizard-step { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.full-width { width: 100%; }
+.full-width-toggle { width: 100%; display: flex; margin-bottom: 1rem; }
+.full-width-toggle mat-button-toggle { flex: 1; }
+.next-btn { width: 100%; margin-top: 1rem; height: 48px; }
+.person-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: #eef2ff; color: #4f46e5; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600; margin-bottom: 1rem; }
+.products-table th { background: #f9fafb; font-size: 0.8rem; color: #6b7280; }
+.product-name { font-weight: 600; color: #1a1a1a; }
+.product-meta { font-size: 0.8rem; color: #6b7280; margin-top: 4px; }
+.returnable-qty { font-size: 1.2rem; font-weight: 700; color: #4f46e5; }
+.unit-label { font-size: 0.8rem; color: #6b7280; margin-right: 4px; }
+.return-history { font-size: 0.75rem; color: #9ca3af; margin-top: 4px; }
+.dual-unit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.condition-selector { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; }
+.condition-label { font-weight: 600; color: #374151; }
+.radio-group { display: flex; gap: 1.5rem; }
+.icon-good { color: #10b981; vertical-align: middle; margin-left: 4px; }
+.icon-bad { color: #ef4444; vertical-align: middle; margin-left: 4px; }
+.footer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #f3f4f6; }
+.total-display { font-size: 1.5rem; font-weight: 800; color: #4f46e5; }
+.action-buttons { display: flex; gap: 1rem; }
+.badge { padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; }
+.badge-good { background: #d1fae5; color: #065f46; }
+.badge-damaged { background: #fee2e2; color: #991b1b; }
+.review-table {
+  width: 100%;
+  margin: 1rem 0 1.5rem;
+  th.mat-header-cell {
+    background: #f4f3f0;
+    color: #44596e;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 10px 12px;
+    border-bottom: 2px solid #44596e;
+  }
+  td.mat-cell {
+    padding: 12px;
+    font-size: 1rem;
+    border-bottom: 1px solid #eef0f2;
+  }
+  .text-center { text-align: center; }
+}
+::ng-deep .mat-form-field-outline { border-radius: 8px !important; }
+::ng-deep .mat-input-element { text-align: right !important; }
+.returnable-qty .divider {
+  color: #cbd5e1;
+  margin: 0 6px;
+}
+
+### ./service/retrivals-details.service.ts
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+@Injectable({ providedIn: 'root' })
+export class RetrivalsDetailsService {
+  private baseUrl = `${environment.baseUrl}/retrievalsDetails`;
+  constructor(private http: HttpClient) {}
+  getAllByBillId(id: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/${id}`);
+  }
+}
+
+### ./service/retrivals.service.ts
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { ReturnType } from '../models/retrivals-model';
+@Injectable({ providedIn: 'root' })
+export class RetrivalsService {
+  private baseUrl = `${environment.baseUrl}/retrievals`;
+  constructor(private http: HttpClient) {}
+  getAllPagination(params: any): Observable<any> {
+    return this.http.get(`${this.baseUrl}/pageable`, { params });
+  }
+  getBillsCode(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/nextCode`);
+  }
+  getReturnableProducts(personId: number, type: ReturnType): Observable<any> {
+    const params: any = type === 'CUSTOMER'
+      ? { customerId: personId }
+      : { supplierId: personId };
+    return this.http.get(`${this.baseUrl}/returnable-products`, { params });
+  }
+  createRetrieval(payload: any, personId: number, type: ReturnType): Observable<any> {
+    const params: any = type === 'CUSTOMER'
+      ? { customerId: personId }
+      : { supplierId: personId };
+    return this.http.post(`${this.baseUrl}/createRetrivalBills`, payload, { params });
+  }
+  delete(id: number): Observable<any> {
+    return this.http.put(`${this.baseUrl}/archive?id=${id}`, null);
+  }
+}
+

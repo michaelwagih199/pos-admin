@@ -70,6 +70,7 @@
       <td mat-cell *matCellDef="let element"> {{ element.alertUnits }} </td>
     </ng-container>
 
+
     <!-- Measurement Unit -->
     <ng-container matColumnDef="measurementUnit">
       <th mat-header-cell *matHeaderCellDef> وحدة القياس </th>
@@ -79,11 +80,17 @@
     </ng-container>
 
     <!-- Unit Number -->
-    <ng-container matColumnDef="unitNumber">
-      <th mat-header-cell *matHeaderCellDef> عدد الاتواب </th>
-      <td mat-cell *matCellDef="let element"> {{ element.numberUnitsInStock }} </td>
-    </ng-container>
+<!-- عدد الوحدات (م/كجم) – decimal -->
+<ng-container matColumnDef="numberUnitsInStock">
+  <th mat-header-cell *matHeaderCellDef> عدد الوحدات (م/كجم) </th>
+  <td mat-cell *matCellDef="let element"> {{ element.numberUnitsInStock | number:'1.3-3' }} </td>
+</ng-container>
 
+<!-- عدد الاتواب – integer -->
+<ng-container matColumnDef="numberOfCanvasesInStock">
+  <th mat-header-cell *matHeaderCellDef> عدد الاتواب </th>
+  <td mat-cell *matCellDef="let element"> {{ element.numberOfCanvasesInStock }} </td>
+</ng-container>
     <!-- Actions (unchanged) -->
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> </th>

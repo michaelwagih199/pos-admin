@@ -44,22 +44,35 @@
       <div class="dashboard-panel">
 
         <!-- Search & Quantity Form -->
+        <!-- Search & Quantity Form -->
         <form [formGroup]="producForm">
           <div class="row g-2 align-items-end mb-3">
-            <div class="col-3 col-sm-2">
+            <!-- Quantity (م/كجم) -->
+            <div class="col-2 col-sm-2">
               <mat-form-field appearance="outline" class="w-100">
-                <mat-label>الكمية (م/كجم)</mat-label>
+                <mat-label>
+                  عدد الوحدات
+                </mat-label>
                 <input matInput type="number" formControlName="quantityControl"
-                  (keyup.enter)="onProductEnter(productControl.value ?? '')" step="0.01" min="0.01">
+                  (keyup.enter)="onProductEnter(productControl.value ?? '')" step="0.001" min="0.001">
               </mat-form-field>
             </div>
 
-            <div class="col-6 col-sm-7">
+            <!-- عدد الاتواب (NEW) -->
+            <div class="col-2 col-sm-2">
+              <mat-form-field appearance="outline" class="w-100">
+                <mat-label>عدد الاتواب</mat-label>
+                <input matInput type="number" formControlName="pieceQuantityControl"
+                  (keyup.enter)="onProductEnter(productControl.value ?? '')" step="1" min="1">
+              </mat-form-field>
+            </div>
+
+            <!-- Product Search -->
+            <div class="col-5 col-sm-5">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>{{ arabic.stock.products.util.searchBar }}</mat-label>
                 <input matInput type="text" [formControl]="productControl" [matAutocomplete]="productAuto"
-                  (keyup.enter)="onProductEnter(productControl.value ?? '')"
-                    (focus)="clearProductSearch()">
+                  (keyup.enter)="onProductEnter(productControl.value ?? '')" (focus)="clearProductSearch()">
                 <mat-icon matSuffix class="text-accent">search</mat-icon>
                 <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
                   <mat-option *ngFor="let option of productFilteredOptions | async" [value]="option"
@@ -70,6 +83,7 @@
               </mat-form-field>
             </div>
 
+            <!-- Search Filter -->
             <div class="col-3 col-sm-3">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>{{ arabic.util.searchfilter }}</mat-label>
@@ -81,17 +95,16 @@
             </div>
           </div>
         </form>
-
         <!-- Dynamic Order Table -->
         <div class="table-responsive">
           <table class="table table-bordered table-hover dashboard-table">
             <thead>
               <tr>
                 <th>المنتج</th>
-                <th class="text-center">عدد الاتواب</th>
-                <th class="text-center">سعر الوحدة</th>
                 <th class="text-center">وحدة القياس</th>
+                <th class="text-center">عدد الاتواب</th>
                 <th class="text-center">عدد الوحدات</th>
+                <th class="text-center">سعر الوحدة</th>
                 <th class="text-center">الإجمالى</th>
                 <th class="text-center" style="width: 100px;"></th>
               </tr>
@@ -99,25 +112,27 @@
             <tbody>
               <tr *ngFor="let item of dynamicOrderList">
                 <td class="fw-bold">{{ item.productName }}</td>
-                <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-center">{{ item.price }}</td>
                 <td class="text-center">
                   {{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}
                 </td>
-                <td class="text-center">{{ item.unitNumber }}</td>
+                <td class="text-center">{{ item.quantity }}</td>
+                <td class="text-center">{{ item.unitNumber | number:'1.0-3' }}</td>
+                <td class="text-center">{{ item.price }}</td>
                 <td class="text-center text-accent fw-bold">{{ item.total }}</td>
                 <td class="text-center">
                   <button mat-icon-button class="text-danger" (click)="deleteDynamicItem(item)" aria-label="حذف المنتج">
                     <mat-icon>delete</mat-icon>
                   </button>
-                  <button mat-icon-button class="text-navy" (click)="openUpdateQuantity(updateQuantity, item)" aria-label="تعديل الكمية">
+                  <button mat-icon-button class="text-navy" (click)="openUpdateQuantity(updateQuantity, item)"
+                    aria-label="تعديل الكمية">
                     <mat-icon>edit</mat-icon>
                   </button>
                 </td>
               </tr>
               <tr *ngIf="dynamicOrderList.length === 0">
                 <td colspan="7" class="text-center text-muted py-5">
-                  <mat-icon class="d-block mx-auto mb-2 opacity-25" style="font-size: 48px; height: 48px; width: 48px;">shopping_cart</mat-icon>
+                  <mat-icon class="d-block mx-auto mb-2 opacity-25"
+                    style="font-size: 48px; height: 48px; width: 48px;">shopping_cart</mat-icon>
                   لا توجد منتجات مضافة
                 </td>
               </tr>
@@ -184,8 +199,8 @@
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100 mb-1">
-            <mat-label>المدفوع</mat-label>
-            <input matInput type="number" [(ngModel)]="paid">
+            <mat-label>دفعة العميل</mat-label>
+            <input matInput type="number" [(ngModel)]="paid" [disabled]="saleOrderObj.paymentType === 'CASH'">
           </mat-form-field>
 
           <div class="d-flex justify-content-between align-items-center mb-2 px-2 text-danger">
@@ -206,7 +221,7 @@
             حفظ وطباعة
           </button>
           <button mat-raised-button class="btn-secondary-action w-100 py-3 fs-6" (click)="onSaveOrder()"
-             [disabled]="!isOrderValid()">
+            [disabled]="!isOrderValid()">
             حفظ فقط
           </button>
         </div>
@@ -231,8 +246,8 @@
     <form [formGroup]="quantityValidateForm">
       <!-- CanvasTopUnits (meters/kg) -->
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>الكمية (م/كجم)</mat-label>
-        <input matInput type="number" formControlName="modalCanvasTopUnits" step="0.01" min="0.01">
+        <mat-label>وزن | قياس</mat-label>
+        <input matInput type="number" formControlName="modalCanvasTopUnits" step="0.001" min="0.001">
       </mat-form-field>
       <!-- Quantity (number of pieces) -->
       <mat-form-field class="w-100" appearance="outline">

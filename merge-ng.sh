@@ -1,48 +1,64 @@
 #!/bin/bash
-# Remove any previously generated context files
-rm -f angular_context_*.txt
+# Generate an Angular project context file.
+# Usage: ./merge-ng.sh [output-file] [source-dir]
+#
+# Defaults:
+#   output-file = angular_context_<timestamp>.txt
+#   source-dir  = .
 
-TIMESTAMP=$(date +"%Y-%m-%d_%H-%M")
-OUTPUT_FILE="angular_context_${TIMESTAMP}.txt"
+set -e
 
-# Clear the output file if it exists
-> "$OUTPUT_FILE"
+OUTPUT_FILE="${1:-angular_context_$(date +%Y%m%d_%H%M%S).txt}"
+SRC_DIR="${2:-.}"
 
-echo "🔍 Gathering Angular project context into $OUTPUT_FILE..."
+echo "Generating Angular context..."
+echo "  Output: $OUTPUT_FILE"
+echo "  Source: $SRC_DIR"
 
-# 1. Add a Directory Tree (explicitly skip .angular, .vscode, node_modules, dist)
 {
-  echo "--- DIRECTORY TREE ---"
-  echo "Generated on: $(date)"
-  find . -maxdepth 3 \
-    -not -path '*/.*' \
-    -not -path './node_modules*' \
-    -not -path './dist*' \
-    -not -path './.angular*' \
-    -not -path './.vscode*'
-  printf "\n"
-} >> "$OUTPUT_FILE"
+    echo "# Angular POS — Frontend Context"
+    echo "# Generated: $(date)"
+    echo "# Source:    $SRC_DIR"
+    echo ""
 
-# 2. Find and merge relevant files, excluding all unwanted directories
-find . -type f \
-    \( -name "*.ts" -o -name "*.html" -o -name "*.scss" -o -name "*.json" -o -name "*.css" \) \
-    -not -path "*/node_modules/*" \
-    -not -path "*/dist/*" \
-    -not -path "*/.git/*" \
-    -not -path "*/.vscode/*" \
-    -not -path "*/.angular/*" \
-    -not -name "package-lock.json" \
-    -not -name "metadata.json" \
-    -not -name "yarn.lock" \
-    -print0 | while IFS= read -r -d '' file; do
-        echo "Adding: $file"
-        {
-            echo "================================================"
-            echo "FILE: $file"
-            echo "================================================"
-            cat "$file"
-            printf "\n"
-        } >> "$OUTPUT_FILE"
-    done
+    cd "$SRC_DIR" || { echo "Cannot cd into $SRC_DIR"; exit 1; }
 
-echo "✅ Done! Context saved to: $OUTPUT_FILE"
+    find . \
+        \( -path "*/node_modules" \
+        -o -path "*/dist" \
+        -o -path "*/.angular" \
+        -o -path "*/.git" \
+        -o -path "*/.vscode" \
+        -o -path "*/e2e" \
+        -o -path "*/.github" \) -prune \
+        -o -type f \( \
+            -name "*.ts" \
+            -o -name "*.html" \
+            -o -name "*.scss" \
+            -o -name "angular.json" \
+            -o -name "package.json" \
+            -o -name "tsconfig*.json" \
+            -o -name "_MODELS.md" \
+            -o -name "_ROUTES.md" \
+        \) \
+        -not -name "*.spec.ts" \
+        -not -name "package-lock.json" \
+        -not -name "*.cpuprofile" \
+        -not -name "merge-ng.sh" \
+        -not -name "merge_context.sh" \
+        -not -name "angular_context_*.txt" \
+        -not -name "project_context_*.txt" \
+        -print0 | while IFS= read -r -d '' file; do
+            # Skip empty .scss files (contribute nothing)
+            if [[ "$file" == *.scss ]] && [[ ! -s "$file" ]]; then
+                continue
+            fi
+            echo "### $file"
+            sed -e '/^[[:space:]]*$/d' "$file"
+            echo ""
+        done
+} > "$OUTPUT_FILE"
+
+echo "Done → $OUTPUT_FILE"
+echo "Size:   $(wc -c < "$OUTPUT_FILE") bytes"
+echo "Files:  $(grep -c '^### ' "$OUTPUT_FILE")"

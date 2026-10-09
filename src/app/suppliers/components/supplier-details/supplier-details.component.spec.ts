@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateRetrivalsComponent } from './create-retrivals.component';
+import { SupplierDetailsComponent } from './supplier-details.component';
 
-describe('CreateRetrivalsComponent', () => {
-  let component: CreateRetrivalsComponent;
-  let fixture: ComponentFixture<CreateRetrivalsComponent>;
+describe('SupplierDetailsComponent', () => {
+  let component: SupplierDetailsComponent;
+  let fixture: ComponentFixture<SupplierDetailsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CreateRetrivalsComponent ]
+      declarations: [ SupplierDetailsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CreateRetrivalsComponent);
+    fixture = TestBed.createComponent(SupplierDetailsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

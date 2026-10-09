@@ -18,6 +18,7 @@ import { SaleOrderInvoceService } from '../service/sale-order-invoce.service';
 
 export interface data {
   orderCode: any;
+  excludeOrder:string;
 }
 
 @Component({
@@ -46,9 +47,9 @@ export class ReciptReportComponent
     this.subscription = this.dataServer.currentMessage.subscribe((message) => {
       this.sharedData = message;
     });
-    
+
     if (this.sharedData.orderCode) {
-      this.salOrderPayment.printSaleOrderInvoice(this.sharedData.orderCode).subscribe(
+      this.salOrderPayment.printSaleOrderInvoice(this.sharedData.orderCode,this.sharedData.excludeOrder).subscribe(
         response => {
           let blob: any = new Blob([response], { type: 'application/pdf; charset=utf-8' });
           const blobUrl = URL.createObjectURL(blob);
@@ -65,7 +66,7 @@ export class ReciptReportComponent
 
 
   ngAfterViewChecked(): void {
-   
+
   }
 
 

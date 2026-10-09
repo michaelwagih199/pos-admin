@@ -8,10 +8,12 @@ import { CreateCustomerComponent } from './dialogs/create-customer/create-custom
 import { SharedModule } from '../shared/shared.module';
 import { PaymentsComponent } from './components/payments/payments.component';
 import { OrdersComponent } from './components/orders/orders.component';
+import { CustomerPaymentComponent } from './components/customer-payment/customer-payment.component';
+import { CustomerStatementComponent } from '../reports/components/customer-statement/customer-statement.component';
 
 
 @NgModule({
-  declarations: [CustomerListComponent, CustomerDetailsComponent, CreateCustomerComponent, PaymentsComponent, OrdersComponent],
+  declarations: [CustomerListComponent,CustomerStatementComponent, CustomerDetailsComponent, CreateCustomerComponent, PaymentsComponent, OrdersComponent, CustomerPaymentComponent],
   imports: [
     CommonModule,
     CustomersRoutingModule,

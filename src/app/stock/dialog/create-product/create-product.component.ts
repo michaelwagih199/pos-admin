@@ -32,15 +32,16 @@ export class CreateProductComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.validateForm = this.fb.group({
-      productCode: [null],
-      productName: [null, [Validators.required]],
-      wholesalePrice: [null, [Validators.required]],
-      alertUnits: [null, [Validators.required]],
-      measurementUnit: [null, [Validators.required]],
-      numberUnitsInStock: [null, [Validators.required]],
-      productCategory: [null, [Validators.required]]
-    });
+this.validateForm = this.fb.group({
+  productCode: [null],
+  productName: [null, [Validators.required]],
+  wholesalePrice: [null, [Validators.required]],
+  alertUnits: [null, [Validators.required]],
+  measurementUnit: [null, [Validators.required]],
+  numberUnitsInStock: [0, [Validators.required, Validators.min(0)]],
+  numberOfCanvasesInStock: [0, [Validators.required, Validators.min(0)]],
+  productCategory: [null, [Validators.required]]
+});
     this.retrieveCategory();
   }
 
