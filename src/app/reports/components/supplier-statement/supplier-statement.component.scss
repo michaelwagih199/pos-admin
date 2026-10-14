@@ -1,3 +1,9 @@
+// ============================================================
+// Supplier Statement Styles - Uses Shared Report Tables
+// ============================================================
+
+@use 'src/app/shared/styles/report-tables' as rt;
+
 :host {
   --navy: #44596e;
   --accent: #ec994b;
@@ -7,6 +13,8 @@
 }
 
 .statement-screen {
+  @include rt.table-base;
+  
   font-family: "Cairo", sans-serif;
   background: var(--sand);
   min-height: calc(100vh - 64px);
@@ -75,24 +83,12 @@
 
 /* Summary */
 .summary-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  @include rt.summary-row;
 }
 
 .summary-card {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
-
-  .label { font-size: 0.8rem; opacity: 0.9; }
-  .value { font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-
+  @include rt.summary-card;
+  
   &.opening   { background: #64748b; }
   &.purchases { background: var(--navy); }
   &.payments  { background: #16a34a; }
@@ -103,99 +99,254 @@
 
 /* Sections */
 .section-card {
-  background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1rem;
-  overflow: hidden;
+  @include rt.section-card;
 
-  .section-header {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1rem;
-    background: #f8fafc;
-    border-bottom: 1px solid #e2e8f0;
-    font-weight: 700;
+  .section-header.navy   { background: #44596e; }
+  .section-header.green  { background: #16a34a; }
+  .section-header.danger { background: #db1f48; }
+  .section-header.purple { background: #7c3aed; }
+}
+
+/* Data tables */
+.data-table {
+  @include rt.table-base;
+
+  thead th {
+    background: #eef2f7;
     color: var(--navy);
-
-    mat-icon { font-size: 20px; height: 20px; width: 20px; }
-    .count {
-      margin-inline-start: auto;
-      background: var(--navy);
-      color: #fff;
-      font-size: 0.75rem;
-      padding: 2px 8px;
-      border-radius: 12px;
-    }
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.2px;
+    padding: 12px 14px;
+    text-align: end;
+    border-bottom: 2px solid var(--navy);
+    white-space: nowrap;
+    font-family: "Cairo", sans-serif;
   }
 
-  .empty {
-    padding: 2rem;
-    text-align: center;
-    color: #94a3b8;
-    font-style: italic;
+  tbody td {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    border-bottom: 1px solid #eef0f2;
+    text-align: end;
+    vertical-align: middle;
+  }
+
+  .num {
+    @include rt.num-cell;
+  }
+
+  th.num {
+    @include rt.num-header;
+  }
+
+  .credit {
+    @include rt.credit-style;
+  }
+
+  .debit {
+    @include rt.debit-style;
+  }
+
+  tbody tr:nth-child(even) td {
+    background: #fafbfc;
+  }
+
+  tbody tr:hover td {
+    background: #f1f5f9;
+    transition: background 0.15s ease;
+  }
+
+  tr:last-child td {
+    border-bottom: none;
   }
 }
 
-.data-table {
-  width: 100%;
-  border-collapse: collapse;
-
-  th {
-    background: #fafbfc;
-    color: #64748b;
-    font-size: 0.8rem;
-    font-weight: 700;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e2e8f0;
-    text-align: start;
-    &.num { text-align: end; }
-  }
-
-  td {
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #f1f5f9;
-    font-size: 0.9rem;
-    color: #334155;
-    &.num { text-align: end; font-variant-numeric: tabular-nums; font-weight: 600; }
-    &.notes { color: #64748b; }
-  }
-
-  tbody tr:hover {
-    background: #f8fafc;
-  }
+.empty {
+  @include rt.empty-row;
 }
 
 .badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: 4px;
-  font-size: 0.75rem;
-  font-weight: 600;
-
-  &.badge-credit { background: #e0e7ff; color: #3730a3; }
-  &.badge-cash   { background: #dcfce7; color: #166534; }
+  @include rt.badge-base;
 }
 
 .statement-footer {
   text-align: center;
-  color: #94a3b8;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
+  color: #64748b;
   padding: 1rem 0;
 }
 
 .empty-card {
-  text-align: center;
-  padding: 3rem 1rem;
-  color: #94a3b8;
+  mat-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 1rem;
+    color: #94a3b8;
 
-  .empty-icon { font-size: 48px; height: 48px; width: 48px; margin-bottom: 0.5rem; }
-  h3 { margin: 0 0 0.5rem; color: #64748b; }
+    .empty-icon { font-size: 64px; width: 64px; height: 64px; opacity: 0.5; }
+    h3 { margin: 1rem 0 0.25rem; color: var(--navy); }
+    p { margin: 0; }
+  }
 }
 
+/* Print */
 @media print {
   .no-print { display: none !important; }
   .statement-screen { background: #fff; padding: 0; }
-  .section-card { box-shadow: none; border: 1px solid #e2e8f0; }
+  .summary-card { box-shadow: none; }
+  .section-card { page-break-inside: avoid; }
+  
+  @include rt.print-table;
+}
+
+/* ============================================================
+   Bill Group - Expandable Invoice Detail
+   ============================================================ */
+.bill-group {
+  margin-bottom: 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: box-shadow 0.2s ease;
+  
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+}
+
+.bill-group-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.25rem;
+  background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
+  
+  &:hover {
+    background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 100%);
+  }
+  
+  mat-icon {
+    font-size: 22px;
+    height: 22px;
+    width: 22px;
+    color: var(--navy);
+    transition: transform 0.2s ease;
+  }
+}
+
+.bill-code {
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--navy);
+  flex: 0 0 140px;
+  text-align: center;
+}
+
+.bill-line-count {
+  font-family: "Cairo", sans-serif;
+  font-size: 0.85rem;
+  color: #64748b;
+  background: #fff;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid #e2e8f0;
+  flex: 0 0 auto;
+}
+
+.bill-total {
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+  font-size: 1rem;
+  color: #1e3a8a;
+  margin-left: auto;
+  padding: 0.35rem 1rem;
+  background: #dbeafe;
+  border-radius: 6px;
+  border: 1px solid #bfdbfe;
+}
+
+.bill-group-body {
+  padding: 0;
+  overflow: hidden;
+}
+
+.bill-lines-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: "Cairo", sans-serif;
+  margin: 0;
+  
+  thead th {
+    background: #eef2f7;
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 0.8rem;
+    letter-spacing: 0.3px;
+    padding: 10px 12px;
+    text-align: end;
+    border-bottom: 2px solid var(--navy);
+    white-space: nowrap;
+    font-family: "Cairo", sans-serif;
+  }
+  
+  tbody td {
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    color: #1f2937;
+    border-bottom: 1px solid #eef0f2;
+    text-align: end;
+    vertical-align: middle;
+  }
+  
+  tbody tr:nth-child(even) td {
+    background: #fafbfc;
+  }
+  
+  tbody tr:hover td {
+    background: #f1f5f9;
+    transition: background 0.15s ease;
+  }
+  
+  .num {
+    text-align: end;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .bill-subtotal {
+    background: #f8fafc;
+    font-weight: 700;
+    
+    td {
+      border-top: 2px solid #e2e8f0;
+      padding-top: 14px;
+      padding-bottom: 14px;
+    }
+  }
+}
+
+/* Animation for expand/collapse */
+.bill-group-body {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.25s ease-out, opacity 0.2s ease-out, padding 0.25s ease-out;
+  
+  &.expanded {
+    max-height: 500px;
+    opacity: 1;
+    padding-top: 4px;
+    padding-bottom: 4px;
+  }
 }

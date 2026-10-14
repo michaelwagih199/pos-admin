@@ -1,3 +1,13 @@
+@use 'src/app/shared/styles/report-tables' as rt;
+
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --danger: #db1f48;
+  --credit: #2563eb;
+}
+
 $bg_dark_color: #44596E;
 $green_color: #008d60;
 $redItems: #ff0036;
@@ -7,7 +17,10 @@ $font_header_size: 20px;
 
 * {
   font-family: "Cairo", sans-serif;
+}
 
+.data-table {
+  @include rt.table-base;
 }
 
 .mat-card-header {

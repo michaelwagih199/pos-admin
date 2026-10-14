@@ -10,21 +10,21 @@
     <mat-card-content>
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
         <div class="text-center text-footer">
-            <table class="table table-bordered table-sm mt-2">
+            <table class="table table-bordered table-sm data-table mt-2">
                 <thead class="thead-light">
                     <tr>
                         <th>المنتج</th>
-                        <th>سعر الشراء</th>
-                        <th>عدد القطع</th>
-                        <th>القيمة</th>
+                        <th class="num">سعر الشراء</th>
+                        <th class="num">عدد القطع</th>
+                        <th class="num">القيمة</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of productList">
-                        <th>{{item?.productName }}</th>
-                        <td>{{ item?.purchasingPrice }}</td>
-                        <td>{{ item?.numberUnitsInStock }}</td>
-                        <td>{{ item.purchasingPrice * item.numberUnitsInStock }}</td>
+                        <td>{{item?.productName }}</td>
+                        <td class="num">{{ item?.purchasingPrice }}</td>
+                        <td class="num">{{ item?.numberUnitsInStock }}</td>
+                        <td class="num">{{ item.purchasingPrice * item.numberUnitsInStock }}</td>
                     </tr>
                 </tbody>
             </table>

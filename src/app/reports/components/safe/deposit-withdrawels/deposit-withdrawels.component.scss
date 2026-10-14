@@ -1,17 +1,71 @@
+@use 'src/app/shared/styles/report-tables' as rt;
 
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --danger: #db1f48;
+  --credit: #2563eb;
+  --success: #16a34a;
+}
+
+* {
+  font-family: "Cairo", sans-serif;
+}
 
 .mat-card-header {
-    background: #F4F3F0;
-    border-radius: 8px;
-    border: 1px solid #212121;
+  background: var(--sand);
+  border-radius: 8px;
+  border: 1px solid #cbd5e1;
 }
 
-.text-footer{
-    font-size: 18px;
-    font-family: 'Cairo';
+.text-footer {
+  font-size: 1.15rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
 }
 
-.mat-raised-button{
-    font-size: 16px;
-    font-family: 'Cairo';
+.mat-raised-button {
+  font-size: 0.95rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+}
+
+table[mat-table] {
+  width: 100%;
+  font-family: "Cairo", sans-serif;
+
+  th.mat-header-cell {
+    font-weight: 700;
+    color: var(--navy);
+    font-size: 0.9rem;
+    padding: 10px 14px;
+    background: #eef2f7;
+
+    &.num {
+      @include rt.num-header;
+    }
+  }
+
+  td.mat-cell {
+    font-size: 0.9rem;
+    padding: 10px 14px;
+    color: #1e293b;
+
+    &.num {
+      @include rt.num-cell;
+    }
+    &.credit {
+      @include rt.credit-style;
+    }
+    &.debit {
+      @include rt.debit-style;
+    }
+  }
+
+  tr.mat-row:hover {
+    background: #f1f5f9;
+  }
 }

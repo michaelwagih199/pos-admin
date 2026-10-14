@@ -1,12 +1,15 @@
-$bg_dark_color: #000f27;
-$green_color: #008d60;
-$redItems: #ff0036;
-$timperItems: #ff741a;
-$ofWhite: #e5e5e5;
-$font_header_size: 20px;
+// ============================================================================
+// Sales Report Styles - Uses Shared Report Tables
+// ============================================================================
 
-* {
-  font-family: "Cairo", sans-serif;
+@use 'src/app/shared/styles/report-tables' as rt;
+
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --danger: #db1f48;
+  --credit: #2563eb;
 }
 
 .mat-card-header {
@@ -18,58 +21,128 @@ $font_header_size: 20px;
 }
 
 .mat-card {
-  background: #f4f3f0;
+  background: var(--sand);
 }
 
 .mat-raised-button {
-  font-family: "El Messiri", sans-serif;
+  font-family: "Cairo", sans-serif;
   font-size: large;
 }
 
-.customClass-1 {
-  background-color: white;
-  border-left: 8px solid #2b81ff;
-  height: 60px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 3px grey;
-  font-family: "El Messiri", sans-serif;
-  font-size: $font_header_size;
+// Using shared summary cards
+.summary-row {
+  @include rt.summary-row;
+}
 
-  &:hover {
-    border-left: 8px solid $redItems;
-    text-decoration: none;
+.summary-card {
+  @include rt.summary-card;
+}
+
+// Using shared section cards
+.section-card {
+  @include rt.section-card;
+}
+
+.customClass-1,
+.customClass-2 {
+  background: #fff;
+  border-inline-start: 6px solid var(--navy);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 0.75rem 1rem;
+  font-family: "Cairo", sans-serif;
+
+  p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--navy);
   }
-  .customTest {
-    color: black;
-    font-size: 24px;
-    &:hover {
-      animation: swing;
-      animation-duration: 1s;
-    }
+
+  .bg-dark {
+    background: var(--navy) !important;
+    font-size: 1.25rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    direction: ltr;
+    unicode-bidi: isolate;
   }
 }
 
-.customClass-2{
+.customClass-2 {
+  border-inline-start-color: var(--accent);
+}
 
-  background-color: white;
-  border-left: 8px solid #FF587F;
-  height: 60px;
-  border-radius: 5px;
-  box-shadow: 2px 2px 3px grey;
-  font-family: 'El Messiri', sans-serif;
-  font-size: $font_header_size;
-  &:hover {
-    border-left: 8px solid $bg_dark_color;
-    font-weight: bold;
-  }
-  .customTest{
-    color: black;
-    font-size: 24px;
-    text-decoration: none;
-    &:hover{
-      animation: swing; 
-      animation-duration: 1s; 
-    }
+// Data tables - using shared base
+.data-table {
+  @include rt.table-base;
+  
+  thead th {
+    background: #eef2f7;
+    color: var(--navy);
+    font-weight: 800;
+    font-size: 0.9rem;
+    letter-spacing: 0.2px;
+    padding: 12px 14px;
+    text-align: end;
+    border-bottom: 2px solid var(--navy);
+    white-space: nowrap;
+    font-family: "Cairo", sans-serif;
   }
   
+  tbody td {
+    padding: 12px 14px;
+    font-size: 0.9rem;
+    color: #1f2937;
+    border-bottom: 1px solid #eef0f2;
+    text-align: end;
+    vertical-align: middle;
+  }
+  
+  .num {
+    @include rt.num-cell;
+  }
+  
+  th.num {
+    @include rt.num-header;
+  }
+  
+  .credit {
+    @include rt.credit-style;
+  }
+  
+  .debit {
+    @include rt.debit-style;
+  }
+  
+  tbody tr:nth-child(even) td {
+    background: #fafbfc;
+  }
+  
+  tbody tr:hover td {
+    background: #f1f5f9;
+    transition: background 0.15s ease;
+  }
+  
+  tr:last-child td {
+    border-bottom: none;
+  }
+}
+
+.empty {
+  @include rt.empty-row;
+}
+
+.badge {
+  @include rt.badge-base;
+}
+
+// Print styles
+@media print {
+  .no-print { display: none !important; }
+  .mat-card { background: #fff; }
+  .summary-card { box-shadow: none; }
+  .section-card { page-break-inside: avoid; }
+  
+  @include rt.print-table;
 }

@@ -28,21 +28,21 @@
                 </mat-card-header>
                 <mat-card-content>
                     <div class="text-center text-footer">
-                        <table class="table table-bordered table-sm mt-2">
+                        <table class="table table-bordered table-sm data-table mt-2">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>مبيعات</th>
-                                    <th>دفعات عملاء</th>
-                                    <th>ايداعات</th>
-                                    <th>الاجمالى</th>
+                                    <th class="num">مبيعات</th>
+                                    <th class="num">دفعات عملاء</th>
+                                    <th class="num">ايداعات</th>
+                                    <th class="num">الاجمالى</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>{{income?.sumSales }}</th>
-                                    <td>{{ income?.fromCustomers }}</td>
-                                    <td>{{ income?.incomes }}</td>
-                                    <td>{{ totalIncome}}</td>
+                                    <td class="num">{{ income?.sumSales }}</td>
+                                    <td class="num">{{ income?.fromCustomers }}</td>
+                                    <td class="num">{{ income?.incomes }}</td>
+                                    <td class="num credit">{{ totalIncome }}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -60,23 +60,23 @@
                 </mat-card-header>
                 <mat-card-content>
                     <div class="text-center text-footer">
-                        <table class="table table-bordered table-sm mt-2 ">
+                        <table class="table table-bordered table-sm data-table mt-2">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th>مصروفات</th>
-                                    <th>دفعات موردين</th>
-                                    <th>مسحوبات</th>
-                                    <th>مرتجعات</th>
-                                    <th>الاجمالى</th>
+                                    <th class="num">مصروفات</th>
+                                    <th class="num">دفعات موردين</th>
+                                    <th class="num">مسحوبات</th>
+                                    <th class="num">مرتجعات</th>
+                                    <th class="num">الاجمالى</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <th>{{ export?.sumExpenses}}</th>
-                                    <td>{{ export?.sumSuppliersValues }}</td>
-                                    <td>{{ export?.sumExport }}</td>
-                                    <td>{{ export?.sumRetrivals }}</td>
-                                    <td>{{totalExport }}</td>
+                                    <td class="num">{{ export?.sumExpenses }}</td>
+                                    <td class="num">{{ export?.sumSuppliersValues }}</td>
+                                    <td class="num">{{ export?.sumExport }}</td>
+                                    <td class="num">{{ export?.sumRetrivals }}</td>
+                                    <td class="num debit">{{ totalExport }}</td>
                                 </tr>
                             </tbody>
                         </table>

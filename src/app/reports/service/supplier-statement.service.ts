@@ -21,6 +21,16 @@ export interface SupplierPurchaseRow {
   remaining: number;
 }
 
+export interface SupplierPurchaseLineRow {
+  billCode: string;
+  productName: string;
+  rolls: number;
+  units: number;
+  unitLabel: string;
+  unitPrice: number;
+  lineTotal: number;
+}
+
 export interface SupplierReturnRow {
   returnCode: string;
   sourceBillCode: string;
@@ -67,6 +77,7 @@ export interface DetailedSupplierStatement {
 
   movements: SupplierMovementRow[];
   purchases: SupplierPurchaseRow[];
+  purchaseLines: SupplierPurchaseLineRow[];
   returns: SupplierReturnRow[];
   payments: SupplierPaymentRow[];
 }

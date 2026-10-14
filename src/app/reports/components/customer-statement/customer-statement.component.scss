@@ -1,3 +1,9 @@
+// ============================================================
+// Customer Statement Styles - Uses Shared Report Tables
+// ============================================================
+
+@use 'src/app/shared/styles/report-tables' as rt;
+
 :host {
   --navy: #44596e;
   --accent: #ec994b;
@@ -7,6 +13,8 @@
 }
 
 .statement-screen {
+  @include rt.table-base;
+  
   font-family: "Cairo", sans-serif;
   background: var(--sand);
   min-height: calc(100vh - 64px);
@@ -72,26 +80,14 @@
   .info-name { font-weight: 700; font-size: 1.15rem; }
 }
 
-/* Summary */
+/* Summary - using shared mixin */
 .summary-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  @include rt.summary-row;
 }
 
 .summary-card {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 0.85rem 1rem;
-  border-radius: 8px;
-  color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
-
-  .label { font-size: 0.8rem; opacity: 0.9; }
-  .value { font-size: 1.35rem; font-weight: 800; font-variant-numeric: tabular-nums; }
-
+  @include rt.summary-card;
+  
   &.opening  { background: #64748b; }
   &.orders   { background: var(--navy); }
   &.payments { background: #16a34a; }
@@ -102,41 +98,18 @@
 
 /* Sections */
 .section-card {
-  background: #fff;
-  border-radius: 8px;
-  border-top: 4px solid var(--navy);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1rem;
-  overflow: hidden;
+  @include rt.section-card;
+
+  .section-header.navy   { background: #44596e; }
+  .section-header.green  { background: #16a34a; }
+  .section-header.danger { background: #db1f48; }
+  .section-header.purple { background: #7c3aed; }
 }
 
-.section-header {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1rem;
-  background: #f8fafc;
-  color: var(--navy);
-  font-weight: 700;
-  border-bottom: 2px solid var(--navy);
-
-  mat-icon { font-size: 20px; width: 20px; height: 20px; }
-  .count {
-    margin-inline-start: auto;
-    background: var(--navy);
-    color: #fff;
-    padding: 2px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-  }
-}
-
+/* Data tables - using shared base */
 .data-table {
-  width: 100%;
-  border-collapse: collapse;
-  direction: rtl;
+  @include rt.table-base;
 
-  /* ===== Header row ===== */
   thead th {
     background: #eef2f7;
     color: var(--navy);
@@ -144,22 +117,38 @@
     font-size: 0.95rem;
     letter-spacing: 0.2px;
     padding: 14px 16px;
-    text-align: start;
+    text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
+    font-family: "Cairo", sans-serif;
   }
 
-  /* ===== Body cells ===== */
   tbody td {
     padding: 14px 16px;
     font-size: 0.95rem;
     color: #1f2937;
     border-bottom: 1px solid #eef0f2;
-    text-align: start;
+    text-align: end;
     vertical-align: middle;
   }
 
-  /* ===== Zebra + hover ===== */
+  /* Numbers: tabular, right-aligned in RTL */
+  .num {
+    @include rt.num-cell;
+  }
+
+  th.num {
+    @include rt.num-header;
+  }
+
+  .credit {
+    @include rt.credit-style;
+  }
+
+  .debit {
+    @include rt.debit-style;
+  }
+
   tbody tr:nth-child(even) td {
     background: #fafbfc;
   }
@@ -169,48 +158,17 @@
     transition: background 0.15s ease;
   }
 
-  /* ===== Numbers: right-aligned like headers ===== */
-  .num {
-    text-align: start;
-    font-variant-numeric: tabular-nums;
-    font-weight: 700;
-    color: var(--navy);
-  }
-
-  .credit {
-    color: var(--credit);
-  }
-
   tr:last-child td {
     border-bottom: none;
   }
 }
+
 .empty {
-  text-align: center;
-  padding: 1.5rem;
-  color: #94a3b8;
-  font-size: 0.95rem;
+  @include rt.empty-row;
 }
 
 .badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.2px;
-  min-width: 50px;
-  text-align: center;
-
-  &.badge-credit {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  &.badge-cash {
-    background: #dcfce7;
-    color: #166534;
-  }
+  @include rt.badge-base;
 }
 
 .statement-footer {
@@ -240,4 +198,6 @@
   .statement-screen { background: #fff; padding: 0; }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
+  
+  @include rt.print-table;
 }

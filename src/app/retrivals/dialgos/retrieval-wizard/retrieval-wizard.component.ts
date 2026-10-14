@@ -84,9 +84,7 @@ export class RetrievalWizardComponent implements OnInit {
     this.retrievalService.getReturnableProducts(this.selectedPerson.id, this.returnType).subscribe({
       next: (res) => {
         const list: ReturnableProduct[] = res?.data ?? [];
-        this.products = list.filter(p =>
-          (p.availableCanvases ?? 0) > 0 || (p.availableUnits ?? 0) > 0
-        );
+        this.products = list.filter(p => (p.availableUnits ?? 0) > 0);
         this.loadingProducts = false;
         if (this.products.length === 0) {
           this.snack.open('لا توجد منتجات قابلة للإرجاع لهذا الشخص', '', { duration: 3000 });

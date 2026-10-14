@@ -143,4 +143,64 @@ export class SupplierStatementComponent implements OnInit {
     d.setDate(1);
     return d;
   }
+
+  // Track expanded state for bill groups
+  private expandedBills = new Set<string>();
+
+  // Group purchase lines by billCode for grouped display
+  getGroupedPurchaseLines(): Map<string, any[]> {
+    const grouped = new Map<string, any[]>();
+    if (!this.statement?.purchaseLines?.length) return grouped;
+
+    for (const line of this.statement.purchaseLines) {
+      const billCode = line.billCode || 'غير معروف';
+      if (!grouped.has(billCode)) {
+        grouped.set(billCode, []);
+      }
+      grouped.get(billCode)!.push(line);
+    }
+    return grouped;
+  }
+
+  // Get total line count for a bill
+  getBillLineCount(billCode: string): number {
+    return this.getGroupedPurchaseLines().get(billCode)?.length || 0;
+  }
+
+  // Get bill summary info
+  getBillSummary(billCode: string): any {
+    return this.statement?.purchases?.find(p => p.billCode === billCode);
+  }
+
+  // Toggle expanded state
+  toggleBillExpanded(billCode: string): void {
+    if (this.expandedBills.has(billCode)) {
+      this.expandedBills.delete(billCode);
+    } else {
+      this.expandedBills.add(billCode);
+    }
+  }
+
+  isBillExpanded(billCode: string): boolean {
+    return this.expandedBills.has(billCode);
+  }
+
+  // Helper methods for grouped bill subtotals
+  getBillTotalRolls(billCode: string): number {
+    const lines = this.getGroupedPurchaseLines().get(billCode);
+    if (!lines) return 0;
+    return lines.reduce((sum, l) => sum + (l.rolls || 0), 0);
+  }
+
+  getBillTotalUnits(billCode: string): number {
+    const lines = this.getGroupedPurchaseLines().get(billCode);
+    if (!lines) return 0;
+    return lines.reduce((sum, l) => sum + (l.units || 0), 0);
+  }
+
+  getBillTotalAmount(billCode: string): number {
+    const lines = this.getGroupedPurchaseLines().get(billCode);
+    if (!lines) return 0;
+    return lines.reduce((sum, l) => sum + (l.lineTotal || 0), 0);
+  }
 }

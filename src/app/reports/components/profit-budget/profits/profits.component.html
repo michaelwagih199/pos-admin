@@ -25,52 +25,52 @@
         <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
         <div class="text-center text-footer">
 
-            <table class="table table-bordered table-sm mt-2">
+            <table class="table table-bordered table-sm data-table mt-2">
                 <thead class="thead-light">
                     <tr>
-                        <th>اجمالى الايرادات</th>
+                        <th class="num">اجمالى الايرادات</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td >{{ profit?.sumRevenues }}</td>
+                        <td class="num">{{ profit?.sumRevenues }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="text-center text-footer">
-            <table class="table table-bordered table-sm mt-2">
+            <table class="table table-bordered table-sm data-table mt-2">
                 <thead class="thead-light">
                     <tr>
-                        <th>اجمالى المصروفات</th>
-                        <th>اجمالى المرتجعات</th>
-                        <th> ثمن  البضاعة</th>
-                        <th> ثمن البضاعة المرتجعة</th>
+                        <th class="num">اجمالى المصروفات</th>
+                        <th class="num">اجمالى المرتجعات</th>
+                        <th class="num"> ثمن  البضاعة</th>
+                        <th class="num"> ثمن البضاعة المرتجعة</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr >
-                        <td >{{ profit?.sumExpenses }}</td>
-                        <td >{{ profit?.sumRetrivals }}</td>
-                        <td >{{ profit?.valueOfSalesGoods }}</td>
-                        <td >{{ profit?.valueOfRetrivalGoods }}</td>
+                        <td class="num">{{ profit?.sumExpenses }}</td>
+                        <td class="num">{{ profit?.sumRetrivals }}</td>
+                        <td class="num">{{ profit?.valueOfSalesGoods }}</td>
+                        <td class="num">{{ profit?.valueOfRetrivalGoods }}</td>
                     </tr>
                 </tbody>
             </table>
         </div>
         <div class="text-center text-footer">
 
-            <table class="table table-bordered table-sm mt-2">
+            <table class="table table-bordered table-sm data-table mt-2">
                 <thead class="thead-light">
                     <tr>
-                        <th>صافى الربح</th>
-                        <!-- <th>نسبة صافى الربح</th> -->
+                        <th class="num">صافى الربح</th>
+                        <!-- <th class="num">نسبة صافى الربح</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <tr >
-                        <td >{{netProfit}}</td>
-                        <!-- <td >{{netProfitPercentage}}</td> -->
+                        <td class="num">{{netProfit}}</td>
+                        <!-- <td class="num">{{netProfitPercentage}}</td> -->
                     </tr>
                 </tbody>
             </table>

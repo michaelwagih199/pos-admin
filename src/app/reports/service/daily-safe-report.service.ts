@@ -45,6 +45,7 @@ export interface DailySafeReport {
   date: string;
   customerPayments: number;
   cashSales: number;
+  creditSales: number;
   totalSales: number;
   cashRetrievals: number;
   totalRetrievals: number;

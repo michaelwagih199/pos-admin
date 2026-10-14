@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <!-- Purchases -->
+    <!-- Purchases Summary (Bill level) -->
     <div class="section-card">
       <div class="section-header">
         <mat-icon>shopping_cart</mat-icon>
@@ -135,6 +135,67 @@
       </table>
       <ng-template #emptyPurchases>
         <div class="empty">{{ arabic.supplierStatement.noPurchases }}</div>
+      </ng-template>
+    </div>
+
+    <!-- Purchase Lines Detail (Item level) - Grouped by Invoice -->
+    <div class="section-card" *ngIf="statement.purchaseLines?.length">
+      <div class="section-header">
+        <mat-icon>list_alt</mat-icon>
+        <span>{{ arabic.supplierStatement.purchaseLinesSection }}</span>
+        <span class="count">{{ statement.purchaseLines.length }}</span>
+      </div>
+
+      <div *ngFor="let billCode of getGroupedPurchaseLines() | keyvalue" class="bill-group">
+        <div class="bill-group-header" (click)="toggleBillExpanded(billCode.key)">
+          <mat-icon>{{ isBillExpanded(billCode.key) ? 'expand_less' : 'expand_more' }}</mat-icon>
+          <span class="bill-code">{{ billCode.key }}</span>
+          <span class="bill-line-count">
+            {{ getBillLineCount(billCode.key) }} {{ arabic.supplierStatement.table.lineCount }}
+          </span>
+          <span class="bill-total" *ngIf="getBillSummary(billCode.key)">
+            {{ getBillSummary(billCode.key).total | number:'1.2-2' }} {{ arabic.dailySafeReport.currency }}
+          </span>
+        </div>
+
+        <div class="bill-group-body" [class.expanded]="isBillExpanded(billCode.key)">
+          <table class="data-table bill-lines-table">
+            <thead>
+              <tr>
+                <th style="width: 25%;">{{ arabic.supplierStatement.table.product }}</th>
+                <th class="num" style="width: 12%;">{{ arabic.supplierStatement.table.rolls }}</th>
+                <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.quantity }}</th>
+                <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.unitPrice }}</th>
+                <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.unitLabel }}</th>
+                <th class="num" style="width: 18%;">{{ arabic.supplierStatement.table.total }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pl of billCode.value">
+                <td>{{ pl.productName }}</td>
+                <td class="num">{{ pl.rolls }}</td>
+                <td class="num">{{ pl.units | number:'1.2-2' }}</td>
+                <td class="num">{{ pl.unitPrice | number:'1.2-2' }}</td>
+                <td class="num">{{ pl.unitLabel }}</td>
+                <td class="num">{{ pl.lineTotal | number:'1.2-2' }}</td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr class="bill-subtotal">
+                <td>{{ arabic.supplierStatement.table.total }}</td>
+                <td class="num">{{ getBillTotalRolls(billCode.key) }}</td>
+                <td class="num">{{ getBillTotalUnits(billCode.key) | number:'1.2-2' }}</td>
+                <td></td>
+                <td></td>
+                <td class="num">{{ getBillTotalAmount(billCode.key) | number:'1.2-2' }}</td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+      <ng-template #emptyPurchaseLines>
+        <div class="empty">{{ arabic.supplierStatement.noPurchaseLines }}</div>
       </ng-template>
     </div>
 

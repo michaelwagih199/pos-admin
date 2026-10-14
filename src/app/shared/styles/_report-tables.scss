@@ -1,0 +1,442 @@
+// ============================================================================
+// Shared Report Table & Typography Styles - RTL Arabic
+// Import in component SCSS: @use 'src/app/shared/styles/report-tables' as rt;
+// ============================================================================
+
+@use 'sass:color';
+
+// ============================================================================
+// CSS Variables
+// ============================================================================
+:host {
+  --navy: #44596e;
+  --accent: #ec994b;
+  --sand: #f4f3f0;
+  --danger: #db1f48;
+  --credit: #2563eb;
+  --success: #16a34a;
+  --text-main: #1e293b;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --header-bg: #eef2f7;
+  --row-hover-bg: #f1f5f9;
+  --row-alt-bg: #fafbfc;
+}
+
+// ============================================================================
+// Numeric cell mixins
+// ============================================================================
+@mixin num-cell {
+  text-align: end !important;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  font-weight: 700;
+  color: var(--navy);
+  letter-spacing: 0.3px;
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+@mixin num-header {
+  @include num-cell;
+  background: var(--header-bg);
+  color: var(--navy);
+  font-weight: 800;
+  font-size: 0.88rem;
+  padding: 12px 14px;
+  border-bottom: 2px solid var(--navy);
+}
+
+// ============================================================================
+// Base Table Structure & Typography
+// ============================================================================
+@mixin table-base {
+  width: 100%;
+  border-collapse: collapse;
+  direction: rtl;
+  font-family: "Cairo", "Almarai", sans-serif;
+  
+  // Table Header
+  thead th {
+    background: var(--header-bg);
+    color: var(--navy);
+    font-family: "Cairo", sans-serif;
+    font-weight: 800;
+    font-size: 0.88rem;
+    line-height: 1.4;
+    letter-spacing: 0.2px;
+    padding: 12px 14px;
+    text-align: end;  // RTL right
+    border-bottom: 2px solid var(--navy);
+    white-space: nowrap;
+    
+    &.num {
+      @include num-header;
+    }
+  }
+  
+  // Body cells (both td and th in tbody)
+  tbody td,
+  tbody th {
+    padding: 11px 14px;
+    font-family: "Cairo", "Almarai", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text-main);
+    border-bottom: 1px solid var(--border-color);
+    text-align: end;  // RTL right for text
+    vertical-align: middle;
+  }
+  
+  // Numeric cells
+  .num,
+  td.num,
+  th.num {
+    @include num-cell;
+  }
+  
+  .credit {
+    color: var(--credit) !important;
+  }
+  
+  .debit {
+    color: var(--danger) !important;
+  }
+
+  .muted {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 400;
+    margin-inline-start: 4px;
+  }
+  
+  // Zebra striping & hover
+  tbody tr:nth-child(even) td,
+  tbody tr:nth-child(even) th {
+    background: var(--row-alt-bg);
+  }
+
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background: var(--row-hover-bg);
+    transition: background 0.15s ease;
+  }
+  
+  // Footer
+  tfoot td,
+  tfoot th {
+    background: #f8fafc;
+    font-family: "Cairo", sans-serif;
+    font-weight: 800;
+    font-size: 0.92rem;
+    padding: 12px 14px;
+    color: var(--navy);
+    border-top: 2px solid #cbd5e1;
+    text-align: end;
+    
+    &:first-child {
+      text-align: end;
+    }
+
+    &.num {
+      @include num-cell;
+      font-size: 0.95rem;
+    }
+  }
+  
+  // Empty state
+  tr.empty-row td,
+  tr.empty-row th {
+    padding: 2rem 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-family: "Cairo", sans-serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    background: var(--row-alt-bg) !important;
+  }
+}
+
+// ============================================================================
+// Credit/Debit styles
+// ============================================================================
+@mixin credit-style {
+  color: var(--credit) !important;
+  font-weight: 700;
+}
+
+@mixin debit-style {
+  color: var(--danger) !important;
+  font-weight: 700;
+}
+
+// ============================================================================
+// Empty row
+// ============================================================================
+@mixin empty-row {
+  text-align: center;
+  padding: 2rem 1.5rem;
+  color: var(--text-muted);
+  font-family: "Cairo", sans-serif;
+  font-size: 0.92rem;
+  font-style: italic;
+}
+
+// ============================================================================
+// Badges
+// ============================================================================
+@mixin badge-base {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-family: "Cairo", sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  min-width: 50px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+@mixin badges {
+  .badge {
+    @include badge-base;
+    
+    &.badge-credit {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    &.badge-cash {
+      background: #dcfce7;
+      color: #166534;
+    }
+    &.badge-supplier {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+  }
+}
+
+// ============================================================================
+// KPI Summary Cards Typography & Layout
+// ============================================================================
+@mixin summary-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+@mixin summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0.85rem 1rem;
+  border-radius: 8px;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  font-family: "Cairo", sans-serif;
+  
+  .label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.4;
+    opacity: 0.95;
+    letter-spacing: 0.1px;
+  }
+
+  .value { 
+    font-size: 1.35rem; 
+    font-weight: 800; 
+    line-height: 1.25;
+    font-variant-numeric: tabular-nums; 
+    font-feature-settings: "tnum";
+    letter-spacing: 0.3px;
+    direction: ltr;
+    unicode-bidi: isolate;
+
+    small {
+      font-size: 0.75rem;
+      font-weight: 600;
+      opacity: 0.85;
+      margin-inline-start: 4px;
+    }
+  }
+}
+
+// ============================================================================
+// Section Header & Cards
+// ============================================================================
+@mixin section-header-base {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-family: "Cairo", sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #fff;
+  border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+  
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+
+  .count {
+    margin-inline-start: auto;
+    background: rgba(255, 255, 255, 0.25);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    font-family: "Cairo", sans-serif;
+  }
+}
+
+@mixin section-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
+  margin-bottom: 1rem;
+  overflow: hidden;
+  
+  .section-header {
+    @include section-header-base;
+    background: #f8fafc;
+    color: var(--navy);
+    border-bottom: 2px solid var(--navy);
+
+    .count {
+      background: var(--navy);
+      color: #fff;
+    }
+  }
+}
+
+// ============================================================================
+// Screen Header
+// ============================================================================
+@mixin screen-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: #fff;
+  border-top: 4px solid var(--navy);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+  .header-icon {
+    color: var(--navy);
+    font-size: 32px;
+    height: 32px;
+    width: 32px;
+  }
+
+  h2 {
+    margin: 0;
+    color: var(--navy);
+    font-family: "Cairo", sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+}
+
+// ============================================================================
+// Info Cards
+// ============================================================================
+@mixin info-card {
+  background: #fff;
+  border-inline-start: 6px solid var(--navy);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  font-family: "Cairo", sans-serif;
+  
+  .info-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.95rem;
+    color: #333;
+    padding: 3px 0;
+    mat-icon { color: var(--navy); }
+  }
+
+  .info-name {
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--navy);
+  }
+}
+
+// ============================================================================
+// Print Styles
+// ============================================================================
+@mixin print-table {
+  @media print {
+    .no-print { display: none !important; }
+    .statement-screen,
+    .daily-safe-screen,
+    .collector-screen {
+      background: #fff !important;
+      padding: 0 !important;
+    }
+    .summary-card,
+    .section-card,
+    .grand-total-card,
+    .info-card {
+      box-shadow: none !important;
+      page-break-inside: avoid;
+    }
+    .section-header {
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+    thead th {
+      background: #e2e8f0 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      border: 1px solid #94a3b8 !important;
+      color: #0f172a !important;
+    }
+    tbody td,
+    tbody th {
+      border: 1px solid #e2e8f0 !important;
+      color: #0f172a !important;
+    }
+    tfoot td,
+    tfoot th {
+      background: #f1f5f9 !important;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+      border: 1px solid #94a3b8 !important;
+      color: #0f172a !important;
+    }
+  }
+}
+
+// ============================================================================
+// Utility Classes
+// ============================================================================
+@mixin utilities {
+  .text-right { text-align: end !important; }    // RTL right
+  .text-left  { text-align: start !important; }  // RTL left
+  .text-center { text-align: center !important; }
+  
+  .num-cell { 
+    @include num-cell;
+  }
+  
+  .muted {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 400;
+  }
+}
