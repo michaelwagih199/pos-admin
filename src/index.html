@@ -1,23 +1,19 @@
 <!doctype html>
-<html lang="en" dir="rtl" >
+<html lang="ar" dir="rtl">
 
 <head>
   <meta charset="utf-8">
-  <title>Pos</title>
+  <title>Ventas — نظام نقاط البيع</title>
   <base href="./">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="assets/logo.png">
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=El+Messiri:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@300;400;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600&display=swap" rel="stylesheet">
-  <link rel="preconnect" href="https://fonts.gstatic.com">
-  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500&display=swap" rel="stylesheet">
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!-- Fonts are self-hosted from /assets/fonts (see src/styles/_fonts.scss) - no external origins. -->
+  <!-- Preload the two Cairo subsets used on first paint (Arabic UI + Latin numerals). Both files are
+       variable fonts covering weight 400-800, so each one serves 400 and 700. -->
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/cairo-arabic.woff2" crossorigin>
+  <link rel="preload" as="font" type="font/woff2" href="/assets/fonts/cairo-latin.woff2" crossorigin>
+  <!-- jQuery, popper.js and the Bootstrap JS bundle are vendored under src/assets/vendor and registered
+       in angular.json -> build.options.scripts; they are no longer loaded from CDNs. -->
   
 </head>
 

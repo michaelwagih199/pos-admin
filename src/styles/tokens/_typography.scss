@@ -1,0 +1,56 @@
+// ============================================================================
+// Ventas Design System v2 — Layer 5 of 5: TYPOGRAPHY
+// ----------------------------------------------------------------------------
+// Families, size scale, weights and leading. Phase C of design-system-v2-plan.md.
+//
+// Why this ships in Phase C and not in the Phase A barrel:
+//   Phase A was provably zero-impact and locked the COLOUR + SCALE layers
+//   (primitives → semantic → scales → aliases). Typography is the first layer
+//   whose adoption changes rendering (§9 #1), so it is introduced here together
+//   with its consumers. Imported from src/styles.scss directly, per plan §6.
+//
+// Family contract (plan §6 step 1):
+//   --vn-font-body     body copy, labels, table cells
+//   --vn-font-display  screen headings, home/login headlines
+//   --vn-font-num      numerals — same family as body today, kept separate so a
+//                      numeral-specific face (or the Amiri question, §2 of
+//                      DESIGN_SYSTEM.md) can drop in later without a sweep
+//
+// Size scale: every step below is a value ALREADY in use in
+// src/app/shared/styles/_report-tables.scss, so adopting the scale is a visual
+// no-op wherever it replaces a literal. The strays measured in the baseline
+// (0.75 / 0.82 / 0.9 / 0.92 rem, 20px is on-scale) fold into the nearest step
+// during Phase G — registered in plan §9.
+//
+// Weight: Cairo is a VARIABLE font, axis 400–800 (see src/styles/_fonts.scss),
+// so 700/800 resolve to real glyphs. Today they are synthesized because only
+// 400/600 were loaded — that is baseline finding F3, and this is its fix.
+// ============================================================================
+
+:root {
+  /* ---------- Families ---------- */
+  --vn-font-body: 'Cairo', 'Almarai', system-ui, sans-serif;
+  --vn-font-display: 'El Messiri', 'Cairo', serif;
+  --vn-font-num: 'Cairo', system-ui, sans-serif;
+
+  /* ---------- Size scale (rem, 16 px root) ---------- */
+  --vn-text-xs: 0.78rem; //  badge / caption
+  --vn-text-sm: 0.88rem; //  table cell
+  --vn-text-md: 0.95rem; //  body / label (default)
+  --vn-text-base: 1rem;
+  --vn-text-lg: 1.15rem;
+  --vn-text-xl: 1.3rem; //  screen header
+  --vn-text-2xl: 1.35rem; //  summary value
+  --vn-text-num-lg: 32px; //  KPI figure
+  --vn-text-num-sm: 20px; //  inline figure
+
+  /* ---------- Weight (Cairo variable axis 400–800) ---------- */
+  --vn-weight-regular: 400;
+  --vn-weight-medium: 600;
+  --vn-weight-bold: 700;
+  --vn-weight-black: 800;
+
+  /* ---------- Leading ---------- */
+  --vn-leading-tight: 1.4; //  headings, table rows
+  --vn-leading-normal: 1.6; //  body copy
+}

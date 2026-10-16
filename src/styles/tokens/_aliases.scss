@@ -1,0 +1,41 @@
+// ============================================================================
+// Ventas Design System v2 — Layer 4 of 4: ALIASES  (COMPATIBILITY BRIDGE)
+// ----------------------------------------------------------------------------
+// ⚠️  DEPRECATED — DO NOT USE IN NEW CODE.  ⚠️
+// Removal scheduled immediately after Phase G (design-system-v2-plan.md §10).
+//
+// These are the flat v1.0 / DESIGN_SYSTEM.md §1.1 names, kept alive only so that
+// every existing `var(--vn-…)` reference in the app keeps resolving while the
+// components are migrated screen-by-screen. Each one is a pure rename: the
+// computed value is byte-for-byte what v1.0 §1.1 produced, so importing this
+// file cannot move a pixel (Phase A's zero-impact guarantee).
+//
+// WHY FOUR v1.0 NAMES ARE ABSENT HERE — read before "fixing" this:
+//   --vn-surface, --vn-surface-alt, --vn-border, --vn-border-light
+//   §4 step 4 lists them, but they are NOT legacy-only: _semantic.scss already
+//   defines them as the canonical role names. Re-declaring them here would
+//   either (a) be self-referential (`--vn-border: var(--vn-border)` → invalid at
+//   computed-value time, breaking every border) or (b) mislabel canonical names
+//   as deprecated. They are therefore defined exactly once, in _semantic.scss.
+//
+// Consumers: none yet. Phase A only defines tokens (see design-system-v2-plan.md §4).
+// ============================================================================
+
+:root {
+  /* ---------- Brand (v1.0 §1.1 → semantic) ---------- */
+  --vn-navy: var(--vn-brand); //          #44596e
+  --vn-navy-dark: var(--vn-brand-hover); // #2d3d4f
+  --vn-navy-light: var(--vn-brand-border); // #5a7191
+
+  --vn-accent-dark: var(--vn-accent-hover); // #d4823a
+  --vn-accent-light: var(--vn-accent-300); //  #f5b877  (primitive: no semantic role)
+
+  /* ---------- Sand (v1.0 §1.1 → primitives) ---------- */
+  --vn-sand: var(--vn-sand-500); //      #f4f3f0
+  --vn-sand-dark: var(--vn-sand-600); // #e8e6e2
+
+  /* ---------- Neutrals (v1.0 §1.1 → semantic) ---------- */
+  --vn-ink: var(--vn-text); //            #1f2937
+  --vn-ink-muted: var(--vn-text-muted); // #64748b
+  --vn-ink-faint: var(--vn-text-faint); // #94a3b8
+}

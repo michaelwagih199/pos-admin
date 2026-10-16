@@ -1,23 +1,60 @@
 // ============================================================================
 // Sales Report Styles - Uses Shared Report Tables
 // ============================================================================
+//
+// Phase G screen 4 (plan §10 step 4).
+//
+// All notes are kept at FILE level on purpose: a comment placed INSIDE a rule
+// that also declares `gap` crashes postcss-gap-properties v3.0.4, and the
+// build then fails with a misleading esbuild "Unterminated string token" that
+// points at a position which does not exist. Keeping every note outside rules
+// makes that impossible. (This file declares no gap today, but the rule is
+// applied uniformly across src/app.)
+//
+// The local `:host` custom-property block was REMOVED: the
+// `@use 'src/app/shared/styles/report-tables'` below already emits the same
+// declarations for this component host, with identical values, so deleting it
+// is pixel-neutral.
+//
+// Tokenised (exact match, no visual change):
+//   white            -> --vn-surface
+//   the near-black   -> --vn-ink-900
+//   the pale wash    -> --vn-ink-100
+//   1rem / 1.25rem   -> --vn-text-base / --vn-text-num-sm
+//   0.75rem 1rem     -> --vn-space-3 / --vn-space-4
+//   8px              -> --vn-radius-lg
+//   700 / 800        -> --vn-weight-bold / --vn-weight-black
+//   0.15s ease       -> --vn-duration-fast / --vn-ease
+//   "Cairo"          -> var(--vn-font-body)
+//
+// Folded onto the nearest token (registered in
+// docs/design-system-v2-plan.md §11 row 16):
+//   the off-ramp near-black (Material grey-900) -> --vn-ink-900
+//   the grey-blue cell border              -> --vn-ink-200
+//   the table head background              -> --vn-ink-100   (already §9 #2b)
+//   the even-row background                -> --vn-ink-50    (already §9 #2b)
+//   three/four shadows                     -> --vn-shadow-2
+//   font-size 0.9rem (table type)          -> --vn-text-sm   (0.88rem)
+//   the table head letter-spacing (0.2px)  -> REMOVED
+//     (the style guide forbids letter-spacing on Arabic script: it breaks
+//      the cursive joining; see DESIGN_SYSTEM §9.4)
+//
+// The two important flags are KEPT deliberately and are not a regression:
+// the `.bg-dark` rule must outrank Bootstrap's own rule of the same name, and
+// `.no-print` must win inside the print block. Neither competes with the old
+// cascade (Phase E already fixed the cascade order).
+//
+// Left literal on purpose (off the 4px grid / off the type scale):
+//   padding 12px 14px, the 6px accent bar, `font-size: large` on the buttons.
 
 @use 'src/app/shared/styles/report-tables' as rt;
-
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-}
 
 .mat-card-header {
   display: flex;
   flex-direction: row;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #212121;
+  background: var(--vn-surface);
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-ink-900);
 }
 
 .mat-card {
@@ -25,7 +62,7 @@
 }
 
 .mat-raised-button {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
   font-size: large;
 }
 
@@ -45,24 +82,24 @@
 
 .customClass-1,
 .customClass-2 {
-  background: #fff;
+  background: var(--vn-surface);
   border-inline-start: 6px solid var(--navy);
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  padding: 0.75rem 1rem;
-  font-family: "Cairo", sans-serif;
+  border-radius: var(--vn-radius-lg);
+  box-shadow: var(--vn-shadow-2);
+  padding: var(--vn-space-3) var(--vn-space-4);
+  font-family: var(--vn-font-body);
 
   p {
     margin: 0;
-    font-size: 1rem;
-    font-weight: 700;
+    font-size: var(--vn-text-base);
+    font-weight: var(--vn-weight-bold);
     color: var(--navy);
   }
 
   .bg-dark {
     background: var(--navy) !important;
-    font-size: 1.25rem;
-    font-weight: 800;
+    font-size: var(--vn-text-num-sm);
+    font-weight: var(--vn-weight-black);
     font-variant-numeric: tabular-nums;
     direction: ltr;
     unicode-bidi: isolate;
@@ -76,57 +113,63 @@
 // Data tables - using shared base
 .data-table {
   @include rt.table-base;
-  
+
   thead th {
-    background: #eef2f7;
+    background: var(--vn-ink-100);
     color: var(--navy);
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 0.2px;
+    font-weight: var(--vn-weight-black);
+    font-size: var(--vn-text-sm);
     padding: 12px 14px;
     text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
-    font-family: "Cairo", sans-serif;
+    font-family: var(--vn-font-body);
   }
-  
+
   tbody td {
     padding: 12px 14px;
-    font-size: 0.9rem;
-    color: #1f2937;
-    border-bottom: 1px solid #eef0f2;
+    font-size: var(--vn-text-sm);
+    color: var(--vn-ink-900);
+    border-bottom: 1px solid var(--vn-ink-200);
     text-align: end;
     vertical-align: middle;
   }
-  
+
   .num {
     @include rt.num-cell;
   }
-  
+
   th.num {
     @include rt.num-header;
   }
-  
+
   .credit {
     @include rt.credit-style;
   }
-  
+
   .debit {
     @include rt.debit-style;
   }
-  
+
   tbody tr:nth-child(even) td {
-    background: #fafbfc;
+    background: var(--vn-ink-50);
   }
-  
+
   tbody tr:hover td {
-    background: #f1f5f9;
-    transition: background 0.15s ease;
+    background: var(--vn-ink-100);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
-  
+
   tr:last-child td {
     border-bottom: none;
   }
+}
+
+// Centred table wrapper — replaces the two inline text-align styles that
+// the template used to carry on its `.mt-2` divs (Phase G: inline styles are
+// not allowed when a component class can say the same thing).
+.table-center {
+  text-align: center;
 }
 
 .empty {
@@ -140,9 +183,9 @@
 // Print styles
 @media print {
   .no-print { display: none !important; }
-  .mat-card { background: #fff; }
+  .mat-card { background: var(--vn-surface); }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
-  
+
   @include rt.print-table;
 }

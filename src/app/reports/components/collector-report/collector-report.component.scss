@@ -1,52 +1,90 @@
+// ============================================
+// collector-report.component.scss
+// Phase G screen 4 (plan §10 #4).
+//
+// Every literal hex colour in this file has been replaced by a design-system
+// token. The local :host aliases below point at the global tokens so the rule
+// bodies keep reading `var(--navy)` / `var(--accent)` / `var(--sand)`, exactly
+// as they did before.
+//
+// FOLDS (value-folds, not exact matches — registered in
+// docs/design-system-v2-plan.md §11 row 17):
+//   - card shadow tint + geometry      -> --vn-shadow-2
+//   - table row hover wash             -> --vn-ink-50
+//   - cell bottom border               -> --vn-ink-200
+//   - customer name colour             -> --vn-ink-900
+//   - 0.9rem and 0.85rem               -> --vn-text-sm  (0.88rem)
+//   - 0.8rem                           -> --vn-text-xs  (0.78rem)
+//
+// HOUSE RULE (DESIGN_SYSTEM §6.2): never place a CSS comment inside a rule that
+// also declares gap / row-gap / column-gap. postcss-gap-properties v3.0.4
+// assumes every child of a rule is a declaration and throws on a comment
+// sibling, which then fails the build with a misleading esbuild "Unterminated
+// string token" at a position that does not exist in the source. All
+// commentary in this file therefore lives here, at file level.
+//
+// The 23 important flags in this file are ALL retained. They are the print-mode
+// overrides plus the on-screen .no-print rule, and plan §10 step 6 requires the
+// printed output to stay byte-identical. They compete with this file's own
+// on-screen rules and with Material/Bootstrap defaults — never with the old
+// cascade, which Phase E removed.
+//
+// Deliberately left literal (off the 4px grid or off the type scale, pending a
+// future size step): min-height calc(100vh - 64px), border-top widths 4px/2px,
+// icon box geometry (32px / 42px / 64px / 26px / 14px), min-widths 220px and
+// 160px, height 52px, margin-top 2px, font-size 1.5rem, and the translucent
+// white wash rgba(255, 255, 255, 0.18).
+// ============================================
+
 :host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
+  --navy: var(--vn-brand);
+  --accent: var(--vn-accent);
+  --sand: var(--vn-sand);
+  --danger: var(--vn-danger);
+  --credit: var(--vn-info);
 }
 
 .collector-screen {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
   background: var(--sand);
   min-height: calc(100vh - 64px);
-  padding: 1.25rem;
+  padding: var(--vn-space-5);
 }
 
 .screen-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: #fff;
+  gap: var(--vn-space-3);
+  background: var(--vn-surface);
   border-top: 4px solid var(--navy);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: var(--vn-radius-lg);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  margin-bottom: var(--vn-space-4);
+  box-shadow: var(--vn-shadow-2);
 
   .header-icon {
     color: var(--navy);
-    font-size: 32px;
+    font-size: var(--vn-text-num-lg);
     height: 32px;
     width: 32px;
   }
 
-    h2 {
+  h2 {
     margin: 0;
     color: var(--navy);
-    font-weight: 700;
-    flex: 1;   // ← NEW: pushes actions to the end
+    font-weight: var(--vn-weight-bold);
+    flex: 1;
   }
 
-  .header-actions {           // ← NEW
+  .header-actions {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--vn-space-2);
     margin-inline-start: auto;
 
     button {
-      font-family: "Cairo", sans-serif;
-      font-weight: 700;
+      font-family: var(--vn-font-body);
+      font-weight: var(--vn-weight-bold);
     }
   }
 }
@@ -54,18 +92,18 @@
 .filter-card,
 .table-card,
 .empty-card {
-  background: #fff;
-  border-radius: 8px;
+  background: var(--vn-surface);
+  border-radius: var(--vn-radius-lg);
   border-top: 4px solid var(--accent);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1rem;
+  box-shadow: var(--vn-shadow-2);
+  margin-bottom: var(--vn-space-4);
 }
 
 .filters-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: var(--vn-space-4);
 
   .date-field {
     min-width: 220px;
@@ -75,26 +113,26 @@
   .action-btn {
     height: 52px;
     min-width: 160px;
-    font-family: "Cairo", sans-serif;
-    font-weight: 700;
+    font-family: var(--vn-font-body);
+    font-weight: var(--vn-weight-bold);
   }
 }
 
 .summary-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--vn-space-4);
+  margin-bottom: var(--vn-space-4);
 }
 
 .summary-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1rem 1.25rem;
-  border-radius: 8px;
-  color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+  gap: var(--vn-space-4);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  border-radius: var(--vn-radius-lg);
+  color: var(--vn-on-brand);
+  box-shadow: var(--vn-shadow-2);
 
   mat-icon {
     font-size: 42px;
@@ -102,7 +140,7 @@
     width: 42px;
     background: rgba(255, 255, 255, 0.18);
     border-radius: 50%;
-    padding: 8px;
+    padding: var(--vn-space-2);
   }
 
   .summary-body {
@@ -111,14 +149,14 @@
   }
 
   .summary-label {
-    font-size: 0.9rem;
+    font-size: var(--vn-text-sm);
     opacity: 0.9;
   }
 
   .summary-value {
     font-size: 1.5rem;
-    font-weight: 800;
-    margin-top: 4px;
+    font-weight: var(--vn-weight-black);
+    margin-top: var(--vn-space-1);
   }
 
   &.navy {
@@ -135,21 +173,21 @@
 
   th.mat-header-cell {
     background: var(--navy);
-    color: #fff;
-    font-weight: 700;
-    font-size: 0.95rem;
-    padding: 12px 8px;
+    color: var(--vn-on-brand);
+    font-weight: var(--vn-weight-bold);
+    font-size: var(--vn-text-md);
+    padding: var(--vn-space-3) var(--vn-space-2);
     border: none;
   }
 
   td.mat-cell {
-    padding: 12px 8px;
-    font-size: 1rem;
-    border-bottom: 1px solid #eef0f2;
+    padding: var(--vn-space-3) var(--vn-space-2);
+    font-size: var(--vn-text-base);
+    border-bottom: 1px solid var(--vn-ink-200);
   }
 
   tr.mat-row:hover {
-    background: #f9fbfc;
+    background: var(--vn-ink-50);
   }
 }
 
@@ -158,16 +196,16 @@
   flex-direction: column;
 
   .customer-name {
-    font-weight: 700;
-    color: #1a1a1a;
+    font-weight: var(--vn-weight-bold);
+    color: var(--vn-ink-900);
   }
 
   .customer-phone {
-    color: #94a3b8;
-    font-size: 0.8rem;
+    color: var(--vn-text-faint);
+    font-size: var(--vn-text-xs);
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--vn-space-1);
     margin-top: 2px;
 
     mat-icon {
@@ -179,13 +217,13 @@
 }
 
 .amount-cell {
-  font-weight: 700;
+  font-weight: var(--vn-weight-bold);
   font-variant-numeric: tabular-nums;
 
   .currency {
-    color: #94a3b8;
-    font-size: 0.8rem;
-    margin-inline-start: 4px;
+    color: var(--vn-text-faint);
+    font-size: var(--vn-text-xs);
+    margin-inline-start: var(--vn-space-1);
   }
 
   &.debt {
@@ -198,7 +236,7 @@
 }
 
 .muted {
-  color: #cbd5e1;
+  color: var(--vn-ink-400);
 }
 
 .empty-card {
@@ -206,8 +244,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3rem 1rem;
-    color: #94a3b8;
+    padding: var(--vn-space-12) var(--vn-space-4);
+    color: var(--vn-text-faint);
 
     .empty-icon {
       font-size: 64px;
@@ -217,77 +255,75 @@
     }
 
     h3 {
-      margin: 1rem 0 0.25rem;
+      margin: var(--vn-space-4) 0 var(--vn-space-1);
       color: var(--navy);
     }
 
     p {
       margin: 0;
-      font-size: 0.95rem;
+      font-size: var(--vn-text-md);
     }
   }
 }
 
-
-
-/* ============================================ */
-/* PRINT HEADER (hidden on screen)              */
-/* ============================================ */
+// --------------------------------------------
+// PRINT HEADER (hidden on screen)
+// --------------------------------------------
 .print-header {
   display: none;
 }
 
-/* ============================================ */
-/* PRINT MODE                                   */
-/* ============================================ */
+// --------------------------------------------
+// PRINT MODE
+// --------------------------------------------
 @media print {
-  /* Hide chrome */
+  // Hide chrome
   .no-print {
     display: none !important;
   }
 
-  /* Reset page background */
+  // Reset the page background
   .collector-screen {
-    background: #fff !important;
+    background: var(--vn-surface) !important;
     padding: 0 !important;
     min-height: auto !important;
   }
 
-  /* Show the print-only header */
+  // Show the print-only header
   .print-header {
     display: block !important;
     text-align: center;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 2px solid #44596e;
+    margin-bottom: var(--vn-space-4);
+    padding-bottom: var(--vn-space-3);
+    border-bottom: 2px solid var(--vn-brand);
 
     h2 {
-      margin: 0 0 0.25rem;
-      color: #44596e;
-      font-family: "Cairo", sans-serif;
-      font-weight: 800;
+      margin: 0 0 var(--vn-space-1);
+      color: var(--vn-brand);
+      font-family: var(--vn-font-body);
+      font-weight: var(--vn-weight-black);
       font-size: 1.5rem;
     }
 
     .print-date {
-      font-size: 0.85rem;
-      color: #64748b;
-      font-family: "Cairo", sans-serif;
+      font-size: var(--vn-text-sm);
+      color: var(--vn-text-muted);
+      font-family: var(--vn-font-body);
     }
   }
 
-  /* Summary cards — print-friendly (thin borders, no shadow) */
+  // Summary cards — print-friendly (thin borders, no shadow)
   .summary-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-    margin-bottom: 1rem;
+    gap: var(--vn-space-3);
+    margin-bottom: var(--vn-space-4);
   }
 
   .summary-card {
     box-shadow: none !important;
-    border: 1px solid #cbd5e1;
-    padding: 0.75rem 1rem;
+    border: 1px solid var(--vn-border);
+    padding: var(--vn-space-3) var(--vn-space-4);
 
     mat-icon {
       background: transparent !important;
@@ -298,14 +334,14 @@
     }
 
     .summary-value {
-      font-size: 1.15rem !important;
+      font-size: var(--vn-text-lg) !important;
     }
   }
 
-  /* Table — full borders, no shadow */
+  // Table — full borders, no shadow
   .table-card {
     box-shadow: none !important;
-    border: 1px solid #cbd5e1;
+    border: 1px solid var(--vn-border);
 
     mat-card-content {
       padding: 0 !important;
@@ -314,19 +350,19 @@
 
   .collector-table {
     th.mat-header-cell {
-      background: #44596e !important;
-      color: #fff !important;
+      background: var(--vn-brand) !important;
+      color: var(--vn-on-brand) !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-      border: 1px solid #44596e !important;
-      padding: 8px !important;
-      font-size: 0.9rem !important;
+      border: 1px solid var(--vn-brand) !important;
+      padding: var(--vn-space-2) !important;
+      font-size: var(--vn-text-sm) !important;
     }
 
     td.mat-cell {
-      border: 1px solid #cbd5e1 !important;
-      padding: 8px !important;
-      font-size: 0.9rem !important;
+      border: 1px solid var(--vn-border) !important;
+      padding: var(--vn-space-2) !important;
+      font-size: var(--vn-text-sm) !important;
     }
 
     tr.mat-row:hover {
@@ -334,7 +370,7 @@
     }
   }
 
-  /* Keep summary + table on the same page where possible */
+  // Keep the summary and the table on the same page where possible
   .summary-row,
   .table-card {
     page-break-inside: avoid;

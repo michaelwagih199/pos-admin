@@ -1,0 +1,24 @@
+// ============================================================================
+// Ventas Design System v2 — token barrel
+// ----------------------------------------------------------------------------
+// Single entry point imported once from src/styles.scss:
+//     @import 'styles/tokens';
+//
+// Plain `@import` (not `@use`) on purpose: every partial below is nothing but a
+// `:root { --vn-… }` custom-property block with zero Sass members, and a Sass
+// `@use` cannot sit after `@tailwind base;` / before the existing
+// `@import '~bootstrap…'` without reordering hazards. `var()` resolves at
+// computed-value time, so the import order only matters for readability and for
+// aliases shadowing primitives — which is why primitives come first.
+//
+// Layer contract (design-system-v2-plan.md §4):
+//   primitives → raw hex, referenced by nothing under src/app/**
+//   semantic   → the ONLY layer components may reference
+//   scales     → spacing / radius / elevation / stacking / layout
+//   aliases    → DEPRECATED v1.0 names, kept until Phase G
+// ============================================================================
+
+@import 'tokens/primitives';
+@import 'tokens/semantic';
+@import 'tokens/scales';
+@import 'tokens/aliases';

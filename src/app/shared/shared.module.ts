@@ -10,7 +10,6 @@ import { ConfirmationDialog } from './components/layout/dialog/confirmation/conf
 import { NotificationsComponent } from './components/layout/dialog/notifications/notifications.component';
 import { NotFoundComponent } from './components/layout/not-found/not-found.component';
 import { NgMaterialModule } from './components/ng-material/ng-material.module';
-import { NgZorroModule } from './components/ng-zorro/ng-zorro.module';
 import { SharedRoutingModule } from './shared-routing.module';
 
 
@@ -25,7 +24,6 @@ import { SharedRoutingModule } from './shared-routing.module';
     RouterModule,
     NgMaterialModule,
     NgxPaginationModule,
-    NgZorroModule,
     NgbCarouselModule
    ],
   exports: [
@@ -36,7 +34,6 @@ import { SharedRoutingModule } from './shared-routing.module';
     CommonModule,
     NgMaterialModule,
     NgxPaginationModule,
-    NgZorroModule,
     NgbCarouselModule,
     NotificationsComponent
   ],

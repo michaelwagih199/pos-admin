@@ -1,8 +1,30 @@
+// Phase G screen 8 (plan section 10) - home carousel, the app's landing screen.
+//
+// Tokenised in this pass:
+//   the caption heading face -> var(--vn-font-display): this is the plan's own ask for the
+//     first-impression screens (El Messiri is the display family).
+//   the caption background -> var(--vn-ink-500) (exact: the former value was the same slate).
+//   the caption text -> var(--vn-white) (exact).
+//   both grey separators, the frame around .bg and the caption's top rule -> var(--vn-border)
+//     FOLD of the former neutral grey onto the palette's border step
+//     (registered in the plan visual-diff register).
+//
+// Deliberately left alone:
+//   - geometry: 80vh, the 10px radii, the 2px and 1px border widths, 3em, 8px caption padding.
+//   - the 0.8 caption opacity and the symmetric left/right overlay offsets, which
+//     DESIGN_SYSTEM section 3.2 already lists as deliberately physical on this screen.
+//   - the two animation declarations and their durations: the zoomIn / fadeInDown keyframes
+//     are delivered by the globally shipped animate.css (see DESIGN_SYSTEM section 6.2,
+//     "vendor libraries are imported once, from angular.json - never per component").
+//
+// The one interior line comment below is a Sass // comment, which Sass strips before postcss
+// ever sees the file, so it cannot reach the gap-properties landmine.
+
 .bg {
   width: 100%;
   height: 80vh;
   object-fit: cover;
-  border: 1px solid #ccc;
+  border: 1px solid var(--vn-border);
   border-radius: 10px;
   // animate__zoomIn
   animation: zoomIn; 
@@ -15,18 +37,18 @@
 
 }
 .custom-caption{
-  border-top: 2px solid #ccc;
-  background-color:#64748b;
+  border-top: 2px solid var(--vn-border);
+  background-color: var(--vn-ink-500);
   opacity: 0.8;
   left:0;
   right: 0;
   font-size:large;
 }
 .cabtion-header{
-  font-family: 'El Messiri', sans-serif;
+  font-family: var(--vn-font-display);
   font-size: 3em;
   padding: 8px;
-  color: white;
+  color: var(--vn-white);
   animation: fadeInDown; 
   animation-duration: 2s; 
 }

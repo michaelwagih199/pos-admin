@@ -19,7 +19,7 @@
   
   .headerItem{
     width: 100%;
-    margin-left: 20px;
+    margin-inline-end: 20px;
     margin-top: 20px;
     display: flex;
     flex-direction: row;
@@ -30,9 +30,9 @@
 
 
 .fab-right{
-  margin-left: 10px;
+  margin-inline-end: 10px;
   margin-top: 8px;
-  margin-right: auto;
+  margin-inline-start: auto;
     
 }
 

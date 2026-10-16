@@ -16,15 +16,15 @@ export class LogsService {
   constructor(private http: HttpClient) {
   }
 
-  getAll(params): Observable<any> {
+  getAll(params: any): Observable<any> {
     return this.http.get(`${this.baseUrl}`, { params });
   }
 
-  getByUserId(params,userId:number):Observable<any>{
+  getByUserId(params: any,userId:number):Observable<any>{
     return this.http.get(`${this.baseUrl}/user?userId=${userId}`, { params });
   }
 
-  getByTypeId(params, typeId: number): Observable<any> {
+  getByTypeId(params: any, typeId: number): Observable<any> {
     return this.http.get(`${this.baseUrl}/type?typeId=${typeId}`, { params });
   }
 

@@ -1,11 +1,32 @@
+// Phase G screen 8 (plan section 10) - auth / login.
+//
+// Tokenised in this pass:
+//   the warm off-white used for the page text and both borders -> var(--vn-sand-500)
+//     FOLD onto the sand ramp, imperceptible (registered in the plan visual-diff register).
+//   the amber family (avatar ring, button fill, hover text and hover border)
+//     -> var(--vn-accent-700), the palette's darker-amber role
+//     FOLD (registered in the plan visual-diff register).
+//   the button label -> var(--vn-on-brand) and the hover fill -> var(--vn-surface)
+//     (both were plain white, exact).
+//   the Almarai stack -> var(--vn-font-body): Cairo first, Almarai is the shipped fallback.
+//
+// Deliberately left alone:
+//   - the max-width important flag on .card-container.card: it overrides Bootstrap's own
+//     component rule of the same name, so dropping it is an unverified layout change.
+//   - the Tailwind @apply slate gradient on .card: Tailwind's own palette, delivered by the
+//     global stylesheet. See DESIGN_SYSTEM section 6.2 ("vendor CSS is never edited").
+//   - geometry: the 96px avatar, the 40px card paddings, both 20px radii, 8px button padding.
+//   - raw-alpha shadows, which have no token (they are literal rgba values, not palette steps).
+//
+// No comment sits inside a rule here (postcss-gap-properties landmine, DESIGN_SYSTEM 6.2).
 
 .my-container {
   background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , 
-  url(/assets/login-bg.jpeg);
+  url(/assets/login-bg.webp);
   background-size: cover;
   height: 100vh;  
-  color: #f5f2eb;
-  font-family: "Almarai";
+  color: var(--vn-sand-500);
+  font-family: var(--vn-font-body);
   display: flex; /* or inline-flex */
   align-items: center;
 }
@@ -18,7 +39,7 @@ label {
 .card-container.card {
   max-width: 400px !important;
   padding: 40px 40px;
-  border: 2px solid #f5f2eb;
+  border: 2px solid var(--vn-sand-500);
   border-radius: 20px;
 }
 
@@ -37,24 +58,24 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
-  border: 2px solid #e7a32f;
+  border: 2px solid var(--vn-accent-700);
   box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
 
 }
 
 .mybtn {
   width: 100%;
-  background-color: #e7a32f;
-  color: white;
+  background-color: var(--vn-accent-700);
+  color: var(--vn-on-brand);
   font-size: large;
   border-radius: 20px;
-  border: 2px solid #f5f2eb;
+  border: 2px solid var(--vn-sand-500);
   font-weight: 500;
   padding: 8px;
 }
 
 button:hover{
-  color: #e7a32f;
-  border: #e7a32f solid 2px;
-  background:#fff;
+  color: var(--vn-accent-700);
+  border: var(--vn-accent-700) solid 2px;
+  background: var(--vn-surface);
 }

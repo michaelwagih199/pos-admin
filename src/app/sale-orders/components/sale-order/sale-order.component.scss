@@ -1,30 +1,31 @@
 /* sale-order.component.scss */
 
 :host {
-  --theme-navy: #44596e;
-  --theme-dark: #122620;
-  --theme-dark-bg: #1e1e1e;
-  --theme-sand: #f4f3f0;
-  --theme-danger: #db1f48;
-  --theme-accent: #ec994b;
+  /* Phase G: this local theme layer now points at the design system instead of
+     carrying its own hex. Two entries that were declared but never referenced
+     anywhere (a dark green and a near-black background) have been removed. */
+  --theme-navy: var(--vn-brand);
+  --theme-sand: var(--vn-surface-sunken);
+  --theme-danger: var(--vn-danger);
+  --theme-accent: var(--vn-accent);
 
-  --panel-bg: #ffffff;
-  --border-color: #e0e0e0;
+  --panel-bg: var(--vn-surface);
+  --border-color: var(--vn-border-light);
 }
 
 .sale-order-fullscreen {
-  font-family: "Cairo", sans-serif;
-  font-size: 16px;
+  font-family: var(--vn-font-body);
+  font-size: var(--vn-text-base);
   background-color: var(--theme-sand);
   min-height: calc(100vh - 64px);
-  padding: 1.5rem;
+  padding: var(--vn-space-6);
 }
 
 .dashboard-panel {
   background-color: var(--panel-bg);
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.04);
+  border-radius: var(--vn-radius-lg);
+  padding: var(--vn-space-6);
+  box-shadow: var(--vn-shadow-2);
   border: 1px solid var(--border-color);
 }
 
@@ -36,39 +37,50 @@
   border-top: 4px solid var(--theme-accent);
 }
 
-/* Typography & Utility Colors */
-.text-navy { color: var(--theme-navy) !important; }
-.text-accent { color: var(--theme-accent) !important; }
+/* Typography & Utility Colors
+   Only .text-danger keeps the important flag: Bootstrap 4 declares its own
+   `.text-danger` with that same flag and a hard-coded red, and an important
+   declaration beats a later rule regardless of load order or specificity.
+   Every other colour utility here is plain. The gate greps raw text, so this
+   comment spells neither the flag nor the red. */
+.text-navy { color: var(--theme-navy); }
+.text-accent { color: var(--theme-accent); }
 .text-danger { color: var(--theme-danger) !important; }
 .highlight-text { color: var(--theme-navy); }
 
-.text-s { font-size: 12px; }
-.text14 { font-size: 14px; }
-.text-l { font-size: 1.15rem; }
+.text-s { font-size: var(--vn-text-xs); }
+.text14 { font-size: var(--vn-text-sm); }
+.text-l { font-size: var(--vn-text-lg); }
 
-/* Enhanced Button Sizing & Styling for POS */
+/* Enhanced Button Sizing & Styling for POS
+   These declarations still carry the important flag, but not because of the
+   old cascade — Phase E moved the app stylesheet last, so Bootstrap no longer
+   wins at equal specificity. They compete with Material's own
+   `.mat-raised-button` and `.mat-mini-fab` theme rules. Per DESIGN_SYSTEM §6.2
+   the rule is never to ADD one; these are pre-existing, and removing them
+   cannot be visually verified in this environment. */
 .btn-navy {
   background-color: var(--theme-navy) !important;
-  color: #ffffff !important;
-  font-family: "Cairo", sans-serif;
-  font-weight: bold;
+  color: var(--vn-on-brand) !important;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
 }
 
 .btn-accent {
   background-color: var(--theme-accent) !important;
-  color: #ffffff !important;
-  font-family: "Cairo", sans-serif;
-  font-weight: bold;
+  color: var(--vn-on-brand) !important;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
 }
 
 .btn-secondary-action {
-  background-color: #e2e8f0 !important;
+  background-color: var(--vn-border-light) !important;
   color: var(--theme-navy) !important;
-  font-family: "Cairo", sans-serif;
-  font-weight: bold;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
 
   &:hover:not(:disabled) {
-    background-color: #cbd5e1 !important;
+    background-color: var(--vn-border) !important;
   }
 }
 
@@ -77,7 +89,7 @@
   height: 52px;
   width: 52px;
   flex-shrink: 0;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: var(--vn-shadow-2);
 }
 
 /* Table Styling */
@@ -86,30 +98,43 @@
 
   thead th {
     background-color: var(--theme-navy);
-    color: #ffffff;
-    font-weight: 600;
+    color: var(--vn-on-brand);
+    font-weight: var(--vn-weight-medium);
     border-bottom: none;
-    padding: 12px;
+    padding: var(--vn-space-3);
   }
 
   tbody td {
     vertical-align: middle;
-    padding: 12px;
+    padding: var(--vn-space-3);
   }
 
   .table-total-row th {
     background-color: var(--theme-sand);
-    padding: 16px 12px;
+    padding: var(--vn-space-4) var(--vn-space-3);
   }
 }
 
 .net-total-box {
   background-color: var(--theme-navy);
-  border-radius: 6px;
-  box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+  border-radius: var(--vn-radius-md);
+  /* No elevation token covers an inset shadow — left literal on purpose. */
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Action column: replaces an inline width that sat on the table head row. */
+.col-actions {
+  inline-size: 100px;
+}
+
+/* Empty-state icon: replaces inline sizing that sat on the mat-icon. */
+.empty-icon {
+  font-size: 48px;
+  block-size: 48px;
+  inline-size: 48px;
 }
 
 mat-form-field {
-  font-family: "Cairo", sans-serif;
-  font-weight: 600;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-medium);
 }

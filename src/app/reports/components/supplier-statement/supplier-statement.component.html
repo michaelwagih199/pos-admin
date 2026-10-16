@@ -111,15 +111,15 @@
         <span>{{ arabic.supplierStatement.purchasesSection }}</span>
         <span class="count">{{ statement.purchases.length }}</span>
       </div>
-      <table class="data-table" *ngIf="statement.purchases.length > 0; else emptyPurchases">
+      <table class="data-table table-purchases" *ngIf="statement.purchases.length > 0; else emptyPurchases">
         <thead>
           <tr>
-            <th style="width: 20%;">{{ arabic.supplierStatement.table.date }}</th>
-            <th style="width: 20%;">{{ arabic.supplierStatement.table.code }}</th>
-            <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.lineCount }}</th>
-            <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.total }}</th>
-            <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.paid }}</th>
-            <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.remaining }}</th>
+            <th>{{ arabic.supplierStatement.table.date }}</th>
+            <th>{{ arabic.supplierStatement.table.code }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.lineCount }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.total }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.paid }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.remaining }}</th>
           </tr>
         </thead>
         <tbody>
@@ -162,12 +162,12 @@
           <table class="data-table bill-lines-table">
             <thead>
               <tr>
-                <th style="width: 25%;">{{ arabic.supplierStatement.table.product }}</th>
-                <th class="num" style="width: 12%;">{{ arabic.supplierStatement.table.rolls }}</th>
-                <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.quantity }}</th>
-                <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.unitPrice }}</th>
-                <th class="num" style="width: 15%;">{{ arabic.supplierStatement.table.unitLabel }}</th>
-                <th class="num" style="width: 18%;">{{ arabic.supplierStatement.table.total }}</th>
+                <th>{{ arabic.supplierStatement.table.product }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.rolls }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.quantity }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.unitPrice }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.unitLabel }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.total }}</th>
               </tr>
             </thead>
             <tbody>
@@ -206,14 +206,14 @@
         <span>{{ arabic.supplierStatement.paymentsSection }}</span>
         <span class="count">{{ statement.payments.length }}</span>
       </div>
-      <table class="data-table" *ngIf="statement.payments.length > 0; else emptyPayments">
+      <table class="data-table table-payments" *ngIf="statement.payments.length > 0; else emptyPayments">
         <thead>
           <tr>
-            <th style="width: 20%;">{{ arabic.supplierStatement.table.date }}</th>
-            <th style="width: 20%;">{{ arabic.supplierStatement.table.code }}</th>
-            <th style="width: 15%;">{{ arabic.supplierStatement.table.method }}</th>
-            <th class="num" style="width: 20%;">{{ arabic.supplierStatement.table.value }}</th>
-            <th style="width: 25%;">{{ arabic.supplierStatement.table.notes }}</th>
+            <th>{{ arabic.supplierStatement.table.date }}</th>
+            <th>{{ arabic.supplierStatement.table.code }}</th>
+            <th>{{ arabic.supplierStatement.table.method }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.value }}</th>
+            <th>{{ arabic.supplierStatement.table.notes }}</th>
           </tr>
         </thead>
         <tbody>
@@ -238,17 +238,17 @@
         <span>{{ arabic.supplierStatement.retrievalsSection }}</span>
         <span class="count">{{ statement.returns.length }}</span>
       </div>
-      <table class="data-table" *ngIf="statement.returns.length > 0; else emptyRetrievals">
+      <table class="data-table table-retrievals" *ngIf="statement.returns.length > 0; else emptyRetrievals">
         <thead>
           <tr>
-            <th style="width: 14%;">{{ arabic.supplierStatement.table.date }}</th>
-            <th style="width: 14%;">{{ arabic.supplierStatement.table.code }}</th>
-            <th style="width: 20%;">{{ arabic.supplierStatement.table.product }}</th>
-            <th class="num" style="width: 10%;">{{ arabic.supplierStatement.table.rolls }}</th>
-            <th class="num" style="width: 12%;">{{ arabic.supplierStatement.table.quantity }}</th>
-            <th class="num" style="width: 12%;">{{ arabic.supplierStatement.table.total }}</th>
-            <th style="width: 10%;">{{ arabic.supplierStatement.table.refund }}</th>
-            <th style="width: 8%;">{{ arabic.supplierStatement.table.reason }}</th>
+            <th>{{ arabic.supplierStatement.table.date }}</th>
+            <th>{{ arabic.supplierStatement.table.code }}</th>
+            <th>{{ arabic.supplierStatement.table.product }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.rolls }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.quantity }}</th>
+            <th class="num">{{ arabic.supplierStatement.table.total }}</th>
+            <th>{{ arabic.supplierStatement.table.refund }}</th>
+            <th>{{ arabic.supplierStatement.table.reason }}</th>
           </tr>
         </thead>
         <tbody>

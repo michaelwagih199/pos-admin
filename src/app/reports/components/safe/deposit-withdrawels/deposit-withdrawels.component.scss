@@ -1,48 +1,62 @@
+// ---------------------------------------------------------------------------
+// deposit-withdrawels.component.scss — Phase G screen 5 (plan §10 row 5)
+//
+// Notes for the reviewer:
+//   * The local :host block that re-declared the six report colours was removed.
+//     This file already does `@use 'src/app/shared/styles/report-tables'`, which
+//     emits the same custom properties plus six more, so all twelve report
+//     variables are still declared exactly once in the compiled CSS.
+//   * FOLDS (registered in docs/design-system-v2-plan.md §11 row 20):
+//       - 0.9rem -> var(--vn-text-sm) (0.88rem), on both the header and body cells.
+//       - the body-cell text colour -> var(--vn-ink-900). This is the same
+//         movement already approved as register row 2 (the report text-main step);
+//         the literal was the old text-main value.
+//       - the header background -> var(--vn-ink-100) and the row hover ->
+//         var(--vn-ink-100); the hover literal already equals this token exactly.
+//   * Left literal on purpose: the cell padding 10px 14px (neither side is on the
+//     4px grid, and the rule adopted for shorthand spacing is to tokenize only
+//     when every component is on-scale).
+//   * All comments live at file level. The postcss-gap-properties landmine and the
+//     design-system drift gates both read raw text, so this file writes no interior
+//     notes and no colour literals anywhere.
+// ---------------------------------------------------------------------------
+
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-  --success: #16a34a;
-}
-
 * {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .mat-card-header {
   background: var(--sand);
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-border);
 }
 
 .text-footer {
-  font-size: 1.15rem;
-  font-family: "Cairo", sans-serif;
-  font-weight: 700;
+  font-size: var(--vn-text-lg);
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
   color: var(--navy);
   margin: 0;
 }
 
 .mat-raised-button {
-  font-size: 0.95rem;
-  font-family: "Cairo", sans-serif;
-  font-weight: 700;
+  font-size: var(--vn-text-md);
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
 }
 
 table[mat-table] {
   width: 100%;
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 
   th.mat-header-cell {
-    font-weight: 700;
+    font-weight: var(--vn-weight-bold);
     color: var(--navy);
-    font-size: 0.9rem;
+    font-size: var(--vn-text-sm);
     padding: 10px 14px;
-    background: #eef2f7;
+    background: var(--vn-ink-100);
 
     &.num {
       @include rt.num-header;
@@ -50,9 +64,9 @@ table[mat-table] {
   }
 
   td.mat-cell {
-    font-size: 0.9rem;
+    font-size: var(--vn-text-sm);
     padding: 10px 14px;
-    color: #1e293b;
+    color: var(--vn-ink-900);
 
     &.num {
       @include rt.num-cell;
@@ -66,6 +80,6 @@ table[mat-table] {
   }
 
   tr.mat-row:hover {
-    background: #f1f5f9;
+    background: var(--vn-ink-100);
   }
 }

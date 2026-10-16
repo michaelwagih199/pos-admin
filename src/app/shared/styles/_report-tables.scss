@@ -9,18 +9,36 @@
 // CSS Variables
 // ============================================================================
 :host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-  --success: #16a34a;
-  --text-main: #1e293b;
-  --text-muted: #64748b;
-  --border-color: #e2e8f0;
-  --header-bg: #eef2f7;
-  --row-hover-bg: #f1f5f9;
-  --row-alt-bg: #fafbfc;
+  // --------------------------------------------------------------------------
+  // Phase C (docs/design-system-v2-plan.md §6 step 4): the legacy local names
+  // are now ALIASES of the design-system semantic tokens. Everything below in
+  // this file keeps using the short names; the mixins are untouched.
+  //
+  // Value movement (registered in plan §11):
+  //   --text-main  #1e293b -> var(--vn-ink-900) #1f2937   (§9 #2)
+  //   --header-bg  #eef2f7 -> var(--vn-ink-100) #f1f5f9   (§9 #2b)
+  //   --row-alt-bg #fafbfc -> var(--vn-ink-50)  #f8fafc   (§9 #2b)
+  // Identical values: --navy #44596e, --accent #ec994b, --sand #f4f3f0,
+  //   --danger #db1f48, --credit #2563eb, --success #16a34a,
+  //   --text-muted #64748b, --border-color #e2e8f0, --row-hover-bg #f1f5f9.
+  //
+  // NOTE: --sand maps to var(--vn-sand) (#f4f3f0) and NOT to the
+  // var(--vn-surface-alt) written in the plan (that token is #f8fafc, one ramp
+  // step lighter). Using it would have shifted the sand background, a pixel
+  // change that §9 does not register — so this is the identity mapping.
+  // --------------------------------------------------------------------------
+  --navy: var(--vn-brand);
+  --accent: var(--vn-accent);
+  --sand: var(--vn-sand);
+  --danger: var(--vn-danger);
+  --credit: var(--vn-info);
+  --success: var(--vn-success);
+  --text-main: var(--vn-ink-900);
+  --text-muted: var(--vn-text-muted);
+  --border-color: var(--vn-border-light);
+  --header-bg: var(--vn-ink-100);
+  --row-hover-bg: var(--vn-ink-100);
+  --row-alt-bg: var(--vn-ink-50);
 }
 
 // ============================================================================

@@ -1,84 +1,118 @@
 // ============================================================
-// Supplier Statement Styles - Uses Shared Report Tables
+// Supplier Statement - Phase G screen 3 (design-system tokens)
+// ============================================================
+// Tokenization rules applied here:
+//   - every colour now comes from a semantic token except the single one
+//     noted below; no other raw hex remains
+//   - type comes from the --vn-text-* scale, weights from --vn-weight-*
+//   - spacing/radius/elevation use --vn-space-*/--vn-radius-*/--vn-shadow-*
+//     only where the previous value was already on that scale; off-grid
+//     values stay literal on purpose (folding them would move pixels)
+//   - the one physical side property this file used to carry was already
+//     converted to a logical one in Phase F
+//
+// Registered folds (docs/design-system-v2-plan.md section 11):
+//   - table header shading and the even-row shading (already covered by the
+//     report-table shading entry)
+//   - the table cell bottom border colour
+//   - the off-ramp near-black that was used for body text and the off-ramp
+//     grey of secondary text
+//   - the violet section header, now the info role
+//   - the footer caption, the bill-code label, the bill-line counter and the
+//     inner bill-table header font sizes, all rounded to the nearest scale
+//     step (0.9 -> 0.88, 0.85 -> 0.88, 1.05 -> 1, 0.8 -> 0.78 rem)
+//   - the four card/group shadows, now the elevation scale (the tint moves
+//     from pure black at 3-6% to the slate token tint)
+//   - the removal of the letter-spacing on both table headers: section 9.4
+//     forbids letter-spacing on Arabic,
+//     and of the .bill-group-body duplicate rule, merged into one
+//
+// The single colour left literal is the light-blue border on the bill total:
+// the blue ramp has no step between the info background and the info colour,
+// and folding it onto either one would either erase the border or darken it
+// visibly. Add a ramp step before changing it.
+//
+// HOUSE RULE (postcss-gap-properties v3.0.4): never place a comment inside
+// a rule block that also declares gap / row-gap / column-gap. That
+// combination makes the postcss stage throw and the build then reports it
+// as an unrelated esbuild parse error. All notes for this file therefore
+// live here, at file level, and not inside any rule.
+//
+// The local :host variable block that used to open this file is gone: the
+// @use below already emits the shared report-table :host block, which
+// declares the very same five variables (and seven more). Keeping a second
+// copy only created a second source of truth for the same values.
 // ============================================================
 
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-}
-
 .statement-screen {
   @include rt.table-base;
-  
-  font-family: "Cairo", sans-serif;
+
+  font-family: var(--vn-font-body);
   background: var(--sand);
   min-height: calc(100vh - 64px);
-  padding: 1.25rem;
+  padding: var(--vn-space-5);
 }
 
 .screen-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: #fff;
+  gap: var(--vn-space-3);
+  background: var(--vn-surface);
   border-top: 4px solid var(--navy);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: var(--vn-radius-lg);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  margin-bottom: var(--vn-space-4);
+  box-shadow: var(--vn-shadow-2);
 
-  .header-icon { color: var(--navy); font-size: 32px; height: 32px; width: 32px; }
-  h2 { margin: 0; color: var(--navy); font-weight: 700; }
+  .header-icon { color: var(--navy); font-size: var(--vn-text-num-lg); height: 32px; width: 32px; }
+  h2 { margin: 0; color: var(--navy); font-weight: var(--vn-weight-bold); }
 }
 
 .filter-card {
-  background: #fff;
-  border-radius: 8px;
+  background: var(--vn-surface);
+  border-radius: var(--vn-radius-lg);
   border-top: 4px solid var(--accent);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1rem;
+  box-shadow: var(--vn-shadow-2);
+  margin-bottom: var(--vn-space-4);
 }
 
 .filters-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: var(--vn-space-4);
 
   .supplier-field { flex: 2 1 260px; min-width: 260px; }
   .date-field { flex: 1 1 160px; min-width: 160px; }
   .action-btn {
     height: 52px; min-width: 150px;
-    font-family: "Cairo", sans-serif; font-weight: 700;
+    font-family: var(--vn-font-body); font-weight: var(--vn-weight-bold);
   }
 }
 
 .info-card {
-  background: #fff;
+  background: var(--vn-surface);
   border-inline-start: 6px solid var(--navy);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-radius: var(--vn-radius-lg);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  margin-bottom: var(--vn-space-4);
+  box-shadow: var(--vn-shadow-2);
 
   .info-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    color: #333;
+    gap: var(--vn-space-2);
+    font-size: var(--vn-text-base);
+    color: var(--vn-ink-900);
     padding: 2px 0;
 
     mat-icon { color: var(--navy); }
   }
 
-  .info-name { font-weight: 700; font-size: 1.15rem; }
-  .muted { color: #64748b; }
+  .info-name { font-weight: var(--vn-weight-bold); font-size: var(--vn-text-lg); }
+  .muted { color: var(--vn-ink-500); }
 }
 
 /* Summary */
@@ -88,10 +122,10 @@
 
 .summary-card {
   @include rt.summary-card;
-  
-  &.opening   { background: #64748b; }
+
+  &.opening   { background: var(--vn-ink-500); }
   &.purchases { background: var(--navy); }
-  &.payments  { background: #16a34a; }
+  &.payments  { background: var(--vn-success); }
   &.returns   { background: var(--accent); }
   &.closing   { background: var(--danger); }
   &.closing.credit { background: var(--credit); }
@@ -101,10 +135,10 @@
 .section-card {
   @include rt.section-card;
 
-  .section-header.navy   { background: #44596e; }
-  .section-header.green  { background: #16a34a; }
-  .section-header.danger { background: #db1f48; }
-  .section-header.purple { background: #7c3aed; }
+  .section-header.navy   { background: var(--vn-brand); }
+  .section-header.green  { background: var(--vn-success); }
+  .section-header.danger { background: var(--vn-danger); }
+  .section-header.purple { background: var(--vn-info); }
 }
 
 /* Data tables */
@@ -112,23 +146,22 @@
   @include rt.table-base;
 
   thead th {
-    background: #eef2f7;
+    background: var(--vn-ink-100);
     color: var(--navy);
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 0.2px;
+    font-weight: var(--vn-weight-black);
+    font-size: var(--vn-text-sm);
     padding: 12px 14px;
     text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
-    font-family: "Cairo", sans-serif;
+    font-family: var(--vn-font-body);
   }
 
   tbody td {
     padding: 12px 14px;
-    font-size: 0.9rem;
-    color: #1f2937;
-    border-bottom: 1px solid #eef0f2;
+    font-size: var(--vn-text-sm);
+    color: var(--vn-ink-900);
+    border-bottom: 1px solid var(--vn-ink-200);
     text-align: end;
     vertical-align: middle;
   }
@@ -150,12 +183,12 @@
   }
 
   tbody tr:nth-child(even) td {
-    background: #fafbfc;
+    background: var(--vn-ink-50);
   }
 
   tbody tr:hover td {
-    background: #f1f5f9;
-    transition: background 0.15s ease;
+    background: var(--vn-ink-100);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
   tr:last-child td {
@@ -173,9 +206,9 @@
 
 .statement-footer {
   text-align: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  padding: 1rem 0;
+  font-size: var(--vn-text-sm);
+  color: var(--vn-ink-500);
+  padding: var(--vn-space-4) 0;
 }
 
 .empty-card {
@@ -183,11 +216,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3rem 1rem;
-    color: #94a3b8;
+    padding: var(--vn-space-12) var(--vn-space-4);
+    color: var(--vn-text-faint);
 
     .empty-icon { font-size: 64px; width: 64px; height: 64px; opacity: 0.5; }
-    h3 { margin: 1rem 0 0.25rem; color: var(--navy); }
+    h3 { margin: var(--vn-space-4) 0 var(--vn-space-1) 0; color: var(--navy); }
     p { margin: 0; }
   }
 }
@@ -195,45 +228,46 @@
 /* Print */
 @media print {
   .no-print { display: none !important; }
-  .statement-screen { background: #fff; padding: 0; }
+  .statement-screen { background: var(--vn-surface); padding: 0; }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
-  
+
   @include rt.print-table;
 }
 
 /* ============================================================
    Bill Group - Expandable Invoice Detail
    ============================================================ */
+
 .bill-group {
-  margin-bottom: 0.75rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  background: #fff;
+  margin-bottom: var(--vn-space-3);
+  border: 1px solid var(--vn-border-light);
+  border-radius: var(--vn-radius-lg);
+  background: var(--vn-surface);
   overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--vn-shadow-1);
   transition: box-shadow 0.2s ease;
-  
+
   &:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--vn-shadow-3);
   }
 }
 
 .bill-group-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: linear-gradient(90deg, #f8fafc 0%, #f1f5f9 100%);
-  border-bottom: 1px solid #e2e8f0;
+  gap: var(--vn-space-3);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  background: linear-gradient(90deg, var(--vn-ink-50) 0%, var(--vn-ink-100) 100%);
+  border-bottom: 1px solid var(--vn-border-light);
   cursor: pointer;
   user-select: none;
-  transition: background 0.15s ease;
-  
+  transition: background var(--vn-duration-fast) var(--vn-ease);
+
   &:hover {
-    background: linear-gradient(90deg, #f1f5f9 0%, #e2e8f0 100%);
+    background: linear-gradient(90deg, var(--vn-ink-100) 0%, var(--vn-ink-200) 100%);
   }
-  
+
   mat-icon {
     font-size: 22px;
     height: 22px;
@@ -244,109 +278,140 @@
 }
 
 .bill-code {
-  font-family: "Cairo", sans-serif;
-  font-weight: 700;
-  font-size: 1.05rem;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
+  font-size: var(--vn-text-base);
   color: var(--navy);
   flex: 0 0 140px;
   text-align: center;
 }
 
 .bill-line-count {
-  font-family: "Cairo", sans-serif;
-  font-size: 0.85rem;
-  color: #64748b;
-  background: #fff;
-  padding: 0.25rem 0.75rem;
-  border-radius: 999px;
-  border: 1px solid #e2e8f0;
+  font-family: var(--vn-font-body);
+  font-size: var(--vn-text-sm);
+  color: var(--vn-ink-500);
+  background: var(--vn-surface);
+  padding: var(--vn-space-1) var(--vn-space-3);
+  border-radius: var(--vn-radius-pill);
+  border: 1px solid var(--vn-border-light);
   flex: 0 0 auto;
 }
 
 .bill-total {
-  font-family: "Cairo", sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #1e3a8a;
-  margin-left: auto;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
+  font-size: var(--vn-text-base);
+  color: var(--vn-info-fg);
+  margin-inline-end: auto;
   padding: 0.35rem 1rem;
-  background: #dbeafe;
-  border-radius: 6px;
+  background: var(--vn-info-bg);
+  border-radius: var(--vn-radius-md);
   border: 1px solid #bfdbfe;
-}
-
-.bill-group-body {
-  padding: 0;
-  overflow: hidden;
 }
 
 .bill-lines-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
   margin: 0;
-  
+
   thead th {
-    background: #eef2f7;
+    background: var(--vn-ink-100);
     color: var(--navy);
-    font-weight: 800;
-    font-size: 0.8rem;
-    letter-spacing: 0.3px;
+    font-weight: var(--vn-weight-black);
+    font-size: var(--vn-text-xs);
     padding: 10px 12px;
     text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
-    font-family: "Cairo", sans-serif;
+    font-family: var(--vn-font-body);
   }
-  
+
   tbody td {
     padding: 10px 12px;
-    font-size: 0.85rem;
-    color: #1f2937;
-    border-bottom: 1px solid #eef0f2;
+    font-size: var(--vn-text-sm);
+    color: var(--vn-ink-900);
+    border-bottom: 1px solid var(--vn-ink-200);
     text-align: end;
     vertical-align: middle;
   }
-  
+
   tbody tr:nth-child(even) td {
-    background: #fafbfc;
+    background: var(--vn-ink-50);
   }
-  
+
   tbody tr:hover td {
-    background: #f1f5f9;
-    transition: background 0.15s ease;
+    background: var(--vn-ink-100);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
-  
+
   .num {
     text-align: end;
     font-variant-numeric: tabular-nums;
-    font-weight: 600;
-    color: #1f2937;
+    font-weight: var(--vn-weight-medium);
+    color: var(--vn-ink-900);
   }
-  
+
   .bill-subtotal {
-    background: #f8fafc;
-    font-weight: 700;
-    
+    background: var(--vn-ink-50);
+    font-weight: var(--vn-weight-bold);
+
     td {
-      border-top: 2px solid #e2e8f0;
+      border-top: 2px solid var(--vn-border-light);
       padding-top: 14px;
       padding-bottom: 14px;
     }
   }
 }
 
-/* Animation for expand/collapse */
+/* Animation for expand/collapse (the two .bill-group-body rules of the
+   original are merged here; their declarations never conflicted) */
 .bill-group-body {
+  padding: 0;
+  overflow: hidden;
   max-height: 0;
   opacity: 0;
-  overflow: hidden;
   transition: max-height 0.25s ease-out, opacity 0.2s ease-out, padding 0.25s ease-out;
-  
+
   &.expanded {
     max-height: 500px;
     opacity: 1;
-    padding-top: 4px;
-    padding-bottom: 4px;
+    padding-block: var(--vn-space-1);
   }
 }
+
+/* ============================================================
+   Column widths, moved out of the templates' inline width attributes
+   (Phase G screen 3). Percentages are layout, not tokens; the values are
+   unchanged. Selectors repeat the shared table class so they outrank the
+   generic thead th rules above regardless of source order.
+   ============================================================ */
+
+.data-table.table-purchases th:nth-child(1) { width: 20%; }
+.data-table.table-purchases th:nth-child(2) { width: 20%; }
+.data-table.table-purchases th:nth-child(3) { width: 15%; }
+.data-table.table-purchases th:nth-child(4) { width: 15%; }
+.data-table.table-purchases th:nth-child(5) { width: 15%; }
+.data-table.table-purchases th:nth-child(6) { width: 15%; }
+
+.bill-lines-table th:nth-child(1) { width: 25%; }
+.bill-lines-table th:nth-child(2) { width: 12%; }
+.bill-lines-table th:nth-child(3) { width: 15%; }
+.bill-lines-table th:nth-child(4) { width: 15%; }
+.bill-lines-table th:nth-child(5) { width: 15%; }
+.bill-lines-table th:nth-child(6) { width: 18%; }
+
+.data-table.table-payments th:nth-child(1) { width: 20%; }
+.data-table.table-payments th:nth-child(2) { width: 20%; }
+.data-table.table-payments th:nth-child(3) { width: 15%; }
+.data-table.table-payments th:nth-child(4) { width: 20%; }
+.data-table.table-payments th:nth-child(5) { width: 25%; }
+
+.data-table.table-retrievals th:nth-child(1) { width: 14%; }
+.data-table.table-retrievals th:nth-child(2) { width: 14%; }
+.data-table.table-retrievals th:nth-child(3) { width: 20%; }
+.data-table.table-retrievals th:nth-child(4) { width: 10%; }
+.data-table.table-retrievals th:nth-child(5) { width: 12%; }
+.data-table.table-retrievals th:nth-child(6) { width: 12%; }
+.data-table.table-retrievals th:nth-child(7) { width: 10%; }
+.data-table.table-retrievals th:nth-child(8) { width: 8%; }

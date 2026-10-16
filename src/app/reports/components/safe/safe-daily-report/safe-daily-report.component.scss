@@ -1,77 +1,134 @@
 // ============================================================
-// Safe Daily Report Styles - Modern Financial Report Design
+// Safe Daily Report — Phase G screen 5 (design-system v2)
+// ============================================================
+// The original file carried a self-contained 26-variable palette
+// (slate ink, emerald success, rose danger, violet badges, teal
+// section header) that duplicated — and disagreed with — the
+// shared report tokens. It now maps onto the design system:
+//
+//   --navy           <- brand navy 700    (was slate 800)
+//   --navy-light     <- brand navy 500    (was slate 700)
+//   --primary        <- info role         (exact)
+//   --primary-light  <- info foreground   (hover steps DARKER, was a lighter blue)
+//   --accent         <- accent 500        (exact)
+//   --accent-light   <- amber 500         (exact)
+//   --success        <- success role      (was emerald 600)
+//   --success-light  <- success foreground(was emerald 500)
+//   --danger         <- danger role       (was red 600)
+//   --danger-light   <- danger foreground (was red 500)
+//   --warning        <- accent 700        (was amber 600)
+//   --warning-light  <- warning role      (exact)
+//   --surface / --surface-alt / --background
+//                    <- white / ink 50 / ink 100        (all exact)
+//   --border / --border-strong
+//                    <- border-light / border           (all exact)
+//   --text-primary   <- ink 900           (was the off-ramp slate near-black)
+//   --text-secondary <- text-muted        (was slate 600)
+//   --text-muted     <- ink 300           (exact)
+//   --shadow-sm/md/lg/xl <- shadow steps 1/2/3/4
+//   --radius-sm/md/lg    <- radius md/lg/xl  (was 6 / 10 / 14 px)
+//
+// Rule bodies now reference these variables or the tokens directly.
+// Exact matches were tokenized with no pixel movement; the movements
+// listed above are registered in the plan's deliberate-change table.
+// The only literal colours left are the rgba accent/white
+// translucencies inside the two dark gradients and the pale row
+// hover, which are not hex literals.
+//
+// HOUSE RULES
+//  * postcss-gap-properties 3.0.4 crashes when a comment sits inside
+//    a rule that declares gap / row-gap / column-gap, and the failure
+//    surfaces as a bogus esbuild error. This file declares gap in
+//    twelve rules, so NO comment may live inside any rule — every
+//    note is at file level, as here.
+//  * `//` comments are stripped by Sass before postcss runs; only the
+//    block-comment form reaches it.
+//  * letter-spacing and text-transform on Arabic are banned (the
+//    cursive joins break / it is a no-op), so the four letter-spacing
+//    declarations and the three uppercase declarations were removed.
+//    Every string in this screen is Arabic, so dropping the uppercase
+//    declarations moves no pixels.
+//  * The important flags here are all print-mode overrides plus the
+//    print-only helpers, and they are retained deliberately: the
+//    printed output must stay byte-identical.
+//  * Dead rules removed after proving no reference in the template:
+//    the teal section-header variant and the unused return-customer
+//    badge (the template uses the credit badge for customer returns).
+//  * Off-grid values left literal on purpose: display font sizes
+//    (1.5 / 1.75 / 2 / 2.25 rem), icon geometry, min-widths, heights,
+//    the 12px/14px cell padding, the sub-pixel chip paddings, the
+//    0.4 / 0.45 / 0.9 rem gaps and the 2px/3px/4px/10px border and
+//    bar widths.
 // ============================================================
 
 @use 'src/app/shared/styles/report-tables' as rt;
 
 :host {
-  // Modern color palette
-  --navy: #1e293b;
-  --navy-light: #334155;
-  --primary: #2563eb;
-  --primary-light: #3b82f6;
-  --accent: #ec994b;
-  --accent-light: #f59e0b;
-  --success: #059669;
-  --success-light: #10b981;
-  --danger: #dc2626;
-  --danger-light: #ef4444;
-  --warning: #d97706;
-  --warning-light: #f59e0b;
-  --surface: #ffffff;
-  --surface-alt: #f8fafc;
-  --background: #f1f5f9;
-  --border: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #94a3b8;
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  --navy: var(--vn-navy-700);
+  --navy-light: var(--vn-navy-500);
+  --primary: var(--vn-info);
+  --primary-light: var(--vn-info-fg);
+  --accent: var(--vn-accent-500);
+  --accent-light: var(--vn-amber-500);
+  --success: var(--vn-success);
+  --success-light: var(--vn-success-fg);
+  --danger: var(--vn-danger);
+  --danger-light: var(--vn-danger-fg);
+  --warning: var(--vn-accent-700);
+  --warning-light: var(--vn-warning);
+  --surface: var(--vn-white);
+  --surface-alt: var(--vn-surface-alt);
+  --background: var(--vn-ink-100);
+  --border: var(--vn-border-light);
+  --border-strong: var(--vn-border);
+  --text-primary: var(--vn-ink-900);
+  --text-secondary: var(--vn-text-muted);
+  --text-muted: var(--vn-text-faint);
+  --shadow-sm: var(--vn-shadow-1);
+  --shadow-md: var(--vn-shadow-2);
+  --shadow-lg: var(--vn-shadow-3);
+  --shadow-xl: var(--vn-shadow-4);
+  --radius-sm: var(--vn-radius-md);
+  --radius-md: var(--vn-radius-lg);
+  --radius-lg: var(--vn-radius-xl);
 }
 
 .daily-safe-screen {
   @include rt.table-base;
-  
-  font-family: "Cairo", "Tajawal", "Noto Sans Arabic", sans-serif;
+
+  font-family: var(--vn-font-body);
   background: var(--background);
   min-height: calc(100vh - 64px);
-  padding: 1.5rem;
+  padding: var(--vn-space-6);
   color: var(--text-primary);
 }
 
-/* ============================================================
-   SCREEN HEADER
-   ============================================================ */
+// ============================================================
+// SCREEN HEADER
+// ============================================================
 .screen-header {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: var(--vn-space-4);
   background: var(--surface);
   border-radius: var(--radius-lg);
-  padding: 1.25rem 1.5rem;
-  margin-bottom: 1.5rem;
+  padding: var(--vn-space-5) var(--vn-space-6);
+  margin-bottom: var(--vn-space-6);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
-  
+
   .header-icon {
     color: var(--primary);
     font-size: 36px;
     height: 36px;
     width: 36px;
   }
-  
+
   h2 {
     margin: 0;
     color: var(--navy);
-    font-weight: 800;
+    font-weight: var(--vn-weight-black);
     font-size: 1.5rem;
-    letter-spacing: -0.02em;
   }
 
   .date-chip {
@@ -79,12 +136,12 @@
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
-    font-size: 0.85rem;
-    font-weight: 700;
+    font-size: var(--vn-text-sm);
+    font-weight: var(--vn-weight-bold);
     color: var(--text-secondary);
     background: var(--surface-alt);
     border: 1px solid var(--border);
-    border-radius: 999px;
+    border-radius: var(--vn-radius-pill);
     padding: 0.35rem 0.9rem;
     font-variant-numeric: tabular-nums;
 
@@ -101,24 +158,24 @@
   display: none;
 }
 
-/* ============================================================
-   LOADING BAR
-   ============================================================ */
+// ============================================================
+// LOADING BAR
+// ============================================================
 mat-progress-bar {
-  margin-bottom: 1.5rem;
-  border-radius: 4px;
+  margin-bottom: var(--vn-space-6);
+  border-radius: var(--vn-radius-sm);
   height: 4px;
 }
 
-/* ============================================================
-   FILTER CARD
-   ============================================================ */
+// ============================================================
+// FILTER CARD
+// ============================================================
 .filter-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--vn-space-6);
   overflow: hidden;
 }
 
@@ -126,35 +183,35 @@ mat-progress-bar {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
-  padding: 1.25rem 1.5rem;
-  
+  gap: var(--vn-space-4);
+  padding: var(--vn-space-5) var(--vn-space-6);
+
   .date-field {
     min-width: 240px;
     flex: 1 1 240px;
   }
-  
+
   .action-btn {
     height: 52px;
     min-width: 160px;
     font-family: inherit;
-    font-weight: 700;
-    font-size: 0.95rem;
+    font-weight: var(--vn-weight-bold);
+    font-size: var(--vn-text-md);
     border-radius: var(--radius-md);
     transition: all 0.2s ease;
-    
+
     &.primary {
       background: var(--primary);
-      color: #fff;
-      
+      color: var(--vn-on-brand);
+
       &:hover { background: var(--primary-light); }
     }
-    
+
     &.stroked {
       border-color: var(--border-strong);
       color: var(--text-secondary);
-      
-      &:hover { 
+
+      &:hover {
         background: var(--surface-alt);
         border-color: var(--primary);
         color: var(--primary);
@@ -163,20 +220,20 @@ mat-progress-bar {
   }
 }
 
-/* ============================================================
-   HERO ROW (net safe + grouped sales)
-   ============================================================ */
+// ============================================================
+// HERO ROW (net safe + grouped sales)
+// ============================================================
 .hero-row {
   display: grid;
   grid-template-columns: 1fr 1.4fr;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--vn-space-4);
+  margin-bottom: var(--vn-space-4);
 }
 
 .hero-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  padding: 1.25rem 1.5rem;
+  padding: var(--vn-space-5) var(--vn-space-6);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
   animation: fadeInUp 0.4s ease-out backwards;
@@ -193,7 +250,7 @@ mat-progress-bar {
     justify-content: center;
     width: 52px;
     height: 52px;
-    border-radius: 14px;
+    border-radius: var(--radius-lg);
     flex-shrink: 0;
 
     mat-icon {
@@ -210,30 +267,30 @@ mat-progress-bar {
   }
 
   .hero-label {
-    font-size: 1rem;
-    font-weight: 800;
+    font-size: var(--vn-text-base);
+    font-weight: var(--vn-weight-black);
     color: var(--text-primary);
   }
 
   .hero-formula {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: var(--vn-text-xs);
+    font-weight: var(--vn-weight-medium);
     color: var(--text-muted);
   }
 
   .hero-value {
     display: block;
-    margin-top: 0.75rem;
+    margin-top: var(--vn-space-3);
     font-size: 2rem;
-    font-weight: 800;
+    font-weight: var(--vn-weight-black);
     font-variant-numeric: tabular-nums;
     line-height: 1.1;
 
     small {
-      font-size: 0.8rem;
-      font-weight: 600;
+      font-size: var(--vn-text-xs);
+      font-weight: var(--vn-weight-medium);
       color: var(--text-muted);
-      margin-inline-start: 0.5rem;
+      margin-inline-start: var(--vn-space-2);
     }
 
     &.sm {
@@ -247,7 +304,7 @@ mat-progress-bar {
   &.net {
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
     border: none;
-    color: #fff;
+    color: var(--vn-on-brand);
     position: relative;
     overflow: hidden;
 
@@ -260,31 +317,31 @@ mat-progress-bar {
     }
 
     .hero-icon { background: rgba(236, 153, 75, 0.18); mat-icon { color: var(--accent); } }
-    .hero-label { color: #fff; }
+    .hero-label { color: var(--vn-on-brand); }
     .hero-formula { color: rgba(255, 255, 255, 0.65); }
-    .hero-value { color: #fff; position: relative; z-index: 1; }
+    .hero-value { color: var(--vn-on-brand); position: relative; z-index: 1; }
     .hero-value small { color: rgba(255, 255, 255, 0.6); }
   }
 
   &.sales {
     border-inline-start: 4px solid var(--success);
 
-    .hero-icon { background: #dcfce7; mat-icon { color: var(--success); } }
+    .hero-icon { background: var(--vn-success-bg); mat-icon { color: var(--success); } }
     .hero-value.sm { color: var(--success); }
     .hero-value.sm small { color: var(--text-muted); }
   }
 }
 
 .split-bar {
-  margin-top: 1rem;
+  margin-top: var(--vn-space-4);
   height: 10px;
-  border-radius: 999px;
-  background: #fef3c7;
+  border-radius: var(--vn-radius-pill);
+  background: var(--vn-warning-bg);
   overflow: hidden;
 
   .split-cash {
     height: 100%;
-    border-radius: 999px;
+    border-radius: var(--vn-radius-pill);
     background: linear-gradient(90deg, var(--success) 0%, var(--success-light) 100%);
     transition: width 0.4s ease;
   }
@@ -293,14 +350,14 @@ mat-progress-bar {
 .split-legend {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  margin-top: 0.75rem;
+  gap: var(--vn-space-2) var(--vn-space-5);
+  margin-top: var(--vn-space-3);
 
   .legend-item {
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    font-size: 0.85rem;
+    font-size: var(--vn-text-sm);
     color: var(--text-secondary);
 
     b { font-variant-numeric: tabular-nums; color: var(--text-primary); }
@@ -312,79 +369,76 @@ mat-progress-bar {
   }
 }
 
-/* ============================================================
-   KPI SUMMARY ROW
-   ============================================================ */
+// ============================================================
+// KPI SUMMARY ROW
+// ============================================================
 .summary-row {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.5rem;
+  gap: var(--vn-space-4);
+  margin-bottom: var(--vn-space-6);
 }
 
 .summary-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  padding: 1.25rem 1.5rem;
+  padding: var(--vn-space-5) var(--vn-space-6);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  
+
   &:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
   }
-  
+
   display: flex;
   align-items: center;
-  gap: 1rem;
-  
+  gap: var(--vn-space-4);
+
   mat-icon {
     font-size: 28px;
     height: 28px;
     width: 28px;
     flex-shrink: 0;
   }
-  
+
   .summary-body {
     flex: 1;
     min-width: 0;
   }
-  
+
   .label {
     display: block;
-    font-size: 0.8rem;
-    font-weight: 600;
+    font-size: var(--vn-text-xs);
+    font-weight: var(--vn-weight-medium);
     color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-bottom: 0.25rem;
+    margin-bottom: var(--vn-space-1);
   }
-  
+
   .value {
     display: block;
-    font-size: 1.35rem;
-    font-weight: 800;
+    font-size: var(--vn-text-2xl);
+    font-weight: var(--vn-weight-black);
     font-variant-numeric: tabular-nums;
-    font-family: "Cairo", "Tajawal", "SF Pro Display", sans-serif;
+    font-family: var(--vn-font-body);
     line-height: 1.2;
-    
+
     small {
-      font-size: 0.75rem;
+      font-size: var(--vn-text-xs);
       font-weight: 500;
       color: var(--text-muted);
-      margin-inline-start: 0.5rem;
+      margin-inline-start: var(--vn-space-2);
     }
   }
-  
-  // Card variants with colored left border
+
   &.income {
     border-inline-start: 4px solid var(--success);
-    
+
     mat-icon { color: var(--success); }
     .value { color: var(--success); }
   }
-  
+
   &.outcome {
     border-inline-start: 4px solid var(--danger);
 
@@ -396,135 +450,125 @@ mat-progress-bar {
     border-inline-start: 4px solid var(--success);
 
     mat-icon { color: var(--success); }
-    .value { color: #047857; }
+    .value { color: var(--vn-success-fg); }
   }
 
   &.credit {
     border-inline-start: 4px solid var(--warning-light);
 
     mat-icon { color: var(--warning); }
-    .value { color: #92400e; }
+    .value { color: var(--vn-warning-fg); }
   }
-  
+
   &.total {
     border-inline-start: 4px solid var(--primary);
     background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-    color: #fff;
+    color: var(--vn-on-brand);
     border: none;
-    
+
     mat-icon { color: var(--accent); }
     .label { color: rgba(255,255,255,0.7); }
-    .value { color: #fff; }
-    
+    .value { color: var(--vn-on-brand); }
+
     .value small { color: rgba(255,255,255,0.6); }
   }
-  
+
   &.neutral {
     border-inline-start: 4px solid var(--accent);
-    
+
     mat-icon { color: var(--accent); }
     .value { color: var(--accent); }
   }
 }
 
-/* ============================================================
-   SECTION CARDS
-   ============================================================ */
+// ============================================================
+// SECTION CARDS
+// ============================================================
 .section-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   border: 1px solid var(--border);
-  margin-bottom: 1.25rem;
+  margin-bottom: var(--vn-space-5);
   overflow: hidden;
-  
+
   .section-header {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #fff;
+    gap: var(--vn-space-3);
+    padding: var(--vn-space-4) var(--vn-space-6);
+    font-weight: var(--vn-weight-bold);
+    font-size: var(--vn-text-base);
+    color: var(--vn-on-brand);
     border-radius: 0;
-    
+
     mat-icon {
       font-size: 24px;
       height: 24px;
       width: 24px;
     }
-    
+
     .count {
-      margin-right: auto;
-      font-size: 0.8rem;
-      font-weight: 600;
+      margin-inline-start: auto;
+      font-size: var(--vn-text-xs);
+      font-weight: var(--vn-weight-medium);
       padding: 0.2rem 0.65rem;
-      border-radius: 999px;
+      border-radius: var(--vn-radius-pill);
       background: rgba(255,255,255,0.2);
     }
-    
+
     &.primary   { background: var(--primary); }
     &.navy      { background: var(--primary); }
     &.success   { background: var(--success); }
     &.green     { background: var(--success); }
     &.danger    { background: var(--danger); }
     &.warning   { background: var(--warning); }
-    &.purple    { background: #7c3aed; }
-    &.teal      { background: #0d9488; }
+    &.purple    { background: var(--primary); }
   }
 }
 
-/* ============================================================
-   BADGES
-   ============================================================ */
+// ============================================================
+// BADGES
+// ============================================================
 .badge {
   display: inline-flex;
   align-items: center;
   padding: 0.25rem 0.7rem;
-  border-radius: 999px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
+  border-radius: var(--vn-radius-pill);
+  font-size: var(--vn-text-xs);
+  font-weight: var(--vn-weight-bold);
   white-space: nowrap;
-  
+
   &.badge-cash {
-    background: #dcfce7;
-    color: #166534;
+    background: var(--vn-success-bg);
+    color: var(--vn-success-fg);
   }
-  
+
   &.badge-credit {
-    background: #fef3c7;
-    color: #92400e;
+    background: var(--vn-warning-bg);
+    color: var(--vn-warning-fg);
   }
-  
+
   &.badge-supplier {
-    background: #ede9fe;
-    color: #5b21b6;
-  }
-  
-  &.badge-return-customer {
-    background: #fee2e2;
-    color: #991b1b;
+    background: var(--vn-info-bg);
+    color: var(--vn-info-fg);
   }
 }
 
-/* ============================================================
-   DETAIL TABLES
-   ============================================================ */
+// ============================================================
+// DETAIL TABLES
+// ============================================================
 .detail-table {
   width: 100%;
   border-collapse: collapse;
   font-family: inherit;
-  font-size: 0.875rem;
-  
+  font-size: var(--vn-text-sm);
+
   thead th {
     background: var(--surface-alt);
     color: var(--navy);
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    font-weight: var(--vn-weight-bold);
+    font-size: var(--vn-text-xs);
     padding: 12px 14px;
     text-align: end;
     border-bottom: 2px solid var(--border-strong);
@@ -533,42 +577,42 @@ mat-progress-bar {
     top: 0;
     z-index: 1;
   }
-  
+
   tbody td {
     padding: 12px 14px;
     color: var(--text-primary);
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
     text-align: end;
-    transition: background 0.15s ease;
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
-  
+
   .num {
     @include rt.num-cell;
     font-variant-numeric: tabular-nums;
-    font-weight: 600;
+    font-weight: var(--vn-weight-medium);
   }
-  
+
   th.num {
     @include rt.num-header;
   }
-  
-  .credit { 
-    @include rt.credit-style; 
-    font-weight: 600;
+
+  .credit {
+    @include rt.credit-style;
+    font-weight: var(--vn-weight-medium);
   }
-  
-  .debit { 
-    @include rt.debit-style; 
-    font-weight: 600;
+
+  .debit {
+    @include rt.debit-style;
+    font-weight: var(--vn-weight-medium);
   }
-  
+
   .muted {
     color: var(--text-muted);
-    font-size: 0.75rem;
+    font-size: var(--vn-text-xs);
     margin-inline-start: 6px;
   }
-  
+
   .notes {
     color: var(--text-secondary);
     max-width: 280px;
@@ -576,51 +620,81 @@ mat-progress-bar {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
-  
+
   tbody tr:nth-child(even) td {
     background: var(--surface-alt);
   }
-  
+
   tbody tr:hover td {
-    background: #fef3c7;
-    transition: background 0.15s ease;
+    background: var(--vn-warning-bg);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
-  
+
   tr:last-child td {
     border-bottom: none;
   }
-  
+
   tfoot td {
     background: var(--surface-alt);
-    font-weight: 800;
+    font-weight: var(--vn-weight-black);
     padding: 14px;
     color: var(--navy);
     border-top: 2px solid var(--border-strong);
     text-align: end;
   }
-  
+
   tfoot td:first-child {
     text-align: end;
   }
 }
 
-/* ============================================================
-   GRAND TOTAL CARD
-   ============================================================ */
+// Column widths — these were inline width declarations on the th
+// elements in the template, which the accessibility sweep forbids.
+// One modifier per table keeps the four different column sets apart
+// from the generic header rule by source order.
+.detail-table.table-payments th:nth-child(1) { width: 14%; }
+.detail-table.table-payments th:nth-child(2) { width: 26%; }
+.detail-table.table-payments th:nth-child(3) { width: 16%; }
+.detail-table.table-payments th:nth-child(4) { width: 28%; }
+.detail-table.table-payments th:nth-child(5) { width: 16%; }
+
+.detail-table.table-sales th:nth-child(1) { width: 16%; }
+.detail-table.table-sales th:nth-child(2) { width: 30%; }
+.detail-table.table-sales th:nth-child(3) { width: 16%; }
+.detail-table.table-sales th:nth-child(4) { width: 18%; }
+.detail-table.table-sales th:nth-child(5) { width: 20%; }
+
+.detail-table.table-purchases th:nth-child(1) { width: 16%; }
+.detail-table.table-purchases th:nth-child(2) { width: 28%; }
+.detail-table.table-purchases th:nth-child(3) { width: 16%; }
+.detail-table.table-purchases th:nth-child(4) { width: 13%; }
+.detail-table.table-purchases th:nth-child(5) { width: 13%; }
+.detail-table.table-purchases th:nth-child(6) { width: 14%; }
+
+.detail-table.table-retrievals th:nth-child(1) { width: 14%; }
+.detail-table.table-retrievals th:nth-child(2) { width: 28%; }
+.detail-table.table-retrievals th:nth-child(3) { width: 14%; }
+.detail-table.table-retrievals th:nth-child(4) { width: 14%; }
+.detail-table.table-retrievals th:nth-child(5) { width: 14%; }
+.detail-table.table-retrievals th:nth-child(6) { width: 16%; }
+
+// ============================================================
+// GRAND TOTAL CARD
+// ============================================================
 .grand-total-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
-  color: #fff;
-  padding: 1.5rem 2rem;
+  color: var(--vn-on-brand);
+  padding: var(--vn-space-6) var(--vn-space-8);
   border-radius: var(--radius-lg);
   border: none;
-  margin-top: 1.5rem;
+  margin-top: var(--vn-space-6);
   box-shadow: var(--shadow-xl);
   position: relative;
   overflow: hidden;
-  
+
   &::before {
     content: '';
     position: absolute;
@@ -628,16 +702,16 @@ mat-progress-bar {
     background: radial-gradient(ellipse at 80% 20%, rgba(236, 153, 75, 0.15) 0%, transparent 50%);
     pointer-events: none;
   }
-  
+
   .grand-left {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    font-size: 1.15rem;
-    font-weight: 700;
+    gap: var(--vn-space-3);
+    font-size: var(--vn-text-lg);
+    font-weight: var(--vn-weight-bold);
     position: relative;
     z-index: 1;
-    
+
     mat-icon {
       color: var(--accent);
       font-size: 32px;
@@ -645,46 +719,46 @@ mat-progress-bar {
       width: 32px;
     }
   }
-  
+
   .grand-right {
     position: relative;
     z-index: 1;
-    text-align: left;
-    
+    text-align: end;
+
     .amount {
       font-size: 2.25rem;
-      font-weight: 800;
+      font-weight: var(--vn-weight-black);
       font-variant-numeric: tabular-nums;
-      font-family: "Cairo", "SF Pro Display", sans-serif;
+      font-family: var(--vn-font-body);
       line-height: 1;
-      margin-bottom: 0.25rem;
+      margin-bottom: var(--vn-space-1);
     }
-    
+
     .currency {
-      font-size: 1rem;
+      font-size: var(--vn-text-base);
       color: rgba(255,255,255,0.7);
       font-weight: 500;
-      margin-inline-start: 8px;
+      margin-inline-start: var(--vn-space-2);
     }
   }
 }
 
-/* ============================================================
-   NOTES FIELD
-   ============================================================ */
+// ============================================================
+// NOTES FIELD
+// ============================================================
 .notes-field {
   width: 100%;
-  margin-top: 1.5rem;
-  
+  margin-top: var(--vn-space-6);
+
   ::ng-deep {
     .mat-form-field-appearance-outline .mat-form-field-outline {
       color: var(--border);
     }
-    
+
     .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
       color: var(--primary);
     }
-    
+
     .mat-form-field-label {
       color: var(--text-muted);
     }
@@ -693,19 +767,19 @@ mat-progress-bar {
 
 .print-notes {
   display: none;
-  margin-top: 1.5rem;
-  padding: 1.25rem;
+  margin-top: var(--vn-space-6);
+  padding: var(--vn-space-5);
   border: 2px dashed var(--border-strong);
   border-radius: var(--radius-md);
   background: var(--surface-alt);
-  
+
   .notes-title {
-    font-weight: 700;
+    font-weight: var(--vn-weight-bold);
     color: var(--navy);
-    margin-bottom: 0.5rem;
-    font-size: 0.95rem;
+    margin-bottom: var(--vn-space-2);
+    font-size: var(--vn-text-md);
   }
-  
+
   .notes-body {
     white-space: pre-wrap;
     color: var(--text-secondary);
@@ -713,26 +787,26 @@ mat-progress-bar {
   }
 }
 
-/* ============================================================
-   FOOTER ACTIONS
-   ============================================================ */
+// ============================================================
+// FOOTER ACTIONS
+// ============================================================
 .footer-actions {
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
+  margin-top: var(--vn-space-8);
+  padding-top: var(--vn-space-6);
   border-top: 1px solid var(--border);
-  
+
   .action-btn {
     min-width: 220px;
     height: 56px;
     font-family: inherit;
-    font-weight: 700;
-    font-size: 1rem;
+    font-weight: var(--vn-weight-bold);
+    font-size: var(--vn-text-base);
     border-radius: var(--radius-md);
     box-shadow: var(--shadow-md);
     transition: all 0.2s ease;
-    
+
     &:hover {
       transform: translateY(-1px);
       box-shadow: var(--shadow-lg);
@@ -740,81 +814,81 @@ mat-progress-bar {
   }
 }
 
-/* ============================================================
-   EMPTY STATE
-   ============================================================ */
+// ============================================================
+// EMPTY STATE
+// ============================================================
 .empty-card {
   background: var(--surface);
   border: 2px dashed var(--border-strong);
   border-radius: var(--radius-lg);
-  margin-top: 2rem;
-  
+  margin-top: var(--vn-space-8);
+
   mat-card-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 4rem 2rem;
+    padding: var(--vn-space-10) var(--vn-space-8);
     text-align: center;
     color: var(--text-muted);
-    
+
     .empty-icon {
       font-size: 80px;
       width: 80px;
       height: 80px;
       opacity: 0.4;
       color: var(--text-muted);
-      margin-bottom: 1.5rem;
+      margin-bottom: var(--vn-space-6);
     }
-    
+
     h3 {
-      margin: 0 0 0.5rem;
+      margin: 0 0 var(--vn-space-2);
       color: var(--navy);
-      font-weight: 700;
+      font-weight: var(--vn-weight-bold);
       font-size: 1.25rem;
     }
-    
+
     p {
       margin: 0;
-      font-size: 0.95rem;
+      font-size: var(--vn-text-md);
       color: var(--text-secondary);
     }
   }
 }
 
-/* ============================================================
-   PRINT MODE
-   ============================================================ */
+// ============================================================
+// PRINT MODE
+// ============================================================
 @media print {
   .no-print {
     display: none !important;
   }
-  
+
   .daily-safe-screen {
-    background: #fff !important;
+    background: var(--vn-white) !important;
     padding: 0 !important;
   }
-  
+
   .print-header {
     display: block !important;
     text-align: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: var(--vn-space-6);
+    padding-bottom: var(--vn-space-4);
     border-bottom: 3px solid var(--navy);
-    
+
     h2 {
-      margin: 0 0 0.5rem;
+      margin: 0 0 var(--vn-space-2);
       color: var(--navy);
       font-family: inherit;
-      font-weight: 800;
+      font-weight: var(--vn-weight-black);
       font-size: 1.75rem;
     }
-    
+
     .print-date {
-      font-size: 0.95rem;
+      font-size: var(--vn-text-md);
       color: var(--text-secondary);
     }
   }
-  
+
   .summary-card,
   .hero-card,
   .section-card,
@@ -824,62 +898,62 @@ mat-progress-bar {
     page-break-inside: avoid;
     border: 1px solid var(--border-strong) !important;
   }
-  
+
   .section-header {
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
   }
-  
+
   .detail-table thead th {
     background: var(--surface-alt) !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;
     border: 1px solid var(--border-strong) !important;
   }
-  
+
   .detail-table tbody td {
     border: 1px solid var(--border) !important;
   }
-  
+
   .detail-table tbody tr:hover td {
     background: var(--surface) !important;
   }
-  
+
   .grand-total-card {
-    background: #fff !important;
+    background: var(--vn-white) !important;
     color: var(--navy) !important;
     border: 2px solid var(--navy) !important;
     box-shadow: none !important;
-    
+
     .grand-right .amount {
       color: var(--navy);
     }
-    
+
     .grand-right .currency {
       color: var(--text-muted);
     }
   }
-  
+
   .print-notes {
     display: block !important;
   }
-  
+
   .summary-card.income   { border-inline-start-color: var(--success) !important; }
   .summary-card.outcome  { border-inline-start-color: var(--danger) !important; }
   .summary-card.cash     { border-inline-start-color: var(--success) !important; }
   .summary-card.credit   { border-inline-start-color: var(--warning-light) !important; }
-  .summary-card.total    { background: var(--navy) !important; color: #fff !important; }
+  .summary-card.total    { background: var(--navy) !important; color: var(--vn-on-brand) !important; }
   .summary-card.neutral  { border-inline-start-color: var(--accent) !important; }
-  
+
   @include rt.print-table;
 }
 
-/* ============================================================
-   RESPONSIVE
-   ============================================================ */
+// ============================================================
+// RESPONSIVE
+// ============================================================
 @media (max-width: 1024px) {
   .daily-safe-screen {
-    padding: 1rem;
+    padding: var(--vn-space-4);
   }
 
   .hero-row {
@@ -889,7 +963,7 @@ mat-progress-bar {
   .summary-row {
     grid-template-columns: repeat(2, 1fr);
   }
-  
+
   .grand-right .amount {
     font-size: 1.75rem;
   }
@@ -899,40 +973,40 @@ mat-progress-bar {
   .summary-row {
     grid-template-columns: 1fr;
   }
-  
+
   .filters-row {
     flex-direction: column;
     align-items: stretch;
-    
+
     .date-field,
     .action-btn {
       width: 100%;
     }
   }
-  
+
   .grand-total-card {
     flex-direction: column;
     text-align: center;
-    gap: 1rem;
-    
+    gap: var(--vn-space-4);
+
     .grand-right {
       text-align: center;
     }
   }
-  
+
   .footer-actions {
     flex-direction: column;
     width: 100%;
-    
+
     .action-btn {
       width: 100%;
     }
   }
 }
 
-/* ============================================================
-   ANIMATIONS
-   ============================================================ */
+// ============================================================
+// ANIMATIONS
+// ============================================================
 @keyframes fadeInUp {
   from {
     opacity: 0;

@@ -1,25 +1,39 @@
 // ============================================================================
-// Profits Report Styles - Uses Shared Report Tables
+// Profits Report — Phase G screen 5 (design-system v2)
+// ============================================================================
+// The five-variable :host block was removed: the `@use` above already
+// emits the shared report properties, and all five local values were
+// byte-identical to them (brand navy, accent, sand, danger, credit).
+//
+// Movements registered in the plan's deliberate-change table:
+//   * mat-card-header border colour  <- ink 900 (was the off-ramp near-black)
+//   * table head background          <- ink 100 (was the off-ramp grey-blue)
+//   * even-row background            <- ink 50  (was an off-ramp near-white)
+//   * cell border colour             <- ink 200 (was an off-ramp grey-blue)
+//   * .text-footer 18px              <- text-lg (18.4px)
+//   * .text-header 22px              <- text-2xl (21.6px)
+//   * 0.9rem cells                   <- text-sm (0.88rem)
+//   * the table-head letter-spacing was removed (banned on Arabic)
+//
+// HOUSE RULES
+//   * postcss-gap-properties 3.0.4 crashes on a comment inside a rule
+//     that declares gap / row-gap / column-gap; keep notes at file level.
+//   * The important flag in the print block is retained deliberately —
+//     the printed output must stay byte-identical.
+//   * Literal on purpose: the 12px/14px cell padding, `font-size: large`
+//     and the 2px/6px border widths.
 // ============================================================================
 
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-}
-
 * {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .mat-card-header {
-  background: #f4f3f0;
-  border-radius: 8px;
-  border: 1px solid #212121;
+  background: var(--vn-surface-sunken);
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-ink-900);
 }
 
 .mat-card {
@@ -27,71 +41,70 @@
 }
 
 .mat-raised-button {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
   font-size: large;
 }
 
 .text-footer {
-  font-size: 18px;
-  font-family: "Cairo";
+  font-size: var(--vn-text-lg);
+  font-family: var(--vn-font-body);
 }
 
 .text-header {
-  font-size: 22px;
-  font-family: "Cairo";
+  font-size: var(--vn-text-2xl);
+  font-family: var(--vn-font-body);
 }
 
 // Using shared table styles
 .data-table {
   @include rt.table-base;
-  
+
   thead th {
-    background: #eef2f7;
+    background: var(--vn-ink-100);
     color: var(--navy);
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 0.2px;
+    font-weight: var(--vn-weight-black);
+    font-size: var(--vn-text-sm);
     padding: 12px 14px;
     text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
-    font-family: "Cairo", sans-serif;
+    font-family: var(--vn-font-body);
   }
-  
+
   tbody td {
     padding: 12px 14px;
-    font-size: 0.9rem;
-    color: #1f2937;
-    border-bottom: 1px solid #eef0f2;
+    font-size: var(--vn-text-sm);
+    color: var(--vn-ink-900);
+    border-bottom: 1px solid var(--vn-ink-200);
     text-align: end;
     vertical-align: middle;
   }
-  
+
   .num {
     @include rt.num-cell;
   }
-  
+
   th.num {
     @include rt.num-header;
   }
-  
+
   .credit {
     @include rt.credit-style;
   }
-  
+
   .debit {
     @include rt.debit-style;
   }
-  
+
   tbody tr:nth-child(even) td {
-    background: #fafbfc;
+    background: var(--vn-ink-50);
   }
-  
+
   tbody tr:hover td {
-    background: #f1f5f9;
-    transition: background 0.15s ease;
+    background: var(--vn-ink-100);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
-  
+
   tr:last-child td {
     border-bottom: none;
   }
@@ -104,9 +117,9 @@
 // Print styles
 @media print {
   .no-print { display: none !important; }
-  .mat-card { background: #fff; }
+  .mat-card { background: var(--vn-white); }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
-  
+
   @include rt.print-table;
 }

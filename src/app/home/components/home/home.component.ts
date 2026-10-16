@@ -24,10 +24,13 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit(): void { }
+  // Phase B (§5 step 6): WebP at 1920px wide. The originals were 5300-8000px
+  // JPEGs totalling 13.67 MB; the template renders these through an
+  // object-fit: cover box, so downscaling changes no framing.
   images: ImagesModel[] = [
-    { src: 'assets/home4.jpg', header: 'Omelnour Eco Systems', discription: '' },
-    { src: 'assets/home2.jpg', header: 'Together We Can', discription: '' },
-    { src: 'assets/home.jpg', header: 'Do your Work Quietly', discription: '' },
-    { src: 'assets/home5.jpg', header: 'Never Stop Dreaming', discription: '' },
+    { src: 'assets/home4.webp', header: 'Omelnour Eco Systems', discription: '' },
+    { src: 'assets/home2.webp', header: 'Together We Can', discription: '' },
+    { src: 'assets/home.webp', header: 'Do your Work Quietly', discription: '' },
+    { src: 'assets/home5.webp', header: 'Never Stop Dreaming', discription: '' },
   ];
 }

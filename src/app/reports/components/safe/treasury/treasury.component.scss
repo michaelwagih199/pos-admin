@@ -1,3 +1,11 @@
-*{
-    font-family: 'cairo',sans-serif;
+// ============================================================================
+// Treasury — Phase G screen 5 (design-system v2)
+// ============================================================================
+// Three-line stylesheet that only forced a font family, written with a
+// lower-case family name and no fallback chain. Normalised to the body
+// font token so the family list matches the rest of the application.
+// ============================================================================
+
+* {
+  font-family: var(--vn-font-body);
 }

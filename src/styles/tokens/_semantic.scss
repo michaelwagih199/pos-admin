@@ -1,0 +1,65 @@
+// ============================================================================
+// Ventas Design System v2 — Layer 2 of 4: SEMANTIC
+// ----------------------------------------------------------------------------
+// The ONLY layer components may reference. Every value is a var() of a
+// primitive from _primitives.scss — no literal hex. The single exception is the
+// rgba() inside --vn-focus, whose channels are the --vn-navy-500 primitive
+// (68, 89, 110).
+//
+// Roles: brand, accent, surfaces, text, borders, the four status trios, motion.
+// This is v2.1's role list, extended with the pairs v1.0 §1.1 already shipped
+// so that the _aliases.scss bridge is a pure rename with no value changes.
+//
+// Consumers: none yet. Phase A only defines tokens (see design-system-v2-plan.md §4).
+// ============================================================================
+
+:root {
+  /* ---------- Brand ---------- */
+  --vn-brand: var(--vn-navy-500); // #44596e — headers, active nav, primary chrome
+  --vn-brand-hover: var(--vn-navy-700); // #2d3d4f — hover / pressed
+  --vn-brand-border: var(--vn-navy-300); // #5a7191 — light brand borders
+  --vn-on-brand: var(--vn-white); //  #ffffff — text / icons on brand fills
+
+  /* ---------- Accent ---------- */
+  --vn-accent: var(--vn-accent-500); // #ec994b — CTA, running totals, selection
+  --vn-accent-hover: var(--vn-accent-700); // #d4823a
+
+  /* ---------- Surfaces ---------- */
+  --vn-surface: var(--vn-white); //  #ffffff — cards, dialogs   (v1.0 --vn-surface)
+  --vn-surface-alt: var(--vn-ink-50); // #f8fafc — near-white panels (v1.0 --vn-surface-alt)
+  --vn-surface-sunken: var(--vn-sand-500); // #f4f3f0 — page background (v1.0 --vn-sand)
+
+  /* ---------- Text ---------- */
+  --vn-text: var(--vn-ink-900); // #1f2937 — primary text
+  --vn-text-muted: var(--vn-ink-500); // #64748b — secondary text
+  --vn-text-faint: var(--vn-ink-300); // #94a3b8 — hints, placeholders
+
+  /* ---------- Borders ---------- */
+  --vn-border: var(--vn-ink-400); // #cbd5e1
+  --vn-border-light: var(--vn-ink-200); // #e2e8f0
+
+  /* ---------- Status: danger ---------- */
+  --vn-danger: var(--vn-red-500);
+  --vn-danger-bg: var(--vn-red-50);
+  --vn-danger-fg: var(--vn-red-900);
+
+  /* ---------- Status: success ---------- */
+  --vn-success: var(--vn-green-500);
+  --vn-success-bg: var(--vn-green-100);
+  --vn-success-fg: var(--vn-green-800);
+
+  /* ---------- Status: warning ---------- */
+  --vn-warning: var(--vn-amber-500);
+  --vn-warning-bg: var(--vn-amber-100);
+  --vn-warning-fg: var(--vn-amber-900);
+
+  /* ---------- Status: info ---------- */
+  --vn-info: var(--vn-blue-500);
+  --vn-info-bg: var(--vn-blue-100);
+  --vn-info-fg: var(--vn-blue-800);
+
+  /* ---------- Motion & focus ---------- */
+  --vn-focus: 0 0 0 3px rgba(68, 89, 110, 0.25); // --vn-navy-500 @ 25%
+  --vn-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --vn-duration-fast: 150ms;
+}

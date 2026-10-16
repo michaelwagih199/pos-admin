@@ -1,3 +1,16 @@
+// Phase G screen 7 (plan section 10): the app shell.
+// Notes for this file:
+//   - The icon helper keeps the literal "Material Icons" family on purpose: that
+//     is the icon font itself, not a design token (DESIGN_SYSTEM section 7.4),
+//     and the global helper in src/styles/_fonts.scss depends on the same name.
+//   - The header wordmark uses the display family token, which resolves to the
+//     same self-hosted face that was named here literally before.
+//   - The notification bell now uses the danger role instead of the browser's
+//     built-in red keyword (plan register row 25, magnitude Small).
+//   - Icon geometry (20px / 25px) stays literal: those are glyph sizes, not
+//     steps of the type scale.
+//   - No comment is placed inside a rule, so the postcss gap landmine cannot
+//     be triggered by this file.
 
   .material-icons {
     font-family: 'Material Icons';
@@ -5,7 +18,7 @@
     font-style: normal;
     font-size: 20px;
     line-height: 1;
-    margin-left: 10px;
+    margin-inline-end: 10px;
     letter-spacing: normal;
     text-transform: none;
     display: inline-block;
@@ -21,16 +34,16 @@
 }
 
 .header-text{
-  font-family: 'El Messiri', sans-serif;
+  font-family: var(--vn-font-display);
   font-size: larger;
 }
 
 mat-toolbar.mat-primary{
-  background-color: #44596E;
+  background-color: var(--vn-brand);
 }
 
 #userName{
-  background-color: #44596E;
+  background-color: var(--vn-brand);
   @apply  rounded-md text-white;
 }
 
@@ -40,7 +53,7 @@ mat-toolbar.mat-primary{
 }
 
 .notifi-yes{
-  color: red;
+  color: var(--vn-danger);
   font-size:25px;
   cursor: pointer;
 }

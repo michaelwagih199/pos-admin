@@ -1,25 +1,39 @@
 // ============================================================================
-// Budget Report Styles - Uses Shared Report Tables
+// Budget Report — Phase G screen 5 (design-system v2)
+// ============================================================================
+// The five-variable :host block was removed: the `@use` above already
+// emits the shared report properties, and all five local values were
+// byte-identical to them (brand navy, accent, sand, danger, credit).
+//
+// Movements registered in the plan's deliberate-change table:
+//   * mat-card-header border colour  <- ink 900 (was the off-ramp near-black)
+//   * table head background          <- ink 100 (was the off-ramp grey-blue)
+//   * even-row background            <- ink 50  (was an off-ramp near-white)
+//   * cell border colour             <- ink 200 (was an off-ramp grey-blue)
+//   * 0.9rem cells                   <- text-sm (0.88rem)
+//   * .customClass-1 body 1.05rem    <- text-base
+//   * .customClass-1 shadow          <- shadow step 2
+//   * the table-head letter-spacing was removed (banned on Arabic)
+//
+// HOUSE RULES
+//   * postcss-gap-properties 3.0.4 crashes on a comment inside a rule
+//     that declares gap / row-gap / column-gap; keep notes at file level.
+//   * The important flag in the print block is retained deliberately —
+//     the printed output must stay byte-identical.
+//   * Literal on purpose: the 12px/14px cell padding, `font-size: large`,
+//     the 1.5rem figure, the min-width and the 2px/6px border widths.
 // ============================================================================
 
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-}
-
 * {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .mat-card-header {
-  background: #f4f3f0;
-  border-radius: 8px;
-  border: 1px solid #212121;
+  background: var(--vn-surface-sunken);
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-ink-900);
 }
 
 .mat-card {
@@ -27,61 +41,60 @@
 }
 
 .mat-raised-button {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
   font-size: large;
 }
 
 // Using shared table styles
 .data-table {
   @include rt.table-base;
-  
+
   thead th {
-    background: #eef2f7;
+    background: var(--vn-ink-100);
     color: var(--navy);
-    font-weight: 800;
-    font-size: 0.9rem;
-    letter-spacing: 0.2px;
+    font-weight: var(--vn-weight-black);
+    font-size: var(--vn-text-sm);
     padding: 12px 14px;
     text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
-    font-family: "Cairo", sans-serif;
+    font-family: var(--vn-font-body);
   }
-  
+
   tbody td {
     padding: 12px 14px;
-    font-size: 0.9rem;
-    color: #1f2937;
-    border-bottom: 1px solid #eef0f2;
+    font-size: var(--vn-text-sm);
+    color: var(--vn-ink-900);
+    border-bottom: 1px solid var(--vn-ink-200);
     text-align: end;
     vertical-align: middle;
   }
-  
+
   .num {
     @include rt.num-cell;
   }
-  
+
   th.num {
     @include rt.num-header;
   }
-  
+
   .credit {
     @include rt.credit-style;
   }
-  
+
   .debit {
     @include rt.debit-style;
   }
-  
+
   tbody tr:nth-child(even) td {
-    background: #fafbfc;
+    background: var(--vn-ink-50);
   }
-  
+
   tbody tr:hover td {
-    background: #f1f5f9;
-    transition: background 0.15s ease;
+    background: var(--vn-ink-100);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
-  
+
   tr:last-child td {
     border-bottom: none;
   }
@@ -92,30 +105,30 @@
 }
 
 .customClass-1 {
-  background: #fff;
+  background: var(--vn-white);
   border-inline-start: 6px solid var(--navy);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  border-radius: var(--vn-radius-lg);
+  box-shadow: var(--vn-shadow-2);
   display: inline-block;
   min-width: 260px;
-  padding: 1rem 1.5rem;
-  font-family: "Cairo", sans-serif;
+  padding: var(--vn-space-4) var(--vn-space-6);
+  font-family: var(--vn-font-body);
 
   p {
     margin: 0;
     color: var(--navy);
-    font-weight: 700;
-    font-size: 1.05rem;
+    font-weight: var(--vn-weight-bold);
+    font-size: var(--vn-text-base);
   }
 
   hr {
-    margin: 0.5rem 0;
-    border-color: #e2e8f0;
+    margin: var(--vn-space-2) 0;
+    border-color: var(--vn-border-light);
   }
 
   .customTest {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: var(--vn-weight-black);
     color: var(--credit);
     font-variant-numeric: tabular-nums;
     direction: ltr;
@@ -126,9 +139,9 @@
 // Print styles
 @media print {
   .no-print { display: none !important; }
-  .mat-card { background: #fff; }
+  .mat-card { background: var(--vn-white); }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
-  
+
   @include rt.print-table;
 }

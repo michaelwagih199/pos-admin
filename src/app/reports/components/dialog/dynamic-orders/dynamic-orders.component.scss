@@ -1,22 +1,41 @@
+// Phase G screen 9 (plan section 10) - dynamic-orders dialog.
+//
+// Tokenised in this pass:
+//   - the redundant local :host palette was deleted: this file @use-s the shared report
+//     partial, which already emits all twelve report properties (proved: each is still
+//     declared exactly once in the compiled stylesheet).
+//   - the card border and both figure colours -> var(--vn-ink-900)
+//     FOLD of the off-ramp near-black onto the ink ramp.
+//   - the card background -> var(--vn-surface-sunken) (exact) and the two white box
+//     backgrounds -> var(--vn-surface) (exact).
+//   - the accent-bar colours -> var(--vn-brand) (exact) and var(--vn-accent) (exact);
+//     the second box's pink -> var(--vn-danger)
+//     FOLD onto the brand crimson.
+//   - both display faces -> var(--vn-font-display); the body face -> var(--vn-font-body).
+//   - the 20px box headers -> var(--vn-text-num-sm) (exact).
+//   - both drop shadows -> var(--vn-shadow-2)
+//     FOLD: same family as the other report cards (crisp grey offset -> shared slate step).
+//   - the radius 8px -> var(--vn-radius-lg) (exact).
+//   - three unused Sass colour variables (an unused green, red and off-white) deleted;
+//     they were declared and never referenced.
+//
+// Deliberately left alone:
+//   - the two accent bars stay physical properties: DESIGN_SYSTEM section 3.2 records that
+//     moving them to the logical form would flip them to the other edge under RTL, which is
+//     a real layout change rather than a tokenization.
+//   - off-grid geometry: the 60px box height, the 5px radii, the 24px figure size, the
+//     1px / 2px / 8px border widths, and the body font-size keywords.
+//
+// No comment sits inside a rule here (postcss-gap-properties landmine, DESIGN_SYSTEM 6.2).
+
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-}
-
-$bg_dark_color: #44596E;
-$green_color: #008d60;
-$redItems: #ff0036;
-$accent: #EC994B;
-$ofWhite: #e5e5e5;
-$font_header_size: 20px;
+$bg_dark_color: var(--vn-brand);
+$accent: var(--vn-accent);
+$font_header_size: var(--vn-text-num-sm);
 
 * {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .data-table {
@@ -26,28 +45,28 @@ $font_header_size: 20px;
 .mat-card-header {
   display: flex;
   flex-direction: row;
-  background: #fff;
-  border-radius: 8px;
-  border: 1px solid #212121;
+  background: var(--vn-surface);
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-ink-900);
 }
 
 .mat-card {
-  background: #f4f3f0;
+  background: var(--vn-surface-sunken);
 
 }
 
 .mat-raised-button {
-  font-family: "El Messiri", sans-serif;
+  font-family: var(--vn-font-display);
   font-size: large;
 }
 
 .customClass-1 {
-  background-color: white;
+  background-color: var(--vn-surface);
   border-left: 8px solid $bg_dark_color;
   height: 60px;
   border-radius: 5px;
-  box-shadow: 2px 2px 3px grey;
-  font-family: "El Messiri", sans-serif;
+  box-shadow: var(--vn-shadow-2);
+  font-family: var(--vn-font-display);
   font-size: $font_header_size;
 
   &:hover {
@@ -55,7 +74,7 @@ $font_header_size: 20px;
     text-decoration: none;
   }
   .customTest {
-    color: black;
+    color: var(--vn-ink-900);
     font-size: 24px;
     &:hover {
       animation: swing;
@@ -66,19 +85,19 @@ $font_header_size: 20px;
 
 .customClass-2{
 
-  background-color: white;
-  border-left: 8px solid #FF587F;
+  background-color: var(--vn-surface);
+  border-left: 8px solid var(--vn-danger);
   height: 60px;
   border-radius: 5px;
-  box-shadow: 2px 2px 3px grey;
-  font-family: 'El Messiri', sans-serif;
+  box-shadow: var(--vn-shadow-2);
+  font-family: var(--vn-font-display);
   font-size: $font_header_size;
   &:hover {
     border-left: 8px solid $bg_dark_color;
-    font-weight: bold;
+    font-weight: var(--vn-weight-bold);
   }
   .customTest{
-    color: black;
+    color: var(--vn-ink-900);
     font-size: 24px;
     text-decoration: none;
     &:hover{
@@ -88,8 +107,6 @@ $font_header_size: 20px;
   }
 
 }
-
-.nz-table{
-  text-align: center;
-  overflow: auto;
-}
+// The former .nz-table rule was deleted with the last Ng-Zorro component: it targeted the
+// class the library set on its own host element, and the scroll affordance is now provided by
+// Bootstrap's table-responsive wrapper on the plain table that replaced it.

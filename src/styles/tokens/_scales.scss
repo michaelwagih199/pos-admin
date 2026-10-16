@@ -1,0 +1,56 @@
+// ============================================================================
+// Ventas Design System v2 — Layer 3 of 4: SCALES
+// ----------------------------------------------------------------------------
+// The non-colour layer v2.1 was missing: space, radius, elevation, stacking and
+// a couple of layout constants. Values are raw px (a shadow is not tokenizable
+// further; keeping the rgba() here is expected, not a violation).
+//
+// These replace the ad-hoc magic numbers measured in the baseline (plan §2):
+//   8px radius ×50 · 0.75/0.82/0.9/0.92 rem strays · 116 !important · 82 inline
+//   styles. Nothing consumes these yet — Phase A is provably zero-impact.
+//
+// Consumers: none yet. Phase A only defines tokens (see design-system-v2-plan.md §4).
+// ============================================================================
+
+:root {
+  /* ---------- Spacing — 4 px base grid, --vn-space-N = N × 4px ---------- */
+  --vn-space-0: 0; //  0 px — reset / collapse
+  --vn-space-1: 4px;
+  --vn-space-2: 8px;
+  --vn-space-3: 12px;
+  --vn-space-4: 16px; //  default gutter between related elements
+  --vn-space-5: 20px;
+  --vn-space-6: 24px; //  section padding
+  --vn-space-7: 28px;
+  --vn-space-8: 32px;
+  --vn-space-9: 36px;
+  --vn-space-10: 40px;
+  --vn-space-11: 44px;
+  --vn-space-12: 48px; //  screen outer rhythm
+
+  /* ---------- Radius ---------- */
+  --vn-radius-xs: 3px;
+  --vn-radius-sm: 4px;
+  --vn-radius-md: 6px;
+  --vn-radius-lg: 8px; //  DEFAULT — matches the 50 existing 8px uses
+  --vn-radius-xl: 12px;
+  --vn-radius-2xl: 16px;
+  --vn-radius-pill: 999px; //  badges, chips, pills
+
+  /* ---------- Elevation (subtle → modal) ---------- */
+  --vn-shadow-1: 0 1px 2px rgba(15, 23, 42, 0.06); //  rest (cards on sand)
+  --vn-shadow-2: 0 2px 6px rgba(15, 23, 42, 0.08); //  raised (KPI cards, headers)
+  --vn-shadow-3: 0 4px 12px rgba(15, 23, 42, 0.12); // overlay (dropdown, menu)
+  --vn-shadow-4: 0 12px 32px rgba(15, 23, 42, 0.18); // modal / dialog
+
+  /* ---------- Stacking ---------- */
+  --vn-z-base: 0;
+  --vn-z-sticky: 100;
+  --vn-z-dropdown: 1000;
+  --vn-z-modal: 1200;
+  --vn-z-toast: 1400;
+
+  /* ---------- Layout ---------- */
+  --vn-tap-min: 44px; //  minimum touch target (WCAG 2.1 AA, plan §9)
+  --vn-content-max: 1200px; //  readable content column cap
+}

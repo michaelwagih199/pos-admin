@@ -1,9 +1,19 @@
+// ============================================================
+// Ventas design system — Phase G screen 6 (printing / barcode).
+//
+// The print sheet is 38mm x 25mm and its output must stay
+// unchanged, so only the background colour was tokenized (an
+// exact white match). Every other declaration is print geometry:
+// millimetre widths, fit-content sizing, flex centring. One
+// important flag remains (.doNotPrint) — it is what keeps the
+// toolbar and the sidenav off the label.
+// ============================================================
 @media print {
   .doNotPrint {
     display: none !important;
   }
   .myDivToPrint {
-    background-color: white;
+    background-color: var(--vn-white);
     height: fit-content;
     width: fit-content;
     display: block;

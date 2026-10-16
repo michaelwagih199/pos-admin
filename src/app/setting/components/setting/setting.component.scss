@@ -78,13 +78,13 @@
       }
       .author:before {
         font-family: 'El Messiri', sans-serif;;
-        margin-right: 10px;
+        margin-inline-start: 10px;
         content: "\f007";
       }
   
       .date:before {
         font-family: 'El Messiri', sans-serif;;
-        margin-right: 10px;
+        margin-inline-start: 10px;
         content: "\f133";
       }
   
@@ -92,12 +92,12 @@
         ul:before {
           font-family: 'El Messiri', sans-serif;;
           content: "\f02b";
-          margin-right: 10px;
+          margin-inline-start: 10px;
         }
         li {
-          margin-right: 2px;
+          margin-inline-start: 2px;
           &:first-child {
-            margin-left: -4px;
+            margin-inline-end: -4px;
           }
         }
       }
@@ -124,7 +124,7 @@
         margin-top: 5px;
       }
       .read-more {
-        text-align: right;
+        text-align: start;
         a {
           color: $color_prime;
           display: inline-block;
@@ -132,14 +132,14 @@
           &:after {
             content: "\f061";
             font-family: 'El Messiri', sans-serif;;
-            margin-left: -10px;
+            margin-inline-end: -10px;
             opacity: 0;
             vertical-align: middle;
             transition: margin .3s, opacity .3s;
           }
   
           &:hover:after {
-            margin-left: 5px;
+            margin-inline-end: 5px;
             opacity: 1;
           }
         }
@@ -199,7 +199,7 @@
           }
         }
         .details {
-          padding-left: 25px;
+          padding-inline-end: 25px;
         }
       }
     }

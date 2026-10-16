@@ -27,22 +27,19 @@
             "tsConfig": "tsconfig.app.json",
             "assets": [
               "src/favicon.ico",
-              "src/assets",
-              {
-                "glob": "**/*",
-                "input": "./node_modules/@ant-design/icons-angular/src/inline-svg/",
-                "output": "/assets/"
-              }
+              "src/assets"
             ],
             "styles": [
-              "src/theme.less",
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss",
-              "src/theme.scss",
               "node_modules/animate.css/animate.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css"
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme.scss",
+              "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "src/assets/vendor/jquery-3.5.1.min.js",
+              "src/assets/vendor/popper-1.16.1.min.js",
+              "src/assets/vendor/bootstrap-4.6.0.min.js"
+            ],
             "vendorChunk": true,
             "extractLicenses": false,
             "buildOptimizer": false,
@@ -68,13 +65,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "2.7mb",
+                  "maximumError": "4.3mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "23kb",
+                  "maximumError": "40kb"
                 }
               ]
             }
@@ -110,7 +107,9 @@
               "src/assets"
             ],
             "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css",
+              "node_modules/animate.css/animate.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "src/theme.scss",
               "src/styles.scss"
             ],
             "scripts": []

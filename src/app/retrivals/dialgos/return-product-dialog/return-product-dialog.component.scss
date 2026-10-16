@@ -1,19 +1,36 @@
+/* return-product-dialog.component.scss */
+
+/* Availability chips map onto the design system's info role: their background
+   and foreground arrive as a designed pair rather than as two unrelated hex
+   values (see the `.available` rule below).
+
+   HOUSE RULE (learned the hard way): never place a comment inside a rule block
+   that also declares `gap` (or row-gap / column-gap). postcss-gap-properties
+   v3.0.4 walks a rule's children assuming every child is a declaration, so a
+   comment sibling makes it throw; postcss then emits a mangled stylesheet and
+   the production build fails with a misleading esbuild "Unterminated string
+   token" error that points at a position which does not exist. Keep such notes
+   at file level or above the rule, never inside it. */
+
 :host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --danger: #db1f48;
-  --success: #16a34a;
+  /* Phase G: these four local aliases are kept (templates and rules below refer
+     to them by name) but they no longer carry a colour of their own - each one
+     points at the design system. */
+  --navy: var(--vn-brand);
+  --accent: var(--vn-accent);
+  --danger: var(--vn-danger);
+  --success: var(--vn-success);
 }
 
 .dialog-container {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
   min-width: 500px;
   max-width: 560px;
 }
 
 /* ===== HEADER ===== */
 .dialog-header .subtitle .chip {
-  padding: 16px 20px 12px;
+  padding: var(--vn-space-4) var(--vn-space-5) var(--vn-space-3);
 
   .title-row {
     display: flex;
@@ -24,25 +41,25 @@
     h2 {
       margin: 0;
       color: var(--navy);
-      font-weight: 700;
-      font-size: 1.25rem;
+      font-weight: var(--vn-weight-bold);
+      font-size: var(--vn-text-xl);
     }
 
     .close-btn {
-      color: #94a3b8;
+      color: var(--vn-text-faint);
       flex-shrink: 0;
     }
 
-     b {
-    font-weight: 700;
-    color: inherit;
-    margin: 0 2px;
-  }
+    b {
+      font-weight: var(--vn-weight-bold);
+      color: inherit;
+      margin: 0 2px;
+    }
 
-  .divider {
-    margin: 0 6px;
-    opacity: 0.5;
-  }
+    .divider {
+      margin: 0 6px;
+      opacity: 0.5;
+    }
   }
 
   .subtitle {
@@ -55,12 +72,12 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      background: #f1f5f9;
-      color: #475569;
+      background: var(--vn-surface-alt);
+      color: var(--vn-text-muted);
       padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 0.8rem;
-      font-weight: 600;
+      border-radius: var(--vn-radius-xl);
+      font-size: var(--vn-text-xs);
+      font-weight: var(--vn-weight-medium);
 
       mat-icon {
         font-size: 14px;
@@ -69,8 +86,8 @@
       }
 
       &.available {
-        background: #eef2ff;
-        color: #4f46e5;
+        background: var(--vn-info-bg);
+        color: var(--vn-info);
       }
     }
   }
@@ -78,7 +95,7 @@
 
 /* ===== BODY ===== */
 .dialog-body {
-  padding: 16px 20px;
+  padding: var(--vn-space-4) var(--vn-space-5);
 
   form {
     display: flex;
@@ -96,16 +113,16 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #f8fafc;
+    background: var(--vn-surface-alt);
     border-inline-start: 4px solid var(--accent);
-    padding: 10px 16px;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    color: #475569;
+    padding: 10px var(--vn-space-4);
+    border-radius: var(--vn-radius-md);
+    font-size: var(--vn-text-md);
+    color: var(--vn-text-muted);
 
     b {
       color: var(--navy);
-      font-size: 1.1rem;
+      font-size: var(--vn-text-lg);
       font-variant-numeric: tabular-nums;
     }
   }
@@ -113,9 +130,9 @@
   .condition-toggle {
     display: flex;
     gap: 12px;
-    background: #f8fafc;
-    padding: 12px 16px;
-    border-radius: 8px;
+    background: var(--vn-surface-alt);
+    padding: var(--vn-space-3) var(--vn-space-4);
+    border-radius: var(--vn-radius-lg);
 
     mat-radio-button {
       flex: 1;
@@ -124,8 +141,8 @@
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        font-weight: 700;
-        font-size: 0.95rem;
+        font-weight: var(--vn-weight-bold);
+        font-size: var(--vn-text-md);
       }
 
       mat-icon {
@@ -154,13 +171,13 @@
   display: flex;
   justify-content: center;
   gap: 12px;
-  padding: 16px 20px;
+  padding: var(--vn-space-4) var(--vn-space-5);
 
   button {
     min-width: 140px;
-    height: 44px;
-    font-family: "Cairo", sans-serif;
-    font-weight: 700;
+    height: var(--vn-tap-min);
+    font-family: var(--vn-font-body);
+    font-weight: var(--vn-weight-bold);
 
     mat-icon {
       vertical-align: middle;
@@ -172,11 +189,14 @@
   }
 }
 
-/* Form field rounding */
+/* Form field rounding.
+   The override flag below fights the Material outline rules - not the old
+   pre-Phase-E cascade, which no longer exists (the app stylesheet is last).
+   It is pre-existing and kept on purpose. */
 ::ng-deep .mat-form-field-outline {
-  border-radius: 8px !important;
+  border-radius: var(--vn-radius-lg) !important;
 }
 
 ::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
-  padding-right: 0.5rem;
+  padding-inline-start: 0.5rem;
 }

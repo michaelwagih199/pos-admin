@@ -1,0 +1,36 @@
+// ============================================================================
+// Ventas POS — Numeric text utility
+// ----------------------------------------------------------------------------
+// Phase C, step 3 (docs/design-system-v2-plan.md §6).
+//
+// The single numeric-text utility for the whole app. Declared as a CLASS
+// (never an element selector) so it is applied deliberately in templates.
+//
+// Why exactly these five properties:
+//   text-align: end        -> logical value; follows the writing direction,
+//                             so it is RTL-safe (no physical `right`).
+//   tabular-nums           -> every digit occupies the same advance width, so
+//                             figures in a column line up on the decimal.
+//   font-feature-settings  -> explicit "tnum" for older engines; harmless
+//                             where the font already defaults to tabular.
+//   direction: ltr         -> a number is read left-to-right even when it sits
+//                             inside Arabic RTL content.
+//   unicode-bidi: isolate  -> stops the surrounding RTL run from reordering
+//                             (or being reordered by) the number.
+//
+// NOTE — deliberate difference from the legacy mixin:
+//   `num-cell` in src/app/shared/styles/_report-tables.scss additionally
+//   carries `!important`, `font-weight: 700`, `color: var(--navy)` and
+//   `letter-spacing: 0.3px`. Those are presentation decisions that belong to
+//   the consuming component rule, and plan §8 forbids new `!important`, so
+//   they are intentionally NOT part of the utility. Nothing consumes `.t-num`
+//   yet — adoption happens per-screen in Phase G.
+// ============================================================================
+
+.t-num {
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  direction: ltr;
+  unicode-bidi: isolate;
+}

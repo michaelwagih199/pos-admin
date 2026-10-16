@@ -1,1 +1,9 @@
-@import '~animate.css/animate.min';
+// Phase G screen 7 (plan section 10): this file used to import the animate.css
+// library a second time. The same library already ships once from angular.json
+// (node_modules/animate.css/animate.css, second entry of the styles array, see
+// DESIGN_SYSTEM section 6.1). Because component styles are scoped, the copy
+// compiled from this file landed in the main bundle as unreachable scoped
+// selectors (for example zoomIn[_ngcontent-...]), and no template applies an
+// animation class, so removing it moves no pixels and only removes dead weight
+// from the eager bundle. Rule: vendor CSS is never imported per component.
+// Keep this file present (app.component.ts declares it in styleUrls) but empty.

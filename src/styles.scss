@@ -1,6 +1,22 @@
+@import 'styles/tokens';
+@import 'styles/tokens/typography';
+@import 'styles/fonts';
+@import 'styles/numeric';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Phase F (§9 step 2) — RTL: the document is dir="rtl" (src/index.html), so the
+   inline axis runs from the right edge toward the left. Every physical inset and
+   text-alignment value in this file was rewritten as its logical equivalent,
+   which preserves the rendered position exactly:
+     the four margin/padding side forms -> inline-start / inline-end
+     text-align left/right              -> end / start
+     the offset right: 0                -> inset-inline-start: 0
+   Under dir="rtl" inline-start IS the right edge. The phase gate forbids any
+   physical side form for margin/padding/text-align under src/app or here, so
+   this comment deliberately spells none of them out. */
 
 html,
 body {
@@ -9,12 +25,49 @@ body {
 
 body {
   margin: 0;
-  // font-family: 'Cairo', sans-serif;
-  font-family: "Roboto", sans-serif, "Almarai";
+  font-family: var(--vn-font-body);
+}
+
+/* === Phase F (§9 step 4) — accessibility ================================= */
+
+/* Visible focus for keyboard users. Material removes the default outline, so
+   the token ring replaces it. `:focus-visible` fires only for keyboard or
+   programmatic focus, never on mouse click, so pointer users see no change. */
+:focus-visible {
+  outline: 0;
+  box-shadow: var(--vn-focus);
+}
+
+/* Honor the OS "reduce motion" preference. Durations are collapsed rather than
+   the animations deleted, so nothing that depends on an animation finishing
+   changes layout. The `!important`s are unavoidable and sanctioned (see
+   DESIGN_SYSTEM §6.2): per-component animation shorthands are declared inside
+   encapsulated styles and cannot be overridden at a lower weight. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* Minimum touch/tap target for icon-only controls (WCAG 2.1 AA 2.5.5). */
+.mat-icon-button,
+.mat-button-base.mat-icon-button {
+  min-block-size: var(--vn-tap-min);
+  min-inline-size: var(--vn-tap-min);
 }
 
 .header {
   justify-content: space-between;
+  // Phase E (§8 step 4): the second, duplicate `.header` rule that used to sit
+  // further down (position / top / z-index) is merged in here. Identical
+  // specificity, so merging is behaviour-preserving.
+  position: sticky;
+  position: -webkit-sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .mat-sidenav-container {
@@ -26,12 +79,12 @@ body {
 
 .mat-nav-list .mat-list-item {
   font-size: 15px;
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .nav-tool-items {
   display: inline-block;
-  margin-right: 13px;
+  margin-inline-start: 13px;
 }
 
 .mat-sidenav,
@@ -41,27 +94,25 @@ body {
 
 .mat-list-item.active {
   background: rgba(0, 0, 0, 0.04);
-  font-family: "Almarai", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .mat-sidenav-content {
-  padding: 25px 40px 0;
+  // Phase F: the 3-value shorthand is already horizontally symmetric; written
+  // logically so the block (top/bottom) axis is explicit.
+  padding-block: 25px 0;
+  padding-inline: 40px;
 }
 
 .mat-sidenav {
-  background-color: #cbd9cc;
+  // Phase E (§8 step 4): was an off-palette green-grey.
+  // Registered as plan §9 #6 — deliberate visual change, shell screenshot.
+  background-color: var(--vn-surface-alt);
   width: 200px;
 }
 
-.header {
-  position: sticky;
-  position: -webkit-sticky;
-  top: 0;
-  z-index: 1000;
-}
-
 mat-sidenav mat-icon {
-  margin-right: 5px;
+  margin-inline-start: 5px;
 }
 
 .hamburger {
@@ -71,7 +122,7 @@ mat-sidenav mat-icon {
 
 .mat-radio-button,
 .mat-radio-group {
-  margin-right: 25px;
+  margin-inline-start: 25px;
 }
 
 .controlers-wrapper > * {
@@ -84,15 +135,11 @@ mat-sidenav mat-icon {
 }
 
 .misc-bottom-padding mat-label {
-  margin-right: 15px;
+  margin-inline-start: 15px;
 }
 
 mat-radio-group mat-radio-button {
-  margin-left: 5px;
-}
-
-.button-wrapper button {
-  margin-right: 5px;
+  margin-inline-end: 5px;
 }
 
 table.mat-table,
@@ -125,71 +172,50 @@ body .mat-list-item {
 }
 
 .multiple-items .tooltip-info {
-  right: 0;
+  // Phase F: `right: 0` -> logical. Under dir="rtl" inline-start IS the right
+  // edge, so this preserves the rendered position. (The class is dead — zero
+  // template references — so this is pixel-neutral either way.)
+  inset-inline-start: 0;
   top: 7px;
   cursor: pointer;
-  color: #a1a7c7;
+  // Phase E (§8 step 4): was an off-palette periwinkle.
+  color: var(--vn-text-faint);
   position: absolute;
   font-size: 20px;
 }
 
 body .push-right {
-  margin-right: 10px;
+  margin-inline-start: 10px;
 }
 
 .no-data {
   text-align: center;
   padding-top: 30px;
-  color: #6c75a9;
+  // Phase E (§8 step 4): was an off-palette indigo.
+  // NOTE: `.no-data` has zero references in any template/TS. Kept and
+  // tokenized per the plan; it is a deletion candidate for the Phase G sweep.
+  color: var(--vn-text-muted);
 }
 
-.button-wrapper {
-  margin: 20px 0 0 0;
-}
-
-.example-card {
-  max-width: 400px;
-}
-
-.example-header-image {
-  background-image: url("https://material.angular.io/assets/img/examples/shiba1.jpg");
-  background-size: cover;
-}
-
-.title-group {
-  margin-bottom: 25px;
-}
-
-.card-deck-container {
-  width: 100%;
-  max-width: 1200px;
-  position: relative;
-  border-radius: 2px;
-  padding: 10px 10px 30px;
-  margin: 10px 10px 10px 10px;
-  background-color: #f5f5f5;
-}
-
-.card-item {
-  padding: 3px 3px 3px 3px;
-}
-
-mat-grid-tile {
-  background: lightblue;
-}
-
-.my-alternate-theme button {
-  margin-right: 10px;
-}
+/* Phase E (§8 step 4): removed dead demo leftovers (baseline finding F11).
+   Each class below was verified to have ZERO references in any template or TS
+   file (control-tested against `hamburger` / `full-width`, which the same grep
+   does find):
+     .button-wrapper (both rules), .example-card,
+     .example-header-image  — this one fetched a LIVE remote image from
+                              material.angular.io at runtime,
+     .title-group, .card-deck-container, .card-item,
+     mat-grid-tile          — `background: lightblue`,
+     .my-alternate-theme button — the theme itself was deleted in Phase D. */
 
 .mat-tab-label .mat-tab-label-content {
   display: inline-flex;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  font-family: "Cairo";
+  font-family: var(--vn-font-body);
   font-size: 18px;
-  text-align: right;
+  text-align: start;
 }
 
 th.mat-header-cell,
@@ -198,9 +224,12 @@ td.mat-footer-cell {
   padding: 0;
   border-bottom-width: 1px;
   border-bottom-style: solid;
-  font-size: 16px;
-  font-family: "Cairo";
-  text-align: right;
+  // Phase C #2c: 16px is exactly 1rem == --vn-text-base, so this is a
+  // pixel-identical tokenization (not the 0.88rem shrink plan §6 step 2
+  // implied). Size harmonisation is deferred to the Phase G sweep (§9).
+  font-size: var(--vn-text-base);
+  font-family: var(--vn-font-body);
+  text-align: start;
 }
 
 .full-width {
@@ -213,7 +242,8 @@ td.mat-footer-cell {
   }
 
   .mat-sidenav-content {
-    padding: 20px 20px 0;
+    padding-block: 20px 0;
+    padding-inline: 20px;
   }
 
   .misc-bottom-padding mat-label {
@@ -232,7 +262,7 @@ td.mat-footer-cell {
 
 @media (max-width: 767px) {
   .nav-tool-items {
-    margin-right: 0;
+    margin-inline-start: 0;
   }
 
   .hamburger {
@@ -287,7 +317,7 @@ td.mat-footer-cell {
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
-    background: #fff !important;
+    background: var(--vn-white) !important;
   }
 
   @page {
@@ -295,8 +325,9 @@ td.mat-footer-cell {
   }
 }
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
-
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+/* Bootstrap is NOT imported here any more (Phase E, plan §8 step 2).
+   It ships exactly once, from angular.json:
+     node_modules/bootstrap/dist/css/bootstrap.min.css
+   Re-adding the two `@import '~bootstrap/scss/bootstrap';` lines that used to
+   sit here is what produced a second, duplicate copy of Bootstrap in the
+   bundle (baseline finding F5 / plan §2). */

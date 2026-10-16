@@ -1,83 +1,101 @@
 // ============================================================
-// Customer Statement Styles - Uses Shared Report Tables
+// Customer Statement — Phase G screen 3 (design-system tokens)
+// ============================================================
+// Tokenization rules applied here:
+//   - every colour now comes from a semantic token; no raw hex remains
+//   - type comes from the --vn-text-* scale, weights from --vn-weight-*
+//   - spacing/radius/elevation use --vn-space-*/--vn-radius-*/--vn-shadow-*
+//     only where the previous value was already on that scale; off-grid
+//     values stay literal on purpose (folding them would move pixels)
+//   - the four physical side properties this file used to carry were
+//     already converted to logical ones in Phase F
+//
+// Values that moved while tokenizing are the registered folds listed in
+// docs/design-system-v2-plan.md section 11 (report-table shading, the
+// off-ramp grey that was used for secondary text, the violet section
+// header, the footer caption size, the card shadow tint, and the removal
+// of the table-header letter-spacing). Everything else is an exact match.
+//
+// HOUSE RULE (postcss-gap-properties v3.0.4): never place a comment inside
+// a rule block that also declares gap / row-gap / column-gap. That
+// combination makes the postcss stage throw and the build then reports it
+// as an unrelated esbuild parse error. All notes for this file therefore
+// live here, at file level, and not inside any rule.
+//
+// The local :host variable block that used to open this file is gone: the
+// @use below already emits the shared report-table :host block, which
+// declares the very same five variables (and seven more). Keeping a second
+// copy only created a second source of truth for the same values.
 // ============================================================
 
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-}
-
 .statement-screen {
   @include rt.table-base;
-  
-  font-family: "Cairo", sans-serif;
+
+  font-family: var(--vn-font-body);
   background: var(--sand);
   min-height: calc(100vh - 64px);
-  padding: 1.25rem;
+  padding: var(--vn-space-5);
 }
 
 .screen-header {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  background: #fff;
+  gap: var(--vn-space-3);
+  background: var(--vn-surface);
   border-top: 4px solid var(--navy);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  border-radius: var(--vn-radius-lg);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  margin-bottom: var(--vn-space-4);
+  box-shadow: var(--vn-shadow-2);
 
-  .header-icon { color: var(--navy); font-size: 32px; height: 32px; width: 32px; }
-  h2 { margin: 0; color: var(--navy); font-weight: 700; }
+  .header-icon { color: var(--navy); font-size: var(--vn-text-num-lg); height: 32px; width: 32px; }
+  h2 { margin: 0; color: var(--navy); font-weight: var(--vn-weight-bold); }
 }
 
 .filter-card {
-  background: #fff;
-  border-radius: 8px;
+  background: var(--vn-surface);
+  border-radius: var(--vn-radius-lg);
   border-top: 4px solid var(--accent);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04);
-  margin-bottom: 1rem;
+  box-shadow: var(--vn-shadow-2);
+  margin-bottom: var(--vn-space-4);
 }
 
 .filters-row {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 1rem;
+  gap: var(--vn-space-4);
 
   .customer-field { flex: 2 1 260px; min-width: 260px; }
   .date-field { flex: 1 1 160px; min-width: 160px; }
   .action-btn {
     height: 52px; min-width: 150px;
-    font-family: "Cairo", sans-serif; font-weight: 700;
+    font-family: var(--vn-font-body); font-weight: var(--vn-weight-bold);
   }
 }
 
 .info-card {
-  background: #fff;
+  background: var(--vn-surface);
   border-inline-start: 6px solid var(--navy);
-  border-radius: 8px;
-  padding: 1rem 1.25rem;
-  margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  border-radius: var(--vn-radius-lg);
+  padding: var(--vn-space-4) var(--vn-space-5);
+  margin-bottom: var(--vn-space-4);
+  box-shadow: var(--vn-shadow-2);
 
   .info-row {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    color: #333;
+    gap: var(--vn-space-2);
+    font-size: var(--vn-text-base);
+    color: var(--vn-ink-900);
     padding: 2px 0;
 
     mat-icon { color: var(--navy); }
   }
 
-  .info-name { font-weight: 700; font-size: 1.15rem; }
+  .info-name { font-weight: var(--vn-weight-bold); font-size: var(--vn-text-lg); }
 }
 
 /* Summary - using shared mixin */
@@ -87,10 +105,10 @@
 
 .summary-card {
   @include rt.summary-card;
-  
-  &.opening  { background: #64748b; }
+
+  &.opening  { background: var(--vn-ink-500); }
   &.orders   { background: var(--navy); }
-  &.payments { background: #16a34a; }
+  &.payments { background: var(--vn-success); }
   &.returns  { background: var(--accent); }
   &.closing  { background: var(--danger); }
   &.closing.credit { background: var(--credit); }
@@ -100,10 +118,10 @@
 .section-card {
   @include rt.section-card;
 
-  .section-header.navy   { background: #44596e; }
-  .section-header.green  { background: #16a34a; }
-  .section-header.danger { background: #db1f48; }
-  .section-header.purple { background: #7c3aed; }
+  .section-header.navy   { background: var(--vn-brand); }
+  .section-header.green  { background: var(--vn-success); }
+  .section-header.danger { background: var(--vn-danger); }
+  .section-header.purple { background: var(--vn-info); }
 }
 
 /* Data tables - using shared base */
@@ -111,23 +129,22 @@
   @include rt.table-base;
 
   thead th {
-    background: #eef2f7;
+    background: var(--vn-ink-100);
     color: var(--navy);
-    font-weight: 800;
-    font-size: 0.95rem;
-    letter-spacing: 0.2px;
+    font-weight: var(--vn-weight-black);
+    font-size: var(--vn-text-md);
     padding: 14px 16px;
     text-align: end;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
-    font-family: "Cairo", sans-serif;
+    font-family: var(--vn-font-body);
   }
 
   tbody td {
     padding: 14px 16px;
-    font-size: 0.95rem;
-    color: #1f2937;
-    border-bottom: 1px solid #eef0f2;
+    font-size: var(--vn-text-md);
+    color: var(--vn-ink-900);
+    border-bottom: 1px solid var(--vn-ink-200);
     text-align: end;
     vertical-align: middle;
   }
@@ -150,18 +167,34 @@
   }
 
   tbody tr:nth-child(even) td {
-    background: #fafbfc;
+    background: var(--vn-ink-50);
   }
 
   tbody tr:hover td {
-    background: #f1f5f9;
-    transition: background 0.15s ease;
+    background: var(--vn-ink-100);
+    transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
   tr:last-child td {
     border-bottom: none;
   }
 }
+
+// Column widths, moved out of the templates' inline width attributes
+// (Phase G screen 3). Percentages are layout, not tokens; the values are
+// unchanged. Each selector is prefixed with .data-table so it outranks the
+// generic thead th rule above regardless of source order.
+.data-table.table-orders     th:nth-child(1) { width: 30%; }
+.data-table.table-orders     th:nth-child(2) { width: 35%; }
+.data-table.table-orders     th:nth-child(3) { width: 35%; }
+.data-table.table-payments   th:nth-child(1) { width: 25%; }
+.data-table.table-payments   th:nth-child(2) { width: 25%; }
+.data-table.table-payments   th:nth-child(3) { width: 50%; }
+.data-table.table-retrievals th:nth-child(1) { width: 18%; }
+.data-table.table-retrievals th:nth-child(2) { width: 18%; }
+.data-table.table-retrievals th:nth-child(3) { width: 18%; }
+.data-table.table-retrievals th:nth-child(4) { width: 18%; }
+.data-table.table-retrievals th:nth-child(5) { width: 28%; }
 
 .empty {
   @include rt.empty-row;
@@ -173,9 +206,9 @@
 
 .statement-footer {
   text-align: center;
-  font-size: 0.85rem;
-  color: #64748b;
-  padding: 1rem 0;
+  font-size: var(--vn-text-sm);
+  color: var(--vn-ink-500);
+  padding: var(--vn-space-4) 0;
 }
 
 .empty-card {
@@ -183,11 +216,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 3rem 1rem;
-    color: #94a3b8;
+    padding: var(--vn-space-12) var(--vn-space-4);
+    color: var(--vn-text-faint);
 
     .empty-icon { font-size: 64px; width: 64px; height: 64px; opacity: 0.5; }
-    h3 { margin: 1rem 0 0.25rem; color: var(--navy); }
+    h3 { margin: var(--vn-space-4) 0 var(--vn-space-1) 0; color: var(--navy); }
     p { margin: 0; }
   }
 }
@@ -195,9 +228,9 @@
 /* Print */
 @media print {
   .no-print { display: none !important; }
-  .statement-screen { background: #fff; padding: 0; }
+  .statement-screen { background: var(--vn-surface); padding: 0; }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
-  
+
   @include rt.print-table;
 }

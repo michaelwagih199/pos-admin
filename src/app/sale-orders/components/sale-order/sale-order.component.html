@@ -106,7 +106,7 @@
                 <th class="text-center">عدد الوحدات</th>
                 <th class="text-center">سعر الوحدة</th>
                 <th class="text-center">الإجمالى</th>
-                <th class="text-center" style="width: 100px;"></th>
+                <th class="text-center col-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -131,8 +131,7 @@
               </tr>
               <tr *ngIf="dynamicOrderList.length === 0">
                 <td colspan="7" class="text-center text-muted py-5">
-                  <mat-icon class="d-block mx-auto mb-2 opacity-25"
-                    style="font-size: 48px; height: 48px; width: 48px;">shopping_cart</mat-icon>
+                  <mat-icon class="d-block mx-auto mb-2 opacity-25 empty-icon">shopping_cart</mat-icon>
                   لا توجد منتجات مضافة
                 </td>
               </tr>

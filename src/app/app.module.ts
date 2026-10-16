@@ -10,8 +10,6 @@ import { CreateProductComponent } from './stock/dialog/create-product/create-pro
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxBarcodeModule } from 'ngx-barcode';
 import { ExcelService } from './excel.service';
-import { NZ_I18N } from 'ng-zorro-antd/i18n';
-import { en_US } from 'ng-zorro-antd/i18n';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
@@ -29,7 +27,10 @@ registerLocaleData(en);
         NgxBarcodeModule,
         FormsModule,
     ],
-    providers: [authInterceptorProviders, ExcelService, { provide: NZ_I18N, useValue: en_US }],
+    providers: [
+        authInterceptorProviders,
+        ExcelService
+    ],
     bootstrap: [AppComponent],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

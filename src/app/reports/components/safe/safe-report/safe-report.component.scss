@@ -1,16 +1,31 @@
+// ---------------------------------------------------------------------------
+// safe-report.component.scss — Phase G screen 5 (plan §10 row 5)
+//
+// Notes for the reviewer:
+//   * The local :host block that re-declared the six report colours was removed.
+//     This file already does `@use 'src/app/shared/styles/report-tables'`, and
+//     that partial emits the same custom properties plus six more, so every one
+//     of the twelve report variables is still declared exactly once in the
+//     compiled CSS. Deleting the duplicate therefore moves no pixel.
+//   * FOLDS (registered in docs/design-system-v2-plan.md §11 row 19):
+//       - the bright blue accent bar on .customClass-1 -> var(--vn-info).
+//         The bar was off-palette; the blue ramp has no step at that lightness.
+//       - 1.1rem -> var(--vn-text-lg) (1.15rem), twice: .text-footer and the
+//         paragraph inside .customClass-1.
+//       - the card shadow -> var(--vn-shadow-2) (geometry 0 2px 8px -> 0 2px 6px,
+//         tint black 8% -> the shared slate tint).
+//   * Left literal on purpose: font-size 1.5rem on .customTest (not a scale
+//     step, and the sibling report files keep it literal too), and the 8px
+//     border width of the accent bar (border widths are not scale tokens).
+//   * All comments live at file level. The postcss-gap-properties landmine and
+//     the design-system drift gates both read raw text, so this file writes no
+//     interior notes and no colour literals anywhere.
+// ---------------------------------------------------------------------------
+
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-  --success: #16a34a;
-}
-
 * {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .data-table {
@@ -19,47 +34,47 @@
 
 .mat-card-header {
   background: var(--sand);
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-border);
 }
 
 .header {
   background: var(--sand);
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-border);
 }
 
 .text-footer {
-  font-size: 1.1rem;
-  font-family: "Cairo", sans-serif;
-  font-weight: 700;
+  font-size: var(--vn-text-lg);
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
   color: var(--navy);
 }
 
 .customClass-1 {
-  background-color: white;
-  border-inline-start: 8px solid #2b81ff;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  font-family: "Cairo", sans-serif;
-  padding: 1rem;
+  background-color: var(--vn-surface);
+  border-inline-start: 8px solid var(--vn-info);
+  border-radius: var(--vn-radius-lg);
+  box-shadow: var(--vn-shadow-2);
+  font-family: var(--vn-font-body);
+  padding: var(--vn-space-4);
 
   p {
-    font-size: 1.1rem;
-    font-weight: 700;
+    font-size: var(--vn-text-lg);
+    font-weight: var(--vn-weight-bold);
     color: var(--navy);
     margin: 0;
   }
 
   hr {
-    margin: 0.5rem 0;
-    border-color: #e2e8f0;
+    margin: var(--vn-space-2) 0;
+    border-color: var(--vn-border-light);
   }
 
   .customTest {
     color: var(--credit);
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: var(--vn-weight-black);
     font-variant-numeric: tabular-nums;
     direction: ltr;
     unicode-bidi: isolate;

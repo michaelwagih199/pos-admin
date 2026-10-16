@@ -1,60 +1,83 @@
+// ============================================
+// compound-report.component.scss
+// Phase G screen 4 (plan §10 #4).
+//
+// The `@use` below is kept for its :host side effect — it declares the shared
+// report-table custom properties (--navy, --accent, --sand, --danger, --credit,
+// all of which the rules here read). The local :host block that used to repeat
+// five of those six declarations has been DELETED: it was redundant, and every
+// one of those properties is still declared exactly once in the compiled CSS by
+// the shared partial. Net rendering change: none.
+//
+// FOLDS (value-folds, not exact matches — registered in
+// docs/design-system-v2-plan.md §11 row 18):
+//   - card resting shadow      -> --vn-shadow-2
+//   - card hover shadow        -> --vn-shadow-3
+//   - card body 1.05rem        -> --vn-text-base (1rem)
+//   - the darker amber numeral -> --vn-accent-700
+//   - card resting/hover shadows keep their geometry, only the black tint
+//     moves to the shared slate tint
+//
+// No literal hex and no off-ramp colour remains in this file.
+//
+// Deliberately left literal (off the 4px grid): the 6px accent bar width, the
+// 1.5rem summary figure, and the -2px hover lift.
+//
+// HOUSE RULE (DESIGN_SYSTEM §6.2): never place a comment inside a rule that
+// declares gap / row-gap / column-gap — postcss-gap-properties v3.0.4 throws on
+// a comment sibling. This file declares no gap, but the commentary stays at
+// file level for consistency with the rest of the screen rollout.
+// ============================================
+
 @use 'src/app/shared/styles/report-tables' as rt;
 
-:host {
-  --navy: #44596e;
-  --accent: #ec994b;
-  --sand: #f4f3f0;
-  --danger: #db1f48;
-  --credit: #2563eb;
-  --success: #16a34a;
-}
-
 * {
-  font-family: "Cairo", sans-serif;
+  font-family: var(--vn-font-body);
 }
 
 .mat-card-header {
   background: var(--sand);
-  border-radius: 8px;
-  border: 1px solid #cbd5e1;
+  border-radius: var(--vn-radius-lg);
+  border: 1px solid var(--vn-border);
 }
 
 .mat-card {
-  background: #f8fafc;
+  background: var(--vn-surface-alt);
 }
 
 .mat-raised-button {
-  font-family: "Cairo", sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold);
+  font-size: var(--vn-text-base);
 }
 
 .customClass-1,
 .customClass-2,
 .customClass-3 {
-  background-color: white;
+  background-color: var(--vn-surface);
   border-inline-start: 6px solid var(--navy);
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  font-family: "Cairo", sans-serif;
-  padding: 1rem;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  border-radius: var(--vn-radius-lg);
+  box-shadow: var(--vn-shadow-2);
+  font-family: var(--vn-font-body);
+  padding: var(--vn-space-4);
+  transition: transform var(--vn-duration-fast) var(--vn-ease),
+    box-shadow var(--vn-duration-fast) var(--vn-ease);
 
   p {
     margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
+    font-size: var(--vn-text-base);
+    font-weight: var(--vn-weight-bold);
     color: var(--navy);
   }
 
   hr {
-    margin: 0.5rem 0;
-    border-color: #e2e8f0;
+    margin: var(--vn-space-2) 0;
+    border-color: var(--vn-border-light);
   }
 
   .customTest {
     font-size: 1.5rem;
-    font-weight: 800;
+    font-weight: var(--vn-weight-black);
     font-variant-numeric: tabular-nums;
     direction: ltr;
     unicode-bidi: isolate;
@@ -62,21 +85,30 @@
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: var(--vn-shadow-3);
   }
 }
 
 .customClass-1 {
   border-inline-start-color: var(--credit);
-  .customTest { color: var(--credit); }
+
+  .customTest {
+    color: var(--credit);
+  }
 }
 
 .customClass-2 {
   border-inline-start-color: var(--danger);
-  .customTest { color: var(--danger); }
+
+  .customTest {
+    color: var(--danger);
+  }
 }
 
 .customClass-3 {
   border-inline-start-color: var(--accent);
-  .customTest { color: #d97706; }
+
+  .customTest {
+    color: var(--vn-accent-700);
+  }
 }

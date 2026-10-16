@@ -21,30 +21,32 @@
         </div>
         <div>
             <!--table-->
-            <nz-table #basicTable [nzData]="ordersList" class="text-center">
-                <thead>
-                    <tr>
-                        <th>رقم الفاتورة</th>
-                        <th>التاريخ</th>
-                        <th>العميل</th>
-                        <th class="num">الاجمالى</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of basicTable.data">
-                        <td>{{ item.saleOrder.orderCode }}</td>
-                        <td>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</td>
-                        <td>{{ item.saleOrder.customer?.customerName }}</td>
-                        <td class="num">{{ item.totalOrder}}</td>
-                        <td>
-                            <button type="button" class="btn btn-primary btn-sm"
-                                (click)="details(content,item)">التفاصيل</button> |
-                            <button type="button" class="btn btn-info btn-sm" (click)="onPrinting(item)"> طباعة</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
+            <div class="table-responsive">
+                <table class="table table-bordered table-sm data-table">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>رقم الفاتورة</th>
+                            <th>التاريخ</th>
+                            <th>العميل</th>
+                            <th class="num">الاجمالى</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of ordersList">
+                            <td>{{ item.saleOrder.orderCode }}</td>
+                            <td>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</td>
+                            <td>{{ item.saleOrder.customer?.customerName }}</td>
+                            <td class="num">{{ item.totalOrder}}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm"
+                                    (click)="details(content,item)">التفاصيل</button> |
+                                <button type="button" class="btn btn-info btn-sm" (click)="onPrinting(item)"> طباعة</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </mat-card-content>
 </mat-card>

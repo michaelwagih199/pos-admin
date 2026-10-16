@@ -20,7 +20,7 @@
 .product-name { font-weight: 600; color: #1a1a1a; }
 .product-meta { font-size: 0.8rem; color: #6b7280; margin-top: 4px; }
 .returnable-qty { font-size: 1.2rem; font-weight: 700; color: #4f46e5; }
-.unit-label { font-size: 0.8rem; color: #6b7280; margin-right: 4px; }
+.unit-label { font-size: 0.8rem; color: #6b7280; margin-inline-start: 4px; }
 .return-history { font-size: 0.75rem; color: #9ca3af; margin-top: 4px; }
 
 .dual-unit-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
@@ -28,8 +28,8 @@
 .condition-selector { display: flex; align-items: center; gap: 1rem; margin: 1.5rem 0; padding: 1rem; background: #f9fafb; border-radius: 8px; }
 .condition-label { font-weight: 600; color: #374151; }
 .radio-group { display: flex; gap: 1.5rem; }
-.icon-good { color: #10b981; vertical-align: middle; margin-left: 4px; }
-.icon-bad { color: #ef4444; vertical-align: middle; margin-left: 4px; }
+.icon-good { color: #10b981; vertical-align: middle; margin-inline-end: 4px; }
+.icon-bad { color: #ef4444; vertical-align: middle; margin-inline-end: 4px; }
 
 .footer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid #f3f4f6; }
 .total-display { font-size: 1.5rem; font-weight: 800; color: #4f46e5; }
@@ -62,7 +62,7 @@
 }
 
 ::ng-deep .mat-form-field-outline { border-radius: 8px !important; }
-::ng-deep .mat-input-element { text-align: right !important; }
+::ng-deep .mat-input-element { text-align: start !important; }
 
 
 .returnable-qty .divider {
