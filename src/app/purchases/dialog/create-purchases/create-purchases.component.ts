@@ -88,9 +88,9 @@ export class CreatePurchasesComponent implements OnInit {
   }
 
   // ----- Utility -----
-getTotalSum(): number {
+  getTotalSum(): number {
     return this.dynamicOrderList.reduce((sum, item) => sum + (item.itemQuantity * item.itemPrice), 0);
-}
+  }
 
   // ----- Data -----
   getProducts() {

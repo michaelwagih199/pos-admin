@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import {
-  AbstractControl, FormBuilder, FormGroup,
-  ValidationErrors, ValidatorFn, Validators
+  AbstractControl, FormBuilder, FormControl, FormGroup,
+  ValidationErrors, ValidatorFn, Validators, Validator
 } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
@@ -33,6 +33,9 @@ export class ReturnProductDialogComponent implements OnInit {
   maxUnits = 0;
   multiInvoiceInvoices: ReturnableInvoiceLine[] = [];
 
+  // Toggle: true = auto-allocate across all invoices (LIFO), false = manual invoice selection
+  useAllInvoices = new FormControl(true);
+
   constructor(
     private fb: FormBuilder,
     private ref: MatDialogRef<ReturnProductDialogComponent>,
@@ -45,13 +48,7 @@ export class ReturnProductDialogComponent implements OnInit {
       (inv) => Number(inv.returnableUnits ?? 0) > 0
     );
 
-    const initialInvoice = this.multiInvoiceInvoices[0];
-
-    // Rolls ceiling
-    this.maxQty = Number(initialInvoice?.returnableQty ?? p.availableCanvases ?? 0);
-
-    // Units ceiling
-    this.maxUnits = Number(initialInvoice?.returnableUnits ?? p.availableUnits ?? 0);
+    this.updateLimits();
 
     const rollsDefault = this.maxQty > 0 ? 1 : 0;
     const unitDefault = this.maxUnits > 0 ? this.maxUnits : 0;
@@ -59,10 +56,9 @@ export class ReturnProductDialogComponent implements OnInit {
     this.form = this.fb.group(
       {
         sourceDetailId: [
-          initialInvoice?.saleOrderDetailId
-          ?? initialInvoice?.purchasesBillDetailId
-          ?? null,
-          Validators.required,
+          null,
+          // Required only when NOT using all invoices
+          (control: AbstractControl) => this.useAllInvoices.value ? null : Validators.required(control)
         ],
         quantity: [
           rollsDefault,
@@ -79,7 +75,9 @@ export class ReturnProductDialogComponent implements OnInit {
       { validators: this.returnableValidator() }
     );
 
+    // React to invoice selection (manual mode)
     this.form.get('sourceDetailId')?.valueChanges.subscribe((id) => {
+      if (this.useAllInvoices.value) return; // Ignore in auto mode
       const inv = this.multiInvoiceInvoices.find(
         (i) => (i.saleOrderDetailId ?? i.purchasesBillDetailId) === id
       );
@@ -87,28 +85,70 @@ export class ReturnProductDialogComponent implements OnInit {
 
       this.maxQty = Number(inv.returnableQty) || 0;
       this.maxUnits = Number(inv.returnableUnits) || 0;
-
-      const qtyCtrl = this.form.get('quantity');
-      const unitCtrl = this.form.get('unitNumber');
-
-      qtyCtrl?.setValidators([
-        Validators.required,
-        Validators.min(0),
-        Validators.max(this.maxQty),
-      ]);
-      unitCtrl?.setValidators([
-        Validators.required,
-        Validators.min(0.001),
-        Validators.max(this.maxUnits),
-      ]);
-
-      qtyCtrl?.setValue(this.maxQty > 0 ? 1 : 0, { emitEvent: false });
-      unitCtrl?.setValue(this.maxUnits > 0 ? this.maxUnits : 0, { emitEvent: false });
-
-      qtyCtrl?.updateValueAndValidity();
-      unitCtrl?.updateValueAndValidity();
-      this.form.updateValueAndValidity();
+      this.updateValidators();
     });
+
+    // React to toggle change
+    this.useAllInvoices.valueChanges.subscribe(() => {
+      this.onToggleChange();
+    });
+  }
+
+  private updateLimits(): void {
+    const p = this.data.product;
+    if (this.useAllInvoices.value) {
+      // Aggregated across all invoices
+      this.maxQty = Number(p.availableCanvases ?? 0);
+      this.maxUnits = Number(p.availableUnits ?? 0);
+    } else {
+      // Per selected invoice
+      const initialInvoice = this.multiInvoiceInvoices[0];
+      this.maxQty = Number(initialInvoice?.returnableQty ?? 0);
+      this.maxUnits = Number(initialInvoice?.returnableUnits ?? 0);
+    }
+  }
+
+  private onToggleChange(): void {
+    if (this.useAllInvoices.value) {
+      // Auto mode: clear manual selection, use aggregated limits
+      this.form.get('sourceDetailId')?.setValue(null, { emitEvent: false });
+      this.form.get('sourceDetailId')?.clearValidators();
+    } else {
+      // Manual mode: restore first invoice selection if available
+      const initialInvoice = this.multiInvoiceInvoices[0];
+      this.form.get('sourceDetailId')?.setValue(
+        initialInvoice?.saleOrderDetailId ?? initialInvoice?.purchasesBillDetailId ?? null,
+        { emitEvent: false }
+      );
+      this.form.get('sourceDetailId')?.setValidators(Validators.required);
+    }
+    this.form.get('sourceDetailId')?.updateValueAndValidity();
+    this.updateLimits();
+    this.updateValidators();
+  }
+
+  private updateValidators(): void {
+    const qtyCtrl = this.form.get('quantity');
+    const unitCtrl = this.form.get('unitNumber');
+
+    qtyCtrl?.setValidators([
+      Validators.required,
+      Validators.min(0),
+      Validators.max(this.maxQty),
+    ]);
+    unitCtrl?.setValidators([
+      Validators.required,
+      Validators.min(0.001),
+      Validators.max(this.maxUnits),
+    ]);
+
+    // Reset defaults based on new limits
+    qtyCtrl?.setValue(this.maxQty > 0 ? 1 : 0, { emitEvent: false });
+    unitCtrl?.setValue(this.maxUnits > 0 ? this.maxUnits : 0, { emitEvent: false });
+
+    qtyCtrl?.updateValueAndValidity();
+    unitCtrl?.updateValueAndValidity();
+    this.form.updateValueAndValidity();
   }
 
   private returnableValidator(): ValidatorFn {
@@ -150,6 +190,10 @@ export class ReturnProductDialogComponent implements OnInit {
     return this.data.product.measurementUnit === 'METER' ? 'متر' : 'كجم';
   }
 
+  get availableLabel(): string {
+    return this.useAllInvoices.value ? 'المتاح من كل الفواتير' : 'المتاح من هذه الفاتورة';
+  }
+
   save(): void {
     // Both dimensions must have at least one non-zero value
     const qty  = Number(this.form.get('quantity')?.value ?? 0);
@@ -167,6 +211,14 @@ export class ReturnProductDialogComponent implements OnInit {
     const p = this.data.product;
     const unitPrice = p.lastPrice ?? 0;
 
+    // When using all invoices, emit undefined source IDs so backend allocates LIFO
+    const sourceSaleOrderDetailId = this.useAllInvoices.value && this.data.returnType === 'CUSTOMER'
+      ? undefined
+      : (this.data.returnType === 'CUSTOMER' ? v.sourceDetailId ?? undefined : undefined);
+    const sourcePurchasesBillDetailId = this.useAllInvoices.value && this.data.returnType === 'SUPPLIER'
+      ? undefined
+      : (this.data.returnType === 'SUPPLIER' ? v.sourceDetailId ?? undefined : undefined);
+
     const line: RetrivalsDetailsModel = {
       id: 0,
       productId: p.productId,
@@ -178,14 +230,8 @@ export class ReturnProductDialogComponent implements OnInit {
       total: v.unitNumber * unitPrice,
       returnCondition: v.condition,
       returnReason: v.reason,
-      sourceSaleOrderDetailId:
-        this.data.returnType === 'CUSTOMER'
-          ? v.sourceDetailId ?? undefined
-          : undefined,
-      sourcePurchasesBillDetailId:
-        this.data.returnType === 'SUPPLIER'
-          ? v.sourceDetailId ?? undefined
-          : undefined,
+      sourceSaleOrderDetailId,
+      sourcePurchasesBillDetailId,
     };
 
     this.ref.close(line);

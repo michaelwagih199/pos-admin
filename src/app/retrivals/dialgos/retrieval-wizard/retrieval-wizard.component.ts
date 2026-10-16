@@ -103,11 +103,11 @@ export class RetrievalWizardComponent implements OnInit {
 
     ref.afterClosed().subscribe((line?: RetrivalsDetailsModel) => {
       if (!line) return;
+      // Merge key: productId + returnCondition.
+      // source IDs are intentionally excluded so multi-invoice lines (undefined) merge correctly.
       const i = this.cart.findIndex(l =>
         l.productId === line.productId
         && l.returnCondition === line.returnCondition
-        && l.sourceSaleOrderDetailId === line.sourceSaleOrderDetailId
-        && l.sourcePurchasesBillDetailId === line.sourcePurchasesBillDetailId
       );
       if (i > -1) {
         this.cart[i].quantity += line.quantity;      // rolls — metadata

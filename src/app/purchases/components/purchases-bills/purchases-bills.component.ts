@@ -151,7 +151,6 @@ addDialog() {
     model: this.purchasesBills,
   };
 
-  this.dialog.open(CreatePurchasesComponent, dialogConfig);
   const dialogRef = this.dialog.open(CreatePurchasesComponent, dialogConfig);
   dialogRef.afterClosed().subscribe((data) => {
     if (data) {

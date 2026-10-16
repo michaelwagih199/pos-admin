@@ -9,8 +9,8 @@ export class RetrivalsDetailsModel {
   productCode!: string;
 
   // Dual Unit Tracking
-  quantity!: number;           // Number of Canvases/Pieces
-  unitNumber!: number;         // Meters/Kg per Canvas
+  quantity!: number;           // Number of Canvases/Pieces (rolls)
+  unitNumber!: number;         // Total meters/kg for this line (NOT per-roll)
 
   price!: number;
   total!: number;

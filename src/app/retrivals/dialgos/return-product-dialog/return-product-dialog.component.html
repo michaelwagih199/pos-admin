@@ -9,13 +9,13 @@
     </div>
 
     <div class="subtitle">
-      <span *ngIf="selectedInvoiceCode" class="chip">
+      <span *ngIf="selectedInvoiceCode && !useAllInvoices.value" class="chip">
         <mat-icon inline>receipt_long</mat-icon>
         {{ selectedInvoiceCode }}
       </span>
       <span class="chip available">
         <mat-icon inline>inventory_2</mat-icon>
-        المتاح من هذه الفاتورة:
+        {{ availableLabel }}:
         <b>{{ maxQty }}</b> توب
         <ng-container *ngIf="maxUnits > 0">
           <span class="divider">·</span>
@@ -30,7 +30,16 @@
   <div class="dialog-body">
     <form [formGroup]="form">
 
-      <mat-form-field appearance="outline" class="w-100" *ngIf="multiInvoiceInvoices.length > 0">
+      <!-- Multi-invoice toggle -->
+      <mat-slide-toggle class="toggle-row" [formControl]="useAllInvoices" color="primary">
+        <span class="toggle-label">
+          <mat-icon inline>{{ useAllInvoices.value ? 'auto_awesome' : 'tune' }}</mat-icon>
+          {{ useAllInvoices.value ? 'إرجاع من جميع الفواتير (الأحدث أولاً)' : 'اختيار فاتورة محددة' }}
+        </span>
+      </mat-slide-toggle>
+
+      <!-- Invoice dropdown (manual mode only) -->
+      <mat-form-field appearance="outline" class="w-100" *ngIf="!useAllInvoices.value && multiInvoiceInvoices.length > 0">
         <mat-label>فاتورة الاسترجاع</mat-label>
         <mat-select formControlName="sourceDetailId">
           <mat-option *ngFor="let inv of multiInvoiceInvoices"
@@ -44,6 +53,7 @@
           </mat-option>
         </mat-select>
       </mat-form-field>
+
       <div class="dual-row">
         <!-- Rolls -->
         <mat-form-field appearance="outline">
