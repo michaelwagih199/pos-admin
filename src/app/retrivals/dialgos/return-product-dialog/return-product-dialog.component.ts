@@ -14,9 +14,10 @@ interface DialogData {
 }
 
 @Component({
-  selector: 'app-return-product-dialog',
-  templateUrl: './return-product-dialog.component.html',
-  styleUrls: ['./return-product-dialog.component.scss'],
+    selector: 'app-return-product-dialog',
+    templateUrl: './return-product-dialog.component.html',
+    styleUrls: ['./return-product-dialog.component.scss'],
+    standalone: false
 })
 export class ReturnProductDialogComponent implements OnInit {
   form!: FormGroup;

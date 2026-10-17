@@ -12,11 +12,12 @@ const BARCODE_FORMATS = [
 ] as const;
 
 @Component({
-  selector: 'ngx-barcode',
-  template: `
+    selector: 'ngx-barcode',
+    template: `
     <svg #bcElement class="barcode" [attr.data-barscan]="bcValue"></svg>
   `,
-  styleUrls: [],
+    styleUrls: [],
+    standalone: false
 })
 export class NgxBarcodeComponent implements OnChanges, AfterViewInit {
   @Input('bc-format') bcFormat: string = 'CODE128';

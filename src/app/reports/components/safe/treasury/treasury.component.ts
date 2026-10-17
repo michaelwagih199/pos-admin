@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-treasury',
-  templateUrl: './treasury.component.html',
-  styleUrls: ['./treasury.component.scss']
+    selector: 'app-treasury',
+    templateUrl: './treasury.component.html',
+    styleUrls: ['./treasury.component.scss'],
+    standalone: false
 })
 export class TreasuryComponent implements OnInit {
 

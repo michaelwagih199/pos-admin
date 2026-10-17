@@ -11,9 +11,10 @@ import { CreateCategoryComponent } from '../../dialog/create-category/create-cat
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 
 @Component({
-  selector: 'app-product-category',
-  templateUrl: './product-category.component.html',
-  styleUrls: ['./product-category.component.scss']
+    selector: 'app-product-category',
+    templateUrl: './product-category.component.html',
+    styleUrls: ['./product-category.component.scss'],
+    standalone: false
 })
 
 export class ProductCategoryComponent implements OnInit {

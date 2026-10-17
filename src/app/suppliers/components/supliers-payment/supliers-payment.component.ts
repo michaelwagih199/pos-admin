@@ -13,9 +13,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 
 @Component({
-  selector: 'app-supliers-payment',
-  templateUrl: './supliers-payment.component.html',
-  styleUrls: ['./supliers-payment.component.scss']
+    selector: 'app-supliers-payment',
+    templateUrl: './supliers-payment.component.html',
+    styleUrls: ['./supliers-payment.component.scss'],
+    standalone: false
 })
 export class SupliersPaymentComponent implements OnInit {
 

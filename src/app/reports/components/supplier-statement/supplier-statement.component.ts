@@ -11,9 +11,10 @@ import {
 } from '../../service/supplier-statement.service';
 
 @Component({
-  selector: 'app-supplier-statement',
-  templateUrl: './supplier-statement.component.html',
-  styleUrls: ['./supplier-statement.component.scss'],
+    selector: 'app-supplier-statement',
+    templateUrl: './supplier-statement.component.html',
+    styleUrls: ['./supplier-statement.component.scss'],
+    standalone: false
 })
 export class SupplierStatementComponent implements OnInit {
   arabic: Arabic = new Arabic();

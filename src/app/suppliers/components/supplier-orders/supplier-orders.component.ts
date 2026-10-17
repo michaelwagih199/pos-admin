@@ -10,9 +10,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Arabic } from 'src/app/text';
 
 @Component({
-  selector: 'app-supplier-orders',
-  templateUrl: './supplier-orders.component.html',
-  styleUrls: ['./supplier-orders.component.scss']
+    selector: 'app-supplier-orders',
+    templateUrl: './supplier-orders.component.html',
+    styleUrls: ['./supplier-orders.component.scss'],
+    standalone: false
 })
 export class SupplierOrdersComponent implements OnInit {
 

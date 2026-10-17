@@ -4,9 +4,10 @@ import { PurchasesBillsDetails } from '../../model/purchases-deteails';
 import { PurchasingBillsDetailsService } from '../../service/purchasing-bills-details.service';
 
 @Component({
-  selector: 'app-purchases-bills-details',
-  templateUrl: './purchases-bills-details.component.html',
-  styleUrls: ['./purchases-bills-details.component.scss'],
+    selector: 'app-purchases-bills-details',
+    templateUrl: './purchases-bills-details.component.html',
+    styleUrls: ['./purchases-bills-details.component.scss'],
+    standalone: false
 })
 export class PurchasesBillsDetailsComponent implements OnInit {
   listDetails!: PurchasesBillsDetails[];

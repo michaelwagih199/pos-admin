@@ -8,9 +8,10 @@ import { ExpensesCategoryService } from '../../service/expenses-category.service
 import { Arabic } from 'src/app/text';
 
 @Component({
-  selector: 'app-create-expenses',
-  templateUrl: './create-expenses.component.html',
-  styleUrls: ['./create-expenses.component.scss']
+    selector: 'app-create-expenses',
+    templateUrl: './create-expenses.component.html',
+    styleUrls: ['./create-expenses.component.scss'],
+    standalone: false
 })
 export class CreateExpensesComponent implements OnInit {
 

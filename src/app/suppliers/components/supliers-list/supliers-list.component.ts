@@ -12,9 +12,10 @@ import { Supplier } from '../../models/supplier';
 import { CreateSuppliersComponent } from '../../dialogs/create-suppliers/create-suppliers.component';
 
 @Component({
-  selector: 'app-supliers-list',
-  templateUrl: './supliers-list.component.html',
-  styleUrls: ['./supliers-list.component.scss']
+    selector: 'app-supliers-list',
+    templateUrl: './supliers-list.component.html',
+    styleUrls: ['./supliers-list.component.scss'],
+    standalone: false
 })
 export class SupliersListComponent implements OnInit {
 

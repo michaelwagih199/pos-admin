@@ -8,9 +8,10 @@ import { CategoryModel } from '../../model/categoryModel';
 import { CategoryServiceService } from '../../service/category-service.service';
 
 @Component({
-  selector: 'app-create-product',
-  templateUrl: './create-product.component.html',
-  styleUrls: ['./create-product.component.scss']
+    selector: 'app-create-product',
+    templateUrl: './create-product.component.html',
+    styleUrls: ['./create-product.component.scss'],
+    standalone: false
 })
 export class CreateProductComponent implements OnInit {
   arabic: Arabic = new Arabic()

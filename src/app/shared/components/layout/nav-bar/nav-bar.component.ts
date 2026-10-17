@@ -10,9 +10,10 @@ import { NotificationsComponent } from '../dialog/notifications/notifications.co
 import { NotificationService } from '../dialog/notifications/services/notification.service';
 
 @Component({
-  selector: 'app-nav-bar',
-  templateUrl: './nav-bar.component.html',
-  styleUrls: ['./nav-bar.component.scss'],
+    selector: 'app-nav-bar',
+    templateUrl: './nav-bar.component.html',
+    styleUrls: ['./nav-bar.component.scss'],
+    standalone: false
 })
 export class NavBarComponent implements OnInit {
   arabic: Arabic = new Arabic();

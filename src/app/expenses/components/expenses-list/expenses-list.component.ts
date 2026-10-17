@@ -10,9 +10,10 @@ import { CreateExpensesComponent } from '../../dialogs/create-expenses/create-ex
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 
 @Component({
-  selector: 'app-expenses-list',
-  templateUrl: './expenses-list.component.html',
-  styleUrls: ['./expenses-list.component.scss'],
+    selector: 'app-expenses-list',
+    templateUrl: './expenses-list.component.html',
+    styleUrls: ['./expenses-list.component.scss'],
+    standalone: false
 })
 export class ExpensesListComponent implements OnInit {
   arabic: Arabic = new Arabic();

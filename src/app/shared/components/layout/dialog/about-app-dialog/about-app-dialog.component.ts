@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 @Component({
-  selector: 'app-about-app-dialog',
-  templateUrl: './about-app-dialog.component.html',
-  styleUrls: ['./about-app-dialog.component.scss']
+    selector: 'app-about-app-dialog',
+    templateUrl: './about-app-dialog.component.html',
+    styleUrls: ['./about-app-dialog.component.scss'],
+    standalone: false
 })
 export class AboutAppDialogComponent implements OnInit {
 

@@ -11,9 +11,10 @@ import {
 } from '../../service/customer-statement.service';
 
 @Component({
-  selector: 'app-customer-statement',
-  templateUrl: './customer-statement.component.html',
-  styleUrls: ['./customer-statement.component.scss'],
+    selector: 'app-customer-statement',
+    templateUrl: './customer-statement.component.html',
+    styleUrls: ['./customer-statement.component.scss'],
+    standalone: false
 })
 export class CustomerStatementComponent implements OnInit {
   arabic: Arabic = new Arabic();

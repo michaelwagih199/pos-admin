@@ -16,9 +16,10 @@ import { ReturnProductDialogComponent } from '../return-product-dialog/return-pr
 interface Person { id: number; name: string; phone?: string; }
 
 @Component({
-  selector: 'app-retrieval-wizard',
-  templateUrl: './retrieval-wizard.component.html',
-  styleUrls: ['./retrieval-wizard.component.scss'],
+    selector: 'app-retrieval-wizard',
+    templateUrl: './retrieval-wizard.component.html',
+    styleUrls: ['./retrieval-wizard.component.scss'],
+    standalone: false
 })
 export class RetrievalWizardComponent implements OnInit {
   step = 0;

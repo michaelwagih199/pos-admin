@@ -5,9 +5,10 @@ import { DataService } from 'src/app/shared/service/data.service';
 import { ProductModel } from '../../model/productModel';
 
 @Component({
-  selector: 'app-barcode',
-  templateUrl: './barcode.component.html',
-  styleUrls: ['./barcode.component.scss'],
+    selector: 'app-barcode',
+    templateUrl: './barcode.component.html',
+    styleUrls: ['./barcode.component.scss'],
+    standalone: false
 })
 export class BarcodeComponent implements OnInit {
   model: ProductModel = new ProductModel();

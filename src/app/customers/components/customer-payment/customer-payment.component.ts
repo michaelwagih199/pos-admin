@@ -10,9 +10,10 @@ import { CustomerService } from 'src/app/customers/service/customer.service';
 import { Arabic } from 'src/app/text';
 
 @Component({
-  selector: 'app-customer-payment',
-  templateUrl: './customer-payment.component.html',
-  styleUrls: ['./customer-payment.component.scss'],
+    selector: 'app-customer-payment',
+    templateUrl: './customer-payment.component.html',
+    styleUrls: ['./customer-payment.component.scss'],
+    standalone: false
 })
 export class CustomerPaymentComponent implements OnInit {
   arabic: Arabic = new Arabic();

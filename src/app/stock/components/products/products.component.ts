@@ -14,9 +14,10 @@ import { CreateProductComponent } from '../../dialog/create-product/create-produ
 import { BarcodeComponent } from '../../dialog/barcode/barcode.component';
 
 @Component({
-  selector: 'app-products',
-  templateUrl: './products.component.html',
-  styleUrls: ['./products.component.scss'],
+    selector: 'app-products',
+    templateUrl: './products.component.html',
+    styleUrls: ['./products.component.scss'],
+    standalone: false
 })
 export class ProductsComponent implements OnInit {
   arabic: Arabic = new Arabic();

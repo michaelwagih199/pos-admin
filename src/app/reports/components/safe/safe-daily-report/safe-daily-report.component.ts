@@ -3,9 +3,10 @@ import { Arabic } from 'src/app/text';
 import { DailySafeReport, DailySafeReportService } from '../../../service/daily-safe-report.service';
 
 @Component({
-  selector: 'app-safe-daily-report',
-  templateUrl: 'safe-daily-report.component.html',
-  styleUrls: ['safe-daily-report.component.scss'],
+    selector: 'app-safe-daily-report',
+    templateUrl: 'safe-daily-report.component.html',
+    styleUrls: ['safe-daily-report.component.scss'],
+    standalone: false
 })
 export class SafeDailyReportComponent implements OnInit {
   arabic: Arabic = new Arabic();

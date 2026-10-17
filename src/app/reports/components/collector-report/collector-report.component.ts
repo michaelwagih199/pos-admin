@@ -4,9 +4,10 @@ import { Arabic } from 'src/app/text';
 import { CollectorReportRow, CollectorReportService } from '../../service/collector-report.service';
 
 @Component({
-  selector: 'app-collector-report',
-  templateUrl: './collector-report.component.html',
-  styleUrls: ['./collector-report.component.scss'],
+    selector: 'app-collector-report',
+    templateUrl: './collector-report.component.html',
+    styleUrls: ['./collector-report.component.scss'],
+    standalone: false
 })
 export class CollectorReportComponent implements OnInit {
   arabic: Arabic = new Arabic();

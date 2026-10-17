@@ -28,9 +28,10 @@ export interface PurchasesBillDetail {
 
 
 @Component({
-  selector: 'app-purchases-bills',
-  templateUrl: './purchases-bills.component.html',
-  styleUrls: ['./purchases-bills.component.scss'],
+    selector: 'app-purchases-bills',
+    templateUrl: './purchases-bills.component.html',
+    styleUrls: ['./purchases-bills.component.scss'],
+    standalone: false
 })
 export class PurchasesBillsComponent implements OnInit {
   displayedColumns: string[] = [

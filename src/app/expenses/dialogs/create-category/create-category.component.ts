@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-create-category',
-  templateUrl: './create-category.component.html',
-  styleUrls: ['./create-category.component.scss']
+    selector: 'app-create-category',
+    templateUrl: './create-category.component.html',
+    styleUrls: ['./create-category.component.scss'],
+    standalone: false
 })
 export class CreateCategoryComponent implements OnInit {
 

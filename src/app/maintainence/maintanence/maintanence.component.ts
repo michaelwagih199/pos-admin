@@ -14,9 +14,10 @@ import { MaintanenceService } from '../services/maintanence.service';
 import { MyUtils } from '../../_helpers/util';
 
 @Component({
-  selector: 'app-maintanence',
-  templateUrl: './maintanence.component.html',
-  styleUrls: ['./maintanence.component.scss']
+    selector: 'app-maintanence',
+    templateUrl: './maintanence.component.html',
+    styleUrls: ['./maintanence.component.scss'],
+    standalone: false
 })
 export class MaintanenceComponent implements OnInit {
 

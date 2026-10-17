@@ -15,9 +15,10 @@ export interface Export {
 }
 
 @Component({
-  selector: 'app-safe-report',
-  templateUrl: './safe-report.component.html',
-  styleUrls: ['./safe-report.component.scss'],
+    selector: 'app-safe-report',
+    templateUrl: './safe-report.component.html',
+    styleUrls: ['./safe-report.component.scss'],
+    standalone: false
 })
 export class SafeReportComponent implements OnInit {
   isLoading: boolean = false;

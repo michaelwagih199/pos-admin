@@ -22,10 +22,11 @@ export interface data {
 }
 
 @Component({
-  selector: 'app-recipt-report',
-  templateUrl: './recipt-report.component.html',
-  styleUrls: ['./recipt-report.component.scss'],
-  encapsulation: ViewEncapsulation.None
+    selector: 'app-recipt-report',
+    templateUrl: './recipt-report.component.html',
+    styleUrls: ['./recipt-report.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ReciptReportComponent
   implements OnInit,AfterViewChecked {

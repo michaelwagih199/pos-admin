@@ -11,9 +11,10 @@ import { PurchasesBillsDetails } from '../../model/purchases-deteails';
 import { PurchasesBillsService } from '../../service/purchases-bills.service';
 
 @Component({
-  selector: 'app-create-purchases',
-  templateUrl: './create-purchases.component.html',
-  styleUrls: ['./create-purchases.component.scss'],
+    selector: 'app-create-purchases',
+    templateUrl: './create-purchases.component.html',
+    styleUrls: ['./create-purchases.component.scss'],
+    standalone: false
 })
 export class CreatePurchasesComponent implements OnInit {
   validateForm!: FormGroup;

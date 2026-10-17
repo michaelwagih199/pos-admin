@@ -7,9 +7,10 @@ import { Arabic } from 'src/app/text';
 import { UserModel } from '../../models/user';
 
 @Component({
-  selector: 'app-add-user-dialog',
-  templateUrl: './add-user-dialog.component.html',
-  styleUrls: ['./add-user-dialog.component.scss']
+    selector: 'app-add-user-dialog',
+    templateUrl: './add-user-dialog.component.html',
+    styleUrls: ['./add-user-dialog.component.scss'],
+    standalone: false
 })
 export class AddUserDialogComponent implements OnInit {
  

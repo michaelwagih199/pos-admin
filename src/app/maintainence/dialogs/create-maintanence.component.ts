@@ -6,8 +6,9 @@ import { Arabic } from 'src/app/text';
 import { MaintanenceModel } from '../models/maintanceObject';
 
 @Component({
-  templateUrl: './create-maintanence.component.html',
-  styleUrls: ['./create-maintanence.component.scss']
+    templateUrl: './create-maintanence.component.html',
+    styleUrls: ['./create-maintanence.component.scss'],
+    standalone: false
 })
 export class CreateMaintanenceComponent implements OnInit {
 

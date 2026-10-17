@@ -21,10 +21,11 @@ export interface data {
 }
 
 @Component({
-  selector: 'app-parcode',
-  templateUrl: './parcode.component.html',
-  styleUrls: ['./parcode.component.scss'],
-  encapsulation: ViewEncapsulation.None 
+    selector: 'app-parcode',
+    templateUrl: './parcode.component.html',
+    styleUrls: ['./parcode.component.scss'],
+    encapsulation: ViewEncapsulation.None,
+    standalone: false
 })
 export class ParcodeComponent implements OnInit {
   subscription!: Subscription;

@@ -10,9 +10,10 @@ import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/conf
 import { Arabic } from 'src/app/text';
 
 @Component({
-  selector: 'app-user-list',
-  templateUrl: './user-list.component.html',
-  styleUrls: ['./user-list.component.scss']
+    selector: 'app-user-list',
+    templateUrl: './user-list.component.html',
+    styleUrls: ['./user-list.component.scss'],
+    standalone: false
 })
 export class UserListComponent implements OnInit {
 

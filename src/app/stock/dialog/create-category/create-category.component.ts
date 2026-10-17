@@ -6,7 +6,8 @@ import { Arabic } from 'src/app/text';
 @Component({
     selector: 'app-create-category',
     templateUrl: './create-category.component.html',
-    styleUrls: ['./create-category.component.scss']
+    styleUrls: ['./create-category.component.scss'],
+    standalone: false
 })
 export class CreateCategoryComponent implements OnInit {
     arabic: Arabic = new Arabic()

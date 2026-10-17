@@ -3,9 +3,10 @@ import { Router } from '@angular/router';
 import { StockReportService } from '../../service/stock-report.service';
 
 @Component({
-  selector: 'app-report-list',
-  templateUrl: './report-list.component.html',
-  styleUrls: ['./report-list.component.scss'],
+    selector: 'app-report-list',
+    templateUrl: './report-list.component.html',
+    styleUrls: ['./report-list.component.scss'],
+    standalone: false
 })
 export class ReportListComponent implements OnInit {
   constructor(private router: Router,private stockReportService:StockReportService) {}

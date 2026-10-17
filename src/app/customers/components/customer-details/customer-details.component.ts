@@ -7,9 +7,10 @@ import { CustomerService } from '../../service/customer.service';
 import { CustomerModel } from '../../model/customer-model';
 
 @Component({
-  selector: 'app-customer-details',
-  templateUrl: './customer-details.component.html',
-  styleUrls: ['./customer-details.component.scss']
+    selector: 'app-customer-details',
+    templateUrl: './customer-details.component.html',
+    styleUrls: ['./customer-details.component.scss'],
+    standalone: false
 })
 export class CustomerDetailsComponent implements OnInit {
 

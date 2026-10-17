@@ -5,9 +5,10 @@ import { SupliersService } from '../../service/supliers.service';
 import { Supplier } from '../../models/supplier';
 
 @Component({
-  selector: 'app-supplier-details',
-  templateUrl: './supplier-details.component.html',
-  styleUrls: ['./supplier-details.component.scss']
+    selector: 'app-supplier-details',
+    templateUrl: './supplier-details.component.html',
+    styleUrls: ['./supplier-details.component.scss'],
+    standalone: false
 })
 export class SupplierDetailsComponent implements OnInit {
 

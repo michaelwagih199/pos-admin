@@ -7,7 +7,7 @@ import { NotificationService } from './services/notification.service';
 
 
 @Component({
-  template: `
+    template: `
 <style>
     .head {
         width: 50vw;
@@ -87,8 +87,8 @@ import { NotificationService } from './services/notification.service';
 
 </mat-tab-group>
   `,
-  styles: [
-  ]
+    styles: [],
+    standalone: false
 })
 export class NotificationsComponent implements OnInit {
 

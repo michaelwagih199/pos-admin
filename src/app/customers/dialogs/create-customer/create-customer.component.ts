@@ -6,9 +6,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
-  selector: 'app-create-customer',
-  templateUrl: './create-customer.component.html',
-  styleUrls: ['./create-customer.component.scss']
+    selector: 'app-create-customer',
+    templateUrl: './create-customer.component.html',
+    styleUrls: ['./create-customer.component.scss'],
+    standalone: false
 })
 export class CreateCustomerComponent implements OnInit {
 

@@ -6,9 +6,10 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Supplier } from '../../models/supplier';
 
 @Component({
-  selector: 'app-create-suppliers',
-  templateUrl: './create-suppliers.component.html',
-  styleUrls: ['./create-suppliers.component.scss']
+    selector: 'app-create-suppliers',
+    templateUrl: './create-suppliers.component.html',
+    styleUrls: ['./create-suppliers.component.scss'],
+    standalone: false
 })
 export class CreateSuppliersComponent implements OnInit {
 

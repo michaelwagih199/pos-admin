@@ -12,9 +12,10 @@ import { Arabic } from 'src/app/text';
 import { SalesRoportService } from '../../service/sales-roport.service';
 
 @Component({
-  selector: 'app-sales-report',
-  templateUrl: './sales-report.component.html',
-  styleUrls: ['./sales-report.component.scss'],
+    selector: 'app-sales-report',
+    templateUrl: './sales-report.component.html',
+    styleUrls: ['./sales-report.component.scss'],
+    standalone: false
 })
 export class SalesReportComponent implements OnInit {
   startDate: any;

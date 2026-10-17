@@ -26,9 +26,10 @@ export class WithdrawalModel {
 }
 
 @Component({
-  selector: 'app-deposit-withdrawels',
-  templateUrl: './deposit-withdrawels.component.html',
-  styleUrls: ['./deposit-withdrawels.component.scss'],
+    selector: 'app-deposit-withdrawels',
+    templateUrl: './deposit-withdrawels.component.html',
+    styleUrls: ['./deposit-withdrawels.component.scss'],
+    standalone: false
 })
 export class DepositWithdrawelsComponent implements OnInit {
   quantityValidateForm!: FormGroup;

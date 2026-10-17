@@ -10,9 +10,10 @@ import { RetrivalsDetailsService } from '../../service/retrivals-details.service
 import { RetrivalsService } from '../../service/retrivals.service';
 
 @Component({
-  selector: 'app-retrivals',
-  templateUrl: './retrivals.component.html',
-  styleUrls: ['./retrivals.component.scss'],
+    selector: 'app-retrivals',
+    templateUrl: './retrivals.component.html',
+    styleUrls: ['./retrivals.component.scss'],
+    standalone: false
 })
 export class RetrivalsComponent implements OnInit {
 

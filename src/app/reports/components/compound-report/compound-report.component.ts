@@ -5,9 +5,10 @@ import { CompoundReportModel } from '../../models/compoundModel';
 import { CompoundService } from '../../service/compound.service';
 
 @Component({
-  selector: 'app-compound-report',
-  templateUrl: './compound-report.component.html',
-  styleUrls: ['./compound-report.component.scss'],
+    selector: 'app-compound-report',
+    templateUrl: './compound-report.component.html',
+    styleUrls: ['./compound-report.component.scss'],
+    standalone: false
 })
 export class CompoundReportComponent implements OnInit {
   startDate: any;

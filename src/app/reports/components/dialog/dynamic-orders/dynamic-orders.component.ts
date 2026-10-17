@@ -22,9 +22,10 @@ interface data {
 
 
 @Component({
-  selector: 'app-dynamic-orders',
-  templateUrl: './dynamic-orders.component.html',
-  styleUrls: ['./dynamic-orders.component.scss']
+    selector: 'app-dynamic-orders',
+    templateUrl: './dynamic-orders.component.html',
+    styleUrls: ['./dynamic-orders.component.scss'],
+    standalone: false
 })
 export class DynamicOrdersComponent{
 

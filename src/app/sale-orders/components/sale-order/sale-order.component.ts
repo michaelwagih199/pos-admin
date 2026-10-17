@@ -30,9 +30,10 @@ import { DynamicItemService } from '../../service/dynamic-item.service';
 import { OrderService } from '../../service/order.service';
 
 @Component({
-  selector: 'app-sale-order',
-  templateUrl: './sale-order.component.html',
-  styleUrls: ['./sale-order.component.scss'],
+    selector: 'app-sale-order',
+    templateUrl: './sale-order.component.html',
+    styleUrls: ['./sale-order.component.scss'],
+    standalone: false
 })
 
 export class SaleOrderComponent implements OnInit {

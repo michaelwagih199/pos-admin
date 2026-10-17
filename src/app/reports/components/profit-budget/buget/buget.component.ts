@@ -3,9 +3,10 @@ import { ProductModel } from 'src/app/stock/model/productModel';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
 
 @Component({
-  selector: 'app-buget',
-  templateUrl: './buget.component.html',
-  styleUrls: ['./buget.component.scss'],
+    selector: 'app-buget',
+    templateUrl: './buget.component.html',
+    styleUrls: ['./buget.component.scss'],
+    standalone: false
 })
 export class BugetComponent implements OnInit {
   isLoading: boolean = false;

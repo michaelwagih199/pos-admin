@@ -7,9 +7,10 @@ import { RetrivalsDetailsModel } from 'src/app/retrivals/models/retrivals-detail
 import { RetrivalsDetailsService } from 'src/app/retrivals/service/retrivals-details.service';
 
 @Component({
-  selector: 'app-rerival-details',
-  templateUrl: './rerival-details.component.html',
-  styleUrls: ['./rerival-details.component.scss']
+    selector: 'app-rerival-details',
+    templateUrl: './rerival-details.component.html',
+    styleUrls: ['./rerival-details.component.scss'],
+    standalone: false
 })
 export class RerivalDetailsComponent implements OnInit {
 

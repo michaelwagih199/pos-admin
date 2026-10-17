@@ -12,9 +12,10 @@ import { CreateCategoryComponent } from 'src/app/stock/dialog/create-category/cr
 import { ExpensesCategoryService } from '../../service/expenses-category.service';
 
 @Component({
-  selector: 'app-expenses-category',
-  templateUrl: './expenses-category.component.html',
-  styleUrls: ['./expenses-category.component.scss'],
+    selector: 'app-expenses-category',
+    templateUrl: './expenses-category.component.html',
+    styleUrls: ['./expenses-category.component.scss'],
+    standalone: false
 })
 export class ExpensesCategoryComponent implements OnInit {
   arabic: Arabic = new Arabic();

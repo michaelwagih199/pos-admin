@@ -3,9 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { ProfitServiceService } from 'src/app/reports/service/profit-service.service';
 
 @Component({
-  selector: 'app-profits',
-  templateUrl: './profits.component.html',
-  styleUrls: ['./profits.component.scss'],
+    selector: 'app-profits',
+    templateUrl: './profits.component.html',
+    styleUrls: ['./profits.component.scss'],
+    standalone: false
 })
 export class ProfitsComponent implements OnInit {
   profit!: ProfitModel;
