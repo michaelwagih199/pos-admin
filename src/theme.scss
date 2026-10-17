@@ -25,7 +25,7 @@
    merges a `<hue>-contrast` entry for every hue it finds, and a missing one
    yields `null`, which silently drops the colour declaration in whatever
    component looks it up. Material's own palettes define contrast per hue. */
-$vn-primary: mat.define-palette(
+$vn-primary: mat.m2-define-palette(
   (
     50: #f6f8fa,
     100: #e6ebf0,
@@ -68,7 +68,7 @@ $vn-primary: mat.define-palette(
    --vn-accent-300 / --vn-accent-500 / --vn-accent-700); the remaining steps
    are the interpolated ramp Material needs for hover, focus and disabled
    states. Amber is a light-mid hue, so most steps take dark text. */
-$vn-accent: mat.define-palette(
+$vn-accent: mat.m2-define-palette(
   (
     50: #fef7ee,
     100: #fdecd6,
@@ -110,7 +110,7 @@ $vn-accent: mat.define-palette(
    Hue 500 is the brand value (token layer --vn-red-500); the rest of the ramp
    is interpolated. Messaging colours in the design system (--vn-danger-*) are
    a separate concern and are NOT driven by this palette. */
-$vn-warn: mat.define-palette(
+$vn-warn: mat.m2-define-palette(
   (
     50: #fdf2f5,
     100: #fbe0e7,
@@ -152,7 +152,7 @@ $vn-warn: mat.define-palette(
    (src/styles/_fonts.scss) and its variable 400-800 axis makes the 500/600
    weights Material asks for real glyphs rather than synthesized ones.
    Registered as deliberate visual change #3 in the plan (§9). */
-$vn-typography: mat.define-typography-config($font-family: '"Cairo", sans-serif');
+$vn-typography: mat.m2-define-typography-config($font-family: '"Cairo", sans-serif');
 
 /* Structural, ripple, a11y and typographic stylesheets — emitted once, with
    the Cairo typography config so no component is left on Roboto.
@@ -168,7 +168,7 @@ $vn-typography: mat.define-typography-config($font-family: '"Cairo", sans-serif'
    (`define-light-theme($primary, $accent, $warn)`) is a v15/v16 compatibility
    shim and is removed in v17; the map form is the supported API and is also
    what attaches the typography config to the theme. */
-$vn-theme: mat.define-light-theme((
+$vn-theme: mat.m2-define-light-theme((
   color: (
     primary: $vn-primary,
     accent: $vn-accent,

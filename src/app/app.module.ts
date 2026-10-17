@@ -3,7 +3,7 @@ import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { CreateCategoryComponent } from './stock/dialog/create-category/create-category.component';
 import { CreateProductComponent } from './stock/dialog/create-product/create-product.component';
@@ -17,22 +17,16 @@ import { FormsModule } from '@angular/forms';
 
 registerLocaleData(en);
 
-@NgModule({
-    declarations: [AppComponent],
-    imports: [
-        BrowserModule,
+@NgModule({ declarations: [AppComponent],
+    bootstrap: [AppComponent],
+    schemas: [CUSTOM_ELEMENTS_SCHEMA], imports: [BrowserModule,
         AppRoutingModule,
-        HttpClientModule,
         BrowserAnimationsModule,
         NgbModule,
         NgxBarcodeModule,
-        FormsModule,
-    ],
-    providers: [
+        FormsModule], providers: [
         authInterceptorProviders,
-        ExcelService
-    ],
-    bootstrap: [AppComponent],
-    schemas: [CUSTOM_ELEMENTS_SCHEMA]
-})
+        ExcelService,
+        provideHttpClient(withInterceptorsFromDi())
+    ] })
 export class AppModule {}
