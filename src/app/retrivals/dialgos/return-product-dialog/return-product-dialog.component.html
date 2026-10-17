@@ -9,18 +9,20 @@
     </div>
 
     <div class="subtitle">
-      <span *ngIf="selectedInvoiceCode && !useAllInvoices.value" class="chip">
-        <mat-icon inline>receipt_long</mat-icon>
-        {{ selectedInvoiceCode }}
-      </span>
+      @if (selectedInvoiceCode && !useAllInvoices.value) {
+        <span class="chip">
+          <mat-icon inline>receipt_long</mat-icon>
+          {{ selectedInvoiceCode }}
+        </span>
+      }
       <span class="chip available">
         <mat-icon inline>inventory_2</mat-icon>
         {{ availableLabel }}:
         <b>{{ maxQty }}</b> توب
-        <ng-container *ngIf="maxUnits > 0">
+        @if (maxUnits > 0) {
           <span class="divider">·</span>
           <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
-        </ng-container>
+        }
       </span>
     </div>
   </div>
@@ -39,94 +41,116 @@
       </mat-slide-toggle>
 
       <!-- Invoice dropdown (manual mode only) -->
-      <mat-form-field appearance="outline" class="w-100" *ngIf="!useAllInvoices.value && multiInvoiceInvoices.length > 0">
-        <mat-label>فاتورة الاسترجاع</mat-label>
-        <mat-select formControlName="sourceDetailId">
-          <mat-option *ngFor="let inv of multiInvoiceInvoices"
-            [value]="inv.saleOrderDetailId ?? inv.purchasesBillDetailId"
-            [disabled]="(inv.returnableQty ?? 0) <= 0 && (inv.returnableUnits ?? 0) <= 0">
-            {{ inv.orderCode }} — {{ inv.orderDate | date:'yyyy-MM-dd' }}
-            (متاح: {{ inv.returnableQty }} توب
-            <ng-container *ngIf="(inv.returnableUnits ?? 0) > 0">
-              · {{ (inv.returnableUnits ?? 0) | number:'1.0-3' }} {{ measurementUnitLabel }}
-            </ng-container>)
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+      @if (!useAllInvoices.value && multiInvoiceInvoices.length > 0) {
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>فاتورة الاسترجاع</mat-label>
+          <mat-select formControlName="sourceDetailId">
+            @for (inv of multiInvoiceInvoices; track inv) {
+              <mat-option
+                [value]="inv.saleOrderDetailId ?? inv.purchasesBillDetailId"
+                [disabled]="(inv.returnableQty ?? 0) <= 0 && (inv.returnableUnits ?? 0) <= 0">
+                {{ inv.orderCode }} — {{ inv.orderDate | date:'yyyy-MM-dd' }}
+                (متاح: {{ inv.returnableQty }} توب
+                @if ((inv.returnableUnits ?? 0) > 0) {
+                  · {{ (inv.returnableUnits ?? 0) | number:'1.0-3' }} {{ measurementUnitLabel }}
+                  })
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
 
-      <div class="dual-row">
-        <!-- Rolls -->
-        <mat-form-field appearance="outline">
-          <mat-label>عدد الأتواب *</mat-label>
-          <input matInput type="number" [min]="maxQty > 0 ? 1 : 0" [max]="maxQty"
-                 formControlName="quantity">
-          <mat-hint>
-            الحد الأقصى: <b>{{ maxQty }}</b> توب
-          </mat-hint>
-          <mat-error *ngIf="form.get('quantity')?.hasError('required')">مطلوب</mat-error>
-          <mat-error *ngIf="form.get('quantity')?.hasError('min')">1 على الأقل</mat-error>
-          <mat-error *ngIf="form.get('quantity')?.hasError('max')
-                       || form.hasError('quantityOverflow')">
-            أكبر من المتاح ({{ maxQty }})
-          </mat-error>
+        <div class="dual-row">
+          <!-- Rolls -->
+          <mat-form-field appearance="outline">
+            <mat-label>عدد الأتواب *</mat-label>
+            <input matInput type="number" [min]="maxQty > 0 ? 1 : 0" [max]="maxQty"
+            formControlName="quantity">
+            <mat-hint>
+              الحد الأقصى: <b>{{ maxQty }}</b> توب
+            </mat-hint>
+            @if (form.get('quantity')?.hasError('required')) {
+              <mat-error>مطلوب</mat-error>
+            }
+            @if (form.get('quantity')?.hasError('min')) {
+              <mat-error>1 على الأقل</mat-error>
+            }
+            @if (form.get('quantity')?.hasError('max')
+              || form.hasError('quantityOverflow')) {
+              <mat-error>
+                أكبر من المتاح ({{ maxQty }})
+              </mat-error>
+            }
+          </mat-form-field>
+
+          <!-- Units -->
+          <mat-form-field appearance="outline">
+            <mat-label>عدد الوحدات @if (maxUnits > 0) {
+              <span>*</span>
+            }</mat-label>
+            <input matInput type="number" step="0.001"
+              [min]="maxUnits > 0 ? 0.001 : 0" [max]="maxUnits"
+              formControlName="unitNumber">
+            <mat-hint>
+              الحد الأقصى: <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
+            </mat-hint>
+            @if (form.get('unitNumber')?.hasError('min')) {
+              <mat-error>
+                القيمة يجب أن تكون أكبر من صفر
+              </mat-error>
+            }
+            @if (form.get('unitNumber')?.hasError('max')
+              || form.hasError('unitsOverflow')) {
+              <mat-error>
+                أكبر من المتاح ({{ maxUnits | number:'1.0-3' }} {{ measurementUnitLabel }})
+              </mat-error>
+            }
+            @if (form.hasError('bothEmpty')) {
+              <mat-error>
+                يجب إدخال عدد الأتواب أو عدد الوحدات
+              </mat-error>
+            }
+          </mat-form-field>
+        </div>
+        <mat-radio-group formControlName="condition" class="condition-toggle">
+          <mat-radio-button value="GOOD" class="cond-good">
+            <mat-icon>check_circle</mat-icon>
+            <span>سليم</span>
+          </mat-radio-button>
+          <mat-radio-button value="DAMAGED" class="cond-damaged">
+            <mat-icon>cancel</mat-icon>
+            <span>تالف</span>
+          </mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>سبب الإرجاع *</mat-label>
+          <mat-select formControlName="reason">
+            @for (r of reasons; track r) {
+              <mat-option [value]="r.value">{{ r.label }}</mat-option>
+            }
+          </mat-select>
+          @if (form.get('reason')?.hasError('required')) {
+            <mat-error>مطلوب</mat-error>
+          }
         </mat-form-field>
 
-        <!-- Units -->
-        <mat-form-field appearance="outline">
-          <mat-label>عدد الوحدات <span *ngIf="maxUnits > 0">*</span></mat-label>
-          <input matInput type="number" step="0.001"
-                 [min]="maxUnits > 0 ? 0.001 : 0" [max]="maxUnits"
-                 formControlName="unitNumber">
-          <mat-hint>
-            الحد الأقصى: <b>{{ maxUnits | number:'1.0-3' }}</b> {{ measurementUnitLabel }}
-          </mat-hint>
-          <mat-error *ngIf="form.get('unitNumber')?.hasError('min')">
-            القيمة يجب أن تكون أكبر من صفر
-          </mat-error>
-          <mat-error *ngIf="form.get('unitNumber')?.hasError('max')
-                       || form.hasError('unitsOverflow')">
-            أكبر من المتاح ({{ maxUnits | number:'1.0-3' }} {{ measurementUnitLabel }})
-          </mat-error>
-          <mat-error *ngIf="form.hasError('bothEmpty')">
-            يجب إدخال عدد الأتواب أو عدد الوحدات
-          </mat-error>
+        <mat-form-field appearance="outline" class="w-100">
+          <mat-label>ملاحظات (اختياري)</mat-label>
+          <textarea matInput formControlName="notes" rows="2"></textarea>
         </mat-form-field>
-      </div>
-      <mat-radio-group formControlName="condition" class="condition-toggle">
-        <mat-radio-button value="GOOD" class="cond-good">
-          <mat-icon>check_circle</mat-icon>
-          <span>سليم</span>
-        </mat-radio-button>
-        <mat-radio-button value="DAMAGED" class="cond-damaged">
-          <mat-icon>cancel</mat-icon>
-          <span>تالف</span>
-        </mat-radio-button>
-      </mat-radio-group>
 
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>سبب الإرجاع *</mat-label>
-        <mat-select formControlName="reason">
-          <mat-option *ngFor="let r of reasons" [value]="r.value">{{ r.label }}</mat-option>
-        </mat-select>
-        <mat-error *ngIf="form.get('reason')?.hasError('required')">مطلوب</mat-error>
-      </mat-form-field>
+      </form>
+    </div>
 
-      <mat-form-field appearance="outline" class="w-100">
-        <mat-label>ملاحظات (اختياري)</mat-label>
-        <textarea matInput formControlName="notes" rows="2"></textarea>
-      </mat-form-field>
+    <mat-divider></mat-divider>
 
-    </form>
+    <div class="dialog-actions">
+      <button mat-stroked-button (click)="close()">إلغاء</button>
+      <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
+        <mat-icon>add</mat-icon>
+        إضافة للمرتجع
+      </button>
+    </div>
+
   </div>
-
-  <mat-divider></mat-divider>
-
-  <div class="dialog-actions">
-    <button mat-stroked-button (click)="close()">إلغاء</button>
-    <button mat-raised-button color="primary" (click)="save()" [disabled]="form.invalid">
-      <mat-icon>add</mat-icon>
-      إضافة للمرتجع
-    </button>
-  </div>
-
-</div>

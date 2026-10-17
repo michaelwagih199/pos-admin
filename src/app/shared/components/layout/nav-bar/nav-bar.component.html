@@ -3,7 +3,7 @@
   <div>
     <mat-icon aria-hidden="false" class="homeIcon" (click)="toHome()">home</mat-icon>
     <mat-icon aria-hidden="false" [ngClass]="[ isNotification ? 'notifi-yes' : 'homeIcon']"
-      (click)="toNotification()">notifications</mat-icon>
+    (click)="toNotification()">notifications</mat-icon>
   </div>
   <div class="header-text">Ventas</div>
   <span class="nav-tool-items ">
@@ -25,41 +25,59 @@
         </a>
       </div>
 
-      <a *ngIf="DynamicNavBar.saleOrder" mat-list-item [routerLink]="'/saleOrder'">
-        <mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.seling}}
-      </a>
+      @if (DynamicNavBar.saleOrder) {
+        <a mat-list-item [routerLink]="'/saleOrder'">
+          <mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.seling}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.stock" mat-list-item [routerLink]="'/stock'">
-        <mat-icon>addchart</mat-icon> {{arabic.navBarList.stock}}
-      </a>
+      @if (DynamicNavBar.stock) {
+        <a mat-list-item [routerLink]="'/stock'">
+          <mat-icon>addchart</mat-icon> {{arabic.navBarList.stock}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.customers" mat-list-item [routerLink]="'/customers'">
-        <mat-icon>person</mat-icon> {{arabic.navBarList.customers}}
-      </a>
+      @if (DynamicNavBar.customers) {
+        <a mat-list-item [routerLink]="'/customers'">
+          <mat-icon>person</mat-icon> {{arabic.navBarList.customers}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.customers" mat-list-item [routerLink]="'/customers/payment'">
-        <mat-icon>receipt_long</mat-icon> {{ arabic.navBarList.customerPayment }}
-      </a>
+      @if (DynamicNavBar.customers) {
+        <a mat-list-item [routerLink]="'/customers/payment'">
+          <mat-icon>receipt_long</mat-icon> {{ arabic.navBarList.customerPayment }}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.suppliers" mat-list-item [routerLink]="'/suppliers'">
-        <mat-icon>person</mat-icon> {{arabic.navBarList.suppliers}}
-      </a>
+      @if (DynamicNavBar.suppliers) {
+        <a mat-list-item [routerLink]="'/suppliers'">
+          <mat-icon>person</mat-icon> {{arabic.navBarList.suppliers}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.purshasing" mat-list-item [routerLink]="'/purchases'">
-        <mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.purshasing}}
-      </a>
+      @if (DynamicNavBar.purshasing) {
+        <a mat-list-item [routerLink]="'/purchases'">
+          <mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.purshasing}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.retrival" mat-list-item [routerLink]="'/retrivals'">
-        <mat-icon>autorenew</mat-icon> {{arabic.navBarList.retrival}}
-      </a>
+      @if (DynamicNavBar.retrival) {
+        <a mat-list-item [routerLink]="'/retrivals'">
+          <mat-icon>autorenew</mat-icon> {{arabic.navBarList.retrival}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.reports" mat-list-item [routerLink]="'/reports'">
-        <mat-icon>trending_up</mat-icon> {{arabic.navBarList.reports}}
-      </a>
+      @if (DynamicNavBar.reports) {
+        <a mat-list-item [routerLink]="'/reports'">
+          <mat-icon>trending_up</mat-icon> {{arabic.navBarList.reports}}
+        </a>
+      }
 
-      <a *ngIf="DynamicNavBar.setting" mat-list-item [routerLink]="'/setting'">
-        <mat-icon>settings</mat-icon> {{arabic.navBarList.setting}}
-      </a>
+      @if (DynamicNavBar.setting) {
+        <a mat-list-item [routerLink]="'/setting'">
+          <mat-icon>settings</mat-icon> {{arabic.navBarList.setting}}
+        </a>
+      }
 
       <a mat-list-item (click)="aboutApp()">
         <mat-icon>favorite_border</mat-icon> {{arabic.navBarList.aboutApp}}

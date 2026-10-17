@@ -1,101 +1,103 @@
 <div class="container-fluid mt-2 mb-2">
-    <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
-    <div class="row justify-content-around header">
-        <div class="col">
-            <mat-form-field appearance="fill">
-                <mat-label>Enter a date range</mat-label>
-                <mat-date-range-input [rangePicker]="picker">
-                    <input matStartDate placeholder="Start date" [(ngModel)]="startDate" autocomplete="off">
-                    <input matEndDate placeholder="End date" [(ngModel)]="endDate" autocomplete="off">
-                </mat-date-range-input>
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-date-range-picker #picker></mat-date-range-picker>
-            </mat-form-field>
-        </div>
-        <div class="col">
-            <button mat-raised-button color="primary" class="mt-2" (click)="getReport()">عرض
-                التقرير</button>
-        </div>
+  @if (isLoading) {
+    <mat-progress-bar color="accent" mode="indeterminate" value="20"></mat-progress-bar>
+  }
+  <div class="row justify-content-around header">
+    <div class="col">
+      <mat-form-field appearance="fill">
+        <mat-label>Enter a date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input matStartDate placeholder="Start date" [(ngModel)]="startDate" autocomplete="off">
+          <input matEndDate placeholder="End date" [(ngModel)]="endDate" autocomplete="off">
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+    </div>
+    <div class="col">
+      <button mat-raised-button color="primary" class="mt-2" (click)="getReport()">عرض
+      التقرير</button>
+    </div>
+  </div>
+
+  <div class="row mt-2">
+    <div class="col">
+      <mat-card>
+        <mat-card-header>
+          <div class="container-fluid text-center">
+            <h3 class="text-footer">وارد</h3>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="text-center text-footer">
+            <table class="table table-bordered table-sm data-table mt-2">
+              <thead class="thead-dark">
+                <tr>
+                  <th class="num">مبيعات</th>
+                  <th class="num">دفعات عملاء</th>
+                  <th class="num">ايداعات</th>
+                  <th class="num">الاجمالى</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="num">{{ income?.sumSales }}</td>
+                  <td class="num">{{ income?.fromCustomers }}</td>
+                  <td class="num">{{ income?.incomes }}</td>
+                  <td class="num credit">{{ totalIncome }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </mat-card-content>
+      </mat-card>
     </div>
 
-    <div class="row mt-2">
-        <div class="col">
-            <mat-card>
-                <mat-card-header>
-                    <div class="container-fluid text-center">
-                        <h3 class="text-footer">وارد</h3>
-                    </div>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="text-center text-footer">
-                        <table class="table table-bordered table-sm data-table mt-2">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th class="num">مبيعات</th>
-                                    <th class="num">دفعات عملاء</th>
-                                    <th class="num">ايداعات</th>
-                                    <th class="num">الاجمالى</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="num">{{ income?.sumSales }}</td>
-                                    <td class="num">{{ income?.fromCustomers }}</td>
-                                    <td class="num">{{ income?.incomes }}</td>
-                                    <td class="num credit">{{ totalIncome }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+    <div class="col">
+      <mat-card>
+        <mat-card-header>
+          <div class="container-fluid text-center ">
+            <h3 class="text-footer">صادر</h3>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="text-center text-footer">
+            <table class="table table-bordered table-sm data-table mt-2">
+              <thead class="thead-dark">
+                <tr>
+                  <th class="num">مصروفات</th>
+                  <th class="num">دفعات موردين</th>
+                  <th class="num">مسحوبات</th>
+                  <th class="num">مرتجعات</th>
+                  <th class="num">الاجمالى</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="num">{{ export?.sumExpenses }}</td>
+                  <td class="num">{{ export?.sumSuppliersValues }}</td>
+                  <td class="num">{{ export?.sumExport }}</td>
+                  <td class="num">{{ export?.sumRetrivals }}</td>
+                  <td class="num debit">{{ totalExport }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
 
-        <div class="col">
-            <mat-card>
-                <mat-card-header>
-                    <div class="container-fluid text-center ">
-                        <h3 class="text-footer">صادر</h3>
-                    </div>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="text-center text-footer">
-                        <table class="table table-bordered table-sm data-table mt-2">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th class="num">مصروفات</th>
-                                    <th class="num">دفعات موردين</th>
-                                    <th class="num">مسحوبات</th>
-                                    <th class="num">مرتجعات</th>
-                                    <th class="num">الاجمالى</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="num">{{ export?.sumExpenses }}</td>
-                                    <td class="num">{{ export?.sumSuppliersValues }}</td>
-                                    <td class="num">{{ export?.sumExport }}</td>
-                                    <td class="num">{{ export?.sumRetrivals }}</td>
-                                    <td class="num debit">{{ totalExport }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                </mat-card-content>
-            </mat-card>
-           
+        </mat-card-content>
+      </mat-card>
+
+    </div>
+  </div>
+
+  <div class="row  mt-2">
+    <div class="col-4 text-center">
+      <div class="customClass-1 mt-2">
+        <p class="text-center">الصافى</p>
+        <hr>
+          <p class="customTest">{{totalIncome - totalExport}}</p>
         </div>
+      </div>
     </div>
 
-   <div class="row  mt-2">
-        <div class="col-4 text-center">
-            <div class="customClass-1 mt-2">
-                <p class="text-center">الصافى</p>
-                <hr>
-                <p class="customTest">{{totalIncome - totalExport}}</p>
-            </div>
-        </div>
-   </div>
-
-</div>
+  </div>

@@ -8,10 +8,12 @@
           [matAutocomplete]="auto" [(ngModel)]="searchInout" (keyup.enter)="search()">
         <mat-icon color="accent" matSuffix>search</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-          <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
-            (click)="OnHumanSelected(searchInout)">
-            {{option}}
-          </mat-option>
+          @for (option of filteredOptions | async; track option) {
+            <mat-option [value]="option"
+              (click)="OnHumanSelected(searchInout)">
+              {{option}}
+            </mat-option>
+          }
         </mat-autocomplete>
       </mat-form-field>
     </form>
@@ -27,7 +29,9 @@
 
   </mat-card-header>
   <mat-card-content>
-    <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
+    @if (isLoading) {
+      <mat-progress-bar color="accent" mode="indeterminate" value="20"></mat-progress-bar>
+    }
     <table mat-table
       [dataSource]="categoryList | paginate: {itemsPerPage: pageSize, currentPage: page, totalItems:count}">
 

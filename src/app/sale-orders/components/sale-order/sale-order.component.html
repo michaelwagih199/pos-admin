@@ -1,8 +1,10 @@
 <!-- sale-order.component.html -->
 <div class="doNotPrint sale-order-fullscreen">
   <!-- Loading indicator -->
-  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="saleOrderObj.flags.isLoading" value="20">
-  </mat-progress-bar>
+  @if (saleOrderObj.flags.isLoading) {
+    <mat-progress-bar color="accent" mode="indeterminate" value="20">
+    </mat-progress-bar>
+  }
 
   <!-- ============================================ -->
   <!-- HEADER PANEL                                 -->
@@ -75,10 +77,12 @@
                   (keyup.enter)="onProductEnter(productControl.value ?? '')" (focus)="clearProductSearch()">
                 <mat-icon matSuffix class="text-accent">search</mat-icon>
                 <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
-                  <mat-option *ngFor="let option of productFilteredOptions | async" [value]="option"
-                    (onSelectionChange)="OnProductSelected(option)">
-                    {{ option }}
-                  </mat-option>
+                  @for (option of productFilteredOptions | async; track option) {
+                    <mat-option [value]="option"
+                      (onSelectionChange)="OnProductSelected(option)">
+                      {{ option }}
+                    </mat-option>
+                  }
                 </mat-autocomplete>
               </mat-form-field>
             </div>
@@ -110,39 +114,45 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let item of dynamicOrderList">
-                <td class="fw-bold">{{ item.productName }}</td>
-                <td class="text-center">
-                  {{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}
-                </td>
-                <td class="text-center">{{ item.quantity }}</td>
-                <td class="text-center">{{ item.unitNumber | number:'1.0-3' }}</td>
-                <td class="text-center">{{ item.price }}</td>
-                <td class="text-center text-accent fw-bold">{{ item.total }}</td>
-                <td class="text-center">
-                  <button mat-icon-button class="text-danger" (click)="deleteDynamicItem(item)" aria-label="حذف المنتج">
-                    <mat-icon>delete</mat-icon>
-                  </button>
-                  <button mat-icon-button class="text-navy" (click)="openUpdateQuantity(updateQuantity, item)"
-                    aria-label="تعديل الكمية">
-                    <mat-icon>edit</mat-icon>
-                  </button>
-                </td>
-              </tr>
-              <tr *ngIf="dynamicOrderList.length === 0">
-                <td colspan="7" class="text-center text-muted py-5">
-                  <mat-icon class="d-block mx-auto mb-2 opacity-25 empty-icon">shopping_cart</mat-icon>
-                  لا توجد منتجات مضافة
-                </td>
-              </tr>
+              @for (item of dynamicOrderList; track item) {
+                <tr>
+                  <td class="fw-bold">{{ item.productName }}</td>
+                  <td class="text-center">
+                    {{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}
+                  </td>
+                  <td class="text-center">{{ item.quantity }}</td>
+                  <td class="text-center">{{ item.unitNumber | number:'1.0-3' }}</td>
+                  <td class="text-center">{{ item.price }}</td>
+                  <td class="text-center text-accent fw-bold">{{ item.total }}</td>
+                  <td class="text-center">
+                    <button mat-icon-button class="text-danger" (click)="deleteDynamicItem(item)" aria-label="حذف المنتج">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                    <button mat-icon-button class="text-navy" (click)="openUpdateQuantity(updateQuantity, item)"
+                      aria-label="تعديل الكمية">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              }
+              @if (dynamicOrderList.length === 0) {
+                <tr>
+                  <td colspan="7" class="text-center text-muted py-5">
+                    <mat-icon class="d-block mx-auto mb-2 opacity-25 empty-icon">shopping_cart</mat-icon>
+                    لا توجد منتجات مضافة
+                  </td>
+                </tr>
+              }
             </tbody>
-            <tfoot *ngIf="dynamicOrderList.length > 0">
-              <tr class="table-total-row">
-                <th colspan="3" class="text-start">الإجمالى الكلى</th>
-                <th class="text-center fs-5 text-navy">{{ totalValue }}</th>
-                <th colspan="3"></th>
-              </tr>
-            </tfoot>
+            @if (dynamicOrderList.length > 0) {
+              <tfoot>
+                <tr class="table-total-row">
+                  <th colspan="3" class="text-start">الإجمالى الكلى</th>
+                  <th class="text-center fs-5 text-navy">{{ totalValue }}</th>
+                  <th colspan="3"></th>
+                </tr>
+              </tfoot>
+            }
           </table>
         </div>
 
@@ -164,10 +174,12 @@
             <input matInput type="text" [formControl]="myControl" [matAutocomplete]="auto" (keyup.enter)="search()">
             <mat-icon matSuffix class="text-accent">person</mat-icon>
             <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              <mat-option *ngFor="let option of filteredOptions | async" [value]="option"
-                (onSelectionChange)="OnHumanSelected(option)">
-                {{ option }}
-              </mat-option>
+              @for (option of filteredOptions | async; track option) {
+                <mat-option [value]="option"
+                  (onSelectionChange)="OnHumanSelected(option)">
+                  {{ option }}
+                </mat-option>
+              }
             </mat-autocomplete>
           </mat-form-field>
           <button mat-mini-fab class="btn-navy add-customer-btn" (click)="addDialog()" aria-label="إضافة عميل جديد">
@@ -179,9 +191,11 @@
         <mat-form-field appearance="outline" class="w-100 mb-2">
           <mat-label>{{ arabic.saleOrder.util.paymentType }}</mat-label>
           <select matNativeControl [(ngModel)]="saleOrderObj.paymentType" (change)="onPaymentTypeChange($event)">
-            <option *ngFor="let item of saleOrderObj.dataLake.paymentType" [value]="item.value">
-              {{ item.key }}
-            </option>
+            @for (item of saleOrderObj.dataLake.paymentType; track item) {
+              <option [value]="item.value">
+                {{ item.key }}
+              </option>
+            }
           </select>
         </mat-form-field>
 

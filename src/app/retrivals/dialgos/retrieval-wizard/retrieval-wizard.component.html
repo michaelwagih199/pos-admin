@@ -13,162 +13,159 @@
   </div>
 
   <!-- STEP 0: RETURN TYPE -->
-  <div *ngIf="step === 0" class="wizard-step">
-    <h3>اختر نوع المرتجع</h3>
-    <mat-button-toggle-group [(ngModel)]="returnType" class="full-width-toggle">
-      <mat-button-toggle value="CUSTOMER">
-        <mat-icon>person</mat-icon> مرتجع مبيعات (عميل)
-      </mat-button-toggle>
-      <mat-button-toggle value="SUPPLIER">
-        <mat-icon>business</mat-icon> مرتجع مشتريات (مورد)
-      </mat-button-toggle>
-    </mat-button-toggle-group>
-    <button mat-raised-button color="primary" class="next-btn" (click)="step = 1">التالي</button>
-  </div>
+  @if (step === 0) {
+    <div class="wizard-step">
+      <h3>اختر نوع المرتجع</h3>
+      <mat-button-toggle-group [(ngModel)]="returnType" class="full-width-toggle">
+        <mat-button-toggle value="CUSTOMER">
+          <mat-icon>person</mat-icon> مرتجع مبيعات (عميل)
+        </mat-button-toggle>
+        <mat-button-toggle value="SUPPLIER">
+          <mat-icon>business</mat-icon> مرتجع مشتريات (مورد)
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+      <button mat-raised-button color="primary" class="next-btn" (click)="step = 1">التالي</button>
+    </div>
+  }
 
   <!-- STEP 1: PERSON SELECTION -->
-  <div *ngIf="step === 1" class="wizard-step">
-    <h3>بحث عن {{ returnType === 'CUSTOMER' ? 'عميل' : 'مورد' }}</h3>
-    <mat-form-field appearance="outline" class="full-width">
-      <mat-label>الاسم أو رقم الهاتف</mat-label>
-      <input matInput [formControl]="searchCtrl" [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPersonSelected($event.option.value)">
-        <mat-option *ngFor="let p of filteredPeople | async" [value]="p">
-          {{ p.name }} <small class="text-muted">{{ p.phone }}</small>
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </div>
+  @if (step === 1) {
+    <div class="wizard-step">
+      <h3>بحث عن {{ returnType === 'CUSTOMER' ? 'عميل' : 'مورد' }}</h3>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>الاسم أو رقم الهاتف</mat-label>
+        <input matInput [formControl]="searchCtrl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPersonSelected($event.option.value)">
+          @for (p of filteredPeople | async; track p) {
+            <mat-option [value]="p">
+              {{ p.name }} <small class="text-muted">{{ p.phone }}</small>
+            </mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+  }
 
   <!-- STEP 2: PRODUCTS GRID -->
-  <div *ngIf="step === 2" class="wizard-step">
-    <div class="person-badge">
-      <mat-icon>check_circle</mat-icon> {{ selectedPerson?.name }}
-    </div>
-
-<table mat-table [dataSource]="products" class="mat-elevation-z0 products-table">
-  <!-- Product name -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> المنتج </th>
-    <td mat-cell *matCellDef="let p">
-      <div class="product-name">{{ p.productName }}</div>
-      <div class="product-meta">آخر سعر: {{ p.lastPrice }} ج.م</div>
-    </td>
-  </ng-container>
-
-  <!-- Available for return — rolls + units -->
-  <ng-container matColumnDef="returnable">
-    <th mat-header-cell *matHeaderCellDef> متاح للإرجاع </th>
-    <td mat-cell *matCellDef="let p">
-      <div class="returnable-qty">
-        <b>{{ p.availableCanvases ?? 0 }}</b>
-        <span class="unit-label">توب</span>
-        <ng-container *ngIf="(p.availableUnits ?? 0) > 0">
-          <span class="divider">·</span>
-          <b style="color:#4f46e5;">
-            {{ (p.availableUnits ?? 0) | number:'1.0-3' }}
-          </b>
-          <span class="unit-label">
-            {{ p.measurementUnit === 'METER' ? 'متر' : 'كجم' }}
-          </span>
+  @if (step === 2) {
+    <div class="wizard-step">
+      <div class="person-badge">
+        <mat-icon>check_circle</mat-icon> {{ selectedPerson?.name }}
+      </div>
+      <table mat-table [dataSource]="products" class="mat-elevation-z0 products-table">
+        <!-- Product name -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> المنتج </th>
+          <td mat-cell *matCellDef="let p">
+            <div class="product-name">{{ p.productName }}</div>
+            <div class="product-meta">آخر سعر: {{ p.lastPrice }} ج.م</div>
+          </td>
         </ng-container>
-      </div>
-      <div class="return-history">
-        تم إرجاع {{ p.totalReturned ?? 0 }} من {{ p.totalPurchased ?? 0 }} توب
-      </div>
-    </td>
-  </ng-container>
-
-  <!-- Action button -->
-  <ng-container matColumnDef="action">
-    <th mat-header-cell *matHeaderCellDef></th>
-    <td mat-cell *matCellDef="let p">
-      <button mat-raised-button color="primary"
+        <!-- Available for return — rolls + units -->
+        <ng-container matColumnDef="returnable">
+          <th mat-header-cell *matHeaderCellDef> متاح للإرجاع </th>
+          <td mat-cell *matCellDef="let p">
+            <div class="returnable-qty">
+              <b>{{ p.availableCanvases ?? 0 }}</b>
+              <span class="unit-label">توب</span>
+              @if ((p.availableUnits ?? 0) > 0) {
+                <span class="divider">·</span>
+                <b style="color:#4f46e5;">
+                  {{ (p.availableUnits ?? 0) | number:'1.0-3' }}
+                </b>
+                <span class="unit-label">
+                  {{ p.measurementUnit === 'METER' ? 'متر' : 'كجم' }}
+                </span>
+              }
+            </div>
+            <div class="return-history">
+              تم إرجاع {{ p.totalReturned ?? 0 }} من {{ p.totalPurchased ?? 0 }} توب
+            </div>
+          </td>
+        </ng-container>
+        <!-- Action button -->
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let p">
+            <button mat-raised-button color="primary"
               (click)="openReturnDialog(p)"
               [disabled]="(p.availableUnits ?? 0) <= 0">
-        <mat-icon>autorenew</mat-icon> إرجاع
-      </button>
-    </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="['name','returnable','action']"></tr>
-  <tr mat-row *matRowDef="let row; columns: ['name','returnable','action'];"></tr>
-</table>
-
-    <div class="step-actions">
-      <button mat-stroked-button (click)="step = 1">رجوع</button>
-      <button mat-raised-button color="accent" (click)="step = 3" [disabled]="cart.length === 0">
-        مراجعة السلة ({{ cart.length }})
-      </button>
-    </div>
-  </div>
-
-  <!-- STEP 3: REVIEW & CONFIRM -->
-  <div *ngIf="step === 3" class="wizard-step">
-    <h3>مراجعة المرتجع</h3>
-    <table mat-table [dataSource]="cart" class="mat-elevation-z0 review-table">
-      <ng-container matColumnDef="product">
-        <th mat-header-cell *matHeaderCellDef> المنتج </th>
-        <td mat-cell *matCellDef="let e"> {{ e.productName }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="pieces">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الاتواب </th>
-        <td mat-cell *matCellDef="let e" class="text-center"> {{ e.quantity }} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="units">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الوحدات </th>
-        <td mat-cell *matCellDef="let e" class="text-center">
-          {{ e.unitNumber | number:'1.0-3' }}
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="condition">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> الحالة </th>
-        <td mat-cell *matCellDef="let e" class="text-center">
-          <span class="badge" [class.badge-good]="e.returnCondition==='GOOD'"
-            [class.badge-damaged]="e.returnCondition==='DAMAGED'">
-            {{ e.returnCondition === 'GOOD' ? 'سليم' : 'تالف' }}
-          </span>
-        </td>
-      </ng-container>
-
-      <ng-container matColumnDef="total">
-        <th mat-header-cell *matHeaderCellDef class="text-center"> الإجمالي </th>
-        <td mat-cell *matCellDef="let e" class="text-center">
-          {{ e.total | currency:'EGP':'symbol':'1.2-2' }}
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="reviewColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: reviewColumns;"></tr>
-    </table>
-
-    <div class="review-options">
-      <mat-form-field appearance="outline">
-        <mat-label>الخصم</mat-label>
-        <input matInput type="number" [(ngModel)]="discount">
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>طريقة الرد</mat-label>
-        <mat-select [(ngModel)]="refundMethod">
-          <mat-option value="CREDIT">رصيد (خصم من الحساب)</mat-option>
-          <mat-option value="CASH">كاش (سحب من الخزنة)</mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-
-    <div class="footer-actions">
-      <div class="total-display">الصافي: {{ netTotal | currency:'EGP':'symbol':'1.2-2' }}</div>
-      <div class="action-buttons">
-        <button mat-stroked-button (click)="step = 2">رجوع</button>
-        <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0">
-          <mat-icon>check_circle</mat-icon> تأكيد وحفظ
+              <mat-icon>autorenew</mat-icon> إرجاع
+            </button>
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="['name','returnable','action']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['name','returnable','action'];"></tr>
+      </table>
+      <div class="step-actions">
+        <button mat-stroked-button (click)="step = 1">رجوع</button>
+        <button mat-raised-button color="accent" (click)="step = 3" [disabled]="cart.length === 0">
+          مراجعة السلة ({{ cart.length }})
         </button>
       </div>
     </div>
-  </div>
+  }
+
+  <!-- STEP 3: REVIEW & CONFIRM -->
+  @if (step === 3) {
+    <div class="wizard-step">
+      <h3>مراجعة المرتجع</h3>
+      <table mat-table [dataSource]="cart" class="mat-elevation-z0 review-table">
+        <ng-container matColumnDef="product">
+          <th mat-header-cell *matHeaderCellDef> المنتج </th>
+          <td mat-cell *matCellDef="let e"> {{ e.productName }} </td>
+        </ng-container>
+        <ng-container matColumnDef="pieces">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الاتواب </th>
+          <td mat-cell *matCellDef="let e" class="text-center"> {{ e.quantity }} </td>
+        </ng-container>
+        <ng-container matColumnDef="units">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الوحدات </th>
+          <td mat-cell *matCellDef="let e" class="text-center">
+            {{ e.unitNumber | number:'1.0-3' }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="condition">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> الحالة </th>
+          <td mat-cell *matCellDef="let e" class="text-center">
+            <span class="badge" [class.badge-good]="e.returnCondition==='GOOD'"
+              [class.badge-damaged]="e.returnCondition==='DAMAGED'">
+              {{ e.returnCondition === 'GOOD' ? 'سليم' : 'تالف' }}
+            </span>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="total">
+          <th mat-header-cell *matHeaderCellDef class="text-center"> الإجمالي </th>
+          <td mat-cell *matCellDef="let e" class="text-center">
+            {{ e.total | currency:'EGP':'symbol':'1.2-2' }}
+          </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="reviewColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: reviewColumns;"></tr>
+      </table>
+      <div class="review-options">
+        <mat-form-field appearance="outline">
+          <mat-label>الخصم</mat-label>
+          <input matInput type="number" [(ngModel)]="discount">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>طريقة الرد</mat-label>
+          <mat-select [(ngModel)]="refundMethod">
+            <mat-option value="CREDIT">رصيد (خصم من الحساب)</mat-option>
+            <mat-option value="CASH">كاش (سحب من الخزنة)</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="footer-actions">
+        <div class="total-display">الصافي: {{ netTotal | currency:'EGP':'symbol':'1.2-2' }}</div>
+        <div class="action-buttons">
+          <button mat-stroked-button (click)="step = 2">رجوع</button>
+          <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0">
+            <mat-icon>check_circle</mat-icon> تأكيد وحفظ
+          </button>
+        </div>
+      </div>
+    </div>
+  }
 
 </div>

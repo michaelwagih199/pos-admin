@@ -1,5 +1,7 @@
 <div class="payment-screen" dir="rtl">
-  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  @if (isLoading) {
+    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+  }
 
   <!-- Header -->
   <div class="screen-header">
@@ -21,31 +23,39 @@
           <mat-icon matSuffix color="primary">search</mat-icon>
           <mat-autocomplete #autoCustomer="matAutocomplete" [displayWith]="displayFn"
             (optionSelected)="onCustomerSelected($event.option.value)">
-            <mat-option *ngFor="let c of filteredCustomers | async" [value]="c">
-              {{ c.customerName }}
-              <small class="customer-phone" *ngIf="c.customerPhone">— {{ c.customerPhone }}</small>
-            </mat-option>
+            @for (c of filteredCustomers | async; track c) {
+              <mat-option [value]="c">
+                {{ c.customerName }}
+                @if (c.customerPhone) {
+                  <small class="customer-phone">— {{ c.customerPhone }}</small>
+                }
+              </mat-option>
+            }
           </mat-autocomplete>
         </mat-form-field>
 
         <!-- Customer card -->
-        <div class="customer-card" *ngIf="selectedCustomer">
-          <div class="customer-row">
-            <mat-icon>person</mat-icon>
-            <span class="customer-name">{{ selectedCustomer.customerName }}</span>
+        @if (selectedCustomer) {
+          <div class="customer-card">
+            <div class="customer-row">
+              <mat-icon>person</mat-icon>
+              <span class="customer-name">{{ selectedCustomer.customerName }}</span>
+            </div>
+            @if (selectedCustomer.customerPhone) {
+              <div class="customer-row muted">
+                <mat-icon>phone</mat-icon>
+                <span>{{ selectedCustomer.customerPhone }}</span>
+              </div>
+            }
+            <mat-divider class="my-2"></mat-divider>
+            <div class="balance-row">
+              <span>{{ arabic.customerPayment.currentBalance }}:</span>
+              <span class="balance-value" [class.credit]="currentBalance < 0">
+                {{ currentBalance | number:'1.2-2' }} {{ arabic.customerPayment.currency }}
+              </span>
+            </div>
           </div>
-          <div class="customer-row muted" *ngIf="selectedCustomer.customerPhone">
-            <mat-icon>phone</mat-icon>
-            <span>{{ selectedCustomer.customerPhone }}</span>
-          </div>
-          <mat-divider class="my-2"></mat-divider>
-          <div class="balance-row">
-            <span>{{ arabic.customerPayment.currentBalance }}:</span>
-            <span class="balance-value" [class.credit]="currentBalance < 0">
-              {{ currentBalance | number:'1.2-2' }} {{ arabic.customerPayment.currency }}
-            </span>
-          </div>
-        </div>
+        }
 
         <!-- ===== بيانات الدفعة ===== -->
         <div class="section-title mt-4">{{ arabic.customerPayment.paymentSection }}</div>
@@ -75,20 +85,24 @@
         </mat-form-field>
 
         <!-- Remaining after -->
-        <div class="remaining-card" *ngIf="selectedCustomer && validateForm.get('paymentValue')?.value">
-          <span>{{ arabic.customerPayment.remainingAfter }}:</span>
-          <span class="remaining-value">
-            {{ remainingAfter | number:'1.2-2' }} {{ arabic.customerPayment.currency }}
-          </span>
-        </div>
+        @if (selectedCustomer && validateForm.get('paymentValue')?.value) {
+          <div class="remaining-card">
+            <span>{{ arabic.customerPayment.remainingAfter }}:</span>
+            <span class="remaining-value">
+              {{ remainingAfter | number:'1.2-2' }} {{ arabic.customerPayment.currency }}
+            </span>
+          </div>
+        }
         <!-- Over-payment warning (non-blocking) -->
-        <div class="warning-card" *ngIf="isOverPayment">
-          <mat-icon>warning</mat-icon>
-          <span>
-            {{ arabic.customerPayment.overPaymentWarning }}
-            ({{ currentBalance | number:'1.2-2' }} {{ arabic.customerPayment.currency }})
-          </span>
-        </div>
+        @if (isOverPayment) {
+          <div class="warning-card">
+            <mat-icon>warning</mat-icon>
+            <span>
+              {{ arabic.customerPayment.overPaymentWarning }}
+              ({{ currentBalance | number:'1.2-2' }} {{ arabic.customerPayment.currency }})
+            </span>
+          </div>
+        }
         <!-- ===== Actions ===== -->
         <div class="actions">
           <button mat-raised-button color="primary" (click)="save()"

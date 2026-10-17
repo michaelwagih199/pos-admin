@@ -7,19 +7,23 @@
 
     <div class="header-actions">
       <button mat-icon-button color="primary" (click)="loadReport()" [disabled]="isLoading"
-              matTooltip="تحديث">
+        matTooltip="تحديث">
         <mat-icon>refresh</mat-icon>
       </button>
 
-      <button mat-stroked-button color="accent" (click)="exportToExcel()"
-              *ngIf="loaded && rows.length > 0">
-        <mat-icon>file_download</mat-icon> {{ arabic.collectorReport.exportExcel }}
-      </button>
+      @if (loaded && rows.length > 0) {
+        <button mat-stroked-button color="accent" (click)="exportToExcel()"
+          >
+          <mat-icon>file_download</mat-icon> {{ arabic.collectorReport.exportExcel }}
+        </button>
+      }
 
-      <button mat-raised-button color="primary" (click)="print()"
-              *ngIf="loaded && rows.length > 0">
-        <mat-icon>print</mat-icon> {{ arabic.collectorReport.print }}
-      </button>
+      @if (loaded && rows.length > 0) {
+        <button mat-raised-button color="primary" (click)="print()"
+          >
+          <mat-icon>print</mat-icon> {{ arabic.collectorReport.print }}
+        </button>
+      }
     </div>
   </div>
 
@@ -31,93 +35,98 @@
     </div>
   </div>
 
-  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" class="no-print"></mat-progress-bar>
+  @if (isLoading) {
+    <mat-progress-bar color="accent" mode="indeterminate" class="no-print"></mat-progress-bar>
+  }
 
   <!-- Summary cards -->
-  <div class="summary-row" *ngIf="loaded && rows.length > 0">
-    <div class="summary-card navy">
-      <mat-icon>payments</mat-icon>
-      <div class="summary-body">
-        <span class="summary-label">{{ arabic.collectorReport.totalCollected }}</span>
-        <span class="summary-value">
-          {{ totalCollected | number:'1.2-2' }} {{ arabic.collectorReport.currency }}
-        </span>
+  @if (loaded && rows.length > 0) {
+    <div class="summary-row">
+      <div class="summary-card navy">
+        <mat-icon>payments</mat-icon>
+        <div class="summary-body">
+          <span class="summary-label">{{ arabic.collectorReport.totalCollected }}</span>
+          <span class="summary-value">
+            {{ totalCollected | number:'1.2-2' }} {{ arabic.collectorReport.currency }}
+          </span>
+        </div>
+      </div>
+      <div class="summary-card accent">
+        <mat-icon>people</mat-icon>
+        <div class="summary-body">
+          <span class="summary-label">{{ arabic.collectorReport.customerCount }}</span>
+          <span class="summary-value">{{ customerCount }}</span>
+        </div>
       </div>
     </div>
-
-    <div class="summary-card accent">
-      <mat-icon>people</mat-icon>
-      <div class="summary-body">
-        <span class="summary-label">{{ arabic.collectorReport.customerCount }}</span>
-        <span class="summary-value">{{ customerCount }}</span>
-      </div>
-    </div>
-  </div>
+  }
 
   <!-- Table -->
-  <mat-card class="table-card" *ngIf="loaded && rows.length > 0">
-    <mat-card-content>
-      <table mat-table [dataSource]="rows" class="collector-table">
-        <ng-container matColumnDef="index">
-          <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.index }} </th>
-          <td mat-cell *matCellDef="let row; let i = index"> {{ i + 1 }} </td>
-        </ng-container>
-
-        <ng-container matColumnDef="customerName">
-          <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.customerName }} </th>
-          <td mat-cell *matCellDef="let row">
-            <div class="customer-cell">
-              <span class="customer-name">{{ row.customerName }}</span>
-              <small *ngIf="row.customerPhone" class="customer-phone">
-                <mat-icon inline>phone</mat-icon> {{ row.customerPhone }}
-              </small>
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="lastPaymentDate">
-          <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.lastPaymentDate }} </th>
-          <td mat-cell *matCellDef="let row">
-            <span *ngIf="row.lastPaymentDate; else noPayment">
-              {{ row.lastPaymentDate | date:'yyyy-MM-dd' }}
-            </span>
-            <ng-template #noPayment>
-              <span class="muted">—</span>
-            </ng-template>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="collectedAmount">
-          <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.collectedAmount }} </th>
-          <td mat-cell *matCellDef="let row" class="amount-cell">
-            {{ row.collectedAmount | number:'1.2-2' }}
-            <span class="currency">{{ arabic.collectorReport.currency }}</span>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="totalRemainingDebt">
-          <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.remainingDebt }} </th>
-          <td mat-cell *matCellDef="let row"
+  @if (loaded && rows.length > 0) {
+    <mat-card class="table-card">
+      <mat-card-content>
+        <table mat-table [dataSource]="rows" class="collector-table">
+          <ng-container matColumnDef="index">
+            <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.index }} </th>
+            <td mat-cell *matCellDef="let row; let i = index"> {{ i + 1 }} </td>
+          </ng-container>
+          <ng-container matColumnDef="customerName">
+            <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.customerName }} </th>
+            <td mat-cell *matCellDef="let row">
+              <div class="customer-cell">
+                <span class="customer-name">{{ row.customerName }}</span>
+                @if (row.customerPhone) {
+                  <small class="customer-phone">
+                    <mat-icon inline>phone</mat-icon> {{ row.customerPhone }}
+                  </small>
+                }
+              </div>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="lastPaymentDate">
+            <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.lastPaymentDate }} </th>
+            <td mat-cell *matCellDef="let row">
+              @if (row.lastPaymentDate) {
+                <span>
+                  {{ row.lastPaymentDate | date:'yyyy-MM-dd' }}
+                </span>
+              } @else {
+                <span class="muted">—</span>
+              }
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="collectedAmount">
+            <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.collectedAmount }} </th>
+            <td mat-cell *matCellDef="let row" class="amount-cell">
+              {{ row.collectedAmount | number:'1.2-2' }}
+              <span class="currency">{{ arabic.collectorReport.currency }}</span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="totalRemainingDebt">
+            <th mat-header-cell *matHeaderCellDef> {{ arabic.collectorReport.table.remainingDebt }} </th>
+            <td mat-cell *matCellDef="let row"
               [class.credit]="row.totalRemainingDebt < 0"
               [class.debt]="row.totalRemainingDebt > 0"
               class="amount-cell">
-            {{ row.totalRemainingDebt | number:'1.2-2' }}
-            <span class="currency">{{ arabic.collectorReport.currency }}</span>
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
-      </table>
-    </mat-card-content>
-  </mat-card>
+              {{ row.totalRemainingDebt | number:'1.2-2' }}
+              <span class="currency">{{ arabic.collectorReport.currency }}</span>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </mat-card-content>
+    </mat-card>
+  }
 
   <!-- Empty state -->
-  <mat-card class="empty-card no-print" *ngIf="loaded && rows.length === 0">
-    <mat-card-content>
-      <mat-icon class="empty-icon">event_busy</mat-icon>
-      <h3>{{ arabic.collectorReport.emptyTitle }}</h3>
-      <p>{{ arabic.collectorReport.emptyHint }}</p>
-    </mat-card-content>
-  </mat-card>
+  @if (loaded && rows.length === 0) {
+    <mat-card class="empty-card no-print">
+      <mat-card-content>
+        <mat-icon class="empty-icon">event_busy</mat-icon>
+        <h3>{{ arabic.collectorReport.emptyTitle }}</h3>
+        <p>{{ arabic.collectorReport.emptyHint }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
 </div>

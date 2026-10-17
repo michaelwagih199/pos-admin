@@ -80,7 +80,7 @@ export class ReciptReportComponent
   }
 
   @HostListener('window:afterprint')
-  toSaleOrder(val: any) {
+  toSaleOrder(val?: any) {
     this.redirectTo(`/${val}`);
   }
 

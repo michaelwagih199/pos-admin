@@ -29,9 +29,11 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>الموردين</mat-label>
             <mat-select [(ngModel)]="selectedSupllier" formControlName="supplierName">
-              <mat-option *ngFor="let item of supliersList" [value]="item">
-                {{ item.supplierName }}
-              </mat-option>
+              @for (item of supliersList; track item) {
+                <mat-option [value]="item">
+                  {{ item.supplierName }}
+                </mat-option>
+              }
             </mat-select>
           </mat-form-field>
         </div>
@@ -55,9 +57,11 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>المنتجات</mat-label>
             <mat-select required autocomplete="off" [(ngModel)]="product" formControlName="product">
-              <mat-option *ngFor="let item of productList" [value]="item">
-                {{ item.productName }}
-              </mat-option>
+              @for (item of productList; track item) {
+                <mat-option [value]="item">
+                  {{ item.productName }}
+                </mat-option>
+              }
             </mat-select>
           </mat-form-field>
         </div>
@@ -65,14 +69,14 @@
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>الكمية (م/كجم)</mat-label>
             <input matInput type="number" required placeholder="الكمية" formControlName="quantity"
-                   [(ngModel)]="purchasingDetails.itemQuantity" autocomplete="off">
+              [(ngModel)]="purchasingDetails.itemQuantity" autocomplete="off">
           </mat-form-field>
         </div>
         <div class="col">
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>عدد الاتواب</mat-label>
             <input matInput type="number" required placeholder="عدد الاتواب" formControlName="numberOfPieces"
-                   [(ngModel)]="purchasingDetails.numberOfPieces" autocomplete="off">
+              [(ngModel)]="purchasingDetails.numberOfPieces" autocomplete="off">
           </mat-form-field>
         </div>
         <div class="col mt-2">
@@ -95,16 +99,18 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let item of dynamicOrderList">
-            <td>{{ item.product.productName }}</td>
-            <td>{{ item.itemQuantity }}</td>
-            <td>{{ item.numberOfPieces }}</td>
-            <td>
-              <button mat-icon-button color="warn" (click)="deleteDynamicItem(item)">
-                <mat-icon>delete</mat-icon>
-              </button>
-            </td>
-          </tr>
+          @for (item of dynamicOrderList; track item) {
+            <tr>
+              <td>{{ item.product.productName }}</td>
+              <td>{{ item.itemQuantity }}</td>
+              <td>{{ item.numberOfPieces }}</td>
+              <td>
+                <button mat-icon-button color="warn" (click)="deleteDynamicItem(item)">
+                  <mat-icon>delete</mat-icon>
+                </button>
+              </td>
+            </tr>
+          }
         </tbody>
       </table>
     </div>

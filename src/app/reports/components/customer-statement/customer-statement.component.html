@@ -5,7 +5,9 @@
     <h2>{{ arabic.customerStatement.title }}</h2>
   </div>
 
-  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  @if (isLoading) {
+    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+  }
 
   <!-- ===== FILTERS ===== -->
   <mat-card class="filter-card no-print">
@@ -17,10 +19,14 @@
           <mat-icon matSuffix color="primary">person_search</mat-icon>
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
             (optionSelected)="onCustomerSelected($event.option.value)">
-            <mat-option *ngFor="let c of filteredCustomers | async" [value]="c">
-              {{ c.customerName }}
-              <small *ngIf="c.customerPhone" class="muted">— {{ c.customerPhone }}</small>
-            </mat-option>
+            @for (c of filteredCustomers | async; track c) {
+              <mat-option [value]="c">
+                {{ c.customerName }}
+                @if (c.customerPhone) {
+                  <small class="muted">— {{ c.customerPhone }}</small>
+                }
+              </mat-option>
+            }
           </mat-autocomplete>
         </mat-form-field>
 
@@ -43,175 +49,185 @@
           <mat-icon>search</mat-icon> {{ arabic.customerStatement.show }}
         </button>
 
-        <button mat-stroked-button class="action-btn" (click)="print()" *ngIf="loaded && statement">
-          <mat-icon>print</mat-icon> {{ arabic.customerStatement.print }}
-        </button>
+        @if (loaded && statement) {
+          <button mat-stroked-button class="action-btn" (click)="print()">
+            <mat-icon>print</mat-icon> {{ arabic.customerStatement.print }}
+          </button>
+        }
         <button mat-raised-button color="accent" class="action-btn"
-        (click)="openDetailedStatement()"
-        [disabled]="!selectedCustomer">
-  <mat-icon>description</mat-icon> كشف مفصل
-</button>
+          (click)="openDetailedStatement()"
+          [disabled]="!selectedCustomer">
+          <mat-icon>description</mat-icon> كشف مفصل
+        </button>
       </div>
     </mat-card-content>
   </mat-card>
 
   <!-- ===== STATEMENT ===== -->
-  <div *ngIf="loaded && statement" class="statement-body">
-
-    <!-- Customer info -->
-    <div class="info-card">
-      <div class="info-row">
-        <mat-icon>person</mat-icon>
-        <span class="info-name">{{ statement.customerName }}</span>
+  @if (loaded && statement) {
+    <div class="statement-body">
+      <!-- Customer info -->
+      <div class="info-card">
+        <div class="info-row">
+          <mat-icon>person</mat-icon>
+          <span class="info-name">{{ statement.customerName }}</span>
+        </div>
+        @if (statement.customerPhone) {
+          <div class="info-row">
+            <mat-icon>phone</mat-icon>
+            <span>{{ statement.customerPhone }}</span>
+          </div>
+        }
+        <div class="info-row">
+          <mat-icon>date_range</mat-icon>
+          <span>
+            {{ statement.fromDate | date:'yyyy-MM-dd' }}
+            ←
+            {{ statement.toDate | date:'yyyy-MM-dd' }}
+          </span>
+        </div>
       </div>
-      <div class="info-row" *ngIf="statement.customerPhone">
-        <mat-icon>phone</mat-icon>
-        <span>{{ statement.customerPhone }}</span>
+      <!-- Summary cards -->
+      <div class="summary-row">
+        <div class="summary-card opening">
+          <span class="label">{{ arabic.customerStatement.openingBalance }}</span>
+          <span class="value">{{ statement.openingBalance | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card orders">
+          <span class="label">{{ arabic.customerStatement.totalOrders }}</span>
+          <span class="value">{{ statement.totalOrders | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card payments">
+          <span class="label">{{ arabic.customerStatement.totalPayments }}</span>
+          <span class="value">{{ statement.totalPayments | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card returns">
+          <span class="label">{{ arabic.customerStatement.totalReturns }}</span>
+          <span class="value">{{ statement.totalReturns | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card closing" [class.credit]="statement.closingBalance < 0">
+          <span class="label">{{ arabic.customerStatement.closingBalance }}</span>
+          <span class="value">{{ statement.closingBalance | number:'1.2-2' }}</span>
+        </div>
       </div>
-      <div class="info-row">
-        <mat-icon>date_range</mat-icon>
-        <span>
-          {{ statement.fromDate | date:'yyyy-MM-dd' }}
-          ←
-          {{ statement.toDate | date:'yyyy-MM-dd' }}
-        </span>
+      <!-- Orders -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon>shopping_bag</mat-icon>
+          <span>{{ arabic.customerStatement.ordersSection }}</span>
+          <span class="count">{{ statement.orders.length }}</span>
+        </div>
+        @if (statement.orders.length > 0) {
+          <table class="data-table table-orders">
+            <thead>
+              <tr>
+                <th>{{ arabic.customerStatement.table.date }}</th>
+                <th>{{ arabic.customerStatement.table.code }}</th>
+                <th class="num">{{ arabic.customerStatement.table.total }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (o of statement.orders; track o) {
+                <tr>
+                  <td>{{ o.date | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ o.orderCode }}</td>
+                  <td class="num">{{ o.netCost | number:'1.2-2' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty">{{ arabic.customerStatement.noOrders }}</div>
+        }
       </div>
-    </div>
-
-    <!-- Summary cards -->
-    <div class="summary-row">
-      <div class="summary-card opening">
-        <span class="label">{{ arabic.customerStatement.openingBalance }}</span>
-        <span class="value">{{ statement.openingBalance | number:'1.2-2' }}</span>
+      <!-- Payments -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon>payments</mat-icon>
+          <span>{{ arabic.customerStatement.paymentsSection }}</span>
+          <span class="count">{{ statement.payments.length }}</span>
+        </div>
+        @if (statement.payments.length > 0) {
+          <table class="data-table table-payments">
+            <thead>
+              <tr>
+                <th>{{ arabic.customerStatement.table.date }}</th>
+                <th class="num">{{ arabic.customerStatement.table.value }}</th>
+                <th>{{ arabic.customerStatement.table.notes }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of statement.payments; track p) {
+                <tr>
+                  <td>{{ p.date | date:'yyyy-MM-dd' }}</td>
+                  <td class="num">{{ p.value | number:'1.2-2' }}</td>
+                  <td class="notes">{{ p.notes || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty">{{ arabic.customerStatement.noPayments }}</div>
+        }
       </div>
-      <div class="summary-card orders">
-        <span class="label">{{ arabic.customerStatement.totalOrders }}</span>
-        <span class="value">{{ statement.totalOrders | number:'1.2-2' }}</span>
+      <!-- Retrievals -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon>autorenew</mat-icon>
+          <span>{{ arabic.customerStatement.retrievalsSection }}</span>
+          <span class="count">{{ statement.retrievals.length }}</span>
+        </div>
+        @if (statement.retrievals.length > 0) {
+          <table class="data-table table-retrievals">
+            <thead>
+              <tr>
+                <th>{{ arabic.customerStatement.table.date }}</th>
+                <th>{{ arabic.customerStatement.table.code }}</th>
+                <th class="num">{{ arabic.customerStatement.table.total }}</th>
+                <th class="num">{{ arabic.customerStatement.table.net }}</th>
+                <th>{{ arabic.customerStatement.table.refund }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of statement.retrievals; track r) {
+                <tr>
+                  <td>{{ r.date | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ r.code }}</td>
+                  <td class="num">{{ r.totalCost | number:'1.2-2' }}</td>
+                  <td class="num">{{ r.netCost | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge" [class.badge-credit]="r.refundMethod === 'CREDIT'"
+                      [class.badge-cash]="r.refundMethod === 'CASH'">
+                      {{ r.refundMethod === 'CREDIT'
+                      ? arabic.customerStatement.refundCredit
+                      : arabic.customerStatement.refundCash }}
+                    </span>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty">{{ arabic.customerStatement.noRetrievals }}</div>
+        }
       </div>
-      <div class="summary-card payments">
-        <span class="label">{{ arabic.customerStatement.totalPayments }}</span>
-        <span class="value">{{ statement.totalPayments | number:'1.2-2' }}</span>
-      </div>
-      <div class="summary-card returns">
-        <span class="label">{{ arabic.customerStatement.totalReturns }}</span>
-        <span class="value">{{ statement.totalReturns | number:'1.2-2' }}</span>
-      </div>
-      <div class="summary-card closing" [class.credit]="statement.closingBalance < 0">
-        <span class="label">{{ arabic.customerStatement.closingBalance }}</span>
-        <span class="value">{{ statement.closingBalance | number:'1.2-2' }}</span>
-      </div>
-    </div>
-
-    <!-- Orders -->
-    <div class="section-card">
-      <div class="section-header">
-        <mat-icon>shopping_bag</mat-icon>
-        <span>{{ arabic.customerStatement.ordersSection }}</span>
-        <span class="count">{{ statement.orders.length }}</span>
-      </div>
-      <table class="data-table table-orders" *ngIf="statement.orders.length > 0; else emptyOrders">
-<thead>
-  <tr>
-    <th>{{ arabic.customerStatement.table.date }}</th>
-    <th>{{ arabic.customerStatement.table.code }}</th>
-    <th class="num">{{ arabic.customerStatement.table.total }}</th>
-  </tr>
-</thead>
-<tbody>
-  <tr *ngFor="let o of statement.orders">
-    <td>{{ o.date | date:'yyyy-MM-dd' }}</td>
-    <td>{{ o.orderCode }}</td>
-    <td class="num">{{ o.netCost | number:'1.2-2' }}</td>
-  </tr>
-</tbody>
-      </table>
-      <ng-template #emptyOrders>
-        <div class="empty">{{ arabic.customerStatement.noOrders }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Payments -->
-    <div class="section-card">
-      <div class="section-header">
-        <mat-icon>payments</mat-icon>
-        <span>{{ arabic.customerStatement.paymentsSection }}</span>
-        <span class="count">{{ statement.payments.length }}</span>
-      </div>
-      <table class="data-table table-payments" *ngIf="statement.payments.length > 0; else emptyPayments">
-<thead>
-  <tr>
-    <th>{{ arabic.customerStatement.table.date }}</th>
-    <th class="num">{{ arabic.customerStatement.table.value }}</th>
-    <th>{{ arabic.customerStatement.table.notes }}</th>
-  </tr>
-</thead>
-<tbody>
-  <tr *ngFor="let p of statement.payments">
-    <td>{{ p.date | date:'yyyy-MM-dd' }}</td>
-    <td class="num">{{ p.value | number:'1.2-2' }}</td>
-    <td class="notes">{{ p.notes || '—' }}</td>
-  </tr>
-</tbody>
-      </table>
-      <ng-template #emptyPayments>
-        <div class="empty">{{ arabic.customerStatement.noPayments }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Retrievals -->
-    <div class="section-card">
-      <div class="section-header">
-        <mat-icon>autorenew</mat-icon>
-        <span>{{ arabic.customerStatement.retrievalsSection }}</span>
-        <span class="count">{{ statement.retrievals.length }}</span>
-      </div>
-      <table class="data-table table-retrievals" *ngIf="statement.retrievals.length > 0; else emptyRetrievals">
-<thead>
-  <tr>
-    <th>{{ arabic.customerStatement.table.date }}</th>
-    <th>{{ arabic.customerStatement.table.code }}</th>
-    <th class="num">{{ arabic.customerStatement.table.total }}</th>
-    <th class="num">{{ arabic.customerStatement.table.net }}</th>
-    <th>{{ arabic.customerStatement.table.refund }}</th>
-  </tr>
-</thead>
-<tbody>
-  <tr *ngFor="let r of statement.retrievals">
-    <td>{{ r.date | date:'yyyy-MM-dd' }}</td>
-    <td>{{ r.code }}</td>
-    <td class="num">{{ r.totalCost | number:'1.2-2' }}</td>
-    <td class="num">{{ r.netCost | number:'1.2-2' }}</td>
-    <td>
-      <span class="badge" [class.badge-credit]="r.refundMethod === 'CREDIT'"
-            [class.badge-cash]="r.refundMethod === 'CASH'">
-        {{ r.refundMethod === 'CREDIT'
-            ? arabic.customerStatement.refundCredit
-            : arabic.customerStatement.refundCash }}
-      </span>
-    </td>
-  </tr>
-</tbody>
-      </table>
-      <ng-template #emptyRetrievals>
-        <div class="empty">{{ arabic.customerStatement.noRetrievals }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Footer -->
-    <div class="statement-footer">
-      <span>{{ arabic.customerStatement.generatedAt }}:
+      <!-- Footer -->
+      <div class="statement-footer">
+        <span>{{ arabic.customerStatement.generatedAt }}:
         {{ now | date:'yyyy-MM-dd HH:mm' }}</span>
+      </div>
     </div>
-
-  </div>
+  }
 
   <!-- Empty state -->
-  <mat-card class="empty-card no-print" *ngIf="loaded && !statement">
-    <mat-card-content>
-      <mat-icon class="empty-icon">event_busy</mat-icon>
-      <h3>{{ arabic.customerStatement.emptyTitle }}</h3>
-      <p>{{ arabic.customerStatement.emptyHint }}</p>
-    </mat-card-content>
-  </mat-card>
+  @if (loaded && !statement) {
+    <mat-card class="empty-card no-print">
+      <mat-card-content>
+        <mat-icon class="empty-icon">event_busy</mat-icon>
+        <h3>{{ arabic.customerStatement.emptyTitle }}</h3>
+        <p>{{ arabic.customerStatement.emptyHint }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
 
 </div>

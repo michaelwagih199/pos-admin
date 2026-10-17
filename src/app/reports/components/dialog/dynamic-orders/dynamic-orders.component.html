@@ -1,90 +1,94 @@
 <mat-card class="mat-elevation-z2">
-    <mat-card-content>
-        <div class="row justify-content-center text-center m-2 p-3 ">
-            <div class="col">
-                <div class="customClass-1 p-2">
-                    <div class="row justify-content-around">
-                        <p>عدد الطلبات</p>
-                        <p class="bg-blue_primary-dark text-white rounded p-2">{{orderCounter}}</p>
-                    </div>
-                </div>
-            </div>
+  <mat-card-content>
+    <div class="row justify-content-center text-center m-2 p-3 ">
+      <div class="col">
+        <div class="customClass-1 p-2">
+          <div class="row justify-content-around">
+            <p>عدد الطلبات</p>
+            <p class="bg-blue_primary-dark text-white rounded p-2">{{orderCounter}}</p>
+          </div>
+        </div>
+      </div>
 
-            <div class="col">
-                <div class="customClass-1 p-2">
-                    <div class="row justify-content-around">
-                        <p>اﻷجمالى</p>
-                        <p class="bg-blue_primary-dark text-white rounded p-2">{{sumTotal}}</p>
-                    </div>
-                </div>
-            </div>
+      <div class="col">
+        <div class="customClass-1 p-2">
+          <div class="row justify-content-around">
+            <p>اﻷجمالى</p>
+            <p class="bg-blue_primary-dark text-white rounded p-2">{{sumTotal}}</p>
+          </div>
         </div>
-        <div>
-            <!--table-->
-            <div class="table-responsive">
-                <table class="table table-bordered table-sm data-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>رقم الفاتورة</th>
-                            <th>التاريخ</th>
-                            <th>العميل</th>
-                            <th class="num">الاجمالى</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of ordersList">
-                            <td>{{ item.saleOrder.orderCode }}</td>
-                            <td>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</td>
-                            <td>{{ item.saleOrder.customer?.customerName }}</td>
-                            <td class="num">{{ item.totalOrder}}</td>
-                            <td>
-                                <button type="button" class="btn btn-primary btn-sm"
-                                    (click)="details(content,item)">التفاصيل</button> |
-                                <button type="button" class="btn btn-info btn-sm" (click)="onPrinting(item)"> طباعة</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </mat-card-content>
+      </div>
+    </div>
+    <div>
+      <!--table-->
+      <div class="table-responsive">
+        <table class="table table-bordered table-sm data-table">
+          <thead class="thead-dark">
+            <tr>
+              <th>رقم الفاتورة</th>
+              <th>التاريخ</th>
+              <th>العميل</th>
+              <th class="num">الاجمالى</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of ordersList; track item) {
+              <tr>
+                <td>{{ item.saleOrder.orderCode }}</td>
+                <td>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</td>
+                <td>{{ item.saleOrder.customer?.customerName }}</td>
+                <td class="num">{{ item.totalOrder}}</td>
+                <td>
+                  <button type="button" class="btn btn-primary btn-sm"
+                  (click)="details(content,item)">التفاصيل</button> |
+                  <button type="button" class="btn btn-info btn-sm" (click)="onPrinting(item)"> طباعة</button>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </mat-card-content>
 </mat-card>
 <div>
-<div>
+  <div>
     <ng-template #content let-modal>
-        <div class="modal-header">
-            <h4 class="modal-title text-center" id="modal-basic-title">التفاصيل</h4>
+      <div class="modal-header">
+        <h4 class="modal-title text-center" id="modal-basic-title">التفاصيل</h4>
+      </div>
+      <div class="modal-body">
+        <div class="mt-2" style="text-align: center;">
+          <table class="table table-bordered table-sm data-table">
+            <thead class="thead-dark">
+              <tr>
+                <th>المنتج</th>
+                <th class="num">عدد الاتواب</th>
+                <th class="num">سعر الوحدة</th>
+                <th>وحدة القياس</th>
+                <th class="num">عدد الوحدات</th>
+                <th class="num">الإجمالى</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (item of ordersDetailsList; track item) {
+                <tr>
+                  <td>{{ item.productName }}</td>
+                  <td class="num">{{ item.quantity }}</td>
+                  <td class="num">{{ item.price }}</td>
+                  <td>{{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}</td>
+                  <td class="num">{{ item.unitNumber }}</td>
+                  <td class="num">{{ item.total }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-        <div class="modal-body">
-            <div class="mt-2" style="text-align: center;">
-                <table class="table table-bordered table-sm data-table">
-                    <thead class="thead-dark">
-                        <tr>
-                            <th>المنتج</th>
-                            <th class="num">عدد الاتواب</th>
-                            <th class="num">سعر الوحدة</th>
-                            <th>وحدة القياس</th>
-                            <th class="num">عدد الوحدات</th>
-                            <th class="num">الإجمالى</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let item of ordersDetailsList">
-                            <td>{{ item.productName }}</td>
-                            <td class="num">{{ item.quantity }}</td>
-                            <td class="num">{{ item.price }}</td>
-                            <td>{{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}</td>
-                            <td class="num">{{ item.unitNumber }}</td>
-                            <td class="num">{{ item.total }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="modal.close()">اغلاق</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">اغلاق</button>
+      </div>
     </ng-template>
-</div>
+  </div>
 </div>

@@ -75,8 +75,9 @@ export class NavBarComponent implements OnInit {
 
 
   @HostListener('window:resize', ['$event'])
-  onResize(event: { target: { innerWidth: number } }) {
-    if (event.target.innerWidth < 768) {
+  onResize(event: UIEvent) {
+    const innerWidth = (event.target as Window).innerWidth;
+    if (innerWidth < 768) {
       this.sidenav.fixedTopGap = 55;
       this.opened = false;
     } else {

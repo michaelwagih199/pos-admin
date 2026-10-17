@@ -11,12 +11,14 @@
           {{ arabic.stock.products.util.automaticCode }}
         </mat-checkbox>
       </div>
-      <div class="col-md-4" *ngIf="codeDisabled">
-        <mat-form-field appearance="fill" class="w-100">
-          <mat-label>{{ arabic.stock.products.table.productCode }}</mat-label>
-          <input matInput formControlName="productCode" [(ngModel)]="product.productCode" autocomplete="off">
-        </mat-form-field>
-      </div>
+      @if (codeDisabled) {
+        <div class="col-md-4">
+          <mat-form-field appearance="fill" class="w-100">
+            <mat-label>{{ arabic.stock.products.table.productCode }}</mat-label>
+            <input matInput formControlName="productCode" [(ngModel)]="product.productCode" autocomplete="off">
+          </mat-form-field>
+        </div>
+      }
       <div class="col-md-5">
         <mat-form-field appearance="fill" class="w-100">
           <mat-label>{{ arabic.stock.products.table.productName }}</mat-label>
@@ -54,25 +56,27 @@
       </div>
       <div class="col-md-4">
         <mat-form-field appearance="fill" class="w-100">
-      <mat-label>عدد الوحدات (م/كجم)</mat-label>
+          <mat-label>عدد الوحدات (م/كجم)</mat-label>
           <input matInput type="number" required formControlName="numberUnitsInStock" [(ngModel)]="product.numberUnitsInStock" autocomplete="off">
         </mat-form-field>
       </div>
       <div class="col-md-3">
-  <mat-form-field appearance="fill" class="w-100">
-    <mat-label>عدد الاتواب</mat-label>
-    <input matInput type="number" step="1" min="0" required
-           formControlName="numberOfCanvasesInStock"
-           [(ngModel)]="product.numberOfCanvasesInStock">
-  </mat-form-field>
-</div>
+        <mat-form-field appearance="fill" class="w-100">
+          <mat-label>عدد الاتواب</mat-label>
+          <input matInput type="number" step="1" min="0" required
+            formControlName="numberOfCanvasesInStock"
+            [(ngModel)]="product.numberOfCanvasesInStock">
+        </mat-form-field>
+      </div>
       <div class="col-md-4">
         <mat-form-field appearance="fill" class="w-100">
           <mat-label>{{ arabic.stock.products.table.productCategory }}</mat-label>
           <mat-select required [(ngModel)]="checkValue" formControlName="productCategory">
-            <mat-option *ngFor="let item of categoryList" [value]="item?.id">
-              {{ item?.categoryName }}
-            </mat-option>
+            @for (item of categoryList; track item) {
+              <mat-option [value]="item?.id">
+                {{ item?.categoryName }}
+              </mat-option>
+            }
           </mat-select>
         </mat-form-field>
       </div>

@@ -5,7 +5,9 @@
     <h2>{{ arabic.supplierStatement.title }}</h2>
   </div>
 
-  <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  @if (isLoading) {
+    <mat-progress-bar color="accent" mode="indeterminate"></mat-progress-bar>
+  }
 
   <!-- ===== FILTERS ===== -->
   <mat-card class="filter-card no-print">
@@ -17,10 +19,14 @@
           <mat-icon matSuffix color="primary">person_search</mat-icon>
           <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
             (optionSelected)="onSupplierSelected($event.option.value)">
-            <mat-option *ngFor="let s of filteredSuppliers | async" [value]="s">
-              {{ s.supplierName }}
-              <small *ngIf="s.supplierPhone" class="muted">— {{ s.supplierPhone }}</small>
-            </mat-option>
+            @for (s of filteredSuppliers | async; track s) {
+              <mat-option [value]="s">
+                {{ s.supplierName }}
+                @if (s.supplierPhone) {
+                  <small class="muted">— {{ s.supplierPhone }}</small>
+                }
+              </mat-option>
+            }
           </mat-autocomplete>
         </mat-form-field>
 
@@ -43,9 +49,11 @@
           <mat-icon>search</mat-icon> {{ arabic.supplierStatement.show }}
         </button>
 
-        <button mat-stroked-button class="action-btn" (click)="print()" *ngIf="loaded && statement">
-          <mat-icon>print</mat-icon> {{ arabic.supplierStatement.print }}
-        </button>
+        @if (loaded && statement) {
+          <button mat-stroked-button class="action-btn" (click)="print()">
+            <mat-icon>print</mat-icon> {{ arabic.supplierStatement.print }}
+          </button>
+        }
 
         <button mat-raised-button color="accent" class="action-btn"
           (click)="openDetailedStatement()"
@@ -57,238 +65,250 @@
   </mat-card>
 
   <!-- ===== STATEMENT ===== -->
-  <div *ngIf="loaded && statement" class="statement-body">
-
-    <!-- Supplier info -->
-    <div class="info-card">
-      <div class="info-row">
-        <mat-icon>person</mat-icon>
-        <span class="info-name">{{ statement.supplierName }}</span>
-        <small class="muted">({{ statement.supplierCode }})</small>
-      </div>
-      <div class="info-row" *ngIf="statement.supplierPhone">
-        <mat-icon>phone</mat-icon>
-        <span>{{ statement.supplierPhone }}</span>
-      </div>
-      <div class="info-row">
-        <mat-icon>date_range</mat-icon>
-        <span>
-          {{ statement.fromDate | date:'yyyy-MM-dd' }}
-          ←
-          {{ statement.toDate | date:'yyyy-MM-dd' }}
-        </span>
-      </div>
-    </div>
-
-    <!-- Summary cards -->
-    <div class="summary-row">
-      <div class="summary-card opening">
-        <span class="label">{{ arabic.supplierStatement.openingBalance }}</span>
-        <span class="value">{{ statement.openingBalance | number:'1.2-2' }}</span>
-      </div>
-      <div class="summary-card purchases">
-        <span class="label">{{ arabic.supplierStatement.totalPurchases }}</span>
-        <span class="value">{{ statement.totalPurchases | number:'1.2-2' }}</span>
-      </div>
-      <div class="summary-card payments">
-        <span class="label">{{ arabic.supplierStatement.totalPayments }}</span>
-        <span class="value">{{ statement.totalPayments | number:'1.2-2' }}</span>
-      </div>
-      <div class="summary-card returns">
-        <span class="label">{{ arabic.supplierStatement.totalReturns }}</span>
-        <span class="value">{{ statement.totalReturns | number:'1.2-2' }}</span>
-      </div>
-      <div class="summary-card closing" [class.credit]="statement.closingBalance < 0">
-        <span class="label">{{ arabic.supplierStatement.closingBalance }}</span>
-        <span class="value">{{ statement.closingBalance | number:'1.2-2' }}</span>
-      </div>
-    </div>
-
-    <!-- Purchases Summary (Bill level) -->
-    <div class="section-card">
-      <div class="section-header">
-        <mat-icon>shopping_cart</mat-icon>
-        <span>{{ arabic.supplierStatement.purchasesSection }}</span>
-        <span class="count">{{ statement.purchases.length }}</span>
-      </div>
-      <table class="data-table table-purchases" *ngIf="statement.purchases.length > 0; else emptyPurchases">
-        <thead>
-          <tr>
-            <th>{{ arabic.supplierStatement.table.date }}</th>
-            <th>{{ arabic.supplierStatement.table.code }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.lineCount }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.total }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.paid }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.remaining }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let p of statement.purchases">
-            <td>{{ p.billDate | date:'yyyy-MM-dd' }}</td>
-            <td>{{ p.billCode }}</td>
-            <td class="num">{{ p.lineCount }}</td>
-            <td class="num">{{ p.total | number:'1.2-2' }}</td>
-            <td class="num">{{ p.paid | number:'1.2-2' }}</td>
-            <td class="num">{{ p.remaining | number:'1.2-2' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #emptyPurchases>
-        <div class="empty">{{ arabic.supplierStatement.noPurchases }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Purchase Lines Detail (Item level) - Grouped by Invoice -->
-    <div class="section-card" *ngIf="statement.purchaseLines?.length">
-      <div class="section-header">
-        <mat-icon>list_alt</mat-icon>
-        <span>{{ arabic.supplierStatement.purchaseLinesSection }}</span>
-        <span class="count">{{ statement.purchaseLines.length }}</span>
-      </div>
-
-      <div *ngFor="let billCode of getGroupedPurchaseLines() | keyvalue" class="bill-group">
-        <div class="bill-group-header" (click)="toggleBillExpanded(billCode.key)">
-          <mat-icon>{{ isBillExpanded(billCode.key) ? 'expand_less' : 'expand_more' }}</mat-icon>
-          <span class="bill-code">{{ billCode.key }}</span>
-          <span class="bill-line-count">
-            {{ getBillLineCount(billCode.key) }} {{ arabic.supplierStatement.table.lineCount }}
-          </span>
-          <span class="bill-total" *ngIf="getBillSummary(billCode.key)">
-            {{ getBillSummary(billCode.key).total | number:'1.2-2' }} {{ arabic.dailySafeReport.currency }}
+  @if (loaded && statement) {
+    <div class="statement-body">
+      <!-- Supplier info -->
+      <div class="info-card">
+        <div class="info-row">
+          <mat-icon>person</mat-icon>
+          <span class="info-name">{{ statement.supplierName }}</span>
+          <small class="muted">({{ statement.supplierCode }})</small>
+        </div>
+        @if (statement.supplierPhone) {
+          <div class="info-row">
+            <mat-icon>phone</mat-icon>
+            <span>{{ statement.supplierPhone }}</span>
+          </div>
+        }
+        <div class="info-row">
+          <mat-icon>date_range</mat-icon>
+          <span>
+            {{ statement.fromDate | date:'yyyy-MM-dd' }}
+            ←
+            {{ statement.toDate | date:'yyyy-MM-dd' }}
           </span>
         </div>
-
-        <div class="bill-group-body" [class.expanded]="isBillExpanded(billCode.key)">
-          <table class="data-table bill-lines-table">
+      </div>
+      <!-- Summary cards -->
+      <div class="summary-row">
+        <div class="summary-card opening">
+          <span class="label">{{ arabic.supplierStatement.openingBalance }}</span>
+          <span class="value">{{ statement.openingBalance | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card purchases">
+          <span class="label">{{ arabic.supplierStatement.totalPurchases }}</span>
+          <span class="value">{{ statement.totalPurchases | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card payments">
+          <span class="label">{{ arabic.supplierStatement.totalPayments }}</span>
+          <span class="value">{{ statement.totalPayments | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card returns">
+          <span class="label">{{ arabic.supplierStatement.totalReturns }}</span>
+          <span class="value">{{ statement.totalReturns | number:'1.2-2' }}</span>
+        </div>
+        <div class="summary-card closing" [class.credit]="statement.closingBalance < 0">
+          <span class="label">{{ arabic.supplierStatement.closingBalance }}</span>
+          <span class="value">{{ statement.closingBalance | number:'1.2-2' }}</span>
+        </div>
+      </div>
+      <!-- Purchases Summary (Bill level) -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon>shopping_cart</mat-icon>
+          <span>{{ arabic.supplierStatement.purchasesSection }}</span>
+          <span class="count">{{ statement.purchases.length }}</span>
+        </div>
+        @if (statement.purchases.length > 0) {
+          <table class="data-table table-purchases">
             <thead>
               <tr>
-                <th>{{ arabic.supplierStatement.table.product }}</th>
-                <th class="num">{{ arabic.supplierStatement.table.rolls }}</th>
-                <th class="num">{{ arabic.supplierStatement.table.quantity }}</th>
-                <th class="num">{{ arabic.supplierStatement.table.unitPrice }}</th>
-                <th class="num">{{ arabic.supplierStatement.table.unitLabel }}</th>
+                <th>{{ arabic.supplierStatement.table.date }}</th>
+                <th>{{ arabic.supplierStatement.table.code }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.lineCount }}</th>
                 <th class="num">{{ arabic.supplierStatement.table.total }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.paid }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.remaining }}</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let pl of billCode.value">
-                <td>{{ pl.productName }}</td>
-                <td class="num">{{ pl.rolls }}</td>
-                <td class="num">{{ pl.units | number:'1.2-2' }}</td>
-                <td class="num">{{ pl.unitPrice | number:'1.2-2' }}</td>
-                <td class="num">{{ pl.unitLabel }}</td>
-                <td class="num">{{ pl.lineTotal | number:'1.2-2' }}</td>
-              </tr>
+              @for (p of statement.purchases; track p) {
+                <tr>
+                  <td>{{ p.billDate | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ p.billCode }}</td>
+                  <td class="num">{{ p.lineCount }}</td>
+                  <td class="num">{{ p.total | number:'1.2-2' }}</td>
+                  <td class="num">{{ p.paid | number:'1.2-2' }}</td>
+                  <td class="num">{{ p.remaining | number:'1.2-2' }}</td>
+                </tr>
+              }
             </tbody>
-            <tfoot>
-              <tr class="bill-subtotal">
-                <td>{{ arabic.supplierStatement.table.total }}</td>
-                <td class="num">{{ getBillTotalRolls(billCode.key) }}</td>
-                <td class="num">{{ getBillTotalUnits(billCode.key) | number:'1.2-2' }}</td>
-                <td></td>
-                <td></td>
-                <td class="num">{{ getBillTotalAmount(billCode.key) | number:'1.2-2' }}</td>
-              </tr>
-            </tfoot>
           </table>
+        } @else {
+          <div class="empty">{{ arabic.supplierStatement.noPurchases }}</div>
+        }
+      </div>
+      <!-- Purchase Lines Detail (Item level) - Grouped by Invoice -->
+      @if (statement.purchaseLines?.length) {
+        <div class="section-card">
+          <div class="section-header">
+            <mat-icon>list_alt</mat-icon>
+            <span>{{ arabic.supplierStatement.purchaseLinesSection }}</span>
+            <span class="count">{{ statement.purchaseLines.length }}</span>
+          </div>
+          @for (billCode of getGroupedPurchaseLines() | keyvalue; track billCode) {
+            <div class="bill-group">
+              <div class="bill-group-header" (click)="toggleBillExpanded(billCode.key)">
+                <mat-icon>{{ isBillExpanded(billCode.key) ? 'expand_less' : 'expand_more' }}</mat-icon>
+                <span class="bill-code">{{ billCode.key }}</span>
+                <span class="bill-line-count">
+                  {{ getBillLineCount(billCode.key) }} {{ arabic.supplierStatement.table.lineCount }}
+                </span>
+                @if (getBillSummary(billCode.key)) {
+                  <span class="bill-total">
+                    {{ getBillSummary(billCode.key).total | number:'1.2-2' }} {{ arabic.dailySafeReport.currency }}
+                  </span>
+                }
+              </div>
+              <div class="bill-group-body" [class.expanded]="isBillExpanded(billCode.key)">
+                <table class="data-table bill-lines-table">
+                  <thead>
+                    <tr>
+                      <th>{{ arabic.supplierStatement.table.product }}</th>
+                      <th class="num">{{ arabic.supplierStatement.table.rolls }}</th>
+                      <th class="num">{{ arabic.supplierStatement.table.quantity }}</th>
+                      <th class="num">{{ arabic.supplierStatement.table.unitPrice }}</th>
+                      <th class="num">{{ arabic.supplierStatement.table.unitLabel }}</th>
+                      <th class="num">{{ arabic.supplierStatement.table.total }}</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (pl of billCode.value; track pl) {
+                      <tr>
+                        <td>{{ pl.productName }}</td>
+                        <td class="num">{{ pl.rolls }}</td>
+                        <td class="num">{{ pl.units | number:'1.2-2' }}</td>
+                        <td class="num">{{ pl.unitPrice | number:'1.2-2' }}</td>
+                        <td class="num">{{ pl.unitLabel }}</td>
+                        <td class="num">{{ pl.lineTotal | number:'1.2-2' }}</td>
+                      </tr>
+                    }
+                  </tbody>
+                  <tfoot>
+                    <tr class="bill-subtotal">
+                      <td>{{ arabic.supplierStatement.table.total }}</td>
+                      <td class="num">{{ getBillTotalRolls(billCode.key) }}</td>
+                      <td class="num">{{ getBillTotalUnits(billCode.key) | number:'1.2-2' }}</td>
+                      <td></td>
+                      <td></td>
+                      <td class="num">{{ getBillTotalAmount(billCode.key) | number:'1.2-2' }}</td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+            </div>
+          }
+          <ng-template #emptyPurchaseLines>
+            <div class="empty">{{ arabic.supplierStatement.noPurchaseLines }}</div>
+          </ng-template>
         </div>
+      }
+      <!-- Payments -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon>payments</mat-icon>
+          <span>{{ arabic.supplierStatement.paymentsSection }}</span>
+          <span class="count">{{ statement.payments.length }}</span>
+        </div>
+        @if (statement.payments.length > 0) {
+          <table class="data-table table-payments">
+            <thead>
+              <tr>
+                <th>{{ arabic.supplierStatement.table.date }}</th>
+                <th>{{ arabic.supplierStatement.table.code }}</th>
+                <th>{{ arabic.supplierStatement.table.method }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.value }}</th>
+                <th>{{ arabic.supplierStatement.table.notes }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (p of statement.payments; track p) {
+                <tr>
+                  <td>{{ p.date | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ p.receiptCode }}</td>
+                  <td>{{ p.methodLabel }}</td>
+                  <td class="num">{{ p.amount | number:'1.2-2' }}</td>
+                  <td class="notes">{{ p.reference || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty">{{ arabic.supplierStatement.noPayments }}</div>
+        }
       </div>
-
-      <ng-template #emptyPurchaseLines>
-        <div class="empty">{{ arabic.supplierStatement.noPurchaseLines }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Payments -->
-    <div class="section-card">
-      <div class="section-header">
-        <mat-icon>payments</mat-icon>
-        <span>{{ arabic.supplierStatement.paymentsSection }}</span>
-        <span class="count">{{ statement.payments.length }}</span>
+      <!-- Retrievals -->
+      <div class="section-card">
+        <div class="section-header">
+          <mat-icon>assignment_return</mat-icon>
+          <span>{{ arabic.supplierStatement.retrievalsSection }}</span>
+          <span class="count">{{ statement.returns.length }}</span>
+        </div>
+        @if (statement.returns.length > 0) {
+          <table class="data-table table-retrievals">
+            <thead>
+              <tr>
+                <th>{{ arabic.supplierStatement.table.date }}</th>
+                <th>{{ arabic.supplierStatement.table.code }}</th>
+                <th>{{ arabic.supplierStatement.table.product }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.rolls }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.quantity }}</th>
+                <th class="num">{{ arabic.supplierStatement.table.total }}</th>
+                <th>{{ arabic.supplierStatement.table.refund }}</th>
+                <th>{{ arabic.supplierStatement.table.reason }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (r of statement.returns; track r) {
+                <tr>
+                  <td>{{ r.returnDate | date:'yyyy-MM-dd' }}</td>
+                  <td>{{ r.returnCode }}</td>
+                  <td>{{ r.productName }}</td>
+                  <td class="num">{{ r.rolls }}</td>
+                  <td class="num">{{ r.units | number:'1.2-2' }} {{ r.unitLabel }}</td>
+                  <td class="num">{{ r.lineTotal | number:'1.2-2' }}</td>
+                  <td>
+                    <span class="badge" [class.badge-credit]="r.refundMethod === 'CREDIT'"
+                      [class.badge-cash]="r.refundMethod === 'CASH'">
+                      {{ r.refundMethodLabel }}
+                    </span>
+                  </td>
+                  <td class="notes">{{ r.reason || '—' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        } @else {
+          <div class="empty">{{ arabic.supplierStatement.noRetrievals }}</div>
+        }
       </div>
-      <table class="data-table table-payments" *ngIf="statement.payments.length > 0; else emptyPayments">
-        <thead>
-          <tr>
-            <th>{{ arabic.supplierStatement.table.date }}</th>
-            <th>{{ arabic.supplierStatement.table.code }}</th>
-            <th>{{ arabic.supplierStatement.table.method }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.value }}</th>
-            <th>{{ arabic.supplierStatement.table.notes }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let p of statement.payments">
-            <td>{{ p.date | date:'yyyy-MM-dd' }}</td>
-            <td>{{ p.receiptCode }}</td>
-            <td>{{ p.methodLabel }}</td>
-            <td class="num">{{ p.amount | number:'1.2-2' }}</td>
-            <td class="notes">{{ p.reference || '—' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #emptyPayments>
-        <div class="empty">{{ arabic.supplierStatement.noPayments }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Retrievals -->
-    <div class="section-card">
-      <div class="section-header">
-        <mat-icon>assignment_return</mat-icon>
-        <span>{{ arabic.supplierStatement.retrievalsSection }}</span>
-        <span class="count">{{ statement.returns.length }}</span>
-      </div>
-      <table class="data-table table-retrievals" *ngIf="statement.returns.length > 0; else emptyRetrievals">
-        <thead>
-          <tr>
-            <th>{{ arabic.supplierStatement.table.date }}</th>
-            <th>{{ arabic.supplierStatement.table.code }}</th>
-            <th>{{ arabic.supplierStatement.table.product }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.rolls }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.quantity }}</th>
-            <th class="num">{{ arabic.supplierStatement.table.total }}</th>
-            <th>{{ arabic.supplierStatement.table.refund }}</th>
-            <th>{{ arabic.supplierStatement.table.reason }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let r of statement.returns">
-            <td>{{ r.returnDate | date:'yyyy-MM-dd' }}</td>
-            <td>{{ r.returnCode }}</td>
-            <td>{{ r.productName }}</td>
-            <td class="num">{{ r.rolls }}</td>
-            <td class="num">{{ r.units | number:'1.2-2' }} {{ r.unitLabel }}</td>
-            <td class="num">{{ r.lineTotal | number:'1.2-2' }}</td>
-            <td>
-              <span class="badge" [class.badge-credit]="r.refundMethod === 'CREDIT'"
-                    [class.badge-cash]="r.refundMethod === 'CASH'">
-                {{ r.refundMethodLabel }}
-              </span>
-            </td>
-            <td class="notes">{{ r.reason || '—' }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <ng-template #emptyRetrievals>
-        <div class="empty">{{ arabic.supplierStatement.noRetrievals }}</div>
-      </ng-template>
-    </div>
-
-    <!-- Footer -->
-    <div class="statement-footer">
-      <span>{{ arabic.supplierStatement.generatedAt }}:
+      <!-- Footer -->
+      <div class="statement-footer">
+        <span>{{ arabic.supplierStatement.generatedAt }}:
         {{ now | date:'yyyy-MM-dd HH:mm' }}</span>
+      </div>
     </div>
-
-  </div>
+  }
 
   <!-- Empty state -->
-  <mat-card class="empty-card no-print" *ngIf="loaded && !statement">
-    <mat-card-content>
-      <mat-icon class="empty-icon">event_busy</mat-icon>
-      <h3>{{ arabic.supplierStatement.emptyTitle }}</h3>
-      <p>{{ arabic.supplierStatement.emptyHint }}</p>
-    </mat-card-content>
-  </mat-card>
+  @if (loaded && !statement) {
+    <mat-card class="empty-card no-print">
+      <mat-card-content>
+        <mat-icon class="empty-icon">event_busy</mat-icon>
+        <h3>{{ arabic.supplierStatement.emptyTitle }}</h3>
+        <p>{{ arabic.supplierStatement.emptyHint }}</p>
+      </mat-card-content>
+    </mat-card>
+  }
 
 </div>

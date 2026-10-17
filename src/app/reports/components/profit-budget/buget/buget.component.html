@@ -1,40 +1,44 @@
 <mat-card class="mat-elevation-z2">
-    <mat-card-header>
-     <div class="container-fluid">
-         <h2 class="text-center text-header">
-            تقيم بضاعة المخزن
-         </h2>
-     </div>
-    </mat-card-header>
+  <mat-card-header>
+    <div class="container-fluid">
+      <h2 class="text-center text-header">
+        تقيم بضاعة المخزن
+      </h2>
+    </div>
+  </mat-card-header>
 
-    <mat-card-content>
-        <mat-progress-bar color="accent" mode="indeterminate" *ngIf="isLoading" value="20"></mat-progress-bar>
-        <div class="text-center text-footer">
-            <table class="table table-bordered table-sm data-table mt-2">
-                <thead class="thead-light">
-                    <tr>
-                        <th>المنتج</th>
-                        <th class="num">سعر الشراء</th>
-                        <th class="num">عدد القطع</th>
-                        <th class="num">القيمة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let item of productList">
-                        <td>{{item?.productName }}</td>
-                        <td class="num">{{ item?.purchasingPrice }}</td>
-                        <td class="num">{{ item?.numberUnitsInStock }}</td>
-                        <td class="num">{{ item.purchasingPrice * item.numberUnitsInStock }}</td>
-                    </tr>
-                </tbody>
-            </table>
+  <mat-card-content>
+    @if (isLoading) {
+      <mat-progress-bar color="accent" mode="indeterminate" value="20"></mat-progress-bar>
+    }
+    <div class="text-center text-footer">
+      <table class="table table-bordered table-sm data-table mt-2">
+        <thead class="thead-light">
+          <tr>
+            <th>المنتج</th>
+            <th class="num">سعر الشراء</th>
+            <th class="num">عدد القطع</th>
+            <th class="num">القيمة</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (item of productList; track item) {
+            <tr>
+              <td>{{item?.productName }}</td>
+              <td class="num">{{ item?.purchasingPrice }}</td>
+              <td class="num">{{ item?.numberUnitsInStock }}</td>
+              <td class="num">{{ item.purchasingPrice * item.numberUnitsInStock }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center">
+      <div class="customClass-1 mt-3">
+        <p class="text-center">الاجمالى</p>
+        <hr>
+          <p class="customTest">{{total}}</p>
         </div>
-        <div class="text-center">
-            <div class="customClass-1 mt-3">
-                <p class="text-center">الاجمالى</p>
-                <hr>
-                <p class="customTest">{{total}}</p>
-            </div>
-        </div>
+      </div>
     </mat-card-content>
-</mat-card>
+  </mat-card>
