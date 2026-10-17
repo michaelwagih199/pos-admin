@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';                                  // 👈 add
@@ -12,6 +12,15 @@ import { RetrivalsModel, ReturnType, RefundMethod } from '../../models/retrivals
 import { ReturnableProduct } from '../../models/returnable-product';
 import { RetrivalsService } from '../../service/retrivals.service';
 import { ReturnProductDialogComponent } from '../return-product-dialog/return-product-dialog.component';
+import { Dir } from '@angular/cdk/bidi';
+import { MatIcon } from '@angular/material/icon';
+import { MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { MatButton } from '@angular/material/button';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatSelect } from '@angular/material/select';
+import { AsyncPipe, DecimalPipe, CurrencyPipe } from '@angular/common';
 
 interface Person { id: number; name: string; phone?: string; }
 
@@ -19,7 +28,7 @@ interface Person { id: number; name: string; phone?: string; }
     selector: 'app-retrieval-wizard',
     templateUrl: './retrieval-wizard.component.html',
     styleUrls: ['./retrieval-wizard.component.scss'],
-    standalone: false
+    imports: [Dir, MatIcon, MatButtonToggleGroup, ReactiveFormsModule, FormsModule, MatButtonToggle, MatButton, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatSelect, AsyncPipe, DecimalPipe, CurrencyPipe]
 })
 export class RetrievalWizardComponent implements OnInit {
   step = 0;

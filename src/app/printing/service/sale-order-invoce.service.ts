@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { POS_Response } from '../../_helpers/pos-responce';
@@ -9,9 +9,9 @@ import { SaleOrderInvoceModel } from '../model/saleOrderInvocesModel';
   providedIn: 'root'
 })
 export class SaleOrderInvoceService {
-  private baseUrl = `${environment.baseUrl}/report/sale-order-invoice`;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) { }
+  private baseUrl = `${environment.baseUrl}/report/sale-order-invoice`;
 
   getSaleOrderInvoce(orderCode: any,excludeOrder: string = "Y"): Observable<POS_Response<SaleOrderInvoceModel>> {
     return this.http.get<POS_Response<SaleOrderInvoceModel>>(`${this.baseUrl}/sale-order/${orderCode}?excludeOrder=${excludeOrder}`);

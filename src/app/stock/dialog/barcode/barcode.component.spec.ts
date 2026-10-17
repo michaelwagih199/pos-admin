@@ -8,8 +8,8 @@ describe('BarcodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ BarcodeComponent ]
-    })
+    imports: [BarcodeComponent]
+})
     .compileComponents();
   });
 

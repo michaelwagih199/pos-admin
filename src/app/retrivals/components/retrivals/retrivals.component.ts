@@ -8,12 +8,19 @@ import { RerivalDetailsComponent } from '../../dialgos/rerival-details/rerival-d
 import { RetrivalsModel } from '../../models/retrivals-model';
 import { RetrivalsDetailsService } from '../../service/retrivals-details.service';
 import { RetrivalsService } from '../../service/retrivals.service';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-retrivals',
     templateUrl: './retrivals.component.html',
     styleUrls: ['./retrivals.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatIconButton, MatIcon, MatMiniFabButton, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, DatePipe]
 })
 export class RetrivalsComponent implements OnInit {
 

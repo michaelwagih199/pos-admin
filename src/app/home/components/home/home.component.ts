@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
+import { Component, OnInit, inject } from '@angular/core';
+import { NgbCarouselConfig, NgbCarousel, NgbSlide } from '@ng-bootstrap/ng-bootstrap';
 
 interface ImagesModel {
   src: string;
@@ -10,13 +10,15 @@ interface ImagesModel {
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.scss'],
-    standalone: false
+    imports: [NgbCarousel, NgbSlide]
 })
 export class HomeComponent implements OnInit {
+  private config = inject(NgbCarouselConfig);
+
   showNavigationArrows = false;
   showNavigationIndicators = false;
 
-  constructor(private config: NgbCarouselConfig) {
+  constructor() {
     // customize default values of carousels used by this component tree
     this.config.interval = 10000;
     this.config.wrap = false;

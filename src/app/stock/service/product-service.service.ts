@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -7,11 +7,11 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class ProductServiceService {
+  private http = inject(HttpClient);
+
   
 
-  private baseUrl = `${environment.baseUrl}/products`;
-
-  constructor(private http: HttpClient) {}  
+  private baseUrl = `${environment.baseUrl}/products`;  
 
   findAll():Observable<any> {
     return this.http.get(`${this.baseUrl}/active`);

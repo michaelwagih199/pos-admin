@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -8,26 +8,31 @@ import { UserModel } from 'src/app/setting/models/user';
 import { UserService } from 'src/app/setting/services/user.service';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 import { Arabic } from 'src/app/text';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatMiniFabButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 
 @Component({
     selector: 'app-user-list',
     templateUrl: './user-list.component.html',
     styleUrls: ['./user-list.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatMiniFabButton, MatIcon, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow]
 })
 export class UserListComponent implements OnInit {
+  private userService = inject(UserService);
+  private authService = inject(AuthService);
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
+  private router = inject(Router);
+
 
   arabic: Arabic = new Arabic()
   isLoading: boolean = false
 
   displayedColumns: string[] = ['id', 'userName', 'userEmail', 'userRole', 'actions'];
   userList!: UserModel[];
-
-  constructor(private userService: UserService,
-    private authService: AuthService,
-    private dialog: MatDialog,
-    private _snackBar: MatSnackBar,
-    private router: Router) { }
 
   ngOnInit(): void {
     this.getAllUsers();

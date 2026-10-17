@@ -1,9 +1,9 @@
 import { Supplier } from './../../models/supplier';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupliersService } from '../../service/supliers.service';
 import { Subscription } from 'rxjs';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Arabic } from 'src/app/text';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SupplierPayment } from '../../models/supplier-payment';
@@ -11,14 +11,32 @@ import { SupliersPaymentService } from '../../service/supliers-payment.service';
 import { PurchasesBillsService } from 'src/app/purchases/service/purchases-bills.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-supliers-payment',
     templateUrl: './supliers-payment.component.html',
     styleUrls: ['./supliers-payment.component.scss'],
-    standalone: false
+    imports: [MatProgressBar, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatDivider, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, DatePipe]
 })
 export class SupliersPaymentComponent implements OnInit {
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private dialog = inject(MatDialog);
+  private supliersService = inject(SupliersService);
+  private supplierPaymentService = inject(SupliersPaymentService);
+  private _snackBar = inject(MatSnackBar);
+  private purchasesBillsService = inject(PurchasesBillsService);
+
 
   private routeSub!: Subscription;
 
@@ -35,17 +53,6 @@ export class SupliersPaymentComponent implements OnInit {
 
   //for tables
   displayedColumns: string[] = ['id', 'paymentDate', 'paymentValue', 'notes', 'actions']
-
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private fb: FormBuilder,
-    private dialog: MatDialog,
-    private supliersService: SupliersService,
-    private supplierPaymentService: SupliersPaymentService,
-    private _snackBar: MatSnackBar,
-    private purchasesBillsService: PurchasesBillsService
-  ) { }
 
   ngOnInit(): void {
     this.getSupplierId()

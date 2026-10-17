@@ -8,8 +8,8 @@ describe('RerivalDetailsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RerivalDetailsComponent ]
-    })
+    imports: [RerivalDetailsComponent]
+})
     .compileComponents();
   });
 

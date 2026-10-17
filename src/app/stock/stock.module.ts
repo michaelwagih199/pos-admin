@@ -13,12 +13,12 @@ import { NgxBarcodeModule } from '../shared/barcode/ngx-barcode.module';
 
 
 @NgModule({
-  declarations: [StockComponent, ProductCategoryComponent, ProductsComponent, CreateCategoryComponent, CreateProductComponent, BarcodeComponent],
-  imports: [
-    CommonModule,
-    StockRoutingModule,
-    SharedModule,
-    NgxBarcodeModule,
-  ]
+    imports: [
+        CommonModule,
+        StockRoutingModule,
+        SharedModule,
+        NgxBarcodeModule,
+        StockComponent, ProductCategoryComponent, ProductsComponent, CreateCategoryComponent, CreateProductComponent, BarcodeComponent,
+    ]
 })
 export class StockModule { }

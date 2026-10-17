@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,13 +8,12 @@ import { environment } from 'src/environments/environment';
 })
 
 export class LogsService {
+  private http = inject(HttpClient);
+
 
 
 
   private baseUrl = `${environment.baseUrl}/userLogs`;
-
-  constructor(private http: HttpClient) {
-  }
 
   getAll(params: any): Observable<any> {
     return this.http.get(`${this.baseUrl}`, { params });

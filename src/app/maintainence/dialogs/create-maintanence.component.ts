@@ -1,26 +1,33 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CreateProductComponent } from 'src/app/stock/dialog/create-product/create-product.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Arabic } from 'src/app/text';
 import { MaintanenceModel } from '../models/maintanceObject';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     templateUrl: './create-maintanence.component.html',
     styleUrls: ['./create-maintanence.component.scss'],
-    standalone: false
+    imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatDialogActions, MatButton]
 })
 export class CreateMaintanenceComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<CreateProductComponent>>(MatDialogRef);
+
 
   maintanence: MaintanenceModel = new MaintanenceModel();
   validateForm!: FormGroup;
   arabic: Arabic = new Arabic()
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateProductComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-    this.maintanence = data.model
+  dialogData = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    this.maintanence = this.dialogData.model
   }
 
   ngOnInit(): void {

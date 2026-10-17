@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SupliersService } from '../../service/supliers.service';
@@ -8,14 +8,30 @@ import { PurchasingBillsDetailsService } from 'src/app/purchases/service/purchas
 import { PurchasesBillsDetails } from 'src/app/purchases/model/purchases-deteails';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Arabic } from 'src/app/text';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-supplier-orders',
     templateUrl: './supplier-orders.component.html',
     styleUrls: ['./supplier-orders.component.scss'],
-    standalone: false
+    imports: [MatProgressBar, MatFormField, MatLabel, MatInput, MatDatepickerInput, ReactiveFormsModule, FormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatDivider, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, DatePipe]
 })
 export class SupplierOrdersComponent implements OnInit {
+  private supliersService = inject(SupliersService);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private modalService = inject(NgbModal);
+  private purchasingBillsDetailsService = inject(PurchasingBillsDetailsService);
+
 
   private routeSub!: Subscription;
   arabic: Arabic = new Arabic()
@@ -34,14 +50,6 @@ export class SupplierOrdersComponent implements OnInit {
 
   //for tables
   displayedColumns: string[] = ['orderCode', 'orderDate', 'totalOrder', 'paid', 'remaining', 'paymentType', 'details']
-
-  constructor(
-    private supliersService: SupliersService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private modalService: NgbModal,
-    private purchasingBillsDetailsService: PurchasingBillsDetailsService,
-  ) { }
 
   ngOnInit(): void {
     this.getSupplierId()

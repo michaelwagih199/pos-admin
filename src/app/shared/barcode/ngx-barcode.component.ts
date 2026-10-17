@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnChanges, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnChanges, inject, input, viewChild } from '@angular/core';
 
 /* Local drop-in component replicating the abandoned ngx-barcode's public API,
    built on jsbarcode (its original engine). Supports the [bc-*] binding style
@@ -14,27 +14,26 @@ const BARCODE_FORMATS = [
 @Component({
     selector: 'ngx-barcode',
     template: `
-    <svg #bcElement class="barcode" [attr.data-barscan]="bcValue"></svg>
+    <svg #bcElement class="barcode" [attr.data-barscan]="bcValue()"></svg>
   `,
-    styleUrls: [],
-    standalone: false
+    styleUrls: []
 })
 export class NgxBarcodeComponent implements OnChanges, AfterViewInit {
-  @Input('bc-format') bcFormat: string = 'CODE128';
-  @Input('bc-value') bcValue: string = '';
-  @Input('bc-display-value') bcDisplayValue = true;
-  @Input('bc-line-color') bcLineColor = '#000000';
-  @Input('bc-width') bcWidth = 2;
-  @Input('bc-height') bcHeight = 100;
-  @Input('bc-font-size') bcFontSize = 20;
-  @Input('bc-text-align') bcTextAlign = 'center';
-  @Input('bc-text-position') bcTextPosition = 'bottom';
-  @Input('bc-margin') bcMargin = 10;
-  @Input('bc-background') bcBackground = '#ffffff';
+  private _el = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  @ViewChild('bcElement', { static: true }) bcElementRef!: ElementRef<SVGElement>;
+  readonly bcFormat = input<string>('CODE128', { alias: "bc-format" });
+  readonly bcValue = input<string>('', { alias: "bc-value" });
+  readonly bcDisplayValue = input(true, { alias: "bc-display-value" });
+  readonly bcLineColor = input('#000000', { alias: "bc-line-color" });
+  readonly bcWidth = input(2, { alias: "bc-width" });
+  readonly bcHeight = input(100, { alias: "bc-height" });
+  readonly bcFontSize = input(20, { alias: "bc-font-size" });
+  readonly bcTextAlign = input('center', { alias: "bc-text-align" });
+  readonly bcTextPosition = input('bottom', { alias: "bc-text-position" });
+  readonly bcMargin = input(10, { alias: "bc-margin" });
+  readonly bcBackground = input('#ffffff', { alias: "bc-background" });
 
-  constructor(private _el: ElementRef<HTMLElement>) {}
+  readonly bcElementRef = viewChild.required<ElementRef<SVGElement>>('bcElement');
 
   ngAfterViewInit(): void {
     this.render();
@@ -46,26 +45,27 @@ export class NgxBarcodeComponent implements OnChanges, AfterViewInit {
 
   private render(): void {
     const host = this._el.nativeElement;
-    const format = (BARCODE_FORMATS as readonly string[]).includes(this.bcFormat)
-      ? this.bcFormat
+    const bcFormat = this.bcFormat();
+    const format = (BARCODE_FORMATS as readonly string[]).includes(bcFormat)
+      ? bcFormat
       : 'CODE128';
-    const svg = this.bcElementRef?.nativeElement;
+    const svg = this.bcElementRef()?.nativeElement;
     if (!svg) {
       return;
     }
     const options: Record<string, unknown> = {
       format,
-      displayValue: this.bcDisplayValue,
-      lineColor: this.bcLineColor,
-      width: this.bcWidth,
-      height: this.bcHeight,
-      fontSize: this.bcFontSize,
-      textAlign: this.bcTextAlign,
-      textPosition: this.bcTextPosition,
-      margin: this.bcMargin,
-      background: this.bcBackground,
+      displayValue: this.bcDisplayValue(),
+      lineColor: this.bcLineColor(),
+      width: this.bcWidth(),
+      height: this.bcHeight(),
+      fontSize: this.bcFontSize(),
+      textAlign: this.bcTextAlign(),
+      textPosition: this.bcTextPosition(),
+      margin: this.bcMargin(),
+      background: this.bcBackground(),
     };
-    DynamicRenderer.render(svg as unknown as HTMLCanvasElement | SVGElement, this.bcValue, options);
+    DynamicRenderer.render(svg as unknown as HTMLCanvasElement | SVGElement, this.bcValue(), options);
   }
 }
 

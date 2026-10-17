@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,12 +8,10 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SmsNotificationService {
+  private http = inject(HttpClient);
+
 
   private baseUrl = `${environment.baseUrl}/Sms`;
-
-  constructor(private http: HttpClient) {
-    
-  }
 
   createNumber(oblect:Object): Observable<any> {
     return this.http.post(`${this.baseUrl}/addNumber`, oblect);

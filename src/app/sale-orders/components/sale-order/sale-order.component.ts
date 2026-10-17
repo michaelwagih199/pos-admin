@@ -1,6 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -28,12 +28,18 @@ import { PaymentTypeRequest } from '../../models/ordersrequest';
 import { SaveOrderRequest } from '../../models/save-order-request';
 import { DynamicItemService } from '../../service/dynamic-item.service';
 import { OrderService } from '../../service/order.service';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIconButton, MatButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { AsyncPipe, DecimalPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-sale-order',
     templateUrl: './sale-order.component.html',
     styleUrls: ['./sale-order.component.scss'],
-    standalone: false
+    imports: [MatProgressBar, MatIconButton, MatIcon, MatButton, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatSuffix, MatAutocomplete, MatOption, MatMiniFabButton, FormsModule, AsyncPipe, DecimalPipe, DatePipe]
 })
 
 export class SaleOrderComponent implements OnInit {

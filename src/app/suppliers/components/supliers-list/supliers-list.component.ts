@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Arabic } from 'src/app/text';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -10,14 +10,28 @@ import { Router } from '@angular/router';
 import { SupliersService } from '../../service/supliers.service';
 import { Supplier } from '../../models/supplier';
 import { CreateSuppliersComponent } from '../../dialogs/create-suppliers/create-suppliers.component';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-supliers-list',
     templateUrl: './supliers-list.component.html',
     styleUrls: ['./supliers-list.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatFormField, MatLabel, MatInput, ReactiveFormsModule, MatAutocompleteTrigger, MatIcon, MatSuffix, MatAutocomplete, MatOption, MatIconButton, MatMiniFabButton, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, AsyncPipe]
 })
 export class SupliersListComponent implements OnInit {
+  private supliersService = inject(SupliersService);
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
+  private router = inject(Router);
+
 
   arabic: Arabic = new Arabic()
   supliersList!: Supplier[];
@@ -31,15 +45,6 @@ export class SupliersListComponent implements OnInit {
   //for autocomplete
   options!: string[]
   filteredOptions!: Observable<string[]>
-
-  constructor(
-    private supliersService: SupliersService,
-    private dialog: MatDialog,
-    private _snackBar: MatSnackBar,
-    private router: Router,
-  ) {
-
-  }
 
   ngOnInit(): void {
     this.getAllNames()

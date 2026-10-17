@@ -1,21 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ExpensesCategoryService } from '../../service/expenses-category.service';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ExpensessModel } from '../../models/expensess-model';
 import { ExpensesService } from '../../service/expenses.service';
-import { element } from 'protractor';
 import { Arabic } from 'src/app/text';
 import { CreateExpensesComponent } from '../../dialogs/create-expenses/create-expenses.component';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatCard, MatCardHeader, MatCardContent, MatCardFooter } from '@angular/material/card';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatDateRangePicker } from '@angular/material/datepicker';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-expenses-list',
     templateUrl: './expenses-list.component.html',
     styleUrls: ['./expenses-list.component.scss'],
-    standalone: false
+    imports: [MatProgressBar, MatCard, MatCardHeader, MatFormField, MatLabel, MatSelect, ReactiveFormsModule, FormsModule, MatOption, MatDateRangeInput, MatStartDate, MatEndDate, MatDatepickerToggle, MatSuffix, MatDateRangePicker, MatIconButton, MatIcon, MatMiniFabButton, MatCardContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, MatCardFooter, DatePipe]
 })
 export class ExpensesListComponent implements OnInit {
+  private categoryService = inject(ExpensesCategoryService);
+  private expensesService = inject(ExpensesService);
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
+
   arabic: Arabic = new Arabic();
 
   isLoading: boolean = false;
@@ -34,13 +50,6 @@ export class ExpensesListComponent implements OnInit {
     'expensesCategory',
     'actions',
   ];
-
-  constructor(
-    private categoryService: ExpensesCategoryService,
-    private expensesService: ExpensesService,
-    private dialog: MatDialog,
-    private _snackBar: MatSnackBar
-  ) {}
 
   ngOnInit(): void {
     this.getAllNames();

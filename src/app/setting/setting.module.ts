@@ -12,11 +12,11 @@ import { AddUserDialogComponent } from './dialogs/add-user-dialog/add-user-dialo
 
 
 @NgModule({
-  declarations: [SettingComponent, UsersComponent, UserListComponent, UserLogComponent, RolesAndpermissionComponent, AddUserDialogComponent],
-  imports: [
-    CommonModule,
-    SharedModule,
-    SettingRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        SharedModule,
+        SettingRoutingModule,
+        SettingComponent, UsersComponent, UserListComponent, UserLogComponent, RolesAndpermissionComponent, AddUserDialogComponent
+    ]
 })
 export class SettingModule { }

@@ -7,11 +7,11 @@ import { SharedModule } from '../shared/shared.module';
 import { CreateMaintanenceComponent } from './dialogs/create-maintanence.component';
 
 @NgModule({
-  declarations: [MaintanenceComponent, CreateMaintanenceComponent],
-  imports: [
-    CommonModule,
-    MaintainenceRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        MaintainenceRoutingModule,
+        SharedModule,
+        MaintanenceComponent, CreateMaintanenceComponent
+    ]
 })
 export class MaintainenceModule { }

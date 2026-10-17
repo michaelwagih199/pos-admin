@@ -1,19 +1,29 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Arabic } from 'src/app/text';
 import { ProductModel } from '../../model/productModel';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatCheckboxChange } from '@angular/material/checkbox';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatCheckboxChange, MatCheckbox } from '@angular/material/checkbox';
 import { CategoryModel } from '../../model/categoryModel';
 import { CategoryServiceService } from '../../service/category-service.service';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-create-product',
     templateUrl: './create-product.component.html',
     styleUrls: ['./create-product.component.scss'],
-    standalone: false
+    imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatCheckbox, MatFormField, MatLabel, MatInput, MatSelect, MatOption, MatDialogActions, MatButton]
 })
 export class CreateProductComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private categoryService = inject(CategoryServiceService);
+  private dialogRef = inject<MatDialogRef<CreateProductComponent>>(MatDialogRef);
+
   arabic: Arabic = new Arabic()
   product: ProductModel = new ProductModel()
   validateForm!: FormGroup;
@@ -22,14 +32,12 @@ export class CreateProductComponent implements OnInit {
   categoryList!: CategoryModel[];
 
 
-  constructor(
-    private fb: FormBuilder,
-    private categoryService: CategoryServiceService,
-    private dialogRef: MatDialogRef<CreateProductComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-      console.log(data);
+  dialogData = inject(MAT_DIALOG_DATA);
 
-    this.product = data.productModel
+  constructor() {
+      console.log(this.dialogData);
+
+    this.product = this.dialogData.productModel
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormGroup, Validators, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Arabic } from 'src/app/text';
 import { CustomerPaymentModel } from '../../model/customer-payment';
 import { Subscription } from 'rxjs';
@@ -9,14 +9,30 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { CustomerModel } from '../../model/customer-model';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatDivider } from '@angular/material/divider';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatIcon } from '@angular/material/icon';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-payments',
     templateUrl: './payments.component.html',
     styleUrls: ['./payments.component.scss'],
-    standalone: false
+    imports: [MatProgressBar, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatButton, MatDivider, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIconButton, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, DatePipe]
 })
 export class PaymentsComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private customerPaymentService = inject(CustomerPaymentService);
+  private route = inject(ActivatedRoute);
+  private dialog = inject(MatDialog);
+  private router = inject(Router);
+  private _snackBar = inject(MatSnackBar);
+
 
   private routeSub!: Subscription;
   validateForm!: FormGroup;
@@ -31,13 +47,6 @@ export class PaymentsComponent implements OnInit {
   customerPaymentList!: CustomerPaymentModel[]
   //for tables
   displayedColumns: string[] = ['id', 'paymentDate', 'paymentValue', 'notes', 'actions']
-
-
-  constructor(private fb: FormBuilder,
-    private customerPaymentService: CustomerPaymentService,
-    private route: ActivatedRoute,
-    private dialog: MatDialog,
-    private router: Router, private _snackBar: MatSnackBar,) { }
 
   ngOnInit(): void {
     this.validateform()

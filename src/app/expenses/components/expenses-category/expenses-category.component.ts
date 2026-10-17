@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { Arabic } from 'src/app/text';
@@ -10,14 +10,27 @@ import { CategoryModel } from 'src/app/stock/model/categoryModel';
 import { CategoryServiceService } from 'src/app/stock/service/category-service.service';
 import { CreateCategoryComponent } from 'src/app/stock/dialog/create-category/create-category.component';
 import { ExpensesCategoryService } from '../../service/expenses-category.service';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-expenses-category',
     templateUrl: './expenses-category.component.html',
     styleUrls: ['./expenses-category.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, ReactiveFormsModule, FormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatIcon, MatSuffix, MatAutocomplete, MatOption, MatIconButton, MatMiniFabButton, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, AsyncPipe]
 })
 export class ExpensesCategoryComponent implements OnInit {
+  private categoryService = inject(ExpensesCategoryService);
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
+
   arabic: Arabic = new Arabic();
   categoryList!: CategoryModel[];
   category: CategoryModel = new CategoryModel();
@@ -29,12 +42,6 @@ export class ExpensesCategoryComponent implements OnInit {
   //for autocomplete
   options!: string[];
   filteredOptions!: Observable<string[]>;
-
-  constructor(
-    private categoryService: ExpensesCategoryService,
-    private dialog: MatDialog,
-    private _snackBar: MatSnackBar
-  ) {}
 
   ngOnInit() {
     this.getAllNames();

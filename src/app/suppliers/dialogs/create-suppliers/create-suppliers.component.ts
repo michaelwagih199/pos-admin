@@ -1,27 +1,33 @@
-import { Component, OnInit, Inject } from '@angular/core';
-import { Validators, FormGroup, FormBuilder } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { Validators, FormGroup, FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Arabic } from 'src/app/text';
 import { CustomerModel } from 'src/app/customers/model/customer-model';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Supplier } from '../../models/supplier';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-create-suppliers',
     templateUrl: './create-suppliers.component.html',
     styleUrls: ['./create-suppliers.component.scss'],
-    standalone: false
+    imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDialogActions, MatButton]
 })
 export class CreateSuppliersComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<CreateSuppliersComponent>>(MatDialogRef);
+
 
   arabic: Arabic = new Arabic()
   supplier: Supplier = new Supplier()
   validateForm!: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateSuppliersComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-    this.supplier = data.model
+  dialogData = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    this.supplier = this.dialogData.model
   }
 
   ngOnInit(): void {

@@ -1,12 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-  AbstractControl, FormBuilder, FormControl, FormGroup,
-  ValidationErrors, ValidatorFn, Validators, Validator
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators, Validator, ReactiveFormsModule } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
 import { ReturnableInvoiceLine, ReturnableProduct } from '../../models/returnable-product';
 import { ReturnType } from '../../models/retrivals-model';
+import { Dir } from '@angular/cdk/bidi';
+import { MatIconButton, MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatDivider } from '@angular/material/divider';
+import { MatFormField, MatLabel, MatInput, MatHint, MatError } from '@angular/material/input';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatRadioGroup, MatRadioButton } from '@angular/material/radio';
+import { DecimalPipe, DatePipe } from '@angular/common';
 
 interface DialogData {
   product: ReturnableProduct;
@@ -17,7 +23,7 @@ interface DialogData {
     selector: 'app-return-product-dialog',
     templateUrl: './return-product-dialog.component.html',
     styleUrls: ['./return-product-dialog.component.scss'],
-    standalone: false
+    imports: [Dir, MatIconButton, MatIcon, MatDivider, ReactiveFormsModule, MatFormField, MatLabel, MatSelect, MatOption, MatInput, MatHint, MatError, MatRadioGroup, MatRadioButton, MatButton, DecimalPipe, DatePipe]
 })
 export class ReturnProductDialogComponent implements OnInit {
   form!: FormGroup;

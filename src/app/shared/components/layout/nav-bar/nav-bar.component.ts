@@ -1,21 +1,31 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, inject, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSidenav } from '@angular/material/sidenav';
-import { Router } from '@angular/router';
+import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 import { Arabic } from 'src/app/text';
 import { AboutAppDialogComponent } from '../dialog/about-app-dialog/about-app-dialog.component';
 import { MaintanenceService } from '../../../../maintainence/services/maintanence.service';
 import { NotificationsComponent } from '../dialog/notifications/notifications.component';
 import { NotificationService } from '../dialog/notifications/services/notification.service';
+import { MatToolbar } from '@angular/material/toolbar';
+import { MatIcon } from '@angular/material/icon';
+import { NgClass } from '@angular/common';
+import { MatNavList, MatListItem } from '@angular/material/list';
 
 @Component({
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
-    standalone: false
+    imports: [MatToolbar, MatIcon, NgClass, MatSidenavContainer, MatSidenav, MatNavList, MatListItem, RouterLink, MatSidenavContent, RouterOutlet]
 })
 export class NavBarComponent implements OnInit {
+  dialog = inject(MatDialog);
+  private router = inject(Router);
+  private takenServive = inject(TokenStorageService);
+  private maintanenceService = inject(MaintanenceService);
+  private notificationService = inject(NotificationService);
+
   arabic: Arabic = new Arabic();
   isNotification: boolean = false;
   userName: any;
@@ -33,16 +43,7 @@ export class NavBarComponent implements OnInit {
   };
 
   opened = true;
-  @ViewChild('sidenav', { static: true })
-  sidenav!: MatSidenav;
-
-  constructor(
-    public dialog: MatDialog,
-    private router: Router,
-    private takenServive: TokenStorageService,
-    private maintanenceService: MaintanenceService,
-    private notificationService: NotificationService
-  ) { }
+  readonly sidenav = viewChild.required<MatSidenav>('sidenav');
 
   ngOnInit() {
     let userPermission = sessionStorage.getItem('auth-permission');
@@ -62,10 +63,10 @@ export class NavBarComponent implements OnInit {
 
     console.log(window.innerWidth);
     if (window.innerWidth < 768) {
-      this.sidenav.fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 55;
       this.opened = false;
     } else {
-      this.sidenav.fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 55;
       this.opened = true;
     }
 
@@ -78,10 +79,10 @@ export class NavBarComponent implements OnInit {
   onResize(event: UIEvent) {
     const innerWidth = (event.target as Window).innerWidth;
     if (innerWidth < 768) {
-      this.sidenav.fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 55;
       this.opened = false;
     } else {
-      this.sidenav.fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 55;
       this.opened = true;
     }
   }

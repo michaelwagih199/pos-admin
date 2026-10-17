@@ -10,12 +10,12 @@ import { NgxBarcodeModule } from '../shared/barcode/ngx-barcode.module';
 
 
 @NgModule({
-  declarations: [ReciptReportComponent, ParcodeComponent],
-  imports: [
-    CommonModule,
-    PrintingRoutingModule,
-    SharedModule, 
-    NgxBarcodeModule,
-  ]
+    imports: [
+        CommonModule,
+        PrintingRoutingModule,
+        SharedModule,
+        NgxBarcodeModule,
+        ReciptReportComponent, ParcodeComponent,
+    ]
 })
 export class PrintingModule { }

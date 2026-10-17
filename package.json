@@ -5,9 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e"
+    "test": "ng test"
   },
   "private": true,
   "dependencies": {
@@ -42,13 +40,9 @@
     "@angular/cli": "~21.2.27",
     "@angular/compiler-cli": "~21.2.25",
     "@types/file-saver": "^2.0.1",
-    "@types/node": "^12.11.1",
-    "codelyzer": "^0.0.28",
+    "@types/node": "^22.20.5",
     "jsdom": "^30.1.3",
     "postcss": "^8.4.16",
-    "protractor": "~7.0.0",
-    "ts-node": "~8.3.0",
-    "tslint": "~6.1.0",
     "typescript": "~5.9.3",
     "vitest": "^4.1.12"
   }

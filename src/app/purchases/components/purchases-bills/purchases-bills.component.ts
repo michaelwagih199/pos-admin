@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
@@ -12,6 +12,13 @@ import { PurchasesBillsDetails } from '../../model/purchases-deteails';
 import { PurchasesBillsService } from '../../service/purchases-bills.service';
 import { PurchasingBillsDetailsService } from '../../service/purchasing-bills-details.service';
 import * as moment from 'moment';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DatePipe } from '@angular/common';
 
 export interface PurchaseModel {
   billsDate: string | null;
@@ -31,9 +38,15 @@ export interface PurchasesBillDetail {
     selector: 'app-purchases-bills',
     templateUrl: './purchases-bills.component.html',
     styleUrls: ['./purchases-bills.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, MatIconButton, MatIcon, MatMiniFabButton, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, DatePipe]
 })
 export class PurchasesBillsComponent implements OnInit {
+  private _snackBar = inject(MatSnackBar);
+  private purchasesBillsService = inject(PurchasesBillsService);
+  private purchasingBillsDetailsService = inject(PurchasingBillsDetailsService);
+  private supliersService = inject(SupliersService);
+  private dialog = inject(MatDialog);
+
   displayedColumns: string[] = [
     'id',
     'billsDate',
@@ -52,15 +65,6 @@ export class PurchasesBillsComponent implements OnInit {
   supliersList!: Supplier[];
   dynamic!: PurchasesBillsDetails[];
   arabic: Arabic = new Arabic()
-
-
-  constructor(
-    private _snackBar: MatSnackBar,
-    private purchasesBillsService: PurchasesBillsService,
-    private purchasingBillsDetailsService: PurchasingBillsDetailsService,
-    private supliersService: SupliersService,
-    private dialog: MatDialog,
-  ) { }
 
   ngOnInit(): void {
     this.retrieve();

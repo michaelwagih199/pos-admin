@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { CustomerModel } from 'src/app/customers/model/customer-model';
@@ -9,12 +9,21 @@ import {
   CustomerStatement,
   CustomerStatementService,
 } from '../../service/customer-statement.service';
+import { Dir } from '@angular/cdk/bidi';
+import { MatIcon } from '@angular/material/icon';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatButton } from '@angular/material/button';
+import { AsyncPipe, DecimalPipe, DatePipe } from '@angular/common';
 
 @Component({
     selector: 'app-customer-statement',
     templateUrl: './customer-statement.component.html',
     styleUrls: ['./customer-statement.component.scss'],
-    standalone: false
+    imports: [Dir, MatIcon, MatProgressBar, MatCard, MatCardContent, MatFormField, MatLabel, MatInput, ReactiveFormsModule, MatAutocompleteTrigger, MatSuffix, MatAutocomplete, MatOption, MatDatepickerInput, FormsModule, MatDatepickerToggle, MatDatepicker, MatButton, AsyncPipe, DecimalPipe, DatePipe]
 })
 export class CustomerStatementComponent implements OnInit {
   arabic: Arabic = new Arabic();

@@ -13,11 +13,11 @@ import { CustomerStatementComponent } from '../reports/components/customer-state
 
 
 @NgModule({
-  declarations: [CustomerListComponent,CustomerStatementComponent, CustomerDetailsComponent, CreateCustomerComponent, PaymentsComponent, OrdersComponent, CustomerPaymentComponent],
-  imports: [
-    CommonModule,
-    CustomersRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        CustomersRoutingModule,
+        SharedModule,
+        CustomerListComponent, CustomerStatementComponent, CustomerDetailsComponent, CreateCustomerComponent, PaymentsComponent, OrdersComponent, CustomerPaymentComponent
+    ]
 })
 export class CustomersModule { }

@@ -8,11 +8,11 @@ import { CreatePurchasesComponent } from './dialog/create-purchases/create-purch
 
 
 @NgModule({
-  declarations: [PurchasesBillsComponent, PurchasesBillsDetailsComponent, CreatePurchasesComponent],
-  imports: [
-    CommonModule,
-    PurchasesRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        PurchasesRoutingModule,
+        SharedModule,
+        PurchasesBillsComponent, PurchasesBillsDetailsComponent, CreatePurchasesComponent
+    ]
 })
 export class PurchasesModule { }

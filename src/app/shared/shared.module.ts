@@ -14,28 +14,28 @@ import { SharedRoutingModule } from './shared-routing.module';
 
 
 @NgModule({
-  declarations: [...fromComponents.components, ConfirmationDialog, AboutAppDialogComponent, NotificationsComponent, NotFoundComponent],
-  imports: [
-    CommonModule,
-    SharedRoutingModule,
-    ReactiveFormsModule,
-    FormsModule,
-    CommonModule,
-    RouterModule,
-    NgMaterialModule,
-    NgxPaginationModule,
-    NgbCarouselModule
-   ],
-  exports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    FormsModule,
-    CommonModule,
-    NgMaterialModule,
-    NgxPaginationModule,
-    NgbCarouselModule,
-    NotificationsComponent
-  ],
+    imports: [
+        CommonModule,
+        SharedRoutingModule,
+        ReactiveFormsModule,
+        FormsModule,
+        CommonModule,
+        RouterModule,
+        NgMaterialModule,
+        NgxPaginationModule,
+        NgbCarouselModule,
+        ...fromComponents.components, ConfirmationDialog, AboutAppDialogComponent, NotificationsComponent, NotFoundComponent
+    ],
+    exports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RouterModule,
+        FormsModule,
+        CommonModule,
+        NgMaterialModule,
+        NgxPaginationModule,
+        NgbCarouselModule,
+        NotificationsComponent
+    ],
 })
 export class SharedModule { }

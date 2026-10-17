@@ -1,19 +1,30 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ExpensessModel } from '../../models/expensess-model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CreateProductComponent } from 'src/app/stock/dialog/create-product/create-product.component';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { CategoryModel } from 'src/app/stock/model/categoryModel';
 import { ExpensesCategoryService } from '../../service/expenses-category.service';
 import { Arabic } from 'src/app/text';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-create-expenses',
     templateUrl: './create-expenses.component.html',
     styleUrls: ['./create-expenses.component.scss'],
-    standalone: false
+    imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatSelect, MatOption, MatDialogActions, MatButton]
 })
 export class CreateExpensesComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private categoryService = inject(ExpensesCategoryService);
+  private dialogRef = inject<MatDialogRef<CreateProductComponent>>(MatDialogRef);
+
 
   expenses: ExpensessModel = new ExpensessModel()
   validateForm!: FormGroup;
@@ -21,12 +32,10 @@ export class CreateExpensesComponent implements OnInit {
   arabic: Arabic = new Arabic()
   categoryId!: number
 
-  constructor(
-    private fb: FormBuilder,
-    private categoryService: ExpensesCategoryService,
-    private dialogRef: MatDialogRef<CreateProductComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-    this.expenses = data.model
+  dialogData = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    this.expenses = this.dialogData.model
   }
 
   ngOnInit(): void {

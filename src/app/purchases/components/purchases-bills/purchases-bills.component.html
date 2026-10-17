@@ -2,28 +2,6 @@
   <mat-card-header>
     <div class="container-fluid ">
       <div class="row justify-content-center p-3">
-        <!-- <div class="col-4">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>الموردين</mat-label>
-          <mat-select [(ngModel)]="selectedSupllier" name="food">
-            <mat-option *ngFor="let item of supliersList" [value]="item">
-              {{item.supplierName}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div class="col-4">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>المصروفات خلال فترة</mat-label>
-          <mat-date-range-input [rangePicker]="picker">
-            <input matStartDate placeholder="البداية">
-            <input matEndDate placeholder="النهاية">
-          </mat-date-range-input>
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-date-range-picker #picker></mat-date-range-picker>
-        </mat-form-field>
-      </div> -->
-
       <div class="col-2 ">
         <button mat-icon-button color="primary" (click)="refresh()">
           <mat-icon>replay</mat-icon>

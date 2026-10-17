@@ -11,11 +11,11 @@ import { CreateSuppliersComponent } from './dialogs/create-suppliers/create-supp
 
 
 @NgModule({
-  declarations: [SupliersListComponent, SupliersPaymentComponent, SupplierDetailsComponent, SupplierOrdersComponent, CreateSuppliersComponent],
-  imports: [
-    CommonModule,
-    SuppliersRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        SuppliersRoutingModule,
+        SharedModule,
+        SupliersListComponent, SupliersPaymentComponent, SupplierDetailsComponent, SupplierOrdersComponent, CreateSuppliersComponent
+    ]
 })
 export class SuppliersModule { }

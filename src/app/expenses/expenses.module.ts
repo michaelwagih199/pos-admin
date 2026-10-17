@@ -11,11 +11,11 @@ import { CreateExpensesComponent } from './dialogs/create-expenses/create-expens
 
 
 @NgModule({
-  declarations: [ExpensesComponent, ExpensesCategoryComponent, ExpensesListComponent, CreateCategoryComponent, CreateExpensesComponent],
-  imports: [
-    CommonModule,
-    ExpensesRoutingModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        ExpensesRoutingModule,
+        SharedModule,
+        ExpensesComponent, ExpensesCategoryComponent, ExpensesListComponent, CreateCategoryComponent, CreateExpensesComponent
+    ]
 })
 export class ExpensesModule { }

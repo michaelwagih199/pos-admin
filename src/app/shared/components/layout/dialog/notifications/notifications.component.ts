@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { MaintanenceModel } from 'src/app/maintainence/models/maintanceObject';
 import { POS_Response } from '../../../../../_helpers/pos-responce';
 import { MaintanenceService } from '../../../../../maintainence/services/maintanence.service';
 import { ExpiredProductModel } from './models/notification-model';
 import { NotificationService } from './services/notification.service';
+import { MatDialogTitle } from '@angular/material/dialog';
+import { MatDivider } from '@angular/material/divider';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -94,16 +98,16 @@ import { NotificationService } from './services/notification.service';
 </mat-tab-group>
 `,
     styles: [],
-    standalone: false
+    imports: [MatDialogTitle, MatDivider, MatTabGroup, MatTab, DatePipe]
 })
 export class NotificationsComponent implements OnInit {
+  private MaintanenceService = inject(MaintanenceService);
+  private notificationService = inject(NotificationService);
+
 
   today!: POS_Response<Array<MaintanenceModel>>;
   tomorrow!: POS_Response<Array<MaintanenceModel>>;
   expiredProducts!: POS_Response<Array<ExpiredProductModel>>;
-
-  constructor(private MaintanenceService: MaintanenceService,
-    private notificationService: NotificationService) { }
 
   ngOnInit(): void {
     this.getMatinatnceToday();

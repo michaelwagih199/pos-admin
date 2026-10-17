@@ -1,27 +1,33 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Arabic } from 'src/app/text';
 import { CustomerModel } from '../../model/customer-model';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-create-customer',
     templateUrl: './create-customer.component.html',
     styleUrls: ['./create-customer.component.scss'],
-    standalone: false
+    imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDialogActions, MatButton]
 })
 export class CreateCustomerComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private dialogRef = inject<MatDialogRef<CreateCustomerComponent>>(MatDialogRef);
+
 
   arabic: Arabic = new Arabic()
   customer: CustomerModel = new CustomerModel()
   validateForm!: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<CreateCustomerComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any) {
-    this.customer = data.model
+  dialogData = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    this.customer = this.dialogData.model
   }
 
   ngOnInit(): void {

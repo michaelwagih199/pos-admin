@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { forkJoin, Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -8,14 +8,29 @@ import { CustomerPaymentModel } from 'src/app/customers/model/customer-payment';
 import { CustomerPaymentService } from 'src/app/customers/service/customer-payment.service';
 import { CustomerService } from 'src/app/customers/service/customer.service';
 import { Arabic } from 'src/app/text';
+import { Dir } from '@angular/cdk/bidi';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatDivider } from '@angular/material/divider';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatButton } from '@angular/material/button';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 
 @Component({
     selector: 'app-customer-payment',
     templateUrl: './customer-payment.component.html',
     styleUrls: ['./customer-payment.component.scss'],
-    standalone: false
+    imports: [Dir, MatProgressBar, MatIcon, MatCard, MatCardContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatSuffix, MatAutocomplete, MatOption, MatDivider, MatDatepickerInput, MatDatepickerToggle, MatDatepicker, MatButton, AsyncPipe, DecimalPipe]
 })
 export class CustomerPaymentComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private customerService = inject(CustomerService);
+  private customerPaymentService = inject(CustomerPaymentService);
+  private snackBar = inject(MatSnackBar);
+
   arabic: Arabic = new Arabic();
   validateForm!: FormGroup;
 
@@ -27,13 +42,6 @@ export class CustomerPaymentComponent implements OnInit {
   selectedCustomer: CustomerModel | null = null;
   currentBalance = 0;
   isLoading = false;
-
-  constructor(
-    private fb: FormBuilder,
-    private customerService: CustomerService,
-    private customerPaymentService: CustomerPaymentService,
-    private snackBar: MatSnackBar
-  ) { }
 
   ngOnInit(): void {
     this.validateForm = this.fb.group({

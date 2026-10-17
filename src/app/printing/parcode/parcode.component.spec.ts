@@ -8,8 +8,8 @@ describe('ParcodeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ParcodeComponent ]
-    })
+    imports: [ParcodeComponent]
+})
     .compileComponents();
   });
 

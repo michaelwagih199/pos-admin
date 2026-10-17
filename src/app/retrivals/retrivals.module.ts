@@ -10,17 +10,15 @@ import { ReturnProductDialogComponent } from './dialgos/return-product-dialog/re
 import { RetrievalWizardComponent } from './dialgos/retrieval-wizard/retrieval-wizard.component';
 
 @NgModule({
-  declarations: [
-    RetrivalsComponent,
-    RerivalDetailsComponent,
-    ReturnProductDialogComponent,
-    RetrievalWizardComponent,
-  ],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RetrivalsRoutingModule,
-    SharedModule,
-  ],
+    imports: [
+        CommonModule,
+        ReactiveFormsModule,
+        RetrivalsRoutingModule,
+        SharedModule,
+        RetrivalsComponent,
+        RerivalDetailsComponent,
+        ReturnProductDialogComponent,
+        RetrievalWizardComponent,
+    ],
 })
 export class RetrivalsModule {}

@@ -1,24 +1,28 @@
-import { Component, Inject, OnInit, ViewEncapsulation } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { Component, OnInit, ViewEncapsulation, inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DataService } from 'src/app/shared/service/data.service';
 import { ProductModel } from '../../model/productModel';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { NgxBarcodeModule } from '../../../shared/barcode/ngx-barcode.module';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-barcode',
     templateUrl: './barcode.component.html',
     styleUrls: ['./barcode.component.scss'],
-    standalone: false
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, NgxBarcodeModule, MatDialogActions, MatButton]
 })
 export class BarcodeComponent implements OnInit {
+  private dialogRef = inject<MatDialogRef<BarcodeComponent>>(MatDialogRef);
+  private router = inject(Router);
+  private dataServer = inject(DataService);
+
   model: ProductModel = new ProductModel();
-  constructor(
-    private dialogRef: MatDialogRef<BarcodeComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any,
-    private router: Router,
-    private dataServer: DataService
-  ) {
-    this.model = data.productCode;
+  dialogData = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    this.model = this.dialogData.productCode;
   }
 
   ngOnInit(): void {}

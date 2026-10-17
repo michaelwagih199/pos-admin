@@ -1,6 +1,6 @@
-import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { DatePipe, AsyncPipe } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
@@ -12,14 +12,25 @@ import { CreateMaintanenceComponent } from '../dialogs/create-maintanence.compon
 import { MaintanenceModel } from '../models/maintanceObject';
 import { MaintanenceService } from '../services/maintanence.service';
 import { MyUtils } from '../../_helpers/util';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 
 @Component({
     selector: 'app-maintanence',
     templateUrl: './maintanence.component.html',
     styleUrls: ['./maintanence.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, ReactiveFormsModule, FormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatIcon, MatSuffix, MatAutocomplete, MatOption, MatIconButton, MatMiniFabButton, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, AsyncPipe, DatePipe]
 })
 export class MaintanenceComponent implements OnInit {
+  private maintanenceService = inject(MaintanenceService);
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
+
 
   arabic: Arabic = new Arabic()
   maintanenceList!: MaintanenceModel[];
@@ -33,14 +44,6 @@ export class MaintanenceComponent implements OnInit {
   options!: string[]
   filteredOptions!: Observable<string[]>
   pipe = new DatePipe('en-US');
-  
-  constructor(
-    private maintanenceService: MaintanenceService,
-    private dialog: MatDialog,
-    private _snackBar: MatSnackBar,
-  ) {
-
-  }
 
   ngOnInit() {
     this.getAllNames()

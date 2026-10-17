@@ -1,6 +1,6 @@
-import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { ProductModel } from 'src/app/stock/model/productModel';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
 import { Supplier } from 'src/app/suppliers/models/supplier';
@@ -9,14 +9,28 @@ import { Arabic } from 'src/app/text';
 import { PurchasesBills } from '../../model/purchases-bills';
 import { PurchasesBillsDetails } from '../../model/purchases-deteails';
 import { PurchasesBillsService } from '../../service/purchases-bills.service';
+import { MatDivider } from '@angular/material/divider';
+import { CdkScrollable } from '@angular/cdk/scrolling';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
+import { MatSelect } from '@angular/material/select';
+import { MatOption } from '@angular/material/autocomplete';
+import { MatButton, MatIconButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
     selector: 'app-create-purchases',
     templateUrl: './create-purchases.component.html',
     styleUrls: ['./create-purchases.component.scss'],
-    standalone: false
+    imports: [MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatSelect, MatOption, MatButton, MatIconButton, MatIcon, MatDialogActions]
 })
 export class CreatePurchasesComponent implements OnInit {
+  private fb = inject(FormBuilder);
+  private productService = inject(ProductServiceService);
+  private supliersService = inject(SupliersService);
+  private billsPurchasesService = inject(PurchasesBillsService);
+  private dialogRef = inject<MatDialogRef<CreatePurchasesComponent>>(MatDialogRef);
+
   validateForm!: FormGroup;
   validateDynamicForm!: FormGroup;
 
@@ -32,15 +46,10 @@ export class CreatePurchasesComponent implements OnInit {
   purchasingDetails: PurchasesBillsDetails = new PurchasesBillsDetails();
   billsCode: any;
 
-  constructor(
-    private fb: FormBuilder,
-    private productService: ProductServiceService,
-    private supliersService: SupliersService,
-    private billsPurchasesService: PurchasesBillsService,
-    private dialogRef: MatDialogRef<CreatePurchasesComponent>,
-    @Inject(MAT_DIALOG_DATA) data: any
-  ) {
-    this.obj = data.model;
+  dialogData = inject(MAT_DIALOG_DATA);
+
+  constructor() {
+    this.obj = this.dialogData.model;
   }
 
   ngOnInit(): void {

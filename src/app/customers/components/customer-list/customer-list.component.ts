@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Arabic } from 'src/app/text';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Observable, Subscription } from 'rxjs';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -11,15 +11,29 @@ import { CustomerModel } from '../../model/customer-model';
 import { CreateCustomerComponent } from '../../dialogs/create-customer/create-customer.component';
 import { Router } from '@angular/router';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { MatCard, MatCardHeader, MatCardContent } from '@angular/material/card';
+import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton, MatMiniFabButton } from '@angular/material/button';
+import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
     selector: 'app-customer-list',
     templateUrl: './customer-list.component.html',
     styleUrls: ['./customer-list.component.scss'],
-    standalone: false
+    imports: [MatCard, MatCardHeader, ReactiveFormsModule, FormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatIcon, MatSuffix, MatAutocomplete, MatOption, MatIconButton, MatMiniFabButton, MatCardContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, NgxPaginationModule, AsyncPipe]
 })
 
 export class CustomerListComponent implements OnInit {
+  private customerService = inject(CustomerService);
+  private dialog = inject(MatDialog);
+  private _snackBar = inject(MatSnackBar);
+  private router = inject(Router);
+
 
 
   arabic: Arabic = new Arabic()
@@ -35,15 +49,6 @@ export class CustomerListComponent implements OnInit {
   options!: string[]
   selectedCustomersFilter: any
   filteredOptions!: Observable<string[]>
-
-  constructor(
-    private customerService: CustomerService,
-    private dialog: MatDialog,
-    private _snackBar: MatSnackBar,
-    private router: Router,
-  ) {
-
-  }
 
   ngOnInit(): void {
     this.getAllNames()

@@ -1,12 +1,4 @@
-import {
-  AfterViewChecked,
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  SecurityContext,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewChecked, Component, HostListener, OnDestroy, OnInit, SecurityContext, ViewEncapsulation, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as printJS from "print-js";
@@ -25,22 +17,19 @@ export interface data {
     selector: 'app-recipt-report',
     templateUrl: './recipt-report.component.html',
     styleUrls: ['./recipt-report.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class ReciptReportComponent
   implements OnInit,AfterViewChecked {
+    private router = inject(Router);
+    private route = inject(ActivatedRoute);
+    private dataServer = inject(DataService);
+    private salOrderPayment = inject(SaleOrderInvoceService);
+    private _snackBar = inject(MatSnackBar);
+
     sharedData!: data;
     subscription!: Subscription;
   private routeSub!: Subscription;
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private dataServer: DataService,
-    private salOrderPayment: SaleOrderInvoceService,
-    private _snackBar: MatSnackBar
-  ) {  }
 
 
   ngOnInit(): void {

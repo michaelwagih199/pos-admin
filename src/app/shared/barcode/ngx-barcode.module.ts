@@ -7,9 +7,8 @@ export * from './ngx-barcode.component';
 /** Local drop-in replacement for the abandoned `ngx-barcode` package. */
 
 @NgModule({
-  declarations: [NgxBarcodeComponent],
-  exports: [NgxBarcodeComponent],
-  imports: [FormsModule],
+    exports: [NgxBarcodeComponent],
+    imports: [FormsModule, NgxBarcodeComponent],
 })
 export class NgxBarcodeModule {
   static forRoot(): ModuleWithProviders<NgxBarcodeModule> {

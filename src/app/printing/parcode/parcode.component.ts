@@ -1,11 +1,4 @@
-import {
-  AfterViewChecked,
-  Component,
-  HostListener,
-  OnDestroy,
-  OnInit,
-  ViewEncapsulation,
-} from '@angular/core';
+import { AfterViewChecked, Component, HostListener, OnDestroy, OnInit, ViewEncapsulation, inject } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -24,15 +17,17 @@ export interface data {
     selector: 'app-parcode',
     templateUrl: './parcode.component.html',
     styleUrls: ['./parcode.component.scss'],
-    encapsulation: ViewEncapsulation.None,
-    standalone: false
+    encapsulation: ViewEncapsulation.None
 })
 export class ParcodeComponent implements OnInit {
+  private router = inject(Router);
+  private data = inject(DataService);
+  private _snackBar = inject(MatSnackBar);
+  private barCodeService = inject(BarCodeService);
+
   subscription!: Subscription;
 
   sharedData!: data;
-
-  constructor(private router: Router, private data: DataService,     private _snackBar: MatSnackBar, private barCodeService :BarCodeService) {}
 
   ngOnInit(): void {
     this.subscription = this.data.currentMessage.subscribe((message) => {
