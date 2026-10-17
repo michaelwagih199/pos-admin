@@ -8,7 +8,8 @@ import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { CreateCategoryComponent } from './stock/dialog/create-category/create-category.component';
 import { CreateProductComponent } from './stock/dialog/create-product/create-product.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgxBarcodeModule } from 'ngx-barcode';
+import { NgxBarcodeModule } from './shared/barcode/ngx-barcode.module';
+
 import { ExcelService } from './excel.service';
 import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';

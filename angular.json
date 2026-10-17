@@ -144,7 +144,6 @@
       }
     }
   },
-  "defaultProject": "pos",
   "cli": {
     "analytics": "93b4ae54-31ad-47b2-8ca2-eb9abf98cec4"
   }

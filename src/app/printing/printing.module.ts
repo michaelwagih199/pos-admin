@@ -5,7 +5,8 @@ import { CommonModule } from '@angular/common';
 import { PrintingRoutingModule } from './printing-routing.module';
 import { ReciptReportComponent } from './recipt-report/recipt-report.component';
 import { ParcodeComponent } from './parcode/parcode.component';
-import { NgxBarcodeModule } from 'ngx-barcode';
+import { NgxBarcodeModule } from '../shared/barcode/ngx-barcode.module';
+
 
 
 @NgModule({
