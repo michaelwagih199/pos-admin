@@ -15,10 +15,7 @@
         <div class="section-title">{{ arabic.customerPayment.customerSection }}</div>
 
         <mat-form-field appearance="outline" class="w-100">
-          <mat-label>
-            {{ arabic.customerPayment.customer }}
-            <span class="required">*</span>
-          </mat-label>
+          <mat-label>{{ arabic.customerPayment.customer }}</mat-label>
           <input matInput [formControl]="customerControl" [matAutocomplete]="autoCustomer"
             placeholder="{{ arabic.customerPayment.searchPlaceholder }}">
           <mat-icon matSuffix color="primary">search</mat-icon>
@@ -56,10 +53,7 @@
         <div class="row g-3">
           <div class="col-md-6">
             <mat-form-field appearance="outline" class="w-100">
-              <mat-label>
-                {{ arabic.customerPayment.paymentDate }}
-                <span class="required">*</span>
-              </mat-label>
+              <mat-label>{{ arabic.customerPayment.paymentDate }}</mat-label>
               <input matInput [matDatepicker]="picker" formControlName="paymentDate">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
@@ -68,10 +62,7 @@
 
           <div class="col-md-6">
             <mat-form-field appearance="outline" class="w-100">
-              <mat-label>
-                {{ arabic.customerPayment.paymentValue }}
-                <span class="required">*</span>
-              </mat-label>
+              <mat-label>{{ arabic.customerPayment.paymentValue }}</mat-label>
               <input matInput type="number" step="0.01" min="0.01" formControlName="paymentValue">
               <span matSuffix class="suffix-text">{{ arabic.customerPayment.currency }}</span>
             </mat-form-field>

@@ -33,9 +33,15 @@ body {
 /* Visible focus for keyboard users. Material removes the default outline, so
    the token ring replaces it. `:focus-visible` fires only for keyboard or
    programmatic focus, never on mouse click, so pointer users see no change. */
-:focus-visible {
+:focus-visible:not(input):not(textarea):not(select) {
   outline: 0;
   box-shadow: var(--vn-focus);
+}
+
+.mat-input-element {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 /* Honor the OS "reduce motion" preference. Durations are collapsed rather than
@@ -269,7 +275,6 @@ td.mat-footer-cell {
     visibility: visible !important;
   }
 }
-
 
 /* ============================================ */
 /* GLOBAL PRINT RULES                           */
