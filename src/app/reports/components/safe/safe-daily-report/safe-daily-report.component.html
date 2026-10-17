@@ -153,7 +153,7 @@
         </div>
       </div>
       <!-- ============ SECTION 1: Customer payments ============ -->
-      @if (report.customerPaymentsDetails?.length) {
+      @if (report.customerPaymentsDetails.length) {
         <div class="section-card">
           <div class="section-header primary">
             <mat-icon>receipt_long</mat-icon>
@@ -200,7 +200,7 @@
         </div>
       }
       <!-- ============ SECTION 2: All Sales (Cash & Credit) ============ -->
-      @if (report.cashSalesDetails?.length) {
+      @if (report.cashSalesDetails.length) {
         <div class="section-card">
           <div class="section-header success">
             <mat-icon>shopping_cart</mat-icon>
@@ -249,7 +249,7 @@
         </div>
       }
       <!-- ============ SECTION 3: Purchases (المشتريات) ============ -->
-      @if (report.purchasesDetails?.length) {
+      @if (report.purchasesDetails.length) {
         <div class="section-card">
           <div class="section-header purple">
             <mat-icon>inventory_2</mat-icon>
@@ -296,7 +296,7 @@
         </div>
       }
       <!-- ============ SECTION 4: All Retrievals (المرتجعات) ============ -->
-      @if (report.cashRetrievalsDetails?.length) {
+      @if (report.cashRetrievalsDetails.length) {
         <div class="section-card">
           <div class="section-header danger">
             <mat-icon>autorenew</mat-icon>

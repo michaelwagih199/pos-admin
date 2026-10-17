@@ -1,7 +1,13 @@
-@import 'styles/tokens';
-@import 'styles/tokens/typography';
-@import 'styles/fonts';
-@import 'styles/numeric';
+// §9 step 2 — `@use`, not `@import`. Sass requires `@use` to precede every
+// other rule in a file (only `@charset`/`@forward` may come first), which is
+// why these sit above the `@tailwind` directives below.
+// `tokens/typography` is loaded directly rather than through the `styles/tokens`
+// barrel: it is deliberately outside Phase A's zero-impact colour/scale barrel
+// (see src/styles/tokens/_typography.scss).
+@use 'styles/tokens';
+@use 'styles/tokens/typography';
+@use 'styles/fonts';
+@use 'styles/numeric';
 
 @tailwind base;
 @tailwind components;
@@ -44,6 +50,20 @@ body {
   border: none !important;
 }
 
+/* Screen-reader utility (Bootstrap 5 standard, used by @ng-bootstrap 18+ components) */
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
 /* Honor the OS "reduce motion" preference. Durations are collapsed rather than
    the animations deleted, so nothing that depends on an animation finishing
    changes layout. The `!important`s are unavoidable and sanctioned (see
@@ -83,15 +103,16 @@ body {
   flex: 1 1 auto;
 }
 
+// Scale step --vn-text-md = 0.95rem = 15.2px vs the literal 15px (registered §6.4).
 .mat-nav-list .mat-list-item {
-  font-size: 15px;
+  font-size: var(--vn-text-md);
   font-family: var(--vn-font-body);
 }
 
-.nav-tool-items {
-  display: inline-block;
-  margin-inline-start: 13px;
-}
+// .nav-tool-items layout (13px inline-start margin, inline-block) is DEAD here:
+// nav-bar.component.scss owns the toolbar flank layout now (flex 1 1 0 +
+// justify-content flex-end) and the class exists only in nav-bar.component.html.
+
 
 .mat-sidenav,
 .mat-sidenav-content {
@@ -99,15 +120,20 @@ body {
 }
 
 .mat-list-item.active {
-  background: rgba(0, 0, 0, 0.04);
+  // RouterLinkActive now sets this (nav-bar.component.html). The former rgba
+  // (0,0,0,0.04) composite ≈ #f0f0f0 on the white drawer; --vn-surface-alt
+  // (#f8fafc) is the closest semantic surface — slightly LIGHTER (registered).
+  background: var(--vn-surface-alt);
   font-family: var(--vn-font-body);
 }
 
 .mat-sidenav-content {
   // Phase F: the 3-value shorthand is already horizontally symmetric; written
   // logically so the block (top/bottom) axis is explicit.
-  padding-block: 25px 0;
-  padding-inline: 40px;
+  // 40px → --vn-space-10 (identical); 25px → --vn-space-6 = 24px (1px shift,
+  // registered §6.4 — 25px was never on the grid).
+  padding-block: var(--vn-space-6) var(--vn-space-0);
+  padding-inline: var(--vn-space-10);
 }
 
 .mat-sidenav {
@@ -117,12 +143,13 @@ body {
   width: 200px;
 }
 
-mat-sidenav mat-icon {
-  margin-inline-start: 5px;
-}
+// The 5px margin-inline-start nudge on sidenav icons is GONE: nav rows now use
+// matListItemIcon slots (nav-bar.component.html), and Material's list slot
+// layout owns the leading gap. The old nudge fought it (icons sat ragged).
 
 .hamburger {
-  margin-top: 5px;
+  // margin-top: 5px nudge removed — the toolbar is an align-items: centre flex
+  // row again (nav-bar.component.scss), so the nudge was a counter-hack.
   cursor: pointer;
 }
 
@@ -248,8 +275,9 @@ td.mat-footer-cell {
   }
 
   .mat-sidenav-content {
-    padding-block: 20px 0;
-    padding-inline: 20px;
+    // 20px == --vn-space-5 exactly, both values.
+    padding-block: var(--vn-space-5) var(--vn-space-0);
+    padding-inline: var(--vn-space-5);
   }
 
   .misc-bottom-padding mat-label {
@@ -262,14 +290,13 @@ td.mat-footer-cell {
   }
 
   .mat-nav-list .mat-list-item {
-    font-size: 14px;
+    font-size: var(--vn-text-sm);
   }
 }
 
 @media (max-width: 767px) {
-  .nav-tool-items {
-    margin-inline-start: 0;
-  }
+  // (The .nav-tool-items margin reset that used to sit here went with the dead
+  // global rule above; the component owns the flank layout.)
 
   .hamburger {
     visibility: visible !important;
@@ -333,6 +360,7 @@ td.mat-footer-cell {
 /* Bootstrap is NOT imported here any more (Phase E, plan §8 step 2).
    It ships exactly once, from angular.json:
      node_modules/bootstrap/dist/css/bootstrap.min.css
-   Re-adding the two `@import '~bootstrap/scss/bootstrap';` lines that used to
-   sit here is what produced a second, duplicate copy of Bootstrap in the
-   bundle (baseline finding F5 / plan §2). */
+   Re-adding the two Bootstrap sass-entry lines that used to sit here (they used
+   the legacy Sass import syntax that the §9 step 2 migration replaced) is what
+   produced a second, duplicate copy of Bootstrap in the bundle (baseline
+   finding F5 / plan §2). */

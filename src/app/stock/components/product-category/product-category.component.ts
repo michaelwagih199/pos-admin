@@ -47,11 +47,14 @@ export class ProductCategoryComponent implements OnInit {
   ngOnInit() {
     this.getAllNames()
     this.retrieve()
+    this.myControl.valueChanges.subscribe(value => {
+      this.searchInout = value;
+    });
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    const filterValue = (value || '').toLowerCase();
+    return (this.options || []).filter(option => option.toLowerCase().includes(filterValue));
   }
 
   /**
@@ -72,7 +75,8 @@ export class ProductCategoryComponent implements OnInit {
 
   findByName() {
     this.isLoading = true
-    this.categoryService.findByName(this.searchInout).subscribe(data => {
+    const term = this.searchInout ?? this.myControl.value ?? ''
+    this.categoryService.findByName(term).subscribe(data => {
       this.categoryList = data
       this.isLoading = false
     }, error => console.log(error))
@@ -81,6 +85,7 @@ export class ProductCategoryComponent implements OnInit {
   refresh() {
     this.retrieve();
     this.searchInout = ''
+    this.myControl.setValue('', { emitEvent: false })
   }
 
 
@@ -192,12 +197,12 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   displayFn(value: any): string {
-    this.searchInout = value
-    return value;
+    return value || '';
   }
 
   OnHumanSelected(SelectedHuman: any) {
     this.searchInout = SelectedHuman;
+    this.myControl.setValue(SelectedHuman, { emitEvent: false });
     this.findByName()
   }
 

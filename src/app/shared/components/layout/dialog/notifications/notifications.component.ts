@@ -105,9 +105,9 @@ export class NotificationsComponent implements OnInit {
   private notificationService = inject(NotificationService);
 
 
-  today!: POS_Response<Array<MaintanenceModel>>;
-  tomorrow!: POS_Response<Array<MaintanenceModel>>;
-  expiredProducts!: POS_Response<Array<ExpiredProductModel>>;
+  today?: POS_Response<Array<MaintanenceModel>>;
+  tomorrow?: POS_Response<Array<MaintanenceModel>>;
+  expiredProducts?: POS_Response<Array<ExpiredProductModel>>;
 
   ngOnInit(): void {
     this.getMatinatnceToday();

@@ -48,11 +48,11 @@
             @for (inv of multiInvoiceInvoices; track inv) {
               <mat-option
                 [value]="inv.saleOrderDetailId ?? inv.purchasesBillDetailId"
-                [disabled]="(inv.returnableQty ?? 0) <= 0 && (inv.returnableUnits ?? 0) <= 0">
+                [disabled]="inv.returnableQty <= 0 && inv.returnableUnits <= 0">
                 {{ inv.orderCode }} — {{ inv.orderDate | date:'yyyy-MM-dd' }}
                 (متاح: {{ inv.returnableQty }} توب
-                @if ((inv.returnableUnits ?? 0) > 0) {
-                  · {{ (inv.returnableUnits ?? 0) | number:'1.0-3' }} {{ measurementUnitLabel }}
+                @if (inv.returnableUnits > 0) {
+                  · {{ inv.returnableUnits | number:'1.0-3' }} {{ measurementUnitLabel }}
                   })
                 </mat-option>
               }

@@ -24,8 +24,8 @@ export class SafeReportComponent implements OnInit {
   isLoading: boolean = false;
   startDate: any;
   endDate: any;
-  income!: Income;
-  export!: Export;
+  income?: Income;
+  export?: Export;
   totalIncome: number =0;
   totalExport: number = 0;
 
@@ -50,9 +50,9 @@ export class SafeReportComponent implements OnInit {
         this.isLoading = false;
         this.income = data;
         this.totalIncome =
-          this.income.fromCustomers +
-          this.income.incomes +
-          this.income.sumSales;
+          data.fromCustomers +
+          data.incomes +
+          data.sumSales;
       });
   }
 
@@ -67,10 +67,10 @@ export class SafeReportComponent implements OnInit {
         this.isLoading = false;
         this.export = data;
         this.totalExport =
-          this.export.sumExpenses +
-          this.export.sumExport +
-          this.export.sumSuppliersValues+
-          this.export.sumRetrivals
+          data.sumExpenses +
+          data.sumExport +
+          data.sumSuppliersValues+
+          data.sumRetrivals
       });
   }
 

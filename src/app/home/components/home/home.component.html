@@ -1,6 +1,6 @@
 <div class="card">
   @if (images) {
-    <ngb-carousel  >
+    <ngb-carousel [showNavigationArrows]="showNavigationArrows" [showNavigationIndicators]="showNavigationIndicators">
       @for (index of images; track index) {
         <ng-template ngbSlide>
           <div >

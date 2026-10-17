@@ -4,14 +4,14 @@
     <form class="example-form">
       <mat-form-field class="example-full-width">
         <mat-label>{{arabic.customers.util.searchBar}}</mat-label>
-        <input type="text" placeholder={{arabic.customers.util.searchBar}} matInput
-          [formControl]="myControl" [matAutocomplete]="auto" [(ngModel)]="searchInout"
+        <input type="text" [placeholder]="arabic.customers.util.searchBar" matInput
+          [formControl]="myControl" [matAutocomplete]="auto"
           (keyup.enter)="search()">
         <mat-icon color="accent" matSuffix>search</mat-icon>
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
           @for (option of filteredOptions | async; track option) {
             <mat-option [value]="option"
-              (click)="OnHumanSelected(searchInout)">
+              (click)="OnHumanSelected(option)">
               {{option}}
             </mat-option>
           }

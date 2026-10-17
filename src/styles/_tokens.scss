@@ -1,15 +1,19 @@
 // ============================================================================
 // Ventas Design System v2 — token barrel
 // ----------------------------------------------------------------------------
-// Single entry point imported once from src/styles.scss:
-//     @import 'styles/tokens';
+// Entry point loaded once from the top of src/styles.scss:
+//     @use 'styles/tokens';
 //
-// Plain `@import` (not `@use`) on purpose: every partial below is nothing but a
-// `:root { --vn-… }` custom-property block with zero Sass members, and a Sass
-// `@use` cannot sit after `@tailwind base;` / before the existing
-// `@import '~bootstrap…'` without reordering hazards. `var()` resolves at
-// computed-value time, so the import order only matters for readability and for
-// aliases shadowing primitives — which is why primitives come first.
+// `@use`, not `@import`: every partial below is nothing but a `:root { --vn-… }`
+// custom-property block with zero Sass members, so there is nothing to
+// namespace and nothing to re-export with `@forward`. `@use` also evaluates a
+// module at most once, which removes the duplicate-emission hazard `@import`
+// carried. `var()` resolves at computed-value time, so the load order below
+// only matters for readability and for aliases shadowing primitives — which is
+// why primitives come first.
+//
+// The `@use` rules must stay above every other rule in this file, and
+// src/styles.scss loads this barrel above its own `@tailwind` directives.
 //
 // Layer contract (design-system-v2-plan.md §4):
 //   primitives → raw hex, referenced by nothing under src/app/**
@@ -18,7 +22,7 @@
 //   aliases    → DEPRECATED v1.0 names, kept until Phase G
 // ============================================================================
 
-@import 'tokens/primitives';
-@import 'tokens/semantic';
-@import 'tokens/scales';
-@import 'tokens/aliases';
+@use 'tokens/primitives';
+@use 'tokens/semantic';
+@use 'tokens/scales';
+@use 'tokens/aliases';

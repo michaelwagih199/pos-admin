@@ -13,7 +13,7 @@ import { CompoundService } from '../../service/compound.service';
 export class CompoundReportComponent implements OnInit {
   startDate: any;
   endDate: any;
-  compound!: CompoundReportModel;
+  compound?: CompoundReportModel;
 
   constructor(private compoundService: CompoundService,
    ) {}

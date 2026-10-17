@@ -1,59 +1,81 @@
 // Phase G screen 7 (plan section 10): the app shell.
 // Notes for this file:
-//   - The icon helper keeps the literal "Material Icons" family on purpose: that
-//     is the icon font itself, not a design token (DESIGN_SYSTEM section 7.4),
-//     and the global helper in src/styles/_fonts.scss depends on the same name.
-//   - The header wordmark uses the display family token, which resolves to the
-//     same self-hosted face that was named here literally before.
-//   - The notification bell now uses the danger role instead of the browser's
-//     built-in red keyword (plan register row 25, magnitude Small).
-//   - Icon geometry (20px / 25px) stays literal: those are glyph sizes, not
-//     steps of the type scale.
+//   - The component-level `.material-icons` helper was deleted: Angular Material
+//     21 stamps every <mat-icon> with the `material-icons` class itself, so the
+//     canonical 24px/liga helper in src/styles/_fonts.scss now applies. The
+//     earlier 20px override plus its `margin-inline-end` were what made the
+//     icon/label gaps differ per row.
+//   - `mat-toolbar.mat-primary { background-color: ... }` was deleted: Material
+//     21 never emits a `mat-primary` class on a toolbar, so the selector never
+//     matched. The navy bar still comes from theme.scss's primary palette via
+//     the `--mat-toolbar-container-*` tokens.
+//   - The wordmark uses the display family token and the documented screen
+//     header step of the type scale (was the relative keyword `larger`).
+//   - The `.user-chip` (was the `#userName` id selector) now speaks only in
+//     semantic tokens; the `@apply rounded-md text-white` shortcut is replaced
+//     by the same values expressed as tokens (--vn-radius-md / --vn-on-brand,
+//     value-identical). The Material list colour tokens put the icon and name
+//     on the brand fill.
+//   - Notification bell keeps the danger role. Icon glyphs come from the
+//     canonical 24px helper; this file declares no glyph sizes itself.
 //   - No comment is placed inside a rule, so the postcss gap landmine cannot
 //     be triggered by this file.
 
-  .material-icons {
-    font-family: 'Material Icons';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 20px;
-    line-height: 1;
-    margin-inline-end: 10px;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-}
-
-.mat-toolbar{
+.mat-toolbar {
   direction: ltr;
+
+  // True wordmark centring: mat-toolbar justifies with space-between, so three
+  // unequal children leave the middle one off page-centre. Giving the leading
+  // icon group and the hamburger an equal flexible share makes the flanks the
+  // same width, and the middle text lands on the centre line.
+  .toolbar-actions {
+    flex: 1 1 0;
+    display: flex;
+    column-gap: var(--vn-space-4);
+  }
+
+  .header-text {
+    flex: 0 0 auto;
+    font-family: var(--vn-font-display);
+    font-size: var(--vn-text-xl);
+    color: var(--vn-on-brand);
+  }
+
+  .nav-tool-items {
+    flex: 1 1 0;
+    display: flex;
+    justify-content: flex-end;
+    // Neutralises the 13px inline-start margin from src/styles.scss; inside this
+    // equal-flank layout that margin is what pushed the wordmark off-centre.
+    margin-inline-start: 0;
+  }
 }
 
-.header-text{
-  font-family: var(--vn-font-display);
-  font-size: larger;
-}
-
-mat-toolbar.mat-primary{
+.user-chip {
   background-color: var(--vn-brand);
+  border-radius: var(--vn-radius-md);
+
+  // Material's MDC list tokens are the sanctioned way to recolour a list item's
+  // projected content; direct child selectors lose to the MDC styles.
+  --mat-list-list-item-leading-icon-color: var(--vn-on-brand);
+  --mat-list-list-item-label-text-color: var(--vn-on-brand);
 }
 
-#userName{
-  background-color: var(--vn-brand);
-  @apply  rounded-md text-white;
+.mat-nav-list {
+  .mat-mdc-list-item {
+    text-align: start;
+
+    [matListItemTitle] {
+      text-align: start;
+    }
+  }
 }
 
-.homeIcon{
-  font-size:25px;
+.homeIcon {
   cursor: pointer;
 }
 
-.notifi-yes{
+.notifi-yes {
   color: var(--vn-danger);
-  font-size:25px;
   cursor: pointer;
 }

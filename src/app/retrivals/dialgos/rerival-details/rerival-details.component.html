@@ -2,6 +2,9 @@
     <h1> تفاصيل الفاتورة</h1>
   </div>
   <mat-dialog-content>
+    @if (isLoading) {
+      <mat-progress-bar color="accent" mode="indeterminate" class="mb-2"></mat-progress-bar>
+    }
 <table mat-table [dataSource]="listDetails" class="mat-elevation-z2">
   <ng-container matColumnDef="id">
     <th mat-header-cell *matHeaderCellDef> م </th>

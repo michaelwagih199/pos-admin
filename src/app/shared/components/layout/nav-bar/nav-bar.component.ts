@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener, inject, viewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TokenStorageService } from 'src/app/core/services/token-storage.service';
 import { Arabic } from 'src/app/text';
 import { AboutAppDialogComponent } from '../dialog/about-app-dialog/about-app-dialog.component';
@@ -11,13 +11,13 @@ import { NotificationService } from '../dialog/notifications/services/notificati
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
-import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatNavList, MatListItem, MatListItemIcon, MatListItemTitle } from '@angular/material/list';
 
 @Component({
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
-    imports: [MatToolbar, MatIcon, NgClass, MatSidenavContainer, MatSidenav, MatNavList, MatListItem, RouterLink, MatSidenavContent, RouterOutlet]
+    imports: [MatToolbar, MatIcon, NgClass, MatSidenavContainer, MatSidenav, MatNavList, MatListItem, MatListItemIcon, MatListItemTitle, RouterLink, RouterLinkActive, MatSidenavContent, RouterOutlet]
 })
 export class NavBarComponent implements OnInit {
   dialog = inject(MatDialog);

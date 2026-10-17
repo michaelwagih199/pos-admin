@@ -1,12 +1,15 @@
 <!-- Toolbar -->
 <mat-toolbar color="primary" class="header doNotPrint">
-  <div>
+  <!-- Leading icon group. The class exists so this group and .nav-tool-items can
+       each take an equal share of the free space, which is what actually centres
+       .header-text (see nav-bar.component.scss). -->
+  <div class="toolbar-actions">
     <mat-icon aria-hidden="false" class="homeIcon" (click)="toHome()">home</mat-icon>
     <mat-icon aria-hidden="false" [ngClass]="[ isNotification ? 'notifi-yes' : 'homeIcon']"
     (click)="toNotification()">notifications</mat-icon>
   </div>
   <div class="header-text">Ventas</div>
-  <span class="nav-tool-items ">
+  <span class="nav-tool-items">
     <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
   </span>
 </mat-toolbar>
@@ -18,69 +21,85 @@
 
     <mat-nav-list>
 
-      <div data-toggle="tooltip" data-placement="top" title="Logout">
-        <a id="userName" mat-list-item (click)="logoutComfirm()">
-          {{userName}}
-          <mat-icon>person</mat-icon>
-        </a>
-      </div>
+      <!-- Sign-out. Was wrapped in a Bootstrap tooltip (data-toggle/data-placement/
+           title) that was never initialised — the vendored bootstrap JS needs an
+           explicit .tooltip() call — carrying an English label in an Arabic UI.
+           Both the wrapper and the id attribute are gone; the row is now a normal
+           list item like every other one below. -->
+      <a mat-list-item class="user-chip" (click)="logoutComfirm()">
+        <mat-icon matListItemIcon>person</mat-icon>
+        <span matListItemTitle>{{ userName }}</span>
+      </a>
 
       @if (DynamicNavBar.saleOrder) {
-        <a mat-list-item [routerLink]="'/saleOrder'">
-          <mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.seling}}
+        <a mat-list-item [routerLink]="'/saleOrder'" routerLinkActive="active">
+          <mat-icon matListItemIcon>add_shopping_cart</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.seling }}</span>
         </a>
       }
 
       @if (DynamicNavBar.stock) {
-        <a mat-list-item [routerLink]="'/stock'">
-          <mat-icon>addchart</mat-icon> {{arabic.navBarList.stock}}
+        <a mat-list-item [routerLink]="'/stock'" routerLinkActive="active">
+          <mat-icon matListItemIcon>addchart</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.stock }}</span>
         </a>
       }
 
       @if (DynamicNavBar.customers) {
-        <a mat-list-item [routerLink]="'/customers'">
-          <mat-icon>person</mat-icon> {{arabic.navBarList.customers}}
+        <!-- exact: true — '/customers/payment' is its own nav entry below, and
+             the default prefix match would leave BOTH rows highlighted there. -->
+        <a mat-list-item [routerLink]="'/customers'" routerLinkActive="active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.customers }}</span>
         </a>
       }
 
       @if (DynamicNavBar.customers) {
-        <a mat-list-item [routerLink]="'/customers/payment'">
-          <mat-icon>receipt_long</mat-icon> {{ arabic.navBarList.customerPayment }}
+        <a mat-list-item [routerLink]="'/customers/payment'" routerLinkActive="active">
+          <mat-icon matListItemIcon>receipt_long</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.customerPayment }}</span>
         </a>
       }
 
       @if (DynamicNavBar.suppliers) {
-        <a mat-list-item [routerLink]="'/suppliers'">
-          <mat-icon>person</mat-icon> {{arabic.navBarList.suppliers}}
+        <a mat-list-item [routerLink]="'/suppliers'" routerLinkActive="active">
+          <mat-icon matListItemIcon>person</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.suppliers }}</span>
         </a>
       }
 
       @if (DynamicNavBar.purshasing) {
-        <a mat-list-item [routerLink]="'/purchases'">
-          <mat-icon>add_shopping_cart</mat-icon> {{arabic.navBarList.purshasing}}
+        <a mat-list-item [routerLink]="'/purchases'" routerLinkActive="active">
+          <mat-icon matListItemIcon>add_shopping_cart</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.purshasing }}</span>
         </a>
       }
 
       @if (DynamicNavBar.retrival) {
-        <a mat-list-item [routerLink]="'/retrivals'">
-          <mat-icon>autorenew</mat-icon> {{arabic.navBarList.retrival}}
+        <a mat-list-item [routerLink]="'/retrivals'" routerLinkActive="active">
+          <mat-icon matListItemIcon>autorenew</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.retrival }}</span>
         </a>
       }
 
       @if (DynamicNavBar.reports) {
-        <a mat-list-item [routerLink]="'/reports'">
-          <mat-icon>trending_up</mat-icon> {{arabic.navBarList.reports}}
+        <a mat-list-item [routerLink]="'/reports'" routerLinkActive="active">
+          <mat-icon matListItemIcon>trending_up</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.reports }}</span>
         </a>
       }
 
       @if (DynamicNavBar.setting) {
-        <a mat-list-item [routerLink]="'/setting'">
-          <mat-icon>settings</mat-icon> {{arabic.navBarList.setting}}
+        <a mat-list-item [routerLink]="'/setting'" routerLinkActive="active">
+          <mat-icon matListItemIcon>settings</mat-icon>
+          <span matListItemTitle>{{ arabic.navBarList.setting }}</span>
         </a>
       }
 
       <a mat-list-item (click)="aboutApp()">
-        <mat-icon>favorite_border</mat-icon> {{arabic.navBarList.aboutApp}}
+        <mat-icon matListItemIcon>favorite_border</mat-icon>
+        <span matListItemTitle>{{ arabic.navBarList.aboutApp }}</span>
       </a>
 
     </mat-nav-list>

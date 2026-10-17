@@ -9,7 +9,7 @@ import { ProfitServiceService } from 'src/app/reports/service/profit-service.ser
     standalone: false
 })
 export class ProfitsComponent implements OnInit {
-  profit!: ProfitModel;
+  profit?: ProfitModel;
   isLoading: boolean = false;
   netProfit: number = 0;
   netProfitPercentage = 0
@@ -32,7 +32,7 @@ export class ProfitsComponent implements OnInit {
         this.isLoading = false;
         this.profit = data;
         this.netProfit = 
-        (this.profit.sumRevenues - this.profit.sumRetrivals) - (this.profit.sumExpenses + this.profit.valueOfSalesGoods - this.profit.valueOfRetrivalGoods)
+        (data.sumRevenues - data.sumRetrivals) - (data.sumExpenses + data.valueOfSalesGoods - data.valueOfRetrivalGoods)
       });
   }
 

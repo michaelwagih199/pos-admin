@@ -53,11 +53,14 @@ export class CustomerListComponent implements OnInit {
   ngOnInit(): void {
     this.getAllNames()
     this.retrieve()
+    this.myControl.valueChanges.subscribe(value => {
+      this.searchInout = value;
+    });
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter(option => option.toLowerCase().includes(filterValue));
+    const filterValue = (value || '').toLowerCase();
+    return (this.options || []).filter(option => option.toLowerCase().includes(filterValue));
   }
 
   /**
@@ -78,7 +81,8 @@ export class CustomerListComponent implements OnInit {
 
   findByName() {
     this.isLoading = true
-    this.customerService.findByName(this.searchInout).subscribe(data => {
+    const term = this.searchInout ?? this.myControl.value ?? ''
+    this.customerService.findByName(term).subscribe(data => {
       this.customerList = data
       this.isLoading = false
     }, error => console.log(error))
@@ -87,6 +91,7 @@ export class CustomerListComponent implements OnInit {
   refresh() {
     this.retrieve();
     this.searchInout = ''
+    this.myControl.setValue('', { emitEvent: false })
   }
 
 
@@ -218,13 +223,12 @@ export class CustomerListComponent implements OnInit {
   }
 
   displayFn(value: any): string {
-    console.log(value)
-    this.searchInout = value
-    return value;
+    return value || '';
   }
 
   OnHumanSelected(SelectedHuman: any) {
     this.searchInout = SelectedHuman;
+    this.myControl.setValue(SelectedHuman, { emitEvent: false });
     this.findByName()
   }
 

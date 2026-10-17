@@ -52,6 +52,9 @@
       <div class="person-badge">
         <mat-icon>check_circle</mat-icon> {{ selectedPerson?.name }}
       </div>
+      @if (loadingProducts) {
+        <mat-progress-bar color="accent" mode="indeterminate" class="mb-3"></mat-progress-bar>
+      }
       <table mat-table [dataSource]="products" class="mat-elevation-z0 products-table">
         <!-- Product name -->
         <ng-container matColumnDef="name">
@@ -156,11 +159,14 @@
           </mat-select>
         </mat-form-field>
       </div>
+      @if (saving) {
+        <mat-progress-bar color="accent" mode="indeterminate" class="mb-3"></mat-progress-bar>
+      }
       <div class="footer-actions">
         <div class="total-display">الصافي: {{ netTotal | currency:'EGP':'symbol':'1.2-2' }}</div>
         <div class="action-buttons">
-          <button mat-stroked-button (click)="step = 2">رجوع</button>
-          <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0">
+          <button mat-stroked-button (click)="step = 2" [disabled]="saving">رجوع</button>
+          <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0 || saving">
             <mat-icon>check_circle</mat-icon> تأكيد وحفظ
           </button>
         </div>

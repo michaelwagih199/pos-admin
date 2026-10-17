@@ -62,11 +62,14 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.getProductNames();
     this.retrieveProductsPagable();
+    this.myControl.valueChanges.subscribe((value) => {
+      this.searchInout = value;
+    });
   }
 
   private _filter(value: string): string[] {
-    const filterValue = value.toLowerCase();
-    return this.options.filter((option) =>
+    const filterValue = (value || '').toLowerCase();
+    return (this.options || []).filter((option) =>
       option.toLowerCase().includes(filterValue)
     );
   }
@@ -92,7 +95,8 @@ export class ProductsComponent implements OnInit {
 
   findProductByName() {
     this.isLoading = true;
-    this.productService.findByName(this.searchInout).subscribe(
+    const term = this.searchInout ?? this.myControl.value ?? '';
+    this.productService.findByName(term).subscribe(
       (data) => {
         this.isLoading = false;
         this.productList = data;
@@ -103,7 +107,8 @@ export class ProductsComponent implements OnInit {
 
   findProductByCode() {
     this.isLoading = true;
-    this.productService.findByCode(this.searchInout).subscribe(
+    const term = this.searchInout ?? this.myControl.value ?? '';
+    this.productService.findByCode(term).subscribe(
       (data) => {
         this.isLoading = false;
         this.productList = data;
@@ -115,6 +120,7 @@ export class ProductsComponent implements OnInit {
   refresh() {
     this.retrieveProductsPagable();
     this.searchInout = '';
+    this.myControl.setValue('', { emitEvent: false });
   }
 
   retrieveProductsPagable() {
@@ -143,8 +149,7 @@ export class ProductsComponent implements OnInit {
   }
 
   displayFn(value: any): string {
-    this.searchInout = value;
-    return value;
+    return value || '';
   }
 
   onBarcode(element: any) {
@@ -167,6 +172,7 @@ export class ProductsComponent implements OnInit {
 
   OnHumanSelected(SelectedHuman: any) {
     this.searchInout = SelectedHuman;
+    this.myControl.setValue(SelectedHuman, { emitEvent: false });
     this.findProductByName();
   }
 

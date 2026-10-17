@@ -20,6 +20,7 @@ import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatSelect } from '@angular/material/select';
+import { MatProgressBar } from '@angular/material/progress-bar';
 import { AsyncPipe, DecimalPipe, CurrencyPipe } from '@angular/common';
 
 interface Person { id: number; name: string; phone?: string; }
@@ -28,7 +29,7 @@ interface Person { id: number; name: string; phone?: string; }
     selector: 'app-retrieval-wizard',
     templateUrl: './retrieval-wizard.component.html',
     styleUrls: ['./retrieval-wizard.component.scss'],
-    imports: [Dir, MatIcon, MatButtonToggleGroup, ReactiveFormsModule, FormsModule, MatButtonToggle, MatButton, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatSelect, AsyncPipe, DecimalPipe, CurrencyPipe]
+    imports: [Dir, MatIcon, MatButtonToggleGroup, ReactiveFormsModule, FormsModule, MatButtonToggle, MatButton, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatSelect, AsyncPipe, DecimalPipe, CurrencyPipe]
 })
 export class RetrievalWizardComponent implements OnInit {
   step = 0;

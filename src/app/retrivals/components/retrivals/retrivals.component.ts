@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -36,9 +36,11 @@ export class RetrivalsComponent implements OnInit {
   ];
 
   arabic: Arabic = new Arabic();
-  retrivalsList!: RetrivalsModel[];
+  retrivalsList: RetrivalsModel[] = [];
   retriveModel: RetrivalsModel = new RetrivalsModel();
   isLoading = false;
+
+  private cdr = inject(ChangeDetectorRef);
 
   constructor(
     private _snackBar: MatSnackBar,
@@ -57,17 +59,19 @@ export class RetrivalsComponent implements OnInit {
   retrieve() {
     this.isLoading = true;
     const params = this.getRequestParams(this.page, this.pageSize);
-    this.retrivalService.getAllPagination(params).subscribe(
-      (data) => {
+    this.retrivalService.getAllPagination(params).subscribe({
+      next: (data) => {
         this.isLoading = false;
-        this.retrivalsList = data.retrievalsBills;
-        this.count = data.totalItems;
+        this.retrivalsList = data?.retrievalsBills || [];
+        this.count = data?.totalItems || 0;
+        this.cdr.markForCheck();
       },
-      (error) => {
+      error: (error) => {
         this.isLoading = false;
-        console.log(error);
+        console.error('Failed to retrieve retrievals', error);
+        this.cdr.markForCheck();
       }
-    );
+    });
   }
 
   /**
@@ -87,13 +91,18 @@ export class RetrivalsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((confirmed: boolean) => {
       if (confirmed) {
-        this.retrivalService.delete(obj.id).subscribe(data => {
-          this.openSnackBar(`${this.arabic.stock.category.util.dialog.notification.deleted}`, '')
-          this.retrieve()
-        }, error => console.log(error))
-        const a = document.createElement('a');
-        a.click();
-        a.remove();
+        this.isLoading = true;
+        this.retrivalService.delete(obj.id).subscribe({
+          next: () => {
+            this.openSnackBar(`${this.arabic.stock.category.util.dialog.notification.deleted}`, '');
+            this.retrieve();
+          },
+          error: (error) => {
+            this.isLoading = false;
+            console.error('Failed to delete retrieval', error);
+            this.openSnackBar('فشل حذف المرتجع', '');
+          }
+        });
       }
     });
   }
