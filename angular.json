@@ -25,6 +25,11 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
+            "stylePreprocessorOptions": {
+              "includePaths": [
+                "."
+              ]
+            },
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -110,23 +115,14 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
-            "styles": [
-              "node_modules/animate.css/animate.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/theme.scss",
-              "src/styles.scss"
-            ],
-            "scripts": []
+            "buildTarget": "pos:build:development",
+            "runner": "vitest",
+            "setupFiles": [
+              "src/test.ts"
+            ]
           }
         },
         "e2e": {
