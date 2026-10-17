@@ -192,7 +192,6 @@ export class ProductCategoryComponent implements OnInit {
   }
 
   displayFn(value: any): string {
-    console.log(value)
     this.searchInout = value
     return value;
   }

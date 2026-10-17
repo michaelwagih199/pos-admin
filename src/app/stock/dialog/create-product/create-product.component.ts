@@ -35,8 +35,6 @@ export class CreateProductComponent implements OnInit {
   dialogData = inject(MAT_DIALOG_DATA);
 
   constructor() {
-      console.log(this.dialogData);
-
     this.product = this.dialogData.productModel
   }
 
