@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { PurchasesBillsDetailsComponent } from 'src/app/purchases/dialog/purchases-bills-details/purchases-bills-details.component';
 import { PurchasesBillsDetails } from 'src/app/purchases/model/purchases-deteails';
 import { PurchasingBillsDetailsService } from 'src/app/purchases/service/purchasing-bills-details.service';

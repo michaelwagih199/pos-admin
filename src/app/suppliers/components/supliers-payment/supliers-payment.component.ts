@@ -5,11 +5,11 @@ import { SupliersService } from '../../service/supliers.service';
 import { Subscription } from 'rxjs';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { Arabic } from 'src/app/text';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { SupplierPayment } from '../../models/supplier-payment';
 import { SupliersPaymentService } from '../../service/supliers-payment.service';
 import { PurchasesBillsService } from 'src/app/purchases/service/purchases-bills.service';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 
 @Component({

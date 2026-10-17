@@ -2,8 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { Arabic } from 'src/app/text';
 import { ProductModel } from '../../model/productModel';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
-import { MatLegacyCheckboxChange as MatCheckboxChange } from '@angular/material/legacy-checkbox';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatCheckboxChange } from '@angular/material/checkbox';
 import { CategoryModel } from '../../model/categoryModel';
 import { CategoryServiceService } from '../../service/category-service.service';
 

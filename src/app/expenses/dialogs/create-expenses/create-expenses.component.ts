@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { ExpensessModel } from '../../models/expensess-model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CreateProductComponent } from 'src/app/stock/dialog/create-product/create-product.component';
-import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryModel } from 'src/app/stock/model/categoryModel';
 import { ExpensesCategoryService } from '../../service/expenses-category.service';
 import { Arabic } from 'src/app/text';

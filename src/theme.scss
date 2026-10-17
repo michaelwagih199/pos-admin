@@ -155,26 +155,26 @@ $vn-warn: mat.define-palette(
 $vn-typography: mat.define-typography-config($font-family: '"Cairo", sans-serif');
 
 /* Structural, ripple, a11y and typographic stylesheets — emitted once, with
-   the Cairo typography config so no component is left on Roboto. */
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy($vn-typography);`
-/* TODO(mdc-migration): Remove all-legacy-component-typographies once all legacy components are migrated */
-@include mat.all-legacy-component-typographies($vn-typography);
+   the Cairo typography config so no component is left on Roboto.
+   v17 removed the legacy (pre-MDC) component stylesheets and the
+   `legacy-core` / `all-legacy-component-*` mixins entirely, so only the
+   non-legacy mixins remain. `mat.core()` also carries the static typography
+   styles that `legacy-core` used to add in v14. */
 @include mat.all-component-typographies($vn-typography);
-/* TODO(mdc-migration): Remove legacy-core once all legacy components are migrated */
-@include mat.legacy-core();
 @include mat.core();
 
-/* --- Light theme — the only theme; there is no dark variant -------------- */
-$vn-theme: mat.define-light-theme($vn-primary, $vn-accent, $vn-warn);
-
-/* TODO(mdc-migration): Remove all-legacy-component-themes once all legacy components are migrated */
-@include mat.all-legacy-component-themes($vn-theme);
+/* --- Light theme — the only theme; there is no dark variant --------------
+   Map form of `define-light-theme()`. The positional-palette signature
+   (`define-light-theme($primary, $accent, $warn)`) is a v15/v16 compatibility
+   shim and is removed in v17; the map form is the supported API and is also
+   what attaches the typography config to the theme. */
+$vn-theme: mat.define-light-theme((
+  color: (
+    primary: $vn-primary,
+    accent: $vn-accent,
+    warn: $vn-warn,
+  ),
+  typography: $vn-typography,
+));
 
 @include mat.all-component-themes($vn-theme);
