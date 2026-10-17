@@ -74,6 +74,20 @@
                   "maximumError": "40kb"
                 }
               ]
+            },
+            "development": {
+              "optimization": {
+                "scripts": false,
+                "fonts": false,
+                "styles": false
+              },
+              "sourceMap": true,
+              "namedChunks": true,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "buildOptimizer": false,
+              "aot": true,
+              "budgets": []
             }
           },
           "defaultConfiguration": ""

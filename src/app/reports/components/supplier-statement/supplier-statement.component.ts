@@ -49,7 +49,7 @@ export class SupplierStatementComponent implements OnInit {
           this.allSuppliers = res?.suppliers ?? [];
           this.filteredSuppliers = this.supplierControl.valueChanges.pipe(
             startWith(''),
-            map((v) => this.filter(v))
+            map((v) => this.filter(v ?? ''))
           );
         },
         (err) => console.error(err)

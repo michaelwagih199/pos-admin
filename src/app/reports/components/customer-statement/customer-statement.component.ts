@@ -49,7 +49,7 @@ export class CustomerStatementComponent implements OnInit {
           this.allCustomers = res?.customers ?? [];
           this.filteredCustomers = this.customerControl.valueChanges.pipe(
             startWith(''),
-            map((v) => this.filter(v))
+            map((v) => this.filter(v ?? ''))
           );
         },
         (err) => console.error(err)

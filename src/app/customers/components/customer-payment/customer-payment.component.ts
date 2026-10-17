@@ -58,7 +58,7 @@ export class CustomerPaymentComponent implements OnInit {
           this.isLoading = false;
           this.filteredCustomers = this.customerControl.valueChanges.pipe(
             startWith(''),
-            map((v) => this.filter(v))
+            map((v) => this.filter(v ?? ''))
           );
         },
         (err) => {
