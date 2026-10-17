@@ -3,7 +3,7 @@ import {
   AbstractControl, FormBuilder, FormControl, FormGroup,
   ValidationErrors, ValidatorFn, Validators, Validator
 } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
 import { ReturnableInvoiceLine, ReturnableProduct } from '../../models/returnable-product';
 import { ReturnType } from '../../models/retrivals-model';

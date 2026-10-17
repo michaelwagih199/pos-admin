@@ -5,8 +5,8 @@ import { startWith, map } from 'rxjs/operators';
 import { Arabic } from 'src/app/text';
 import { CategoryModel } from '../../model/categoryModel';
 import { CategoryServiceService } from '../../service/category-service.service';
-import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogConfig as MatDialogConfig } from '@angular/material/legacy-dialog';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { CreateCategoryComponent } from '../../dialog/create-category/create-category.component';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 

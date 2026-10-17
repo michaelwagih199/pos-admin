@@ -751,15 +751,15 @@ mat-progress-bar {
   margin-top: var(--vn-space-6);
 
   ::ng-deep {
-    .mat-form-field-appearance-outline .mat-form-field-outline {
+    .mat-mdc-form-field-appearance-outline .mdc-notched-outline {
       color: var(--border);
     }
 
-    .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    .mat-mdc-form-field-appearance-outline.mat-focused .mdc-notched-outline--notched {
       color: var(--primary);
     }
 
-    .mat-form-field-label {
+    .mat-mdc-floating-label {
       color: var(--text-muted);
     }
   }

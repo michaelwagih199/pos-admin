@@ -5,9 +5,9 @@ import { CustomerPaymentModel } from '../../model/customer-payment';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CustomerPaymentService } from '../../service/customer-payment.service';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
 import { CustomerModel } from '../../model/customer-model';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 
 @Component({

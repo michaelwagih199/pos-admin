@@ -137,7 +137,7 @@
     mat-radio-button {
       flex: 1;
 
-      ::ng-deep .mat-radio-label-content {
+      ::ng-deep .mdc-form-field > label {
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -151,11 +151,11 @@
         height: 20px;
       }
 
-      &.cond-good ::ng-deep .mat-radio-label-content {
+      &.cond-good ::ng-deep .mdc-form-field > label {
         color: var(--success);
       }
 
-      &.cond-damaged ::ng-deep .mat-radio-label-content {
+      &.cond-damaged ::ng-deep .mdc-form-field > label {
         color: var(--danger);
       }
     }
@@ -193,10 +193,10 @@
    The override flag below fights the Material outline rules - not the old
    pre-Phase-E cascade, which no longer exists (the app stylesheet is last).
    It is pre-existing and kept on purpose. */
-::ng-deep .mat-form-field-outline {
+::ng-deep .mat-mdc-form-field-appearance-outline .mdc-notched-outline {
   border-radius: var(--vn-radius-lg) !important;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+::ng-deep .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-infix {
   padding-inline-start: 0.5rem;
 }

@@ -4,7 +4,7 @@ import { Arabic } from 'src/app/text';
 import { SaleOrderDetails } from 'src/app/sale-orders/models/orderDetails';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { OrderDetailsService } from 'src/app/sale-orders/service/order-details.service';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef, MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA } from '@angular/material/legacy-dialog';
 
 import { POS_Response } from 'src/app/_helpers/pos-responce';
 import { Router } from '@angular/router';
