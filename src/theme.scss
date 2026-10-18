@@ -1,181 +1,111 @@
 @use '@angular/material' as mat;
 
 /* ==========================================================================
-   Ventas POS — Angular Material brand theme
+   Ventas POS — Angular Material theme (design system v2.1, Phase C)
    --------------------------------------------------------------------------
-   Phase D of docs/design-system-v2-plan.md.
+   ONE Material theme include in the whole codebase (the old M2
+   m2-define-palette / m2-define-light-theme stack was replaced wholesale by
+   the M3 mat theme system-token API — registered as the Phase C structural
+   change of the v2.1 master prompt).
 
-   THIS IS THE ONLY FILE WHERE RAW HEX IS MANDATORY AND CORRECT.
-   `mat.define-palette()` is evaluated by the Sass compiler at build time and
-   cannot resolve CSS custom properties, so `var(--vn-navy-500)` is impossible
-   here. The ramps below are therefore a deliberate, documented duplication of
-   `src/styles/tokens/_primitives.scss`; the mapping is written up in
-   docs/DESIGN_SYSTEM.md §4.
+   Everything below the include is a raw custom-property override block:
+   every value is a var(--vn-*) of the token layer (styles/tokens/*), so this
+   file contains ZERO literal hex. The M2-era rule "never write var() here"
+   applied to mat.m2-define-palette() Sass maps, which no longer exist.
 
-   Hard rules for this file:
-     * never write `var()` here — Material Sass will not compile it;
-     * never add a second Material theme — the prebuilt
-       `deeppurple-amber.css` was removed from angular.json (build AND test)
-       so that this file is the only source of Material colours.
+   colour= mapping that results (zero template edits):
+     color="primary" → steel   var(--vn-brand)     (brand navy)
+     color="accent"  → orange  var(--vn-accent)    (tertiary)
+     color="warn"    → danger  var(--vn-danger)    (error)
    ========================================================================== */
 
-/* --- Primary: brand navy #44596e -----------------------------------------
-   Hues 50-900 / A100-A700 exactly as specified in the plan. The contrast map
-   is completed for every hue (not just 300/500/700): `mat.define-palette()`
-   merges a `<hue>-contrast` entry for every hue it finds, and a missing one
-   yields `null`, which silently drops the colour declaration in whatever
-   component looks it up. Material's own palettes define contrast per hue. */
-$vn-primary: mat.m2-define-palette(
-  (
-    50: #f6f8fa,
-    100: #e6ebf0,
-    200: #c9d3dd,
-    300: #5a7191,
-    400: #4f6680,
-    500: #44596e,
-    600: #3d5165,
-    700: #2d3d4f,
-    800: #26333f,
-    900: #1e2831,
-    A100: #e6ebf0,
-    A200: #c9d3dd,
-    A400: #5a7191,
-    A700: #2d3d4f,
-    contrast: (
-      50: #1f2937,
-      100: #1f2937,
-      200: #1f2937,
-      300: #1f2937,
-      400: #ffffff,
-      500: #ffffff,
-      600: #ffffff,
-      700: #ffffff,
-      800: #ffffff,
-      900: #ffffff,
-      A100: #1f2937,
-      A200: #1f2937,
-      A400: #1f2937,
-      A700: #ffffff,
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$orange-palette,
+      theme-type: light,
     ),
-  ),
-  500,
-  300,
-  700
-);
-
-/* --- Accent: brand amber #ec994b -----------------------------------------
-   Hues 300 / 500 / 700 are the brand-specified values (token layer
-   --vn-accent-300 / --vn-accent-500 / --vn-accent-700); the remaining steps
-   are the interpolated ramp Material needs for hover, focus and disabled
-   states. Amber is a light-mid hue, so most steps take dark text. */
-$vn-accent: mat.m2-define-palette(
-  (
-    50: #fef7ee,
-    100: #fdecd6,
-    200: #fad9ad,
-    300: #f5b877,
-    400: #f0a660,
-    500: #ec994b,
-    600: #e08b3e,
-    700: #d4823a,
-    800: #b56a2c,
-    900: #935322,
-    A100: #fdecd6,
-    A200: #fad9ad,
-    A400: #f0a660,
-    A700: #d4823a,
-    contrast: (
-      50: #1f2937,
-      100: #1f2937,
-      200: #1f2937,
-      300: #1f2937,
-      400: #1f2937,
-      500: #1f2937,
-      600: #1f2937,
-      700: #ffffff,
-      800: #ffffff,
-      900: #ffffff,
-      A100: #1f2937,
-      A200: #1f2937,
-      A400: #1f2937,
-      A700: #ffffff,
+    typography: (
+      plain-family: var(--vn-font-body, Cairo),
+      brand-family: var(--vn-font-display, El Messiri),
+      bold-weight: var(--vn-weight-bold, 700),
     ),
-  ),
-  500,
-  300,
-  700
-);
+    density: 0,
+  ));
+}
 
-/* --- Warn: brand red #db1f48 ---------------------------------------------
-   Hue 500 is the brand value (token layer --vn-red-500); the rest of the ramp
-   is interpolated. Messaging colours in the design system (--vn-danger-*) are
-   a separate concern and are NOT driven by this palette. */
-$vn-warn: mat.m2-define-palette(
-  (
-    50: #fdf2f5,
-    100: #fbe0e7,
-    200: #f6c2ce,
-    300: #ef97ab,
-    400: #e75c7c,
-    500: #db1f48,
-    600: #c41b41,
-    700: #a31637,
-    800: #87122e,
-    900: #6e0f26,
-    A100: #fbe0e7,
-    A200: #f6c2ce,
-    A400: #e75c7c,
-    A700: #a31637,
-    contrast: (
-      50: #1f2937,
-      100: #1f2937,
-      200: #1f2937,
-      300: #1f2937,
-      400: #ffffff,
-      500: #ffffff,
-      600: #ffffff,
-      700: #ffffff,
-      800: #ffffff,
-      900: #ffffff,
-      A100: #1f2937,
-      A200: #1f2937,
-      A400: #ffffff,
-      A700: #ffffff,
-    ),
-  ),
-  500
-);
-
-/* --- Typography: Cairo for every Material widget -------------------------
-   Raw family string, not `var(--vn-font-body)`, for the same compile-time
-   reason as the palettes. Cairo is self-hosted since Phase B
-   (src/styles/_fonts.scss) and its variable 400-800 axis makes the 500/600
-   weights Material asks for real glyphs rather than synthesized ones.
-   Registered as deliberate visual change #3 in the plan (§9). */
-$vn-typography: mat.m2-define-typography-config($font-family: '"Cairo", sans-serif');
-
-/* Structural, ripple, a11y and typographic stylesheets — emitted once, with
-   the Cairo typography config so no component is left on Roboto.
-   v17 removed the legacy (pre-MDC) component stylesheets and the
-   `legacy-core` / `all-legacy-component-*` mixins entirely, so only the
-   non-legacy mixins remain. `mat.core()` also carries the static typography
-   styles that `legacy-core` used to add in v14. */
-@include mat.all-component-typographies($vn-typography);
+/* Elevation utility classes (templates use mat-elevation-z2) + system app
+   background hint. These are NOT theme includes — they sit alongside the
+   single include above and are part of its complement. */
 @include mat.elevation-classes();
 @include mat.app-background();
 
-/* --- Light theme — the only theme; there is no dark variant --------------
-   Map form of `define-light-theme()`. The positional-palette signature
-   (`define-light-theme($primary, $accent, $warn)`) is a v15/v16 compatibility
-   shim and is removed in v17; the map form is the supported API and is also
-   what attaches the typography config to the theme. */
-$vn-theme: mat.m2-define-light-theme((
-  color: (
-    primary: $vn-primary,
-    accent: $vn-accent,
-    warn: $vn-warn,
-  ),
-  typography: $vn-typography,
-));
+html {
+  /* Primary = steel — navigation, headers, primary buttons */
+  --mat-sys-primary: var(--vn-brand);
+  --mat-sys-on-primary: var(--vn-on-brand);
+  --mat-sys-primary-container: var(--vn-primary-container);
+  --mat-sys-on-primary-container: var(--vn-on-primary-container);
 
-@include mat.all-component-themes($vn-theme);
+  /* Secondary = light steel chrome (chips, quiet controls) */
+  --mat-sys-secondary: var(--vn-navy-light);
+  --mat-sys-on-secondary: var(--vn-on-brand);
+  --mat-sys-secondary-container: var(--vn-secondary-container);
+  --mat-sys-on-secondary-container: var(--vn-on-secondary-container);
+
+  /* Tertiary = ORANGE — the accent CTA color */
+  --mat-sys-tertiary: var(--vn-accent);
+  --mat-sys-on-tertiary: var(--vn-on-brand);
+  --mat-sys-tertiary-container: var(--vn-tertiary-container);
+  --mat-sys-on-tertiary-container: var(--vn-on-tertiary-container);
+
+  /* Surfaces & text */
+  --mat-sys-background: var(--vn-surface-sunken);
+  --mat-sys-on-background: var(--vn-text);
+  --mat-sys-surface: var(--vn-surface);
+  --mat-sys-on-surface: var(--vn-text);
+  --mat-sys-surface-variant: var(--vn-surface-alt);
+  --mat-sys-on-surface-variant: var(--vn-text-muted);
+  --mat-sys-surface-container-lowest: var(--vn-white);
+  --mat-sys-surface-container-low: var(--vn-surface-alt);
+  --mat-sys-surface-container: var(--vn-surface-alt);
+  --mat-sys-surface-container-high: var(--vn-surface-alt);
+  --mat-sys-surface-container-highest: var(--vn-sand-dark);
+  --mat-sys-surface-dim: var(--vn-sand-dark);
+
+  /* Outlines */
+  --mat-sys-outline: var(--vn-border);
+  --mat-sys-outline-variant: var(--vn-border-light);
+
+  /* Error maps to the danger trio */
+  --mat-sys-error: var(--vn-danger);
+  --mat-sys-on-error: var(--vn-white);
+  --mat-sys-error-container: var(--vn-danger-bg);
+  --mat-sys-on-error-container: var(--vn-danger-fg);
+
+  /* Shape — keep the existing radius contract */
+  --mat-sys-corner-small: var(--vn-radius-sm);
+  --mat-sys-corner-medium: var(--vn-radius-md);
+  --mat-sys-corner-large: var(--vn-radius-lg);
+}
+
+html {
+  /* Steel app bar */
+  --mat-toolbar-container-background-color: var(--vn-brand);
+  --mat-toolbar-container-text-color: var(--vn-on-brand);
+
+  /* White drawer over the sand content area */
+  --mat-sidenav-container-background-color: var(--vn-surface);
+  --mat-sidenav-container-text-color: var(--vn-text);
+  --mat-sidenav-content-background-color: var(--vn-surface-sunken);
+
+  /* Cards: white surface */
+  --mat-card-elevated-container-color: var(--vn-surface);
+  --mat-card-outlined-container-color: var(--vn-surface);
+  --mat-card-outlined-outline-color: var(--vn-border-light);
+
+  /* Tables: white body, muted header text */
+  --mat-table-background-color: var(--vn-surface);
+  --mat-table-header-headline-color: var(--vn-text-muted);
+}
