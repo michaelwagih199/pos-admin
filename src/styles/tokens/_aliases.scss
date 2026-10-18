@@ -47,8 +47,6 @@
   // Binding them to the canonical scales makes that failure impossible.
   // The canonical names above remain the only ones allowed in new code.
   --vn-radius-full: var(--vn-radius-pill); // 999px
-  --vn-shadow-sm: var(--vn-shadow-1);
-  --vn-shadow-md: var(--vn-shadow-2);
   --vn-shadow-lg: var(--vn-shadow-3);
   --vn-font-head: var(--vn-font-display);
 }
