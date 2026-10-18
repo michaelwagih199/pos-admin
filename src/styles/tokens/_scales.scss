@@ -43,6 +43,12 @@
   --vn-shadow-3: 0 4px 12px rgba(15, 23, 42, 0.12); // overlay (dropdown, menu)
   --vn-shadow-4: 0 12px 32px rgba(15, 23, 42, 0.18); // modal / dialog
 
+  /* ---------- Preview aliases (sale-screen-preview-restyle plan, Phase A) ---------- */
+  --vn-shadow-sm: var(--vn-shadow-1); //  preview sm shadow → rest
+  --vn-shadow-md: var(--vn-shadow-2); //  preview md shadow → raised
+  --vn-accent-shadow: rgba(236, 153, 75, 0.25); //  accent glow (pay button, hover total)
+  --vn-navbar-h: 48px; //  steel navbar bar height (Phase B rebind if toolbar stays 56px)
+
   /* ---------- Stacking ---------- */
   --vn-z-base: 0;
   --vn-z-sticky: 100;
