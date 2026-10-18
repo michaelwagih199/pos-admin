@@ -63,10 +63,10 @@ export class NavBarComponent implements OnInit {
 
     console.log(window.innerWidth);
     if (window.innerWidth < 768) {
-      this.sidenav().fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 50;
       this.opened = false;
     } else {
-      this.sidenav().fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 50;
       this.opened = true;
     }
 
@@ -79,10 +79,10 @@ export class NavBarComponent implements OnInit {
   onResize(event: UIEvent) {
     const innerWidth = (event.target as Window).innerWidth;
     if (innerWidth < 768) {
-      this.sidenav().fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 50;
       this.opened = false;
     } else {
-      this.sidenav().fixedTopGap = 55;
+      this.sidenav().fixedTopGap = 50;
       this.opened = true;
     }
   }

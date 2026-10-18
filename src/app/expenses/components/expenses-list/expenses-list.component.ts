@@ -117,7 +117,6 @@ export class ExpensesListComponent implements OnInit {
       model: this.expenses,
     };
 
-    this.dialog.open(CreateExpensesComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateExpensesComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);
@@ -141,7 +140,6 @@ export class ExpensesListComponent implements OnInit {
     dialogConfig.data = {
       model: obj,
     };
-    this.dialog.open(CreateExpensesComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateExpensesComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       this.expensesService

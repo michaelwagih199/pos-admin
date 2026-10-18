@@ -105,14 +105,14 @@
     align-items: center;
     gap: var(--vn-space-2);
     font-size: var(--vn-text-base);
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
     padding: 2px 0;
 
     mat-icon { color: var(--navy); }
   }
 
   .info-name { font-weight: var(--vn-weight-bold); font-size: var(--vn-text-lg); }
-  .muted { color: var(--vn-ink-500); }
+  .muted { color: var(--vn-text-muted); }
 }
 
 /* Summary */
@@ -123,7 +123,7 @@
 .summary-card {
   @include rt.summary-card;
 
-  &.opening   { background: var(--vn-ink-500); }
+  &.opening   { background: var(--vn-text-muted); }
   &.purchases { background: var(--navy); }
   &.payments  { background: var(--vn-success); }
   &.returns   { background: var(--accent); }
@@ -146,7 +146,7 @@
   @include rt.table-base;
 
   thead th {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     color: var(--navy);
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-sm);
@@ -160,8 +160,8 @@
   tbody td {
     padding: 12px 14px;
     font-size: var(--vn-text-sm);
-    color: var(--vn-ink-900);
-    border-bottom: 1px solid var(--vn-ink-200);
+    color: var(--vn-text);
+    border-bottom: 1px solid var(--vn-border-light);
     text-align: end;
     vertical-align: middle;
   }
@@ -183,11 +183,11 @@
   }
 
   tbody tr:nth-child(even) td {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
   }
 
   tbody tr:hover td {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
@@ -207,7 +207,7 @@
 .statement-footer {
   text-align: center;
   font-size: var(--vn-text-sm);
-  color: var(--vn-ink-500);
+  color: var(--vn-text-muted);
   padding: var(--vn-space-4) 0;
 }
 
@@ -258,14 +258,14 @@
   align-items: center;
   gap: var(--vn-space-3);
   padding: var(--vn-space-4) var(--vn-space-5);
-  background: linear-gradient(90deg, var(--vn-ink-50) 0%, var(--vn-ink-100) 100%);
+  background: linear-gradient(90deg, var(--vn-surface-alt) 0%, var(--vn-surface-hover) 100%);
   border-bottom: 1px solid var(--vn-border-light);
   cursor: pointer;
   user-select: none;
   transition: background var(--vn-duration-fast) var(--vn-ease);
 
   &:hover {
-    background: linear-gradient(90deg, var(--vn-ink-100) 0%, var(--vn-ink-200) 100%);
+    background: linear-gradient(90deg, var(--vn-surface-hover) 0%, var(--vn-border-light) 100%);
   }
 
   mat-icon {
@@ -289,7 +289,7 @@
 .bill-line-count {
   font-family: var(--vn-font-body);
   font-size: var(--vn-text-sm);
-  color: var(--vn-ink-500);
+  color: var(--vn-text-muted);
   background: var(--vn-surface);
   padding: var(--vn-space-1) var(--vn-space-3);
   border-radius: var(--vn-radius-pill);
@@ -306,7 +306,7 @@
   padding: 0.35rem 1rem;
   background: var(--vn-info-bg);
   border-radius: var(--vn-radius-md);
-  border: 1px solid #bfdbfe;
+  border: 1px solid var(--vn-info-bg);
 }
 
 .bill-lines-table {
@@ -316,7 +316,7 @@
   margin: 0;
 
   thead th {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     color: var(--navy);
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-xs);
@@ -330,18 +330,18 @@
   tbody td {
     padding: 10px 12px;
     font-size: var(--vn-text-sm);
-    color: var(--vn-ink-900);
-    border-bottom: 1px solid var(--vn-ink-200);
+    color: var(--vn-text);
+    border-bottom: 1px solid var(--vn-border-light);
     text-align: end;
     vertical-align: middle;
   }
 
   tbody tr:nth-child(even) td {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
   }
 
   tbody tr:hover td {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
@@ -349,11 +349,11 @@
     text-align: end;
     font-variant-numeric: tabular-nums;
     font-weight: var(--vn-weight-medium);
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
   }
 
   .bill-subtotal {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
     font-weight: var(--vn-weight-bold);
 
     td {

@@ -180,7 +180,6 @@ export class ExpensesCategoryComponent implements OnInit {
       id: '',
       description: '',
     };
-    this.dialog.open(CreateCategoryComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       if (!data) return;

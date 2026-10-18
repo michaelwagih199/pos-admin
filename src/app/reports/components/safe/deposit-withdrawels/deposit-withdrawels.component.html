@@ -131,11 +131,13 @@
       <form [formGroup]="quantityValidateForm">
 
         <mat-form-field class="full-width">
+          <mat-label>البيان</mat-label>
           <input matInput required appearance="outline" class="full-width" placeholder="البيان" type="text"
             formControlName="depositName" [(ngModel)]="deposit.depositName" autocomplete="off">
         </mat-form-field>
 
         <mat-form-field class="full-width">
+          <mat-label>القيمة</mat-label>
           <input matInput required appearance="outline" class="full-width" placeholder="القيمة" type="number"
             formControlName="depositValue" [(ngModel)]="deposit.depositValue" autocomplete="off">
         </mat-form-field>
@@ -160,11 +162,13 @@
       <form [formGroup]="withdrawalValidateForm">
 
         <mat-form-field class="full-width">
+          <mat-label>البيان</mat-label>
           <input matInput required appearance="outline" class="full-width" placeholder="البيان" type="text"
             formControlName="withdrawalName" [(ngModel)]="withdrawl.withdrawalName" autocomplete="off">
         </mat-form-field>
 
         <mat-form-field class="full-width">
+          <mat-label>القيمة</mat-label>
           <input matInput required appearance="outline" class="full-width" placeholder="القيمة" type="number"
             formControlName="withdrawalValue" [(ngModel)]="withdrawl.withdrawalValue" autocomplete="off">
         </mat-form-field>

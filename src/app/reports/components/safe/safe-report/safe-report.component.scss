@@ -32,12 +32,6 @@
   @include rt.table-base;
 }
 
-.mat-card-header {
-  background: var(--sand);
-  border-radius: var(--vn-radius-lg);
-  border: 1px solid var(--vn-border);
-}
-
 .header {
   background: var(--sand);
   border-radius: var(--vn-radius-lg);

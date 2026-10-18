@@ -6,10 +6,10 @@
 // byte-identical to them (brand navy, accent, sand, danger, credit).
 //
 // Movements registered in the plan's deliberate-change table:
-//   * mat-card-header border colour  <- ink 900 (was the off-ramp near-black)
-//   * table head background          <- ink 100 (was the off-ramp grey-blue)
-//   * even-row background            <- ink 50  (was an off-ramp near-white)
-//   * cell border colour             <- ink 200 (was an off-ramp grey-blue)
+//   * mat-card-header border colour  <- --vn-text (was the off-ramp near-black)
+//   * table head background          <- --vn-surface-hover (was the off-ramp grey-blue)
+//   * even-row background            <- --vn-surface-alt (was an off-ramp near-white)
+//   * cell border colour             <- --vn-border-light (was an off-ramp grey-blue)
 //   * 0.9rem cells                   <- text-sm (0.88rem)
 //   * .customClass-1 body 1.05rem    <- text-base
 //   * .customClass-1 shadow          <- shadow step 2
@@ -30,16 +30,6 @@
   font-family: var(--vn-font-body);
 }
 
-.mat-card-header {
-  background: var(--vn-surface-sunken);
-  border-radius: var(--vn-radius-lg);
-  border: 1px solid var(--vn-ink-900);
-}
-
-.mat-card {
-  background: var(--sand);
-}
-
 .mat-raised-button {
   font-family: var(--vn-font-body);
   font-size: large;
@@ -50,7 +40,7 @@
   @include rt.table-base;
 
   thead th {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     color: var(--navy);
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-sm);
@@ -64,8 +54,8 @@
   tbody td {
     padding: 12px 14px;
     font-size: var(--vn-text-sm);
-    color: var(--vn-ink-900);
-    border-bottom: 1px solid var(--vn-ink-200);
+    color: var(--vn-text);
+    border-bottom: 1px solid var(--vn-border-light);
     text-align: end;
     vertical-align: middle;
   }
@@ -87,11 +77,11 @@
   }
 
   tbody tr:nth-child(even) td {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
   }
 
   tbody tr:hover td {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
@@ -105,7 +95,7 @@
 }
 
 .customClass-1 {
-  background: var(--vn-white);
+  background: var(--vn-surface);
   border-inline-start: 6px solid var(--navy);
   border-radius: var(--vn-radius-lg);
   box-shadow: var(--vn-shadow-2);
@@ -139,7 +129,6 @@
 // Print styles
 @media print {
   .no-print { display: none !important; }
-  .mat-card { background: var(--vn-white); }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
 

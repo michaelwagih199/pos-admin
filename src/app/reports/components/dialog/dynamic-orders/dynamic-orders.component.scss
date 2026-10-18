@@ -4,7 +4,7 @@
 //   - the redundant local :host palette was deleted: this file @use-s the shared report
 //     partial, which already emits all twelve report properties (proved: each is still
 //     declared exactly once in the compiled stylesheet).
-//   - the card border and both figure colours -> var(--vn-ink-900)
+//   - the card border and both figure colours -> var(--vn-text)
 //     FOLD of the off-ramp near-black onto the ink ramp.
 //   - the card background -> var(--vn-surface-sunken) (exact) and the two white box
 //     backgrounds -> var(--vn-surface) (exact).
@@ -23,7 +23,7 @@
 //   - the two accent bars stay physical properties: DESIGN_SYSTEM section 3.2 records that
 //     moving them to the logical form would flip them to the other edge under RTL, which is
 //     a real layout change rather than a tokenization.
-//   - off-grid geometry: the 60px box height, the 5px radii, the 24px figure size, the
+//   - off-grid geometry: the 60px box height, the 24px figure size, the
 //     1px / 2px / 8px border widths, and the body font-size keywords.
 //
 // No comment sits inside a rule here (postcss-gap-properties landmine, DESIGN_SYSTEM 6.2).
@@ -42,18 +42,6 @@ $font_header_size: var(--vn-text-num-sm);
   @include rt.table-base;
 }
 
-.mat-card-header {
-  display: flex;
-  flex-direction: row;
-  background: var(--vn-surface);
-  border-radius: var(--vn-radius-lg);
-  border: 1px solid var(--vn-ink-900);
-}
-
-.mat-card {
-  background: var(--vn-surface-sunken);
-
-}
 
 .mat-raised-button {
   font-family: var(--vn-font-display);
@@ -62,19 +50,19 @@ $font_header_size: var(--vn-text-num-sm);
 
 .customClass-1 {
   background-color: var(--vn-surface);
-  border-left: 8px solid $bg_dark_color;
+  border-inline-end: 8px solid $bg_dark_color;
   height: 60px;
-  border-radius: 5px;
+  border-radius: var(--vn-radius-md);
   box-shadow: var(--vn-shadow-2);
   font-family: var(--vn-font-display);
   font-size: $font_header_size;
 
   &:hover {
-    border-left: 8px solid $accent;
+    border-inline-end: 8px solid $accent;
     text-decoration: none;
   }
   .customTest {
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
     font-size: 24px;
     &:hover {
       animation: swing;
@@ -86,18 +74,18 @@ $font_header_size: var(--vn-text-num-sm);
 .customClass-2{
 
   background-color: var(--vn-surface);
-  border-left: 8px solid var(--vn-danger);
+  border-inline-end: 8px solid var(--vn-danger);
   height: 60px;
-  border-radius: 5px;
+  border-radius: var(--vn-radius-md);
   box-shadow: var(--vn-shadow-2);
   font-family: var(--vn-font-display);
   font-size: $font_header_size;
   &:hover {
-    border-left: 8px solid $bg_dark_color;
+    border-inline-end: 8px solid $bg_dark_color;
     font-weight: var(--vn-weight-bold);
   }
   .customTest{
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
     font-size: 24px;
     text-decoration: none;
     &:hover{

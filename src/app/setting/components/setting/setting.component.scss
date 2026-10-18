@@ -1,28 +1,28 @@
 
-  $color_white: #fff;
-  $color_prime: #005A8D;
-  $color_grey: #e2e2e2;
-  $color_grey_dark: #a2a2a2;
-  $color_blue_gray:#88a0ad;
+  $color_white: var(--vn-surface);
+  $color_prime: var(--vn-brand);
+  $color_grey: var(--vn-border-light);
+  $color_grey_dark: var(--vn-text-muted);
+  $color_blue_gray: var(--vn-text-faint);
   
   .customDive{
      background-color: $color_grey;
-     border-radius: 5px;
+     border-radius: var(--vn-radius-md);
      padding-top: 5px;
      padding-bottom:5px;
-     font-family: 'El Messiri', sans-serif;
+     font-family: var(--vn-font-display);
   }
 
   .blog-card {
     display: flex;
     flex-direction: column;
     margin: 1rem auto;
-    box-shadow: 0 3px 7px -1px rgba(#000, .1);
+    box-shadow: var(--vn-shadow-2);
     margin-bottom: 1.6%;
     background: $color_white;
     line-height: 1.4;
-    font-family: 'El Messiri', sans-serif;
-    border-radius: 5px;
+    font-family: var(--vn-font-display);
+    border-radius: var(--vn-radius-md);
     overflow: hidden;
     z-index: 0;
     a {
@@ -44,9 +44,8 @@
     .photo {
       position: absolute;
       top: 0;
-      right: 0;
       bottom: 0;
-      left: 0;
+      inset-inline: 0;
       background-size: cover;
       background-position: center;
       transition: transform .2s;
@@ -62,10 +61,10 @@
       position: absolute;
       top: 0;
       bottom: 0;
-      left: -100%;
+      inset-inline-end: -100%;
       margin: auto;
-      transition: left .2s;
-      background: rgba(#000, .6);
+      transition: inset-inline-end .2s;
+      background: rgba(0, 0, 0, .6);
       color: $color_white;
       padding: 10px;
       width: 100%;
@@ -77,20 +76,20 @@
         display: inline-block;
       }
       .author:before {
-        font-family: 'El Messiri', sans-serif;;
+        font-family: var(--vn-font-display);
         margin-inline-start: 10px;
         content: "\f007";
       }
   
       .date:before {
-        font-family: 'El Messiri', sans-serif;;
+        font-family: var(--vn-font-display);
         margin-inline-start: 10px;
         content: "\f133";
       }
   
       .tags {
         ul:before {
-          font-family: 'El Messiri', sans-serif;;
+          font-family: var(--vn-font-display);
           content: "\f02b";
           margin-inline-start: 10px;
         }
@@ -109,7 +108,7 @@
       z-index: 1;
       h1,
       h2 {
-        font-family: 'El Messiri', sans-serif;;
+        font-family: var(--vn-font-display);
       }
       h1 {
         line-height: 1;
@@ -131,7 +130,7 @@
           position: relative;
           &:after {
             content: "\f061";
-            font-family: 'El Messiri', sans-serif;;
+            font-family: var(--vn-font-display);
             margin-inline-end: -10px;
             opacity: 0;
             vertical-align: middle;
@@ -157,13 +156,13 @@
           background: $color_prime;
           width: 35px;
           top: -0.75rem;
-          border-radius: 3px;
+          border-radius: var(--vn-radius-xs);
         }
       }
     }
     &:hover {
       .details {
-        left: 0%;
+        inset-inline-end: 0%;
       }
     }
   
@@ -180,10 +179,10 @@
         &:before {
           transform: skewX(-3deg);
           content: "";
-          background: #fff;
+          background: var(--vn-surface);
           width: 30px;
           position: absolute;
-          left: -10px;
+          inset-inline-end: -10px;
           top: 0;
           bottom: 0;
           z-index: -1;
@@ -193,8 +192,8 @@
         flex-direction: row-reverse;
         .description {
           &:before {
-            left: inherit;
-            right: -10px;
+            inset-inline-end: inherit;
+            inset-inline-start: -10px;
             transform: skew(3deg)
           }
         }

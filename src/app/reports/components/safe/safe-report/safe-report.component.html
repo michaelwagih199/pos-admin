@@ -5,10 +5,10 @@
   <div class="row justify-content-around header">
     <div class="col">
       <mat-form-field appearance="fill">
-        <mat-label>Enter a date range</mat-label>
+        <mat-label>الفترة الزمنية</mat-label>
         <mat-date-range-input [rangePicker]="picker">
-          <input matStartDate placeholder="Start date" [(ngModel)]="startDate" autocomplete="off">
-          <input matEndDate placeholder="End date" [(ngModel)]="endDate" autocomplete="off">
+          <input matStartDate placeholder="البداية" [(ngModel)]="startDate" autocomplete="off">
+          <input matEndDate placeholder="النهاية" [(ngModel)]="endDate" autocomplete="off">
         </mat-date-range-input>
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-date-range-picker #picker></mat-date-range-picker>

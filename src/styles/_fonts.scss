@@ -10,7 +10,6 @@
 //   https://fonts.googleapis.com/css2?family=Cairo:wght@400..800&display=swap
 //   https://fonts.googleapis.com/css2?family=El+Messiri:wght@400..700&display=swap
 //   https://fonts.googleapis.com/css2?family=Almarai:wght@400;700&display=swap
-//   https://fonts.googleapis.com/css2?family=Roboto:wght@100..900&display=swap
 //   https://fonts.googleapis.com/icon?family=Material+Icons
 //
 // Rules honoured here
@@ -18,7 +17,7 @@
 //    glob, i.e. they are addressed as /assets/fonts/<file> and are NOT bundled
 //    by webpack. This matches the existing convention in the codebase
 //    (login.component.scss already uses url(/assets/login-bg.webp)).
-//  * Cairo, El Messiri and Roboto ship as VARIABLE fonts: a single file per
+//  * Cairo and El Messiri ship as VARIABLE fonts: a single file per
 //    subset covers the entire weight axis, hence the `font-weight: <min> <max>`
 //    range syntax. Declaring one weight would let the browser synthesise the
 //    others — the faux-bold defect this phase exists to remove (finding F3).
@@ -26,8 +25,8 @@
 //  * No `local()` sources: a machine-installed copy would shadow the shipped
 //    file and make rendering depend on the workstation.
 //  * latin-ext is kept alongside latin so accented Latin text stays in-family.
-//  * Google's subset order (cyrillic/greek/vietnamese for Roboto, cyrillic for
-//    El Messiri) is deliberately dropped — the app is Arabic + English only.
+//  * Google's subset order (cyrillic for El Messiri) is deliberately dropped —
+//    the app is Arabic + English only.
 // =============================================================================
 
 // -----------------------------------------------------------------------------
@@ -117,23 +116,6 @@ $vn-ur-arabic: U+0600-06FF, U+0750-077F, U+0870-0891, U+0897-08E1, U+08E3-08FF, 
   font-weight: 700;
   font-display: swap;
   src: url('/assets/fonts/almarai-latin-700.woff2') format('woff2');
-  unicode-range: $vn-ur-latin;
-}
-
-// -----------------------------------------------------------------------------
-// Roboto — variable 100–900, Latin only.
-// Transitional: this preserves today's Latin body rendering pixel-for-pixel
-// while the Roboto CDN link is removed (styles.scss:15 still stacks Roboto
-// first). Phase C replaces the body family with Cairo and these files can then
-// be deleted. Shipping the full axis keeps the 300/400/500 weights the CDN
-// link used to provide.
-// -----------------------------------------------------------------------------
-@font-face {
-  font-family: 'Roboto';
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url('/assets/fonts/roboto-latin.woff2') format('woff2');
   unicode-range: $vn-ur-latin;
 }
 

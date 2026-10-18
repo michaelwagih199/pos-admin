@@ -18,8 +18,8 @@
 //
 // Tokenised (exact match, no visual change):
 //   white            -> --vn-surface
-//   the near-black   -> --vn-ink-900
-//   the pale wash    -> --vn-ink-100
+//   the near-black   -> --vn-text
+//   the pale wash    -> --vn-surface-hover
 //   1rem / 1.25rem   -> --vn-text-base / --vn-text-num-sm
 //   0.75rem 1rem     -> --vn-space-3 / --vn-space-4
 //   8px              -> --vn-radius-lg
@@ -29,10 +29,10 @@
 //
 // Folded onto the nearest token (registered in
 // docs/design-system-v2-plan.md §11 row 16):
-//   the off-ramp near-black (Material grey-900) -> --vn-ink-900
-//   the grey-blue cell border              -> --vn-ink-200
-//   the table head background              -> --vn-ink-100   (already §9 #2b)
-//   the even-row background                -> --vn-ink-50    (already §9 #2b)
+//   the off-ramp near-black (Material grey-900) -> --vn-text
+//   the grey-blue cell border              -> --vn-border-light
+//   the table head background              -> --vn-surface-hover
+//   the even-row background                -> --vn-surface-alt
 //   three/four shadows                     -> --vn-shadow-2
 //   font-size 0.9rem (table type)          -> --vn-text-sm   (0.88rem)
 //   the table head letter-spacing (0.2px)  -> REMOVED
@@ -49,17 +49,6 @@
 
 @use 'src/app/shared/styles/report-tables' as rt;
 
-.mat-card-header {
-  display: flex;
-  flex-direction: row;
-  background: var(--vn-surface);
-  border-radius: var(--vn-radius-lg);
-  border: 1px solid var(--vn-ink-900);
-}
-
-.mat-card {
-  background: var(--sand);
-}
 
 .mat-raised-button {
   font-family: var(--vn-font-body);
@@ -115,7 +104,7 @@
   @include rt.table-base;
 
   thead th {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     color: var(--navy);
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-sm);
@@ -129,8 +118,8 @@
   tbody td {
     padding: 12px 14px;
     font-size: var(--vn-text-sm);
-    color: var(--vn-ink-900);
-    border-bottom: 1px solid var(--vn-ink-200);
+    color: var(--vn-text);
+    border-bottom: 1px solid var(--vn-border-light);
     text-align: end;
     vertical-align: middle;
   }
@@ -152,11 +141,11 @@
   }
 
   tbody tr:nth-child(even) td {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
   }
 
   tbody tr:hover td {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
@@ -183,7 +172,6 @@
 // Print styles
 @media print {
   .no-print { display: none !important; }
-  .mat-card { background: var(--vn-surface); }
   .summary-card { box-shadow: none; }
   .section-card { page-break-inside: avoid; }
 

@@ -8,7 +8,7 @@
 //     deliberate Latin-only face for the bordered cells. Swapping
 //     it for the body family would change the printed glyphs.
 //   - pure black borders: the palette has no true-black step
-//     (--vn-ink-900 is a near-black), so a swap would move the
+//     (--vn-text is a near-black), so a swap would move the
 //     printed output.
 //   - receipt geometry — centimetre widths, 25px header radius,
 //     10px table text, 2px/3px paddings — and the fixed-position
@@ -58,8 +58,7 @@
     border: 2px solid black;
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    inset-inline: 0;
     .header {
       font-size: var(--vn-text-base);
       border: 2px solid black;

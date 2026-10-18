@@ -89,7 +89,7 @@
     align-items: center;
     gap: var(--vn-space-2);
     font-size: var(--vn-text-base);
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
     padding: 2px 0;
 
     mat-icon { color: var(--navy); }
@@ -106,7 +106,7 @@
 .summary-card {
   @include rt.summary-card;
 
-  &.opening  { background: var(--vn-ink-500); }
+  &.opening  { background: var(--vn-text-muted); }
   &.orders   { background: var(--navy); }
   &.payments { background: var(--vn-success); }
   &.returns  { background: var(--accent); }
@@ -129,7 +129,7 @@
   @include rt.table-base;
 
   thead th {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     color: var(--navy);
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-md);
@@ -143,8 +143,8 @@
   tbody td {
     padding: 14px 16px;
     font-size: var(--vn-text-md);
-    color: var(--vn-ink-900);
-    border-bottom: 1px solid var(--vn-ink-200);
+    color: var(--vn-text);
+    border-bottom: 1px solid var(--vn-border-light);
     text-align: end;
     vertical-align: middle;
   }
@@ -167,11 +167,11 @@
   }
 
   tbody tr:nth-child(even) td {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
   }
 
   tbody tr:hover td {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
     transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
@@ -207,7 +207,7 @@
 .statement-footer {
   text-align: center;
   font-size: var(--vn-text-sm);
-  color: var(--vn-ink-500);
+  color: var(--vn-text-muted);
   padding: var(--vn-space-4) 0;
 }
 

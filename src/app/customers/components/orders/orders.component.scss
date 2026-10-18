@@ -1,24 +1,24 @@
 .filter-section {
-    background: #ffffff;
-    border-left: 8px solid #44596e;
-    border-radius: 8px;
-    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.12);
+    background: var(--vn-surface);
+    border-inline-end: 8px solid var(--vn-brand);
+    border-radius: var(--vn-radius-lg);
+    box-shadow: var(--vn-shadow-2);
     padding: 12px 8px;
-    font-family: 'Cairo', sans-serif;
+    font-family: var(--vn-font-body);
 }
 
 .btn-search {
-    background-color: #44596e;
-    color: #ffffff;
-    font-family: 'Cairo', sans-serif;
+    background-color: var(--vn-brand);
+    color: var(--vn-on-brand);
+    font-family: var(--vn-font-body);
     font-size: 16px;
     width: 60%;
 }
 
 .btn-reset {
-    background-color: #ec994b;
-    color: #ffffff;
-    font-family: 'Cairo', sans-serif;
+    background-color: var(--vn-accent);
+    color: var(--vn-on-brand);
+    font-family: var(--vn-font-body);
     font-size: 16px;
     width: 60%;
 }

@@ -143,7 +143,6 @@ export class ProductCategoryComponent implements OnInit {
       id:obj.id,
       description: obj.categoryName
     };
-    this.dialog.open(CreateCategoryComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {
@@ -172,7 +171,6 @@ export class ProductCategoryComponent implements OnInit {
       id:'',
       description: ''
     };
-    this.dialog.open(CreateCategoryComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {

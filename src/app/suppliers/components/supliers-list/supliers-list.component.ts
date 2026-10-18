@@ -142,7 +142,6 @@ export class SupliersListComponent implements OnInit {
       model: this.supplier,
     }
 
-    this.dialog.open(CreateSuppliersComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateSuppliersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {
@@ -166,7 +165,6 @@ export class SupliersListComponent implements OnInit {
     dialogConfig.data = {
       model: obj,
     }
-    this.dialog.open(CreateSuppliersComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateSuppliersComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {

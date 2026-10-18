@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -40,8 +40,6 @@ export class RetrivalsComponent implements OnInit {
   retriveModel: RetrivalsModel = new RetrivalsModel();
   isLoading = false;
 
-  private cdr = inject(ChangeDetectorRef);
-
   constructor(
     private _snackBar: MatSnackBar,
     private retrivalService: RetrivalsService,
@@ -64,12 +62,10 @@ export class RetrivalsComponent implements OnInit {
         this.isLoading = false;
         this.retrivalsList = data?.retrievalsBills || [];
         this.count = data?.totalItems || 0;
-        this.cdr.markForCheck();
       },
       error: (error) => {
         this.isLoading = false;
         console.error('Failed to retrieve retrievals', error);
-        this.cdr.markForCheck();
       }
     });
   }

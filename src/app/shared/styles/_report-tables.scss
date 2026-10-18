@@ -13,51 +13,24 @@
   // Phase C (docs/design-system-v2-plan.md §6 step 4): the legacy local names
   // are now ALIASES of the design-system semantic tokens. Everything below in
   // this file keeps using the short names; the mixins are untouched.
-  //
-  // Value movement (registered in plan §11):
-  //   --text-main  #1e293b -> var(--vn-ink-900) #1f2937   (§9 #2)
-  //   --header-bg  #eef2f7 -> var(--vn-ink-100) #f1f5f9   (§9 #2b)
-  //   --row-alt-bg #fafbfc -> var(--vn-ink-50)  #f8fafc   (§9 #2b)
-  // Identical values: --navy #44596e, --accent #ec994b, --sand #f4f3f0,
-  //   --danger #db1f48, --credit #2563eb, --success #16a34a,
-  //   --text-muted #64748b, --border-color #e2e8f0, --row-hover-bg #f1f5f9.
-  //
-  // NOTE: --sand maps to var(--vn-sand) (#f4f3f0) and NOT to the
-  // var(--vn-surface-alt) written in the plan (that token is #f8fafc, one ramp
-  // step lighter). Using it would have shifted the sand background, a pixel
-  // change that §9 does not register — so this is the identity mapping.
   // --------------------------------------------------------------------------
   --navy: var(--vn-brand);
   --accent: var(--vn-accent);
-  --sand: var(--vn-sand);
+  --sand: var(--vn-surface-sunken);
   --danger: var(--vn-danger);
   --credit: var(--vn-info);
   --success: var(--vn-success);
-  --text-main: var(--vn-text);           // was var(--vn-ink-900): same #1f2937, semantic name
+  --text-main: var(--vn-text);
   --text-muted: var(--vn-text-muted);
   --border-color: var(--vn-border-light);
-  --header-bg: var(--vn-ink-100);
-  --row-hover-bg: var(--vn-ink-100);
-  --row-alt-bg: var(--vn-surface-alt);   // was var(--vn-ink-50): same #f8fafc, canonical semantic name
+  --header-bg: var(--vn-surface-hover);
+  --row-hover-bg: var(--vn-surface-hover);
+  --row-alt-bg: var(--vn-surface-alt);
 }
 
 // ============================================================================
-// Kept literals (Phase G residuals, per DESIGN_SYSTEM §1.2 — no semantic
-// token matches the value):
-//   #ede9fe / #6d28d9   badge-supplier — the semantic (and primitive) layer
-//                       has no violet/purple role
-//   #94a3b8             print borders — --vn-text-faint (same value) is a text
-//                       role, --vn-border (#cbd5e1) is one step too light
-//   #0f172a             print body text — darker than --vn-text (#1f2937)
-//   #f1f5f9             print tfoot bg = --vn-ink-100 (primitive value; the
-//                       --header-bg/--row-hover-bg aliases are the only refs)
-//   0 3px 6px / 0 2px 6px rgba(0,0,0,…)
-//                       shadows — no --vn-shadow step matches (steps use
-//                       rgba(15,23,42,…) and a shorter Y offset); left intact
-//                       so ten consuming reports do not shift elevation
-//                       at once
-//   Spacing, line-height 1.5 and font-weight 500 have no exact scale step and
-//   are untouched this pass (§1.3 folding is a separate registered change).
+// Kept literals (spacing, line-height 1.5 and font-weight 500 have no exact
+// scale step and are untouched this pass).
 // ============================================================================
 
 // ============================================================================
@@ -163,7 +136,7 @@
   // Footer
   tfoot td,
   tfoot th {
-    background: var(--vn-surface-alt);   // was #f8fafc — same value
+    background: var(--vn-surface-alt);
     font-family: var(--vn-font-body);
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-md);   // was 0.92rem — folded one step up, registered
@@ -248,10 +221,8 @@
       color: var(--vn-success-fg);
     }
     &.badge-supplier {
-      // Kept raw: no violet/purple role exists in the semantic (or primitive)
-      // layer — see the gaps note at the top of this file.
-      background: #ede9fe;
-      color: #6d28d9;
+      background: var(--vn-info-bg);
+      color: var(--vn-info-fg);
     }
   }
 }
@@ -273,7 +244,7 @@
   padding: 0.85rem 1rem;
   border-radius: var(--vn-radius-lg);
   color: var(--vn-on-brand);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--vn-shadow-2);
   font-family: var(--vn-font-body);
   
   .label {
@@ -338,13 +309,13 @@
 @mixin section-card {
   background: var(--vn-surface);
   border-radius: var(--vn-radius-lg);
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--vn-shadow-1);
   margin-bottom: 1rem;
   overflow: hidden;
   
   .section-header {
     @include section-header-base;
-    background: var(--vn-surface-alt);   // was #f8fafc — same value
+    background: var(--vn-surface-alt);
     color: var(--navy);
     border-bottom: 2px solid var(--navy);
 
@@ -367,7 +338,7 @@
   border-radius: var(--vn-radius-lg);
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--vn-shadow-2);
 
   .header-icon {
     color: var(--navy);
@@ -379,7 +350,7 @@
   h2 {
     margin: 0;
     color: var(--navy);
-    font-family: var(--vn-font-body);
+    font-family: var(--vn-font-display);
     font-size: var(--vn-text-xl);
     font-weight: var(--vn-weight-bold);
   }
@@ -394,7 +365,7 @@
   border-radius: var(--vn-radius-lg);
   padding: 1rem 1.25rem;
   margin-bottom: 1rem;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  box-shadow: var(--vn-shadow-1);
   font-family: var(--vn-font-body);
   
   .info-row {
@@ -402,7 +373,7 @@
     align-items: center;
     gap: 0.5rem;
     font-size: var(--vn-text-md);
-    color: var(--vn-text);   // was #333 — nearest text role, slightly darker, registered
+    color: var(--vn-text);
     padding: 3px 0;
     mat-icon { color: var(--navy); }
   }
@@ -438,24 +409,24 @@
       print-color-adjust: exact;
     }
     thead th {
-      background: var(--vn-border-light) !important;   // was #e2e8f0 — same value
+      background: var(--vn-border-light) !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-      border: 1px solid #94a3b8 !important;
-      color: #0f172a !important;
+      border: 1px solid var(--vn-border) !important;
+      color: var(--vn-text) !important;
     }
     tbody td,
     tbody th {
-      border: 1px solid var(--vn-border-light) !important;   // was #e2e8f0 — same value
-      color: #0f172a !important;
+      border: 1px solid var(--vn-border-light) !important;
+      color: var(--vn-text) !important;
     }
     tfoot td,
     tfoot th {
-      background: #f1f5f9 !important;
+      background: var(--header-bg) !important;
       -webkit-print-color-adjust: exact;
       print-color-adjust: exact;
-      border: 1px solid #94a3b8 !important;
-      color: #0f172a !important;
+      border: 1px solid var(--vn-border) !important;
+      color: var(--vn-text) !important;
     }
   }
 }

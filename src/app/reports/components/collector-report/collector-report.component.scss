@@ -10,9 +10,9 @@
 // FOLDS (value-folds, not exact matches — registered in
 // docs/design-system-v2-plan.md §11 row 17):
 //   - card shadow tint + geometry      -> --vn-shadow-2
-//   - table row hover wash             -> --vn-ink-50
-//   - cell bottom border               -> --vn-ink-200
-//   - customer name colour             -> --vn-ink-900
+//   - table row hover wash             -> --vn-surface-alt
+//   - cell bottom border               -> --vn-border-light
+//   - customer name colour             -> --vn-text
 //   - 0.9rem and 0.85rem               -> --vn-text-sm  (0.88rem)
 //   - 0.8rem                           -> --vn-text-xs  (0.78rem)
 //
@@ -39,7 +39,7 @@
 :host {
   --navy: var(--vn-brand);
   --accent: var(--vn-accent);
-  --sand: var(--vn-sand);
+  --sand: var(--vn-surface-sunken);
   --danger: var(--vn-danger);
   --credit: var(--vn-info);
 }
@@ -183,11 +183,11 @@
   td.mat-cell {
     padding: var(--vn-space-3) var(--vn-space-2);
     font-size: var(--vn-text-base);
-    border-bottom: 1px solid var(--vn-ink-200);
+    border-bottom: 1px solid var(--vn-border-light);
   }
 
   tr.mat-row:hover {
-    background: var(--vn-ink-50);
+    background: var(--vn-surface-alt);
   }
 }
 
@@ -197,7 +197,7 @@
 
   .customer-name {
     font-weight: var(--vn-weight-bold);
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
   }
 
   .customer-phone {
@@ -236,7 +236,7 @@
 }
 
 .muted {
-  color: var(--vn-ink-400);
+  color: var(--vn-border);
 }
 
 .empty-card {

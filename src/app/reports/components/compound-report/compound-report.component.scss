@@ -14,7 +14,7 @@
 //   - card resting shadow      -> --vn-shadow-2
 //   - card hover shadow        -> --vn-shadow-3
 //   - card body 1.05rem        -> --vn-text-base (1rem)
-//   - the darker amber numeral -> --vn-accent-700
+//   - the darker amber numeral -> --vn-accent-hover
 //   - card resting/hover shadows keep their geometry, only the black tint
 //     moves to the shared slate tint
 //
@@ -33,16 +33,6 @@
 
 * {
   font-family: var(--vn-font-body);
-}
-
-.mat-card-header {
-  background: var(--sand);
-  border-radius: var(--vn-radius-lg);
-  border: 1px solid var(--vn-border);
-}
-
-.mat-card {
-  background: var(--vn-surface-alt);
 }
 
 .mat-raised-button {
@@ -109,6 +99,6 @@
   border-inline-start-color: var(--accent);
 
   .customTest {
-    color: var(--vn-accent-700);
+    color: var(--vn-accent-hover);
   }
 }

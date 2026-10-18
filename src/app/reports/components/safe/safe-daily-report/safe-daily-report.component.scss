@@ -6,25 +6,25 @@
 // section header) that duplicated — and disagreed with — the
 // shared report tokens. It now maps onto the design system:
 //
-//   --navy           <- brand navy 700    (was slate 800)
-//   --navy-light     <- brand navy 500    (was slate 700)
-//   --primary        <- info role         (exact)
-//   --primary-light  <- info foreground   (hover steps DARKER, was a lighter blue)
-//   --accent         <- accent 500        (exact)
-//   --accent-light   <- amber 500         (exact)
-//   --success        <- success role      (was emerald 600)
-//   --success-light  <- success foreground(was emerald 500)
-//   --danger         <- danger role       (was red 600)
-//   --danger-light   <- danger foreground (was red 500)
-//   --warning        <- accent 700        (was amber 600)
-//   --warning-light  <- warning role      (exact)
+//   --navy           <- --vn-brand-strong  (was slate 800)
+//   --navy-light     <- --vn-brand         (was slate 700)
+//   --primary        <- --vn-info          (exact)
+//   --primary-light  <- --vn-info-fg       (hover steps DARKER, was a lighter blue)
+//   --accent         <- --vn-accent        (exact)
+//   --accent-light   <- --vn-warning       (exact)
+//   --success        <- --vn-success       (was emerald 600)
+//   --success-light  <- --vn-success-fg    (was emerald 500)
+//   --danger         <- --vn-danger        (was red 600)
+//   --danger-light   <- --vn-danger-fg     (was red 500)
+//   --warning        <- --vn-accent-active (was amber 600)
+//   --warning-light  <- --vn-warning       (exact)
 //   --surface / --surface-alt / --background
-//                    <- white / ink 50 / ink 100        (all exact)
+//                    <- --vn-surface / --vn-surface-alt / --vn-surface-hover (all exact)
 //   --border / --border-strong
-//                    <- border-light / border           (all exact)
-//   --text-primary   <- ink 900           (was the off-ramp slate near-black)
-//   --text-secondary <- text-muted        (was slate 600)
-//   --text-muted     <- ink 300           (exact)
+//                    <- --vn-border-light / --vn-border                      (all exact)
+//   --text-primary   <- --vn-text          (was the off-ramp slate near-black)
+//   --text-secondary <- --vn-text-muted    (was slate 600)
+//   --text-muted     <- --vn-text-subtle   (exact)
 //   --shadow-sm/md/lg/xl <- shadow steps 1/2/3/4
 //   --radius-sm/md/lg    <- radius md/lg/xl  (was 6 / 10 / 14 px)
 //
@@ -64,24 +64,24 @@
 @use 'src/app/shared/styles/report-tables' as rt;
 
 :host {
-  --navy: var(--vn-navy-700);
-  --navy-light: var(--vn-navy-500);
+  --navy: var(--vn-brand-hover);
+  --navy-light: var(--vn-brand);
   --primary: var(--vn-info);
   --primary-light: var(--vn-info-fg);
-  --accent: var(--vn-accent-500);
-  --accent-light: var(--vn-amber-500);
+  --accent: var(--vn-accent);
+  --accent-light: var(--vn-warning);
   --success: var(--vn-success);
   --success-light: var(--vn-success-fg);
   --danger: var(--vn-danger);
   --danger-light: var(--vn-danger-fg);
-  --warning: var(--vn-accent-700);
+  --warning: var(--vn-accent-hover);
   --warning-light: var(--vn-warning);
-  --surface: var(--vn-white);
+  --surface: var(--vn-surface);
   --surface-alt: var(--vn-surface-alt);
-  --background: var(--vn-ink-100);
+  --background: var(--vn-surface-hover);
   --border: var(--vn-border-light);
   --border-strong: var(--vn-border);
-  --text-primary: var(--vn-ink-900);
+  --text-primary: var(--vn-text);
   --text-secondary: var(--vn-text-muted);
   --text-muted: var(--vn-text-faint);
   --shadow-sm: var(--vn-shadow-1);
@@ -864,7 +864,7 @@ mat-progress-bar {
   }
 
   .daily-safe-screen {
-    background: var(--vn-white) !important;
+    background: var(--vn-surface) !important;
     padding: 0 !important;
   }
 
@@ -920,7 +920,7 @@ mat-progress-bar {
   }
 
   .grand-total-card {
-    background: var(--vn-white) !important;
+    background: var(--vn-surface) !important;
     color: var(--navy) !important;
     border: 2px solid var(--navy) !important;
     box-shadow: none !important;

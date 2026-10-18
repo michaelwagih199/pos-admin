@@ -3,14 +3,14 @@ import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angula
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { Arabic } from 'src/app/text';
 import { CdkScrollable } from '@angular/cdk/scrolling';
-import { MatFormField, MatInput } from '@angular/material/input';
+import { MatFormField, MatLabel, MatInput } from '@angular/material/input';
 import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-create-category',
     templateUrl: './create-category.component.html',
     styleUrls: ['./create-category.component.scss'],
-    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatInput, MatDialogActions, MatButton]
+    imports: [MatDialogTitle, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDialogActions, MatButton]
 })
 export class CreateCategoryComponent implements OnInit {
     private fb = inject(FormBuilder);

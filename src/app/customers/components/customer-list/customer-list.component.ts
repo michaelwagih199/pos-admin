@@ -168,7 +168,6 @@ export class CustomerListComponent implements OnInit {
       model: this.customer,
     }
 
-    this.dialog.open(CreateCustomerComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCustomerComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {
@@ -189,7 +188,6 @@ export class CustomerListComponent implements OnInit {
     dialogConfig.data = {
       model: obj,
     }
-    this.dialog.open(CreateCustomerComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCustomerComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {

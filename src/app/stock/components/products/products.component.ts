@@ -216,7 +216,6 @@ export class ProductsComponent implements OnInit {
       productModel: obj,
       categoryId: 0,
     };
-    this.dialog.open(CreateProductComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateProductComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       this.productService
@@ -251,7 +250,6 @@ export class ProductsComponent implements OnInit {
       productModel: this.product,
       categoryId: 0,
     };
-    this.dialog.open(CreateProductComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateProductComponent, dialogConfig);
     dialogRef.afterClosed().subscribe((data) => {
       console.log(data);

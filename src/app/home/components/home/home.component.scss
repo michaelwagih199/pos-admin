@@ -3,14 +3,14 @@
 // Tokenised in this pass:
 //   the caption heading face -> var(--vn-font-display): this is the plan's own ask for the
 //     first-impression screens (El Messiri is the display family).
-//   the caption background -> var(--vn-ink-500) (exact: the former value was the same slate).
-//   the caption text -> var(--vn-white) (exact).
+//   the caption background -> var(--vn-text-muted) (exact: the former value was the same slate).
+//   the caption text -> var(--vn-on-brand) (exact).
 //   both grey separators, the frame around .bg and the caption's top rule -> var(--vn-border)
 //     FOLD of the former neutral grey onto the palette's border step
 //     (registered in the plan visual-diff register).
 //
 // Deliberately left alone:
-//   - geometry: 80vh, the 10px radii, the 2px and 1px border widths, 3em, 8px caption padding.
+//   - geometry: 80vh, the 2px and 1px border widths, 3em, 8px caption padding.
 //   - the 0.8 caption opacity and the symmetric left/right overlay offsets, which
 //     DESIGN_SYSTEM section 3.2 already lists as deliberately physical on this screen.
 //   - the two animation declarations and their durations: the zoomIn / fadeInDown keyframes
@@ -25,7 +25,7 @@
   height: 80vh;
   object-fit: cover;
   border: 1px solid var(--vn-border);
-  border-radius: 10px;
+  border-radius: var(--vn-radius-lg);
   // animate__zoomIn
   animation: zoomIn; 
   animation-duration: 1s; 
@@ -33,22 +33,21 @@
 
 .card{
   object-fit: cover;
-  border-radius: 10px;
+  border-radius: var(--vn-radius-lg);
 
 }
 .custom-caption{
   border-top: 2px solid var(--vn-border);
-  background-color: var(--vn-ink-500);
+  background-color: var(--vn-text-muted);
   opacity: 0.8;
-  left:0;
-  right: 0;
+  inset-inline: 0;
   font-size:large;
 }
 .cabtion-header{
   font-family: var(--vn-font-display);
   font-size: 3em;
   padding: 8px;
-  color: var(--vn-white);
+  color: var(--vn-on-brand);
   animation: fadeInDown; 
   animation-duration: 2s; 
 }

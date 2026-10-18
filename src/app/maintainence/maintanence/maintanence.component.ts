@@ -134,7 +134,6 @@ export class MaintanenceComponent implements OnInit {
       id: obj.id,
       description: obj.categoryName
     };
-    this.dialog.open(CreateCategoryComponent, dialogConfig);
     const dialogRef = this.dialog.open(CreateCategoryComponent, dialogConfig);
     dialogRef.afterClosed().subscribe(
       data => {

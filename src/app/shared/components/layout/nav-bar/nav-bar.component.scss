@@ -22,7 +22,10 @@
 //     be triggered by this file.
 
 .mat-toolbar {
-  direction: ltr;
+  height: 50px;
+  min-height: 50px;
+  background-color: var(--vn-brand);
+  color: var(--vn-on-brand);
 
   // True wordmark centring: mat-toolbar justifies with space-between, so three
   // unequal children leave the middle one off page-centre. Giving the leading
@@ -45,37 +48,106 @@
     flex: 1 1 0;
     display: flex;
     justify-content: flex-end;
-    // Neutralises the 13px inline-start margin from src/styles.scss; inside this
-    // equal-flank layout that margin is what pushed the wordmark off-centre.
+    align-items: center;
     margin-inline-start: 0;
+
+    .hamburger {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--vn-radius-md);
+      cursor: pointer;
+      transition: background-color var(--vn-duration-fast) var(--vn-ease);
+
+      &:hover {
+        background-color: var(--vn-brand-hover);
+      }
+    }
   }
 }
 
 .user-chip {
-  background-color: var(--vn-brand);
+  background: var(--vn-surface-alt);
+  border: 1px solid var(--vn-border-light);
   border-radius: var(--vn-radius-md);
 
-  // Material's MDC list tokens are the sanctioned way to recolour a list item's
-  // projected content; direct child selectors lose to the MDC styles.
-  --mat-list-list-item-leading-icon-color: var(--vn-on-brand);
-  --mat-list-list-item-label-text-color: var(--vn-on-brand);
+  --mat-list-list-item-leading-icon-color: var(--vn-text);
+  --mat-list-list-item-label-text-color: var(--vn-text);
+}
+
+.mat-sidenav {
+  width: 240px;
 }
 
 .mat-nav-list {
+  .mat-list-item {
+    height: 40px;
+  }
+
   .mat-mdc-list-item {
+    height: 38px;
+    margin-block: 3px;
+    border-radius: var(--vn-radius-md);
     text-align: start;
+    font-size: var(--vn-text-md);
+    display: flex;
+    align-items: center;
+    transition: background-color var(--vn-duration-fast) var(--vn-ease), color var(--vn-duration-fast) var(--vn-ease);
+
+    .mat-mdc-list-item-icon {
+      flex: 0 0 var(--vn-icon-size-md, 24px);
+      margin-inline-end: var(--vn-space-sm, 12px);
+      transition: transform var(--vn-duration-fast) var(--vn-ease),
+                  filter var(--vn-duration-fast) var(--vn-ease);
+    }
+
+    &:hover {
+      background: rgba(68, 89, 110, 0.06);
+    }
+
+    &.active {
+      background: var(--vn-surface);
+      color: var(--vn-brand);
+      font-weight: var(--vn-weight-medium);
+      border-inline-start: 4px solid var(--vn-accent);
+      box-shadow: var(--vn-shadow-1);
+      --mat-list-list-item-leading-icon-color: var(--vn-accent);
+      --mat-list-list-item-label-text-color: var(--vn-brand);
+
+      // Enhanced selected state: subtle lift + stronger accent highlight
+      & .mat-mdc-list-item-icon {
+        transform: scale(1.05) translateY(-1px);
+        filter: var(--vn-icon-selected-filter, none);
+      }
+    }
 
     [matListItemTitle] {
       text-align: start;
+      font-size: var(--vn-text-md);
+      flex: 1;
     }
   }
 }
 
 .homeIcon {
   cursor: pointer;
+  border-radius: var(--vn-radius-md);
+  transition: background-color var(--vn-duration-fast) var(--vn-ease);
+
+  &:hover {
+    background-color: var(--vn-brand-hover);
+  }
 }
 
 .notifi-yes {
   color: var(--vn-danger);
   cursor: pointer;
+  border-radius: var(--vn-radius-md);
+  transition: background-color var(--vn-duration-fast) var(--vn-ease);
+
+  &:hover {
+    background-color: var(--vn-brand-hover);
+  }
 }

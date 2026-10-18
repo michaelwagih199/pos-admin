@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA, provideZoneChangeDetection } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -25,6 +25,7 @@ registerLocaleData(en);
         NgbModule,
         NgxBarcodeModule,
         FormsModule], providers: [
+        provideZoneChangeDetection(),
         authInterceptorProviders,
         ExcelService,
         provideHttpClient(withInterceptorsFromDi())

@@ -8,11 +8,11 @@
 //     variables are still declared exactly once in the compiled CSS.
 //   * FOLDS (registered in docs/design-system-v2-plan.md §11 row 20):
 //       - 0.9rem -> var(--vn-text-sm) (0.88rem), on both the header and body cells.
-//       - the body-cell text colour -> var(--vn-ink-900). This is the same
+//       - the body-cell text colour -> var(--vn-text). This is the same
 //         movement already approved as register row 2 (the report text-main step);
 //         the literal was the old text-main value.
-//       - the header background -> var(--vn-ink-100) and the row hover ->
-//         var(--vn-ink-100); the hover literal already equals this token exactly.
+//       - the header background -> var(--vn-surface-hover) and the row hover ->
+//         var(--vn-surface-hover); the hover literal already equals this token exactly.
 //   * Left literal on purpose: the cell padding 10px 14px (neither side is on the
 //     4px grid, and the rule adopted for shorthand spacing is to tokenize only
 //     when every component is on-scale).
@@ -25,12 +25,6 @@
 
 * {
   font-family: var(--vn-font-body);
-}
-
-.mat-card-header {
-  background: var(--sand);
-  border-radius: var(--vn-radius-lg);
-  border: 1px solid var(--vn-border);
 }
 
 .text-footer {
@@ -56,7 +50,7 @@ table[mat-table] {
     color: var(--navy);
     font-size: var(--vn-text-sm);
     padding: 10px 14px;
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
 
     &.num {
       @include rt.num-header;
@@ -66,7 +60,7 @@ table[mat-table] {
   td.mat-cell {
     font-size: var(--vn-text-sm);
     padding: 10px 14px;
-    color: var(--vn-ink-900);
+    color: var(--vn-text);
 
     &.num {
       @include rt.num-cell;
@@ -80,6 +74,6 @@ table[mat-table] {
   }
 
   tr.mat-row:hover {
-    background: var(--vn-ink-100);
+    background: var(--vn-surface-hover);
   }
 }
