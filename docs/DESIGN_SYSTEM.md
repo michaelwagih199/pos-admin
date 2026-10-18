@@ -52,3 +52,7 @@ The v2 prototype's `Amiri` numeric font was reviewed and rejected.
   Phase D: compact density (`56px` toolbar, `48px` mobile, `40px` table row,
   `16px` card pad) with `:root`-specificity bindings that override the legacy
   density includes in `styles.scss`; orange active-nav state (logical properties).
+- **v2.1.1 — sale-screen preview re-skin** (navbar + 32px hotkey bar; toolbar rebound
+  **56px → 48px** = `--vn-navbar-h`; preview scale tokens `--vn-accent-shadow`,
+  `--vn-shadow-sm/md`; sale-order dense table + checkout re-skin + F2/F3/F4/F7/F10).
+  Commits `bf89eec`→`c577d45`.
