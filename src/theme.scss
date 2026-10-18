@@ -92,8 +92,8 @@ html {
   /* v2.1 compact density (Phase D).
      html:root — the M2 density includes in styles.scss (which loads AFTER
      this file's stylesheet entry) re-emit literal sizes on a bare html
-     selector; :root raises specificity so these bindings always win without
-     !important, per the prompt's escalation rule. */
+     selector; :root raises specificity so these bindings always win, per the
+     prompt's escalation rule (no forced declarations). */
   --mat-toolbar-standard-height: var(--vn-toolbar-h);
   --mat-toolbar-mobile-height: var(--vn-toolbar-h-mobile);
   --mat-table-row-item-container-height: var(--vn-row-h);
