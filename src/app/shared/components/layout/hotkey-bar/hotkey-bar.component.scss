@@ -1,0 +1,44 @@
+// Phase B (sale-screen-preview-restyle): 32px hotkey footer bar.
+// Static reference strip — F-keys are wired on the sale screen (Phase C);
+// this component only renders the labels, so it never needs logic.
+:host {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: var(--vn-z-sticky);
+  height: var(--vn-space-8); // 32px
+  display: flex;
+  align-items: center;
+  column-gap: var(--vn-space-4);
+  padding-inline: var(--vn-space-4);
+  background: var(--vn-surface);
+  border-top: 1px solid var(--vn-border);
+  font-size: 0.78rem;
+  color: var(--vn-ink-muted);
+  flex-shrink: 0;
+}
+
+span {
+  display: inline-flex;
+  align-items: center;
+  column-gap: var(--vn-space-2);
+  white-space: nowrap;
+}
+
+// Keyboard chip — token-only replica of the preview .vn-kbd chip.
+.vn-kbd {
+  background: var(--vn-surface-alt);
+  border: 1px solid var(--vn-border);
+  border-radius: var(--vn-radius-sm);
+  padding-block: 2px;
+  padding-inline: var(--vn-space-1) + 2px;
+  font-size: 11px;
+  color: var(--vn-ink-muted);
+  font-family: monospace;
+}
+
+@media (max-width: 600px) {
+  :host {
+    span:not(:last-child) { display: none; }
+  }
+}

@@ -49,6 +49,10 @@
   --vn-accent-shadow: rgba(236, 153, 75, 0.25); //  accent glow (pay button, hover total)
   --vn-navbar-h: 48px; //  steel navbar bar height (Phase B rebind if toolbar stays 56px)
 
+  /* ---------- Phase B navbar overlays (rgba as tokens, white-on-brand) ---------- */
+  --vn-on-brand-tint: rgba(255, 255, 255, 0.15); //  treasury badge fill
+  --vn-on-brand-line: rgba(255, 255, 255, 0.25); //  treasury badge border
+
   /* ---------- Stacking ---------- */
   --vn-z-base: 0;
   --vn-z-sticky: 100;
@@ -61,7 +65,7 @@
   --vn-content-max: 1200px; //  readable content column cap
 
   /* ---------- v2.1 compact density ---------- */
-  --vn-toolbar-h: 56px; // app bar (Material default 64px)
+  --vn-toolbar-h: 48px; // app bar (rebound to preview steel-navbar height, Phase B)
   --vn-toolbar-h-mobile: 48px; // < 600px breakpoint
   --vn-row-h: 40px; // mat-table row height (default 52px)
   --vn-card-pad: var(--vn-space-4); // 16px card padding

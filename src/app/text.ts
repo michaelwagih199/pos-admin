@@ -209,6 +209,18 @@ export class Arabic {
     reports: "التقارير",
     setting: "الاعدادات",
     aboutApp: "عن التطبيق",
+    treasury: "الخزينة",
+    cashier: "الكاشير",
+    currency: "ج.م",
+    brandSub: "تجارة وتوزيع الأقمشة",
+  }
+
+  hotkeyBar = {
+    search: "بحث أصناف",
+    discount: "تطبيق خصم",
+    fabricReturn: "مرتجع قماش",
+    quickPrint: "طباعة سريعة",
+    collect: "تحصيل الفاتورة",
   }
 
   stock = {

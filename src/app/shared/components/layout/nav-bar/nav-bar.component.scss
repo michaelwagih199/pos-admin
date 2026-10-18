@@ -22,34 +22,78 @@
 //     be triggered by this file.
 
 .mat-toolbar {
-  height: 50px;
-  min-height: 50px;
+  height: var(--vn-navbar-h, 48px);
+  min-height: var(--vn-navbar-h, 48px);
   background-color: var(--vn-brand);
   color: var(--vn-on-brand);
+  // Steel header edge (preview): 2px darker band under the bar.
+  border-bottom: 2px solid var(--vn-brand-hover);
+  padding-inline: var(--vn-space-4);
 
-  // True wordmark centring: mat-toolbar justifies with space-between, so three
-  // unequal children leave the middle one off page-centre. Giving the leading
-  // icon group and the hamburger an equal flexible share makes the flanks the
-  // same width, and the middle text lands on the centre line.
+  // Leading icon group stays a fixed-width cluster; the brand line sits beside
+  // it and the meta strip is pushed to the inline edge ahead of the hamburger.
   .toolbar-actions {
-    flex: 1 1 0;
+    flex: 0 0 auto;
     display: flex;
     column-gap: var(--vn-space-4);
   }
 
-  .header-text {
-    flex: 0 0 auto;
-    font-family: var(--vn-font-display);
-    font-size: var(--vn-text-xl);
+  // Brand line — display family per the preview navbar wordmark.
+  .header-brand {
+    display: flex;
+    align-items: baseline;
+    column-gap: var(--vn-space-3);
+    flex: 0 1 auto;
+    min-inline-size: 0;
+    font-family: var(--vn-font-head);
+
+    .header-brand__title {
+      font-size: var(--vn-text-xl);
+      font-weight: var(--vn-weight-bold, 700);
+      color: var(--vn-on-brand);
+      white-space: nowrap;
+    }
+
+    .header-brand__sub {
+      font-size: var(--vn-text-sm, 0.85rem);
+      opacity: 0.8;
+      color: var(--vn-on-brand);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  // Meta strip — treasury pill (white over brand fill), cashier, clock.
+  .nav-meta {
+    margin-inline-start: auto;
+    display: flex;
+    align-items: center;
+    column-gap: var(--vn-space-4);
+    font-size: var(--vn-text-sm, 0.85rem);
     color: var(--vn-on-brand);
+    white-space: nowrap;
+    font-weight: var(--vn-weight-medium, 500);
+
+    .badge-treasury {
+      background: var(--vn-on-brand-tint);
+      border: 1px solid var(--vn-on-brand-line);
+      border-radius: var(--vn-radius-pill);
+      padding-block: 3px;
+      padding-inline: 10px;
+
+      .t-num { color: var(--vn-on-brand); }
+    }
+
+    strong { color: var(--vn-on-brand); }
   }
 
   .nav-tool-items {
-    flex: 1 1 0;
+    flex: 0 0 auto;
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    margin-inline-start: 0;
+    margin-inline-start: var(--vn-space-3);
 
     .hamburger {
       display: inline-flex;
@@ -66,6 +110,13 @@
       }
     }
   }
+
+  // Meta strip is a desktop affordance; it collapses below the compact bar.
+  @media (max-width: 600px) {
+    .nav-meta { display: none; }
+
+    .header-brand__sub { display: none; }
+  }
 }
 
 .user-chip {
@@ -79,6 +130,11 @@
 
 .mat-sidenav {
   width: 240px;
+}
+
+// Phase B: keep route content clear of the fixed 32px hotkey footer.
+.mat-sidenav-content {
+  padding-bottom: var(--vn-space-8);
 }
 
 .mat-nav-list {

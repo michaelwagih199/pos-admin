@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener, inject, viewChild } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, inject, viewChild, signal } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSidenav, MatSidenavContainer, MatSidenavContent } from '@angular/material/sidenav';
 import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
@@ -8,27 +8,35 @@ import { AboutAppDialogComponent } from '../dialog/about-app-dialog/about-app-di
 import { MaintanenceService } from '../../../../maintainence/services/maintanence.service';
 import { NotificationsComponent } from '../dialog/notifications/notifications.component';
 import { NotificationService } from '../dialog/notifications/services/notification.service';
+import { DailySafeReportService } from '../../../../reports/service/daily-safe-report.service';
 import { MatToolbar } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
-import { NgClass } from '@angular/common';
+import { NgClass, DatePipe, DecimalPipe } from '@angular/common';
 import { MatNavList, MatListItem, MatListItemIcon, MatListItemTitle } from '@angular/material/list';
 
 @Component({
     selector: 'app-nav-bar',
     templateUrl: './nav-bar.component.html',
     styleUrls: ['./nav-bar.component.scss'],
-    imports: [MatToolbar, MatIcon, NgClass, MatSidenavContainer, MatSidenav, MatNavList, MatListItem, MatListItemIcon, MatListItemTitle, RouterLink, RouterLinkActive, MatSidenavContent, RouterOutlet]
+    imports: [MatToolbar, MatIcon, NgClass, DatePipe, DecimalPipe, MatSidenavContainer, MatSidenav, MatNavList, MatListItem, MatListItemIcon, MatListItemTitle, RouterLink, RouterLinkActive, MatSidenavContent, RouterOutlet]
 })
-export class NavBarComponent implements OnInit {
+export class NavBarComponent implements OnInit, OnDestroy {
   dialog = inject(MatDialog);
   private router = inject(Router);
   private takenServive = inject(TokenStorageService);
   private maintanenceService = inject(MaintanenceService);
   private notificationService = inject(NotificationService);
+  private dailySafeReportService = inject(DailySafeReportService);
 
   arabic: Arabic = new Arabic();
   isNotification: boolean = false;
   userName: any;
+  // Live meta strip (sale-screen-preview-restyle Phase B): today's treasury
+  // total comes from the existing daily safe report action; the clock ticks
+  // once a minute through a signal so change detection stays driven by it.
+  treasuryTotal = signal<number | null>(null);
+  now = signal<Date>(new Date());
+  private clockTimer?: ReturnType<typeof setInterval>;
   DynamicNavBar = {
     saleOrder: true,
     stock: true,
@@ -63,14 +71,28 @@ export class NavBarComponent implements OnInit {
 
     console.log(window.innerWidth);
     if (window.innerWidth < 768) {
-      this.sidenav().fixedTopGap = 50;
+      this.sidenav().fixedTopGap = 48;
       this.opened = false;
     } else {
-      this.sidenav().fixedTopGap = 50;
+      this.sidenav().fixedTopGap = 48;
       this.opened = true;
     }
 
-    this.getNotification()
+    this.getNotification();
+    this.loadTreasury();
+    this.clockTimer = setInterval(() => this.now.set(new Date()), 30_000);
+  }
+
+  ngOnDestroy() {
+    if (this.clockTimer) clearInterval(this.clockTimer);
+  }
+
+  loadTreasury() {
+    const dateStr = new Date().toISOString().slice(0, 10);
+    this.dailySafeReportService.getDailyReport(dateStr).subscribe({
+      next: (report) => this.treasuryTotal.set(report?.total ?? null),
+      error: () => this.treasuryTotal.set(null),
+    });
   }
 
 
@@ -79,10 +101,10 @@ export class NavBarComponent implements OnInit {
   onResize(event: UIEvent) {
     const innerWidth = (event.target as Window).innerWidth;
     if (innerWidth < 768) {
-      this.sidenav().fixedTopGap = 50;
+      this.sidenav().fixedTopGap = 48;
       this.opened = false;
     } else {
-      this.sidenav().fixedTopGap = 50;
+      this.sidenav().fixedTopGap = 48;
       this.opened = true;
     }
   }

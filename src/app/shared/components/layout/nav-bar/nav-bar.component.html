@@ -8,7 +8,23 @@
     <mat-icon aria-hidden="false" [ngClass]="[ isNotification ? 'notifi-yes' : 'homeIcon']"
     (click)="toNotification()">notifications</mat-icon>
   </div>
-  <div class="header-text">Ventas</div>
+  <!-- Brand line — steel navbar per the preview: display type + Arabic subtitle. -->
+  <div class="header-brand">
+    <strong class="header-brand__title">Ventas POS</strong>
+    <span class="header-brand__sub">{{ arabic.navBarList.brandSub }}</span>
+  </div>
+  <!-- Meta strip: treasury badge, cashier, live clock (preview navbar spec). -->
+  <div class="nav-meta">
+    <span class="badge-treasury">
+      {{ arabic.navBarList.treasury }}:
+      <strong class="t-num">{{ treasuryTotal() === null ? '—' : (treasuryTotal() | number:'1.2-2') }}</strong>
+      {{ arabic.navBarList.currency }}
+    </span>
+    <span class="nav-meta__cashier">
+      {{ arabic.navBarList.cashier }}: <strong>{{ userName }}</strong>
+    </span>
+    <span class="t-num nav-meta__clock">{{ now() | date:'HH:mm' }}</span>
+  </div>
   <span class="nav-tool-items">
     <mat-icon (click)="sidenav.toggle()" class="hamburger">menu</mat-icon>
   </span>
@@ -17,7 +33,7 @@
 <mat-sidenav-container>
   <!-- Sidenav -->
   <mat-sidenav #sidenav class="doNotPrint" [mode]="isBiggerScreen() ? 'over' : 'side'" [(opened)]="opened"
-    [fixedInViewport]="true" [fixedTopGap]>
+    [fixedInViewport]="true" [fixedTopGap] [fixedBottomGap]="32">
 
     <mat-nav-list>
 
