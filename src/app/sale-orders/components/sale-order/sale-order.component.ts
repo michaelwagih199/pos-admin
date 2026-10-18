@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, inject, viewChild, ElementRef } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -48,6 +48,9 @@ export class SaleOrderComponent implements OnInit {
   currentDate = new Date();
   myControl = new FormControl('');
   productControl = new FormControl('');
+  // Phase C: F-key handlers focus these existing fields instead of duplicating them.
+  readonly productSearchInput = viewChild<ElementRef<HTMLInputElement>>('productSearchInput');
+  readonly discountInput = viewChild<ElementRef<HTMLInputElement>>('discountInput');
   customer: CustomerModel = new CustomerModel();
   options: string[] = [];
   filteredOptions!: Observable<string[]>;
@@ -492,6 +495,40 @@ isOrderValid(): boolean {
 
   redirectTo(uri: string) {
     this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => this.router.navigate([uri]));
+  }
+
+  // ----- F-key bar (Phase C) -----
+  // Bound ONLY to actions that already exist on this screen (plan hard rule 4 /
+  // phase C): F2 focus search, F3 add customer, F4 focus discount, F7 the
+  // existing fabric-returns route, F10 collect via the untouched save+print
+  // path. F9 (quick print) has no existing action here — skipped and logged.
+  @HostListener('document:keydown', ['$event'])
+  onFkey(event: KeyboardEvent) {
+    switch (event.key) {
+      case 'F2':
+        event.preventDefault();
+        this.productSearchInput()?.nativeElement.focus();
+        break;
+      case 'F3':
+        event.preventDefault();
+        this.addDialog();
+        break;
+      case 'F4':
+        event.preventDefault();
+        this.discountInput()?.nativeElement.focus();
+        break;
+      case 'F7':
+        event.preventDefault();
+        this.router.navigate(['/retrivals']);
+        break;
+      case 'F9':
+        console.warn('F9 quick print: no quick-print action exists on the sale screen — skipped');
+        break;
+      case 'F10':
+        event.preventDefault();
+        this.onSaveAndPrint();
+        break;
+    }
   }
 
   refresh() {

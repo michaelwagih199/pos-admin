@@ -35,19 +35,18 @@
   </div>
 
   <!-- ============================================ -->
-  <!-- MAIN CONTENT ROW                             -->
+  <!-- MAIN WORKSPACE GRID — 1fr + 340px checkout    -->
   <!-- ============================================ -->
-  <div class="row g-3">
+  <div class="pos-grid">
 
     <!-- ========================================== -->
-    <!-- LEFT COLUMN – Products                     -->
+    <!-- MAIN COLUMN – Search strip + order table    -->
     <!-- ========================================== -->
-    <div class="col-lg-8 col-md-7">
+    <div class="pos-grid__main">
       <div class="dashboard-panel">
 
-        <!-- Search & Quantity Form -->
-        <!-- Search & Quantity Form -->
-        <form [formGroup]="producForm">
+        <!-- Search strip — scan entry + kbd chip on surface-alt (preview bar) -->
+        <form [formGroup]="producForm" class="search-strip">
           <div class="row g-2 align-items-end mb-3">
             <!-- Quantity (م/كجم) -->
             <div class="col-2 col-sm-2">
@@ -73,8 +72,9 @@
             <div class="col-5 col-sm-5">
               <mat-form-field appearance="outline" class="w-100">
                 <mat-label>{{ arabic.stock.products.util.searchBar }}</mat-label>
-                <input matInput type="text" [formControl]="productControl" [matAutocomplete]="productAuto"
+                <input #productSearchInput matInput type="text" [formControl]="productControl" [matAutocomplete]="productAuto"
                   (keyup.enter)="onProductEnter(productControl.value ?? '')" (focus)="clearProductSearch()">
+                <kbd class="vn-kbd" matSuffix>بحث F2</kbd>
                 <mat-icon matSuffix class="text-accent">search</mat-icon>
                 <mat-autocomplete #productAuto="matAutocomplete" [displayWith]="displayFn">
                   @for (option of productFilteredOptions | async; track option) {
@@ -101,16 +101,16 @@
         </form>
         <!-- Dynamic Order Table -->
         <div class="table-responsive">
-          <table class="table table-bordered table-hover dashboard-table">
+          <table class="table table-hover dashboard-table">
             <thead>
               <tr>
                 <th>المنتج</th>
                 <th class="text-center">وحدة القياس</th>
-                <th class="text-center">عدد الاتواب</th>
-                <th class="text-center">عدد الوحدات</th>
-                <th class="text-center">سعر الوحدة</th>
-                <th class="text-center">الإجمالى</th>
-                <th class="text-center col-actions"></th>
+                <th class="cell-numeric">عدد الاتواب</th>
+                <th class="cell-numeric">عدد الوحدات</th>
+                <th class="cell-numeric">سعر الوحدة</th>
+                <th class="cell-numeric">الإجمالى</th>
+                <th class="cell-numeric col-actions"></th>
               </tr>
             </thead>
             <tbody>
@@ -118,13 +118,13 @@
                 <tr>
                   <td class="fw-bold">{{ item.productName }}</td>
                   <td class="text-center">
-                    {{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}
+                    <span class="unit-tag">{{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}</span>
                   </td>
-                  <td class="text-center t-num">{{ item.quantity }}</td>
-                  <td class="text-center t-num">{{ item.unitNumber | number:'1.0-3' }}</td>
-                  <td class="text-center t-num">{{ item.price }}</td>
-                  <td class="text-center text-accent fw-bold t-num">{{ item.total }}</td>
-                  <td class="text-center">
+                  <td class="cell-numeric t-num">{{ item.quantity }}</td>
+                  <td class="cell-numeric t-num">{{ item.unitNumber | number:'1.0-3' }}</td>
+                  <td class="cell-numeric t-num">{{ item.price }}</td>
+                  <td class="cell-numeric text-accent fw-bold t-num">{{ item.total }}</td>
+                  <td class="cell-numeric">
                     <button mat-icon-button class="text-danger" (click)="deleteDynamicItem(item)" aria-label="حذف المنتج">
                       <mat-icon>delete</mat-icon>
                     </button>
@@ -147,7 +147,7 @@
             @if (dynamicOrderList.length > 0) {
               <tfoot>
                 <tr class="table-total-row">
-                  <th colspan="3" class="text-right">الإجمالى الكلى</th>
+                  <th colspan="3" class="text-end">الإجمالى الكلى</th>
                   <th class="text-center fs-5 text-navy t-num">{{ totalValue }}</th>
                   <th colspan="3"></th>
                 </tr>
@@ -160,31 +160,34 @@
     </div>
 
     <!-- ========================================== -->
-    <!-- RIGHT COLUMN – Customer & Payment Summary  -->
+    <!-- SIDE COLUMN – Checkout panel (340px fixed)  -->
     <!-- ========================================== -->
-    <div class="col-lg-4 col-md-5">
+    <div class="pos-grid__side">
       <div class="dashboard-panel summary-panel">
 
-        <!-- Customer (mandatory) -->
-        <div class="customer-section mb-2 d-flex align-items-center gap-2">
-          <mat-form-field appearance="outline" class="flex-grow-1 mb-0">
-            <mat-label>
-              {{ arabic.customers.util.searchBar }} <span class="text-danger">*</span>
-            </mat-label>
-            <input matInput type="text" [formControl]="myControl" [matAutocomplete]="auto" (keyup.enter)="search()">
-            <mat-icon matSuffix class="text-accent">person</mat-icon>
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              @for (option of filteredOptions | async; track option) {
-                <mat-option [value]="option"
-                  (onSelectionChange)="OnHumanSelected(option)">
-                  {{ option }}
-                </mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-          <button mat-mini-fab class="btn-navy add-customer-btn" (click)="addDialog()" aria-label="إضافة عميل جديد">
-            <mat-icon>add</mat-icon>
-          </button>
+        <!-- Customer card — brand edge on the inline start (preview checkout) -->
+        <div class="customer-card mb-2">
+          <div class="d-flex align-items-center gap-2">
+            <mat-form-field appearance="outline" class="flex-grow-1 mb-0">
+              <mat-label>
+                {{ arabic.customers.util.searchBar }} <span class="text-danger">*</span>
+              </mat-label>
+              <input matInput type="text" [formControl]="myControl" [matAutocomplete]="auto" (keyup.enter)="search()">
+              <mat-icon matSuffix class="text-accent">person</mat-icon>
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                @for (option of filteredOptions | async; track option) {
+                  <mat-option [value]="option"
+                    (onSelectionChange)="OnHumanSelected(option)">
+                    {{ option }}
+                  </mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+            <button mat-mini-fab class="btn-navy add-customer-btn" (click)="addDialog()" aria-label="إضافة عميل جديد (F3)"
+              title="إضافة عميل (F3)">
+              <mat-icon>add</mat-icon>
+            </button>
+          </div>
         </div>
 
         <!-- Payment Type -->
@@ -201,14 +204,14 @@
 
         <!-- Summary Calculations -->
         <div class="summary-details">
-          <div class="d-flex justify-content-between align-items-center mb-2 px-2">
+          <div class="d-flex justify-content-between align-items-center mb-2 px-2 summary-row">
             <span class="text-muted fw-bold">الإجمالى</span>
             <span class="fs-5 fw-bold t-num">{{ totalValue }}</span>
           </div>
 
           <mat-form-field appearance="outline" class="w-100 mb-1">
             <mat-label>الخصم</mat-label>
-            <input matInput type="number" [(ngModel)]="discount">
+            <input #discountInput matInput type="number" [(ngModel)]="discount">
           </mat-form-field>
 
           <mat-form-field appearance="outline" class="w-100 mb-1">
@@ -216,22 +219,23 @@
             <input matInput type="number" [(ngModel)]="paid" [disabled]="saleOrderObj.paymentType === 'CASH'">
           </mat-form-field>
 
-          <div class="d-flex justify-content-between align-items-center mb-2 px-2 text-danger">
+          <div class="d-flex justify-content-between align-items-center mb-2 px-2 text-danger summary-row">
             <span class="fw-bold">المتبقى</span>
             <span class="fs-5 fw-bold t-num">{{ totalValue - paid }}</span>
           </div>
 
           <div class="d-flex justify-content-between align-items-center p-3 net-total-box">
-            <span class="fs-5 fw-bold text-white">الصافى</span>
-            <span class="fs-4 fw-bold text-white t-num">{{ totalValue - (discount + paid) }}</span>
+            <span class="fs-5 fw-bold">الصافى</span>
+            <span class="fs-4 fw-bold t-num net-total-value">{{ totalValue - (discount + paid) }}</span>
           </div>
         </div>
 
-        <!-- Enhanced Action Buttons with Proper Touch Sizing -->
+        <!-- Action buttons — pay button is the accent CTA with accent shadow -->
         <div class="action-buttons mt-3 d-flex flex-column gap-2">
-          <button mat-raised-button class="btn-navy w-100 py-3 fs-6" (click)="onSaveAndPrint()"
+          <button mat-raised-button class="btn-pay w-100 py-3 fs-6" (click)="onSaveAndPrint()"
             [disabled]="!isOrderValid()">
-            حفظ وطباعة
+            <kbd class="vn-kbd vn-kbd--on-accent">F10</kbd>
+            تحصيل الفاتورة · حفظ وطباعة
           </button>
           <button mat-raised-button class="btn-secondary-action w-100 py-3 fs-6" (click)="onSaveOrder()"
             [disabled]="!isOrderValid()">
