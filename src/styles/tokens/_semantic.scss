@@ -27,6 +27,7 @@
   /* ---------- Surfaces ---------- */
   --vn-surface: var(--vn-white); //  #ffffff — cards, dialogs   (v1.0 --vn-surface)
   --vn-surface-alt: var(--vn-ink-50); // #f8fafc — near-white panels (v1.0 --vn-surface-alt)
+  --vn-surface-hover: var(--vn-ink-100); // #f1f5f9 — table headers & row hover
   --vn-surface-sunken: var(--vn-sand-500); // #f4f3f0 — page background (v1.0 --vn-sand)
 
   /* ---------- Text ---------- */
@@ -62,4 +63,15 @@
   --vn-focus: 0 0 0 3px rgba(68, 89, 110, 0.25); // --vn-navy-500 @ 25%
   --vn-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --vn-duration-fast: 150ms;
+
+  /* ---------- v2.1 additive semantic roles (classic) ----------
+     M3 bridge roles surfaced by the master prompt Phase B. Containers map to
+     the Phase-A tint primitives; the on-roles reuse existing pairs. Pure
+     var() — the literal hexes live only in _primitives.scss. */
+  --vn-primary-container: var(--vn-navy-50);
+  --vn-on-primary-container: var(--vn-brand);
+  --vn-secondary-container: var(--vn-navy-50);
+  --vn-on-secondary-container: var(--vn-brand);
+  --vn-tertiary-container: var(--vn-accent-100);
+  --vn-on-tertiary-container: var(--vn-accent-hover);
 }
