@@ -1,8 +1,9 @@
 # Ventas POS Design System
 
 > Source of truth: `.opencode/plan/design-system/opencode-master-prompt.md` (v2.1).
-> Token layers live in `src/styles/tokens/` (primitives → semantic → scales → aliases)
-> plus the v2.1 additive `:root` block in `src/styles.scss`.
+> Token layers live in `src/styles/tokens/` (primitives → semantic → scales → aliases),
+> loaded once via the `_tokens.scss` barrel from the top of `src/styles.scss`
+> (there is no flat `:root` token block in `src/styles.scss` — only bindings/overrides).
 
 ## Palette (v2.1 — Gemini classic) — the only hex values in `_primitives.scss`
 
