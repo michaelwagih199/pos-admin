@@ -58,3 +58,10 @@ The v2 prototype's `Amiri` numeric font was reviewed and rejected.
   **56px → 48px** = `--vn-navbar-h`; preview scale tokens `--vn-accent-shadow`,
   `--vn-shadow-sm/md`; sale-order dense table + checkout re-skin + F2/F3/F4/F7/F10).
   Commits `bf89eec`→`c577d45`.
+- **v2.1.2 — token consolidation (2026-10-19).** Tailwind palette colors now point at
+  `var(--vn-brand)` / `var(--vn-accent)` (opacity modifiers unsupported — none in use);
+  safe-daily-report's local `--shadow-*` shim retired in favor of canonical
+  `--vn-shadow-sm/md/3/4`; **Phase G executed** — `_aliases.scss` deleted, last 4 flat-name
+  usages migrated (`theme.scss`: `brand-border`/`sand-600`; `nav-bar`: `--vn-font-display`).
+  Tokens now resolve from 3 layers only (primitives → semantic → scales).
+  Orange active-nav confirmed shipped (`nav-bar.component.scss` `.active` + `routerLinkActive`).
