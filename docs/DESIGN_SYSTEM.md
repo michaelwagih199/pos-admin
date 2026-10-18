@@ -65,3 +65,8 @@ The v2 prototype's `Amiri` numeric font was reviewed and rejected.
   usages migrated (`theme.scss`: `brand-border`/`sand-600`; `nav-bar`: `--vn-font-display`).
   Tokens now resolve from 3 layers only (primitives → semantic → scales).
   Orange active-nav confirmed shipped (`nav-bar.component.scss` `.active` + `routerLinkActive`).
+- **v2.1.3 — shell simplification (user decision, 2026-10-19).** Hotkey footer removed from
+  the layout (component files deleted — no other references; F2/F4/F7/F10 keyboard handlers
+  remain in `sale-order.component.ts`, so shortcuts still work). Navbar content reduced to
+  the steel bar + centred "Ventas" wordmark (treasury pill, cashier, clock, Arabic tagline
+  removed; `[fixedBottomGap]=32` dropped). 48px `--vn-navbar-h` height retained.
