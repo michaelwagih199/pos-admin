@@ -89,13 +89,17 @@ html {
   --mat-sys-corner-medium: var(--vn-radius-md);
   --mat-sys-corner-large: var(--vn-radius-lg);
 
-  /* v2.1 compact density (Phase D) */
+  /* v2.1 compact density (Phase D).
+     html:root — the M2 density includes in styles.scss (which loads AFTER
+     this file's stylesheet entry) re-emit literal sizes on a bare html
+     selector; :root raises specificity so these bindings always win without
+     !important, per the prompt's escalation rule. */
   --mat-toolbar-standard-height: var(--vn-toolbar-h);
   --mat-toolbar-mobile-height: var(--vn-toolbar-h-mobile);
   --mat-table-row-item-container-height: var(--vn-row-h);
 }
 
-html {
+html:root {
   /* v2.1 compact density (Phase D4, approved in chat): orange active-nav
      state, logical properties only. The class is owned by RouterLinkActive
      (nav-bar.component.html); the rule lives here because styles.scss is not
