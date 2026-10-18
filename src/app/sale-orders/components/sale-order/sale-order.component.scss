@@ -228,14 +228,15 @@
   font-size: 1.4rem;
 }
 
-/* Pay button — flat accent CTA with the accent glow shadow. Specificity is
+/* Pay button — accent CTA with the small elevation token (per user 2026-10-19;
+   replaces the ad-hoc `0 2px 4px var(--vn-accent-shadow)` glow). Specificity is
    raised instead of adding the important flag (still pre-existing only). */
 .btn-pay.mat-mdc-raised-button {
   background-color: var(--vn-accent);
   color: var(--vn-on-brand);
   font-family: var(--vn-font-body);
   font-weight: var(--vn-weight-bold);
-  box-shadow: 0 2px 4px var(--vn-accent-shadow);
+  box-shadow: var(--vn-shadow-sm);
   transition: background-color var(--vn-duration-fast) var(--vn-ease);
 
   &:hover:not(:disabled) {
