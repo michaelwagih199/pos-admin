@@ -25,7 +25,7 @@
 //   --text-primary   <- --vn-text          (was the off-ramp slate near-black)
 //   --text-secondary <- --vn-text-muted    (was slate 600)
 //   --text-muted     <- --vn-text-subtle   (exact)
-//   --shadow-sm/md/lg/xl <- shadow steps 1/2/3/4
+//   (shadow shims removed — components now use canonical --vn-shadow-sm/md/3/4)
 //   --radius-sm/md/lg    <- radius md/lg/xl  (was 6 / 10 / 14 px)
 //
 // Rule bodies now reference these variables or the tokens directly.
@@ -84,10 +84,6 @@
   --text-primary: var(--vn-text);
   --text-secondary: var(--vn-text-muted);
   --text-muted: var(--vn-text-faint);
-  --shadow-sm: var(--vn-shadow-1);
-  --shadow-md: var(--vn-shadow-2);
-  --shadow-lg: var(--vn-shadow-3);
-  --shadow-xl: var(--vn-shadow-4);
   --radius-sm: var(--vn-radius-md);
   --radius-md: var(--vn-radius-lg);
   --radius-lg: var(--vn-radius-xl);
@@ -114,7 +110,7 @@
   border-radius: var(--radius-lg);
   padding: var(--vn-space-5) var(--vn-space-6);
   margin-bottom: var(--vn-space-6);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--vn-shadow-md);
   border: 1px solid var(--border);
 
   .header-icon {
@@ -173,7 +169,7 @@ mat-progress-bar {
 .filter-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--vn-shadow-md);
   border: 1px solid var(--border);
   margin-bottom: var(--vn-space-6);
   overflow: hidden;
@@ -234,7 +230,7 @@ mat-progress-bar {
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: var(--vn-space-5) var(--vn-space-6);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--vn-shadow-md);
   border: 1px solid var(--border);
   animation: fadeInUp 0.4s ease-out backwards;
 
@@ -383,13 +379,13 @@ mat-progress-bar {
   background: var(--surface);
   border-radius: var(--radius-lg);
   padding: var(--vn-space-5) var(--vn-space-6);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--vn-shadow-md);
   border: 1px solid var(--border);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    box-shadow: var(--vn-shadow-3);
   }
 
   display: flex;
@@ -487,7 +483,7 @@ mat-progress-bar {
 .section-card {
   background: var(--surface);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--vn-shadow-md);
   border: 1px solid var(--border);
   margin-bottom: var(--vn-space-5);
   overflow: hidden;
@@ -691,7 +687,7 @@ mat-progress-bar {
   border-radius: var(--radius-lg);
   border: none;
   margin-top: var(--vn-space-6);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--vn-shadow-4);
   position: relative;
   overflow: hidden;
 
@@ -804,12 +800,12 @@ mat-progress-bar {
     font-weight: var(--vn-weight-bold);
     font-size: var(--vn-text-base);
     border-radius: var(--radius-md);
-    box-shadow: var(--shadow-md);
+    box-shadow: var(--vn-shadow-md);
     transition: all 0.2s ease;
 
     &:hover {
       transform: translateY(-1px);
-      box-shadow: var(--shadow-lg);
+      box-shadow: var(--vn-shadow-3);
     }
   }
 }
