@@ -2,8 +2,8 @@
 // Ventas Design System v2 — Layer 1 of 4: PRIMITIVES
 // ----------------------------------------------------------------------------
 // Raw values only. Nothing under src/app/** may reference these names directly.
-// Components use the semantics (_semantic.scss); legacy local names in
-// src/app/shared/styles/_report-tables.scss are bridged by _aliases.scss.
+// Components use the semantics (_semantic.scss); any component-local compat
+// blocks bridge their local short names in place, not through a global layer.
 //
 // Naming follows the Part 7 (v2.1) convention: --vn-<hue>-<step>.
 // Every value is FROZEN from the palette already shipping in the codebase

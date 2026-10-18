@@ -49,7 +49,7 @@ html {
   --mat-sys-on-primary-container: var(--vn-on-primary-container);
 
   /* Secondary = light steel chrome (chips, quiet controls) */
-  --mat-sys-secondary: var(--vn-navy-light);
+  --mat-sys-secondary: var(--vn-brand-border);
   --mat-sys-on-secondary: var(--vn-on-brand);
   --mat-sys-secondary-container: var(--vn-secondary-container);
   --mat-sys-on-secondary-container: var(--vn-on-secondary-container);
@@ -71,8 +71,8 @@ html {
   --mat-sys-surface-container-low: var(--vn-surface-alt);
   --mat-sys-surface-container: var(--vn-surface-alt);
   --mat-sys-surface-container-high: var(--vn-surface-alt);
-  --mat-sys-surface-container-highest: var(--vn-sand-dark);
-  --mat-sys-surface-dim: var(--vn-sand-dark);
+  --mat-sys-surface-container-highest: var(--vn-sand-600);
+  --mat-sys-surface-dim: var(--vn-sand-600);
 
   /* Outlines */
   --mat-sys-outline: var(--vn-border);

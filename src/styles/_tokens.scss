@@ -9,8 +9,7 @@
 // namespace and nothing to re-export with `@forward`. `@use` also evaluates a
 // module at most once, which removes the duplicate-emission hazard `@import`
 // carried. `var()` resolves at computed-value time, so the load order below
-// only matters for readability and for aliases shadowing primitives — which is
-// why primitives come first.
+// only matters for readability (semantic → scales, both on primitives).
 //
 // The `@use` rules must stay above every other rule in this file, and
 // src/styles.scss loads this barrel above its own `@tailwind` directives.
@@ -19,10 +18,9 @@
 //   primitives → raw hex, referenced by nothing under src/app/**
 //   semantic   → the ONLY layer components may reference
 //   scales     → spacing / radius / elevation / stacking / layout
-//   aliases    → DEPRECATED v1.0 names, kept until Phase G
+//   (layers 1-3 of 3 — the deprecated flat-alias layer was deleted in Phase G)
 // ============================================================================
 
 @use 'tokens/primitives';
 @use 'tokens/semantic';
 @use 'tokens/scales';
-@use 'tokens/aliases';

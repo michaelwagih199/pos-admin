@@ -11,11 +11,9 @@
 @use '@angular/material' as mat;
 
 /* ---------- v2.1 additive ---------- */
-/* The flat :root block of the v2.1 prompt architecture does not exist in this
-   repo: every v1.0 flat name lives in styles/tokens/_aliases.scss, which is
-   frozen. Only names missing from ALL layers may be added here.
-   --vn-link bridges to the semantic accent-hover (NOT the deprecated
-   --vn-accent-dark alias, which Phase G deletes). */
+/* The flat :root v2.1-prompt block does not exist in this repo; direct
+   additions land in the token layers (src/styles/tokens/). Only names
+   missing from ALL layers may be added here. */
 :root {
   --vn-link: var(--vn-accent-hover); /* hover orange for text links */
 }

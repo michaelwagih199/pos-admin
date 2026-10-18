@@ -1,7 +1,7 @@
 # Ventas POS Design System
 
 > Source of truth: `.opencode/plan/design-system/opencode-master-prompt.md` (v2.1).
-> Token layers live in `src/styles/tokens/` (primitives → semantic → scales → aliases),
+> Token layers live in `src/styles/tokens/` (primitives → semantic → scales),
 > loaded once via the `_tokens.scss` barrel from the top of `src/styles.scss`
 > (there is no flat `:root` token block in `src/styles.scss` — only bindings/overrides).
 
@@ -32,8 +32,9 @@
 - **Accepted trade-off (user decision, 2026-10-19):** orange `#ec994b` on white ≈
   2.2:1 and hover/link orange ≈ 2.6:1 fail WCAG contrast — accepted as-is.
   Do not silently change these values.
-- Flat v1 names (`--vn-navy`, `--vn-sand`, …) are deprecated compatibility aliases in
-  `src/styles/tokens/_aliases.scss` — scheduled for deletion after Phase G.
+- Flat v1 names (`--vn-navy`, `--vn-sand`, …) were retired in **Phase G (2026-10-19)**:
+  `_aliases.scss` is deleted and the canonical semantic names are the only tokens
+  (usages migrated in `theme.scss` and `nav-bar.component.scss`).
 
 ## Fonts (frozen)
 
