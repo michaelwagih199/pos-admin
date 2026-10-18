@@ -10,9 +10,13 @@ module.exports = {
     extend: {
       colors: {
         blue_primary: {
-          dark: "#44596E",
+          // Single source of truth: classic palette values come from the
+          // design tokens (src/styles/tokens/) — see docs/DESIGN_SYSTEM.md.
+          // NOTE: Tailwind opacity modifiers (e.g. bg-accent/50) do not work
+          // with var() colors — none are in use.
+          dark: "var(--vn-brand)",
         },
-        accent: "#EC994B",
+        accent: "var(--vn-accent)",
       }
     },
   },
