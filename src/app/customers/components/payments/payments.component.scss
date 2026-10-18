@@ -5,6 +5,11 @@
     float: right;
     margin-top: 20px;
 }
+
+/* Accent CTA with the canonical small elevation (matches sale-order pay CTA). */
+.mybtn.mat-mdc-raised-button {
+    box-shadow: var(--vn-shadow-sm);
+}
 .mycontainer{
     font-size: 18px;
     font-family: 'Cairo';

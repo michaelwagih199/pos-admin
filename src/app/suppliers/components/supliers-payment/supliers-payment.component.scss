@@ -1,5 +1,10 @@
 .mat-card-footer{
     font-family: cairo;
-    font-size: large; 
+    font-size: large;
+}
+
+/* Accent CTA with the canonical small elevation (matches sale-order pay CTA). */
+.col-2 .mat-mdc-raised-button {
+  box-shadow: var(--vn-shadow-sm);
 }
   
