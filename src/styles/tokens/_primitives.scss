@@ -59,6 +59,11 @@
   --vn-blue-500: #2563eb; // legacy --vn-info
   --vn-blue-800: #1e40af; // legacy --vn-info-fg
 
+  /* ---------- v2.1 additive: container tints for M3 ---------- */
+  --vn-navy-50: #EEF2F6; // primary-container / selected-row wash
+  --vn-navy-100: #DCE4EC; // secondary-container / borders on brand tints
+  --vn-accent-100: #FCF0E3; // orange container tint (tertiary-container)
+
   // ---------------------------------------------------------------------------
   // Deliberately NOT primitives — off-ramp values found in component SCSS.
   // They are folded into the nearest step during Phase G (§9 of the plan):

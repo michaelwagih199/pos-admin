@@ -8,6 +8,17 @@
 @use 'styles/tokens/typography';
 @use 'styles/fonts';
 @use 'styles/numeric';
+@use '@angular/material' as mat;
+
+/* ---------- v2.1 additive ---------- */
+/* The flat :root block of the v2.1 prompt architecture does not exist in this
+   repo: every v1.0 flat name lives in styles/tokens/_aliases.scss, which is
+   frozen. Only names missing from ALL layers may be added here.
+   --vn-link bridges to the semantic accent-hover (NOT the deprecated
+   --vn-accent-dark alias, which Phase G deletes). */
+:root {
+  --vn-link: var(--vn-accent-hover); /* hover orange for text links */
+}
 
 @tailwind base;
 @tailwind components;
@@ -32,6 +43,10 @@ body {
 body {
   margin: 0;
   font-family: var(--vn-font-body);
+  font-size: var(--vn-text-base);
+  color: var(--vn-text);
+  background-color: var(--vn-surface-sunken);
+  line-height: var(--vn-leading-normal);
 }
 
 /* === Phase F (§9 step 4) — accessibility ================================= */
@@ -93,7 +108,7 @@ body {
   position: sticky;
   position: -webkit-sticky;
   top: 0;
-  z-index: 1000;
+  z-index: var(--vn-z-dropdown);
 }
 
 .mat-sidenav-container {
@@ -140,7 +155,6 @@ body {
   // Phase E (§8 step 4): was an off-palette green-grey.
   // Registered as plan §9 #6 — deliberate visual change, shell screenshot.
   background-color: var(--vn-surface-alt);
-  width: 200px;
 }
 
 // The 5px margin-inline-start nudge on sidenav icons is GONE: nav rows now use
@@ -180,8 +194,12 @@ table {
   width: 100%;
 }
 
-body .mat-list-item {
-  margin-bottom: 10px;
+mat-card.mat-elevation-z2 {
+  background: var(--vn-surface);
+  border: 1px solid var(--vn-border-light);
+  border-radius: var(--vn-radius-lg);
+  box-shadow: var(--vn-shadow-1);
+  overflow: hidden;
 }
 
 .inner-wrapper {
@@ -285,10 +303,6 @@ td.mat-footer-cell {
     padding-bottom: 10px;
   }
 
-  .mat-sidenav {
-    width: 230px;
-  }
-
   .mat-nav-list .mat-list-item {
     font-size: var(--vn-text-sm);
   }
@@ -349,7 +363,7 @@ td.mat-footer-cell {
     height: auto !important;
     max-height: none !important;
     overflow: visible !important;
-    background: var(--vn-white) !important;
+    background: var(--vn-surface) !important;
   }
 
   @page {
@@ -364,3 +378,31 @@ td.mat-footer-cell {
    the legacy Sass import syntax that the §9 step 2 migration replaced) is what
    produced a second, duplicate copy of Bootstrap in the bundle (baseline
    finding F5 / plan §2). */
+
+/* === Material MDC density + card/table overrides ========================== */
+@include mat.all-component-densities(-2);
+/* Angular Material M2 sets --mat-form-field-filled-label-display: none at
+   density -2 (height < 52px), which hides <mat-label> on all filled/default
+   form fields across the app. Keep form-field at density -1 (52px) so floating
+   labels always remain visible. */
+@include mat.form-field-density(-1);
+
+.mat-mdc-card {
+  border-radius: var(--vn-radius-lg);
+  box-shadow: var(--vn-shadow-1) !important;
+  border: 1px solid var(--vn-border-light);
+}
+
+.mat-mdc-card-header {
+  padding: var(--vn-space-3) var(--vn-space-4) !important;
+  border-bottom: 1px solid var(--vn-border-light);
+}
+
+.mat-mdc-card-content {
+  padding: var(--vn-space-4) !important;
+}
+
+th.mat-mdc-header-cell,
+td.mat-mdc-cell {
+  padding: var(--vn-space-2) var(--vn-space-3) !important;
+}
