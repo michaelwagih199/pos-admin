@@ -53,4 +53,12 @@
   /* ---------- Layout ---------- */
   --vn-tap-min: 44px; //  minimum touch target (WCAG 2.1 AA, plan §9)
   --vn-content-max: 1200px; //  readable content column cap
+
+  /* ---------- v2.1 compact density ---------- */
+  --vn-toolbar-h: 56px; // app bar (Material default 64px)
+  --vn-toolbar-h-mobile: 48px; // < 600px breakpoint
+  --vn-row-h: 40px; // mat-table row height (default 52px)
+  --vn-card-pad: var(--vn-space-4); // 16px card padding
+  --vn-card-pad-tight: var(--vn-space-3); // 12px dense cards (future use)
+  --vn-control-h: 36px; // standard control height, new code only
 }

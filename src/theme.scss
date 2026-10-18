@@ -88,6 +88,22 @@ html {
   --mat-sys-corner-small: var(--vn-radius-sm);
   --mat-sys-corner-medium: var(--vn-radius-md);
   --mat-sys-corner-large: var(--vn-radius-lg);
+
+  /* v2.1 compact density (Phase D) */
+  --mat-toolbar-standard-height: var(--vn-toolbar-h);
+  --mat-toolbar-mobile-height: var(--vn-toolbar-h-mobile);
+  --mat-table-row-item-container-height: var(--vn-row-h);
+}
+
+html {
+  /* v2.1 compact density (Phase D4, approved in chat): orange active-nav
+     state, logical properties only. The class is owned by RouterLinkActive
+     (nav-bar.component.html); the rule lives here because styles.scss is not
+     a Phase D allowed file. In RTL the inline-start edge IS the right side. */
+  .mat-list-item.active {
+    color: var(--vn-accent-hover);
+    border-inline-start: 3px solid var(--vn-accent);
+  }
 }
 
 html {
