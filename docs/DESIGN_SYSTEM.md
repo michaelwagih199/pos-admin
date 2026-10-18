@@ -13,6 +13,7 @@
 | Brand light | `--vn-navy-light` / `--vn-navy-300` | `#5a7191` |
 | Accent (orange) | `--vn-accent` / `--vn-accent-500` | `#ec994b` |
 | Accent hover | `--vn-accent-dark` / `--vn-accent-700` | `#d4823a` |
+| Link | `--vn-link` → `--vn-accent-hover` | `#d4823a` |
 | Accent light | `--vn-accent-light` / `--vn-accent-300` | `#f5b877` |
 | Page bg (sand) | `--vn-sand` / `--vn-sand-500` | `#f4f3f0` |
 | Sand dark | `--vn-sand-dark` / `--vn-sand-600` | `#e8e6e2` |
@@ -40,7 +41,8 @@ The v2 prototype's `Amiri` numeric font was reviewed and rejected.
 
 ## Changelog
 
-- **v2.1 — Gemini classic palette re-skin (steel/orange/sand) + compact density.**
+- **v2.1 — Gemini classic re-skin + M3 system-token bridge (steel/orange/sand)
+  + compact density.**
   Phase A: verified primitives vs the classic table; added container tints
   (`--vn-navy-50/100`, `--vn-accent-100`) and `--vn-link`.
   Phase B: M3 container semantic roles (`--vn-primary/-secondary/-tertiary-container` + on-roles).
