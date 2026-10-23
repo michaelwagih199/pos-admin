@@ -308,15 +308,15 @@ mat-progress-bar {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at 85% 15%, rgba(236, 153, 75, 0.22) 0%, transparent 55%);
+      background: radial-gradient(ellipse at 85% 15%, var(--vn-accent-shadow) 0%, transparent 55%);
       pointer-events: none;
     }
 
-    .hero-icon { background: rgba(236, 153, 75, 0.18); mat-icon { color: var(--accent); } }
+    .hero-icon { background: var(--vn-accent-shadow); mat-icon { color: var(--accent); } }
     .hero-label { color: var(--vn-on-brand); }
-    .hero-formula { color: rgba(255, 255, 255, 0.65); }
+    .hero-formula { color: var(--vn-on-brand-faint); }
     .hero-value { color: var(--vn-on-brand); position: relative; z-index: 1; }
-    .hero-value small { color: rgba(255, 255, 255, 0.6); }
+    .hero-value small { color: var(--vn-on-brand-faint); }
   }
 
   &.sales {
@@ -463,10 +463,10 @@ mat-progress-bar {
     border: none;
 
     mat-icon { color: var(--accent); }
-    .label { color: rgba(255,255,255,0.7); }
+    .label { color: var(--vn-on-brand-faint); }
     .value { color: var(--vn-on-brand); }
 
-    .value small { color: rgba(255,255,255,0.6); }
+    .value small { color: var(--vn-on-brand-faint); }
   }
 
   &.neutral {
@@ -510,7 +510,7 @@ mat-progress-bar {
       font-weight: var(--vn-weight-medium);
       padding: 0.2rem 0.65rem;
       border-radius: var(--vn-radius-pill);
-      background: rgba(255,255,255,0.2);
+      background: var(--vn-white-wash);
     }
 
     &.primary   { background: var(--primary); }
@@ -566,7 +566,7 @@ mat-progress-bar {
     font-weight: var(--vn-weight-bold);
     font-size: var(--vn-text-xs);
     padding: 12px 14px;
-    text-align: end;
+    text-align: start;
     border-bottom: 2px solid var(--border-strong);
     white-space: nowrap;
     position: sticky;
@@ -579,7 +579,7 @@ mat-progress-bar {
     color: var(--text-primary);
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
-    text-align: end;
+    text-align: start;
     transition: background var(--vn-duration-fast) var(--vn-ease);
   }
 
@@ -636,11 +636,11 @@ mat-progress-bar {
     padding: 14px;
     color: var(--navy);
     border-top: 2px solid var(--border-strong);
-    text-align: end;
+    text-align: start;
   }
 
   tfoot td:first-child {
-    text-align: end;
+    text-align: start;
   }
 }
 
@@ -695,7 +695,7 @@ mat-progress-bar {
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse at 80% 20%, rgba(236, 153, 75, 0.15) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 80% 20%, var(--vn-accent-glow-soft) 0%, transparent 50%);
     pointer-events: none;
   }
 
@@ -732,7 +732,7 @@ mat-progress-bar {
 
     .currency {
       font-size: var(--vn-text-base);
-      color: rgba(255,255,255,0.7);
+      color: var(--vn-on-brand-faint);
       font-weight: 500;
       margin-inline-start: var(--vn-space-2);
     }

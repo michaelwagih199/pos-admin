@@ -3,8 +3,8 @@
 // ----------------------------------------------------------------------------
 // The ONLY layer components may reference. Every value is a var() of a
 // primitive from _primitives.scss — no literal hex. The single exception is the
-// rgba() inside --vn-focus, whose channels are the --vn-navy-500 primitive
-// (68, 89, 110).
+// rgba() inside --vn-focus, whose channels are the --vn-accent-500 primitive
+// (236, 153, 75).
 //
 // Roles: brand, accent, surfaces, text, borders, the four status trios, motion.
 // This is v2.1's role list, extended with the pairs v1.0 §1.1 already shipped
@@ -60,9 +60,18 @@
   --vn-info-fg: var(--vn-blue-800);
 
   /* ---------- Motion & focus ---------- */
-  --vn-focus: 0 0 0 3px rgba(68, 89, 110, 0.25); // --vn-navy-500 @ 25%
+  --vn-focus: 0 0 0 3px rgba(236, 153, 75, 0.4); // --vn-accent-500 @ 40% (showcase)
   --vn-ease: cubic-bezier(0.4, 0, 0.2, 1);
   --vn-duration-fast: 150ms;
+
+  /* ---------- Additive transparency tokens (Phase 1 closeout) ---------- */
+  --vn-scrim: rgba(0, 0, 0, 0.6);             /* full backdrop dim (dialogs, modals) */
+  --vn-scrim-soft: rgba(0, 0, 0, 0.5);        /* image overlays (login hero) */
+  --vn-brand-wash: rgba(68, 89, 110, 0.06);   /* navy-500 @ 6% — subtle brand tint fills */
+  --vn-border-faint: rgba(0, 0, 0, 0.08);     /* near-invisible separators */
+  --vn-white-wash: rgba(255, 255, 255, 0.25); /* translucent white on brand fills */
+  --vn-on-brand-faint: rgba(255, 255, 255, 0.65); /* muted text on brand fills */
+  --vn-accent-glow-soft: rgba(236, 153, 75, 0.15); /* accent-500 @ 15% — soft hero glow (closeout: plan-missed literal, safe-daily-report grand total) */
 
   /* ---------- v2.1 additive semantic roles (classic) ----------
      M3 bridge roles surfaced by the master prompt Phase B. Containers map to

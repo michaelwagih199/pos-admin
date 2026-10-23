@@ -31,7 +31,7 @@ import { OrderService } from '../../service/order.service';
 import { MatProgressBar } from '@angular/material/progress-bar';
 import { MatIconButton, MatButton, MatMiniFabButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
-import { MatFormField, MatLabel, MatInput, MatSuffix } from '@angular/material/input';
+import { MatFormField, MatLabel, MatInput, MatSuffix, MatHint } from '@angular/material/input';
 import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/material/autocomplete';
 import { AsyncPipe, DecimalPipe, DatePipe } from '@angular/common';
 
@@ -39,7 +39,7 @@ import { AsyncPipe, DecimalPipe, DatePipe } from '@angular/common';
     selector: 'app-sale-order',
     templateUrl: './sale-order.component.html',
     styleUrls: ['./sale-order.component.scss'],
-    imports: [MatProgressBar, MatIconButton, MatIcon, MatButton, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatSuffix, MatAutocomplete, MatOption, MatMiniFabButton, FormsModule, AsyncPipe, DecimalPipe, DatePipe]
+    imports: [MatProgressBar, MatIconButton, MatIcon, MatButton, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatSuffix, MatHint, MatAutocomplete, MatOption, MatMiniFabButton, FormsModule, AsyncPipe, DecimalPipe, DatePipe]
 })
 
 export class SaleOrderComponent implements OnInit {
@@ -62,7 +62,7 @@ export class SaleOrderComponent implements OnInit {
   saleOrderObj = {
     orderCode: '',
     paymentType: '',
-    searchType: '',
+    searchType: AppConstants.SEARCH_BY_CODE,
     flags: {
       isLoading: false,
     },
@@ -113,7 +113,7 @@ export class SaleOrderComponent implements OnInit {
   ngOnInit(): void {
     this.getAllNames();
     this.getOrderCode();
-    this.getProductNames();
+    this.getProductCodes();
     this.validateForm();
   }
 
@@ -199,8 +199,9 @@ export class SaleOrderComponent implements OnInit {
 
   viewOrderToday(): void {
     this.dialog.open(DynamicOrdersComponent, {
-      width: '80%',
-      height: '80%',
+      width: '90vw',
+      maxWidth: '1200px',
+      maxHeight: '90vh',
       data: { orderType: DynamicSOrderType.TODAY_ORDERS },
     });
   }
@@ -222,24 +223,37 @@ export class SaleOrderComponent implements OnInit {
       this.openSnackBar('يرجى إدخال عدد صحيح للاتواب', '');
       return;
     }
+
+    // Read the optional price BEFORE the quantity resets so a failed add (stock
+    // error) leaves the typed value in the input.
+    const customPrice = this.producForm?.get('customPrice')?.value ?? null;
+
 this.producForm.get('quantityControl')?.setValue(1);
 this.producForm.get('pieceQuantityControl')?.setValue(1);
     const searchBy = this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE ? 'CODE' : 'NAME';
 
     if (this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE) {
-      this.findDynamicByCode(searchKey.trim(), canvasTopUnits, searchBy, pieceQuantity);
+      this.findDynamicByCode(searchKey.trim(), canvasTopUnits, searchBy, pieceQuantity, undefined, customPrice);
     } else {
-      this.findDynamicByName(searchKey.trim(), canvasTopUnits, searchBy, pieceQuantity);
+      this.findDynamicByName(searchKey.trim(), canvasTopUnits, searchBy, pieceQuantity, customPrice);
     }
   }
 
-  findDynamicByCode(productCode: string, canvasTopUnits: number, searchBy: string, quantity: number = 1) {
+  findDynamicByCode(
+    productCode: string,
+    canvasTopUnits: number,
+    searchBy: string,
+    quantity: number = 1,
+    currentList?: DynamicDetailsDao[],
+    customPrice: number | null = null
+  ) {
     const request: DynamicOrderByCodeRequest = {
-      dynamicDetailsDao: this.dynamicOrderList,
+      dynamicDetailsDao: currentList ?? this.dynamicOrderList,
       quantity: quantity,
       productCode: productCode,
       canvasTopUnits: canvasTopUnits,
       searchBy: searchBy,
+      customPrice: customPrice,
     };
 
     this.saleOrderObj.flags.isLoading = true;
@@ -249,6 +263,10 @@ this.producForm.get('pieceQuantityControl')?.setValue(1);
         if (response?.data) {
           this.dynamicOrderList = response.data.dynamicDetailsDao || [];
           this.totalValue = response.data.totalPrice || 0;
+          this.producForm?.get('customPrice')?.setValue(null);
+          if (this.saleOrderObj.paymentType === 'CASH') {
+            this.paid = this.totalValue;
+          }
 
           // FIX: Show message even if code is 200 (for soft alerts)
           if (response.data.message && response.data.message !== 'Can Order Product') {
@@ -260,18 +278,22 @@ this.producForm.get('pieceQuantityControl')?.setValue(1);
       (error) => {
         this.saleOrderObj.flags.isLoading = false;
         console.error('Error in findDynamicByCode', error);
-        this.openSnackBar('حدث خطأ أثناء البحث عن المنتج', '');
+        const errorMsg = error?.error?.message
+          ? (AppConstants.translate(error.error.message) || error.error.message)
+          : 'حدث خطأ أثناء البحث عن المنتج';
+        this.openSnackBar(errorMsg, '');
       }
     );
   }
 
-  findDynamicByName(productName: string, canvasTopUnits: number, searchBy: string, quantity: number = 1) {
+  findDynamicByName(productName: string, canvasTopUnits: number, searchBy: string, quantity: number = 1, customPrice: number | null = null) {
     const request: DynamicOrderByNameRequest = {
       dynamicDetailsDao: this.dynamicOrderList,
       quantity: quantity,
       productName: productName,
       canvasTopUnits: canvasTopUnits,
       searchBy: searchBy,
+      customPrice: customPrice,
     };
     this.saleOrderObj.flags.isLoading = true;
     this.dynamicItemService.findDynamicByName(request).subscribe(
@@ -280,6 +302,10 @@ this.producForm.get('pieceQuantityControl')?.setValue(1);
         if (response?.data) {
           this.dynamicOrderList = response.data.dynamicDetailsDao || [];
           this.totalValue = response.data.totalPrice || 0;
+          this.producForm?.get('customPrice')?.setValue(null);
+          if (this.saleOrderObj.paymentType === 'CASH') {
+            this.paid = this.totalValue;
+          }
           if (response.data.code && response.data.code !== 200) {
             const message = AppConstants.translate(response.data.message) || response.data.message;
             this.openSnackBar(message, '');
@@ -289,7 +315,10 @@ this.producForm.get('pieceQuantityControl')?.setValue(1);
       (error) => {
         this.saleOrderObj.flags.isLoading = false;
         console.error('Error in findDynamicByName', error);
-        this.openSnackBar('حدث خطأ أثناء البحث عن المنتج', '');
+        const errorMsg = error?.error?.message
+          ? (AppConstants.translate(error.error.message) || error.error.message)
+          : 'حدث خطأ أثناء البحث عن المنتج';
+        this.openSnackBar(errorMsg, '');
       }
     );
   }
@@ -394,6 +423,8 @@ isOrderValid(): boolean {
     this.searchCustomerInout = '';
     this.producForm?.get('quantityControl')?.setValue(1);
     this.producForm?.get('pieceQuantityControl')?.setValue(1);
+    this.producForm?.get('customPrice')?.setValue(null);
+    this.quantityValidateForm?.get('modalCustomPrice')?.setValue(null);
     this.getOrderCode();
   }
 
@@ -438,37 +469,34 @@ isOrderValid(): boolean {
   }
 
   openUpdateQuantity(content: any, item: DynamicDetailsDao) {
-    this.modalService.open(content);
-    this.quantityValidateForm.get('modalCanvasTopUnits')?.setValue(item.unitNumber);
-    this.quantityValidateForm.get('modalQuantity')?.setValue(item.quantity);
     this.dynamcObjectSelected = item;
-    this.deleteDynamicItem(item);
+    this.quantityValidateForm.patchValue({
+      modalCanvasTopUnits: item.unitNumber,
+      modalQuantity: item.quantity,
+      modalCustomPrice: item.price,
+    });
+    this.modalService.open(content, { centered: true });
   }
 
   onupdateQuantity() {
-    // Read values directly from the form controls
     const canvasTopUnits = this.quantityValidateForm.get('modalCanvasTopUnits')?.value ?? 0;
     const quantity = this.quantityValidateForm.get('modalQuantity')?.value ?? 0;
-
-    console.log(canvasTopUnits, quantity);
+    const modalCustomPrice = this.quantityValidateForm.get('modalCustomPrice')?.value ?? null;
 
     if (this.dynamcObjectSelected && canvasTopUnits > 0 && quantity > 0) {
-      const searchBy = this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE ? 'CODE' : 'NAME';
-      if (this.saleOrderObj.searchType === AppConstants.SEARCH_BY_CODE) {
-        this.findDynamicByCode(
-          this.dynamcObjectSelected.productCode,
-          canvasTopUnits,
-          searchBy,
-          quantity
-        );
-      } else {
-        this.findDynamicByName(
-          this.dynamcObjectSelected.productName,
-          canvasTopUnits,
-          searchBy,
-          quantity
-        );
-      }
+      // Exclude the item being edited so backend adds it fresh with updated quantity/units
+      const listWithoutItem = this.dynamicOrderList.filter(
+        (d) => d.productCode !== this.dynamcObjectSelected.productCode
+      );
+
+      this.findDynamicByCode(
+        this.dynamcObjectSelected.productCode,
+        canvasTopUnits,
+        'CODE',
+        quantity,
+        listWithoutItem,
+        modalCustomPrice
+      );
     } else {
       this.openSnackBar('يرجى إدخال قيم صحيحة', '');
     }
@@ -541,11 +569,13 @@ isOrderValid(): boolean {
       productFilter: ['code', [Validators.required]],
       quantityControl: [1, [Validators.required, Validators.min(0.001)]],
       pieceQuantityControl: [1, [Validators.required, Validators.min(1)]],
+      customPrice: [null, [Validators.min(0)]],
     });
 
     this.quantityValidateForm = this.fb.group({
       modalQuantity: [1, [Validators.required, Validators.min(1)]],
-      modalCanvasTopUnits: [1, [Validators.required, Validators.min(0.01)]],
+      modalCanvasTopUnits: [1, [Validators.required, Validators.min(0.001)]],
+      modalCustomPrice: [null, [Validators.min(0)]],
     });
   }
 

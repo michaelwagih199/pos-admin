@@ -1,7 +1,15 @@
 // retrieval-wizard.component.scss
-.wizard-container { padding: 1.5rem; min-width: 800px; font-family: var(--vn-font-body); }
+.wizard-container {
+  inline-size: 100%;
+  max-inline-size: 1180px;
+  margin-inline: auto;
+  padding: var(--vn-space-6);
+  font-family: var(--vn-font-body);
+}
 
-.steps-indicator { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; color: var(--vn-text-faint); }
+.table-scroll { overflow-x: auto; }
+
+.steps-indicator { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 0.5rem; margin-bottom: 2rem; color: var(--vn-text-faint); }
 .steps-indicator .step.active { color: var(--vn-info); font-weight: 700; }
 .steps-indicator mat-icon { font-size: 18px; width: 18px; height: 18px; }
 
@@ -15,6 +23,17 @@
 .next-btn { width: 100%; margin-top: 1rem; height: 48px; }
 
 .person-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--vn-info-bg); color: var(--vn-info); padding: 0.5rem 1rem; border-radius: var(--vn-radius-pill); font-weight: 600; margin-bottom: 1rem; }
+.person-badge .change-person-btn { min-block-size: var(--vn-tap-min); color: var(--vn-brand); }
+
+.search-hint { color: var(--vn-text-muted); font-size: 0.85rem; margin-block-start: calc(var(--vn-space-2) * -1); margin-block-end: var(--vn-space-4); }
+
+.review-layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--vn-space-6); align-items: start; }
+.summary-panel { position: sticky; inset-block-start: var(--vn-space-4); display: flex; flex-direction: column; }
+
+@media (max-width: 960px) {
+  .review-layout { grid-template-columns: minmax(0, 1fr); }
+  .summary-panel { position: static; }
+}
 
 .products-table th { background: var(--vn-surface-alt); font-size: 0.8rem; color: var(--vn-text-muted); }
 .product-name { font-weight: 600; color: var(--vn-text); }
@@ -31,9 +50,10 @@
 .icon-good { color: var(--vn-success); vertical-align: middle; margin-inline-end: 4px; }
 .icon-bad { color: var(--vn-danger); vertical-align: middle; margin-inline-end: 4px; }
 
-.footer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--vn-border-light); }
+.footer-actions { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: var(--vn-space-3); margin-top: 2rem; padding-top: 1rem; border-top: 2px solid var(--vn-border-light); }
 .total-display { font-size: 1.5rem; font-weight: 800; color: var(--vn-info); }
-.action-buttons { display: flex; gap: 1rem; }
+.action-buttons { display: flex; flex-wrap: wrap; gap: 1rem; }
+.action-buttons button { min-block-size: var(--vn-tap-min); }
 
 .badge { padding: 0.25rem 0.75rem; border-radius: var(--vn-radius-pill); font-size: 0.75rem; font-weight: 700; }
 .badge-good { background: var(--vn-success-bg); color: var(--vn-success-fg); }

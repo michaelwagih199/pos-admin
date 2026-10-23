@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialogRef, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { ProductModel } from 'src/app/stock/model/productModel';
 import { ProductServiceService } from 'src/app/stock/service/product-service.service';
 import { Supplier } from 'src/app/suppliers/models/supplier';
@@ -22,7 +22,7 @@ import { MatIcon } from '@angular/material/icon';
     selector: 'app-create-purchases',
     templateUrl: './create-purchases.component.html',
     styleUrls: ['./create-purchases.component.scss'],
-    imports: [MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatSelect, MatOption, MatButton, MatIconButton, MatIcon, MatDialogActions]
+    imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatSelect, MatOption, MatButton, MatIconButton, MatIcon, MatDialogActions]
 })
 export class CreatePurchasesComponent implements OnInit {
   private fb = inject(FormBuilder);

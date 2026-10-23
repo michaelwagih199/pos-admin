@@ -1,17 +1,7 @@
-<div class="container-fluid">
-  <div class="row justify-content-between">
-    <div class="col">
-      <h3>حفظ فاتورة مشتريات</h3>
-    </div>
-    <div class="col">
-      <div class="row justify-content-center">
-        <h3 class="text-dark mt-2">كود الفاتورة</h3>
-        <h3 class="bg-accent text-white p-2 rounded mr-2">{{ billsCode }}</h3>
-      </div>
-    </div>
-  </div>
-</div>
-<mat-divider></mat-divider>
+<h2 mat-dialog-title class="d-flex align-items-center justify-content-between">
+  <span>حفظ فاتورة مشتريات</span>
+  <span class="badge bg-primary text-white fs-6 py-2 px-3 t-num">{{ billsCode }}</span>
+</h2>
 
 <mat-dialog-content>
   <div class="container-fluid mt-2">
@@ -88,7 +78,7 @@
     </form>
 
     <!-- Dynamic table -->
-    <div class="mt-2" style="text-align: center; font-family: 'cairo';">
+    <div class="mt-2 dynamic-table">
       <table class="table table-bordered table-sm">
         <thead class="thead-light">
           <tr>

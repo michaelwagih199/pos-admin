@@ -78,9 +78,12 @@ export class ReturnProductDialogComponent implements OnInit {
         condition: ['GOOD', Validators.required],
         reason: ['', Validators.required],
         notes: [''],
+        customPrice: [null, [Validators.min(0)]],
       },
       { validators: this.returnableValidator() }
     );
+
+    this.applyPriceControlState();
 
     // React to invoice selection (manual mode)
     this.form.get('sourceDetailId')?.valueChanges.subscribe((id) => {
@@ -130,8 +133,22 @@ export class ReturnProductDialogComponent implements OnInit {
       this.form.get('sourceDetailId')?.setValidators(Validators.required);
     }
     this.form.get('sourceDetailId')?.updateValueAndValidity();
+    this.applyPriceControlState();
     this.updateLimits();
     this.updateValidators();
+  }
+
+  // Auto-LIFO prices each allocation from its own source invoice, so a single
+  // override is meaningless there: the field is disabled and cleared.
+  private applyPriceControlState(): void {
+    const priceCtrl = this.form?.get('customPrice');
+    if (!priceCtrl) return;
+    if (this.useAllInvoices.value) {
+      priceCtrl.setValue(null, { emitEvent: false });
+      priceCtrl.disable({ emitEvent: false });
+    } else {
+      priceCtrl.enable({ emitEvent: false });
+    }
   }
 
   private updateValidators(): void {
@@ -201,6 +218,21 @@ export class ReturnProductDialogComponent implements OnInit {
     return this.useAllInvoices.value ? 'المتاح من كل الفواتير' : 'المتاح من هذه الفاتورة';
   }
 
+  // Manual mode: the selected invoice's own line price.
+  // Auto mode: display-only reference (backend allocates per source invoice).
+  get sourceUnitPrice(): number | null {
+    const p = this.data.product;
+    if (this.useAllInvoices.value) {
+      return p.lastPrice != null ? Number(p.lastPrice) : null;
+    }
+    const id = this.form?.get('sourceDetailId')?.value;
+    const inv = this.multiInvoiceInvoices.find(
+      (i) => (i.saleOrderDetailId ?? i.purchasesBillDetailId) === id
+    );
+    const price = inv?.price ?? p.lastPrice;
+    return price != null ? Number(price) : null;
+  }
+
   save(): void {
     // Both dimensions must have at least one non-zero value
     const qty  = Number(this.form.get('quantity')?.value ?? 0);
@@ -216,7 +248,7 @@ export class ReturnProductDialogComponent implements OnInit {
 
     const v = this.form.value;
     const p = this.data.product;
-    const unitPrice = p.lastPrice ?? 0;
+    const unitPrice = v.customPrice ?? this.sourceUnitPrice ?? 0;
 
     // When using all invoices, emit undefined source IDs so backend allocates LIFO
     const sourceSaleOrderDetailId = this.useAllInvoices.value && this.data.returnType === 'CUSTOMER'

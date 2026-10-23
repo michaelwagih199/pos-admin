@@ -1,19 +1,15 @@
-<div class="doNotPrint">
-    <h2 mat-dialog-title>كود المنتج</h2>
-</div>
+<h2 mat-dialog-title class="doNotPrint">كود المنتج</h2>
 <mat-dialog-content>
-    <div class="myDivToPrint">
-        <div class="row justify-content-around">
-            <p class="title">{{model.productName}}</p>
-            <p class="title"> {{model.retailPrice}}جـ</p> 
-        </div>
-        <ngx-barcode style="width: 30mm ;height: 15mm;" [bc-value]="model.productCode" [bc-display-value]="true"></ngx-barcode>
+  <div class="myDivToPrint text-center py-2">
+    <div class="row justify-content-around mb-2">
+      <span class="title fw-bold">{{model.productName}}</span>
+      <span class="title fw-bold">{{model.retailPrice}} جـ</span>
     </div>
+    <ngx-barcode style="width: 30mm; height: 15mm;" [bc-value]="model.productCode" [bc-display-value]="true"></ngx-barcode>
+  </div>
 </mat-dialog-content>
 
-<mat-dialog-actions align="center">
-    <div class="doNotPrint">
-        <button mat-raised-button color="warn" (click)="onPrint()">طباعة</button>
-        <button mat-raised-button color="primary" (click)="close()" tabindex="1">الغاء</button>
-    </div>
+<mat-dialog-actions align="end" class="doNotPrint">
+  <button mat-raised-button color="accent" (click)="onPrint()">طباعة</button>
+  <button mat-raised-button color="primary" (click)="close()" tabindex="1">إلغاء</button>
 </mat-dialog-actions>

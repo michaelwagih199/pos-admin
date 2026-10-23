@@ -4,9 +4,10 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';                                  // 👈 add
 import { Observable, of } from 'rxjs';
-import { debounceTime, distinctUntilChanged, switchMap, map, catchError, startWith } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, switchMap, map, catchError, startWith, tap } from 'rxjs/operators';
 import { CustomerService } from 'src/app/customers/service/customer.service';
 import { SupliersService } from 'src/app/suppliers/service/supliers.service';
+import { ConfirmationDialog } from 'src/app/shared/components/layout/dialog/confirmation/confirmation.component';
 import { RetrivalsDetailsModel } from '../../models/retrivals-details-model';
 import { RetrivalsModel, ReturnType, RefundMethod } from '../../models/retrivals-model';
 import { ReturnableProduct } from '../../models/returnable-product';
@@ -21,6 +22,7 @@ import { MatAutocompleteTrigger, MatAutocomplete, MatOption } from '@angular/mat
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatSelect } from '@angular/material/select';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { AsyncPipe, DecimalPipe, CurrencyPipe } from '@angular/common';
 
 interface Person { id: number; name: string; phone?: string; }
@@ -29,7 +31,7 @@ interface Person { id: number; name: string; phone?: string; }
     selector: 'app-retrieval-wizard',
     templateUrl: './retrieval-wizard.component.html',
     styleUrls: ['./retrieval-wizard.component.scss'],
-    imports: [Dir, MatIcon, MatButtonToggleGroup, ReactiveFormsModule, FormsModule, MatButtonToggle, MatButton, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatSelect, AsyncPipe, DecimalPipe, CurrencyPipe]
+    imports: [Dir, MatIcon, MatButtonToggleGroup, ReactiveFormsModule, FormsModule, MatButtonToggle, MatButton, MatFormField, MatLabel, MatInput, MatAutocompleteTrigger, MatAutocomplete, MatOption, MatProgressBar, MatProgressSpinner, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatSelect, AsyncPipe, DecimalPipe, CurrencyPipe]
 })
 export class RetrievalWizardComponent implements OnInit {
   step = 0;
@@ -38,6 +40,15 @@ export class RetrievalWizardComponent implements OnInit {
   selectedPerson: Person | null = null;
   searchCtrl = new FormControl();
   filteredPeople: Observable<Person[]> = of([]);
+  searching = false;
+
+  displayPerson = (p: Person | string | null): string =>
+    typeof p === 'string' ? p : (p?.name ?? '');
+
+  get searchTerm(): string {
+    const value = this.searchCtrl.value;
+    return typeof value === 'string' ? value.trim() : '';
+  }
 
   products: ReturnableProduct[] = [];
   loadingProducts = false;
@@ -62,15 +73,19 @@ export class RetrievalWizardComponent implements OnInit {
       startWith(''),
       debounceTime(250),
       distinctUntilChanged(),
-      switchMap((term: string) => {
-        const q = (term ?? '').trim();
-        if (q.length < 2) return of([]);
+      tap(term => (this.searching = String(term ?? '').trim().length >= 2)),
+      switchMap(term => {
+        const q = String(term ?? '').trim();
+        if (q.length < 2) { return of([]); }
         const obs$ = this.returnType === 'CUSTOMER'
-          ? this.customerService.findByName(q)
-          : this.supplierService.findByName(q);
-        return obs$.pipe(catchError(() => of([])));
+          ? this.customerService.search(q)
+          : this.supplierService.search(q);
+        return obs$.pipe(
+          catchError(() => of([])),
+          tap(() => (this.searching = false)),
+          map(res => this.normalizePeople(res)),
+        );
       }),
-      map((res: any) => this.normalizePeople(res))
     );
   }
 
@@ -84,9 +99,51 @@ export class RetrievalWizardComponent implements OnInit {
   }
 
   onPersonSelected(p: Person) {
+    if (!p) return;
+    if (this.selectedPerson?.id !== p.id) {
+      this.resetDraft();
+    }
+    this.searchCtrl.setValue(p, { emitEvent: false });
     this.selectedPerson = p;
     this.step = 2;
     this.loadReturnable();
+  }
+
+  private resetDraft() {
+    this.cart = [];
+    this.discount = 0;
+    this.products = [];
+    this.refundMethod = 'CREDIT';
+  }
+
+  onReturnTypeChange(next: ReturnType) {
+    this.returnType = next;
+    this.selectedPerson = null;
+    this.searchCtrl.reset('', { emitEvent: false });
+    this.resetDraft();
+    this.step = 0;
+  }
+
+  clearPerson() {
+    this.selectedPerson = null;
+    this.searchCtrl.reset('', { emitEvent: false });
+    this.resetDraft();
+    this.step = 1;
+  }
+
+  changePerson() {
+    if (this.cart.length > 0) {
+      this.dialog.open(ConfirmationDialog, {
+        data: {
+          message: 'تغيير الشخص سيمسح السطور المضافة. هل تريد المتابعة؟',
+          buttonText: { ok: 'نعم، متابعة', cancel: 'إلغاء' },
+        },
+      }).afterClosed().subscribe(ok => {
+        if (ok) this.clearPerson();
+      });
+      return;
+    }
+    this.clearPerson();
   }
 
   loadReturnable() {
@@ -107,18 +164,22 @@ export class RetrievalWizardComponent implements OnInit {
 
   openReturnDialog(p: ReturnableProduct) {
     const ref = this.dialog.open(ReturnProductDialogComponent, {
-      width: '560px',
+      width: 'min(880px, 94vw)',
+      maxWidth: '94vw',
+      maxHeight: '92vh',
       disableClose: true,
       data: { product: p, returnType: this.returnType },
     });
 
     ref.afterClosed().subscribe((line?: RetrivalsDetailsModel) => {
       if (!line) return;
-      // Merge key: productId + returnCondition.
-      // source IDs are intentionally excluded so multi-invoice lines (undefined) merge correctly.
+      // Merge key: productId + returnCondition + price (numeric equality).
+      // Source IDs are intentionally excluded so multi-invoice lines (undefined) merge correctly.
+      // Different prices must stay as separate lines — never blend unit prices.
       const i = this.cart.findIndex(l =>
         l.productId === line.productId
         && l.returnCondition === line.returnCondition
+        && Number(l.price ?? 0) === Number(line.price ?? 0)
       );
       if (i > -1) {
         this.cart[i].quantity += line.quantity;      // rolls — metadata

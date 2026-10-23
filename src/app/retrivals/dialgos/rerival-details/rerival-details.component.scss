@@ -1,8 +1,8 @@
-.mat-table {
-  width: 700px;
+:host {
+  display: block;
+  width: 100%;
 }
-h1,
-h2,
-h3 {
-  font-family: "El Messiri", sans-serif;
+
+.mat-table {
+  width: 100%;
 }

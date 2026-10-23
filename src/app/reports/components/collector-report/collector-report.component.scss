@@ -32,8 +32,8 @@
 // Deliberately left literal (off the 4px grid or off the type scale, pending a
 // future size step): min-height calc(100vh - 64px), border-top widths 4px/2px,
 // icon box geometry (32px / 42px / 64px / 26px / 14px), min-widths 220px and
-// 160px, height 52px, margin-top 2px, font-size 1.5rem, and the translucent
-// white wash rgba(255, 255, 255, 0.18).
+// 160px, height 52px, margin-top 2px, font-size 1.5rem; the translucent
+// white wash fill is now var(--vn-on-brand-tint) (closeout tokenisation).
 // ============================================
 
 :host {
@@ -138,7 +138,7 @@
     font-size: 42px;
     height: 42px;
     width: 42px;
-    background: rgba(255, 255, 255, 0.18);
+    background: var(--vn-on-brand-tint);
     border-radius: 50%;
     padding: var(--vn-space-2);
   }

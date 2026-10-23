@@ -281,6 +281,16 @@ td.mat-footer-cell {
   text-align: start;
 }
 
+/* RTL table baseline: cell text starts at the inline-start edge (the Arabic
+   reading edge). Class-based alignment such as .text-center or .num still
+   wins on specificity. */
+table {
+  th,
+  td {
+    text-align: start;
+  }
+}
+
 .full-width {
   width: 100%;
 }
@@ -404,3 +414,510 @@ th.mat-mdc-header-cell,
 td.mat-mdc-cell {
   padding: var(--vn-space-2) var(--vn-space-3) !important;
 }
+
+/* === Global button standard — High-contrast & Visibility (v2.1.6) =========
+   Ensures buttons never blend invisibly into white surfaces or headers.
+   Every variant (primary, accent, danger, secondary, outlined) is clearly
+   distinguishable with solid fill or crisp border. */
+
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button,
+.mat-raised-button {
+  border-radius: var(--vn-radius-md) !important;
+  box-shadow: var(--vn-shadow-sm) !important;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold) !important;
+  transition: background-color var(--vn-duration-fast) var(--vn-ease),
+              border-color var(--vn-duration-fast) var(--vn-ease),
+              box-shadow var(--vn-duration-fast) var(--vn-ease);
+}
+
+/* 1. Primary Buttons: Solid brand navy fill + white text */
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary,
+.mat-mdc-raised-button[color="primary"],
+.mat-mdc-unelevated-button[color="primary"],
+.btn-navy,
+.btn-primary {
+  --mat-button-protected-container-color: var(--vn-brand) !important;
+  --mat-button-protected-label-text-color: var(--vn-on-brand) !important;
+  --mat-button-filled-container-color: var(--vn-brand) !important;
+  --mat-button-filled-label-text-color: var(--vn-on-brand) !important;
+  background-color: var(--vn-brand) !important;
+  color: var(--vn-on-brand) !important;
+  border: 1px solid var(--vn-brand) !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-brand-hover) !important;
+    border-color: var(--vn-brand-hover) !important;
+    --mat-button-protected-container-color: var(--vn-brand-hover) !important;
+    --mat-button-filled-container-color: var(--vn-brand-hover) !important;
+  }
+}
+
+/* 2. Accent / CTA Buttons: Solid amber/orange fill + white text (e.g. فواتير اليوم, دفع) */
+.mat-mdc-raised-button.mat-accent,
+.mat-mdc-unelevated-button.mat-accent,
+.mat-mdc-raised-button[color="accent"],
+.mat-mdc-unelevated-button[color="accent"],
+.btn-accent,
+.btn-pay {
+  --mat-button-protected-container-color: var(--vn-accent) !important;
+  --mat-button-protected-label-text-color: var(--vn-on-brand) !important;
+  --mat-button-filled-container-color: var(--vn-accent) !important;
+  --mat-button-filled-label-text-color: var(--vn-on-brand) !important;
+  background-color: var(--vn-accent) !important;
+  color: var(--vn-on-brand) !important;
+  border: 1px solid var(--vn-accent) !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-accent-hover) !important;
+    border-color: var(--vn-accent-hover) !important;
+    --mat-button-protected-container-color: var(--vn-accent-hover) !important;
+    --mat-button-filled-container-color: var(--vn-accent-hover) !important;
+  }
+
+  &:disabled,
+  &[disabled],
+  &.mat-mdc-button-disabled {
+    --mat-button-protected-disabled-container-color: var(--vn-accent) !important;
+    --mat-button-protected-disabled-label-text-color: var(--vn-on-brand) !important;
+    --mat-button-filled-disabled-container-color: var(--vn-accent) !important;
+    --mat-button-filled-disabled-label-text-color: var(--vn-on-brand) !important;
+    background-color: var(--vn-accent) !important;
+    color: var(--vn-on-brand) !important;
+    border: 1px solid var(--vn-accent) !important;
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 3. Warn / Danger Buttons: Red fill + white text */
+.mat-mdc-raised-button.mat-warn,
+.mat-mdc-unelevated-button.mat-warn,
+.mat-mdc-raised-button[color="warn"],
+.mat-mdc-unelevated-button[color="warn"],
+.btn-danger {
+  --mat-button-protected-container-color: var(--vn-danger) !important;
+  --mat-button-protected-label-text-color: var(--vn-white) !important;
+  --mat-button-filled-container-color: var(--vn-danger) !important;
+  --mat-button-filled-label-text-color: var(--vn-white) !important;
+  background-color: var(--vn-danger) !important;
+  color: var(--vn-white) !important;
+  border: 1px solid var(--vn-danger) !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-red-700, #b91c1c) !important;
+    border-color: var(--vn-red-700, #b91c1c) !important;
+  }
+}
+
+/* 4. Default / Unthemed / Secondary Raised Buttons:
+   Crisp light slate background + solid border so they NEVER appear as faint white-on-white */
+.mat-mdc-raised-button:not(.mat-primary):not(.mat-accent):not(.mat-warn):not([color="primary"]):not([color="accent"]):not([color="warn"]),
+.btn-secondary-action,
+.btn-secondary {
+  --mat-button-protected-container-color: var(--vn-surface-hover) !important;
+  --mat-button-protected-label-text-color: var(--vn-brand) !important;
+  background-color: var(--vn-surface-hover) !important;
+  color: var(--vn-brand) !important;
+  border: 1px solid var(--vn-border) !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-border-light) !important;
+    border-color: var(--vn-ink-500) !important;
+  }
+}
+
+/* 5. Outlined / Stroked Buttons: Visible border and clear hover */
+.mat-mdc-outlined-button,
+.mat-stroked-button {
+  border: 1.5px solid var(--vn-border) !important;
+  background-color: var(--vn-surface) !important;
+  color: var(--vn-brand) !important;
+  font-family: var(--vn-font-body);
+  font-weight: var(--vn-weight-bold) !important;
+  border-radius: var(--vn-radius-md) !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-surface-hover) !important;
+    border-color: var(--vn-brand) !important;
+  }
+
+  &.mat-primary, &[color="primary"] {
+    border-color: var(--vn-brand) !important;
+    color: var(--vn-brand) !important;
+    &:hover:not(:disabled) {
+      background-color: rgba(68, 89, 110, 0.08) !important;
+    }
+  }
+
+  &.mat-accent, &[color="accent"] {
+    border-color: var(--vn-accent) !important;
+    color: var(--vn-accent-hover) !important;
+    &:hover:not(:disabled) {
+      background-color: rgba(236, 153, 75, 0.1) !important;
+    }
+  }
+}
+
+/* 6. Bootstrap Light / White / Outline utility buttons */
+.btn-light,
+.btn-white {
+  background-color: var(--vn-surface-hover) !important;
+  border: 1px solid var(--vn-border) !important;
+  color: var(--vn-brand) !important;
+  font-weight: var(--vn-weight-bold) !important;
+
+  &:hover {
+    background-color: var(--vn-border-light) !important;
+    border-color: var(--vn-ink-500) !important;
+  }
+}
+
+.btn-outline-dark,
+.btn-outline-secondary {
+  border: 1.5px solid var(--vn-border) !important;
+  color: var(--vn-brand) !important;
+  background-color: var(--vn-surface) !important;
+  font-weight: var(--vn-weight-bold) !important;
+
+  &:hover {
+    background-color: var(--vn-brand) !important;
+    color: var(--vn-white) !important;
+    border-color: var(--vn-brand) !important;
+  }
+}
+
+/* Fab / mini-fab standard — add buttons are the app-wide accent controls. */
+.mat-mdc-fab, .mat-mdc-mini-fab {
+  box-shadow: var(--vn-shadow-sm) !important;
+  transition: background-color var(--vn-duration-fast) var(--vn-ease);
+}
+.mat-mdc-fab.mat-accent,
+.mat-mdc-mini-fab.mat-accent {
+  background-color: var(--vn-accent) !important;
+  color: var(--vn-on-brand) !important;
+}
+.mat-mdc-fab.mat-accent:hover:not(:disabled),
+.mat-mdc-mini-fab.mat-accent:hover:not(:disabled) {
+  background-color: var(--vn-accent-hover) !important;
+}
+
+/* === Semantic action controls (v2.1.5) ===================================
+   Row actions. M3 ignores the deprecated color="" input, so each control
+   declares its own token. Tinted-icon treatment: transparent button,
+   semantic glyph, same-hue state layer. Tokens only. */
+.action-icon {
+  --mat-icon-button-icon-color: var(--vn-brand);
+  --mat-icon-button-state-layer-color: var(--vn-brand);
+}
+.action-icon--view {              /* explicit alias — markup documents intent */
+  --mat-icon-button-icon-color: var(--vn-brand);
+  --mat-icon-button-state-layer-color: var(--vn-brand);
+}
+.action-icon--edit {
+  --mat-icon-button-icon-color: var(--vn-accent-hover); /* amber-dark, 3.3:1 */
+  --mat-icon-button-state-layer-color: var(--vn-accent);
+}
+.action-icon--delete {
+  --mat-icon-button-icon-color: var(--vn-danger);
+  --mat-icon-button-state-layer-color: var(--vn-danger);
+}
+
+/* === Global Modal & Dialog Unified Standard (v2.1.7) ========================
+   Enforces a consistent, professional Ventas POS design standard across all
+   dialogs and modal windows (both Angular Material Dialogs and Bootstrap Modals).
+   - Unified Header: surface-alt background, brand steel navy title, clean padding.
+   - Unified Body: ample padding, clear typography, clean form spacing, modern tables.
+   - Unified Footer: surface-alt background, clean borders, consistent CTA hierarchy.
+   - Unified Card: 16px radius, subtle border, deep elevation shadow, overflow hidden.
+   ========================================================================== */
+
+/* Stacking and backdrops */
+ngb-modal-backdrop {
+  z-index: 1050 !important;
+}
+
+ngb-modal-window,
+.modal {
+  z-index: var(--vn-z-modal, 1200) !important;
+}
+
+.cdk-overlay-backdrop {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(2px);
+}
+
+/* --- 1. Sizing and overlay geometry --- */
+.mat-mdc-dialog-container {
+  --mat-dialog-container-max-width: none !important;
+  --mdc-dialog-max-width: none !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+}
+
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  max-width: none !important;
+  border-radius: var(--vn-radius-lg, 16px) !important;
+  background-color: var(--vn-surface) !important;
+  border: 1px solid var(--vn-border-light) !important;
+  box-shadow: 0 20px 45px -8px rgba(15, 23, 42, 0.22), 0 0 1px rgba(15, 23, 42, 0.1) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.mat-mdc-dialog-container > * {
+  display: block;
+  width: 100%;
+}
+
+/* Overlay pane width hierarchy */
+.cdk-overlay-pane:has(.mat-mdc-dialog-container) {
+  width: auto;
+  min-width: min(580px, 92vw);
+  max-width: 95vw !important;
+  margin: auto;
+}
+
+/* Small dialogs (Confirmation, Barcode) */
+.cdk-overlay-pane:has(app-confirmation),
+.cdk-overlay-pane:has(app-barcode) {
+  min-width: 360px !important;
+  max-width: 460px !important;
+  width: 90% !important;
+}
+
+/* Standard form dialogs */
+.cdk-overlay-pane:has(app-create-product),
+.cdk-overlay-pane:has(app-create-customer),
+.cdk-overlay-pane:has(app-create-suppliers),
+.cdk-overlay-pane:has(app-create-expenses),
+.cdk-overlay-pane:has(app-create-category),
+.cdk-overlay-pane:has(app-add-user-dialog),
+.cdk-overlay-pane:has(app-create-maintanence),
+.cdk-overlay-pane:has(app-about-app-dialog) {
+  width: 720px !important;
+  max-width: 92vw !important;
+}
+
+/* Large / Table / Invoice details dialogs */
+.cdk-overlay-pane:has(app-dynamic-orders),
+.cdk-overlay-pane:has(app-rerival-details),
+.cdk-overlay-pane:has(app-purchases-bills-details),
+.cdk-overlay-pane:has(app-create-purchases),
+.cdk-overlay-pane:has(app-notifications) {
+  width: 1050px !important;
+  max-width: 95vw !important;
+}
+
+/* Return-product dialog is a compact form; keep its pane at the configured width */
+.cdk-overlay-pane:has(app-return-product-dialog) {
+  width: 560px !important;
+  max-width: 95vw !important;
+}
+
+/* Bootstrap modal sizing */
+.modal-dialog {
+  max-width: 800px;
+  width: 92%;
+  margin: 1.75rem auto;
+}
+
+.modal-dialog.modal-sm {
+  max-width: 440px;
+}
+
+.modal-dialog.modal-lg {
+  max-width: 1050px;
+}
+
+.modal-dialog.modal-xl {
+  max-width: 1250px;
+}
+
+/* --- 2. Unified Modal Card (Bootstrap & Material) --- */
+.modal-content {
+  background-color: var(--vn-surface) !important;
+  border-radius: var(--vn-radius-lg, 16px) !important;
+  border: 1px solid var(--vn-border-light) !important;
+  box-shadow: 0 20px 45px -8px rgba(15, 23, 42, 0.22), 0 0 1px rgba(15, 23, 42, 0.1) !important;
+  overflow: hidden !important;
+  direction: rtl;
+  text-align: start;
+}
+
+/* --- 3. Unified Modal Header --- */
+.modal-header,
+[mat-dialog-title],
+.mat-mdc-dialog-title,
+h2[mat-dialog-title] {
+  background-color: var(--vn-surface-alt) !important;
+  border-bottom: 1px solid var(--vn-border-light) !important;
+  padding: 14px 22px !important;
+  margin: 0 !important;
+  font-family: var(--vn-font-body) !important;
+  font-weight: var(--vn-weight-bold) !important;
+  color: var(--vn-brand) !important;
+  font-size: 1.2rem !important;
+  line-height: 1.4 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  min-height: 52px !important;
+  box-sizing: border-box !important;
+
+  .modal-title {
+    font-family: var(--vn-font-body) !important;
+    font-weight: var(--vn-weight-bold) !important;
+    color: var(--vn-brand) !important;
+    font-size: 1.2rem !important;
+    margin: 0 !important;
+  }
+
+  .close,
+  .close-btn {
+    font-size: 1.4rem;
+    font-weight: 400;
+    line-height: 1;
+    color: var(--vn-text-muted);
+    opacity: 0.75;
+    background: transparent;
+    border: 0;
+    padding: 4px 8px;
+    border-radius: var(--vn-radius-sm);
+    cursor: pointer;
+    transition: all var(--vn-duration-fast) var(--vn-ease);
+
+    &:hover {
+      color: var(--vn-danger);
+      background-color: var(--vn-danger-bg, rgba(239, 68, 68, 0.1));
+      opacity: 1;
+    }
+  }
+}
+
+/* Hide redundant dividers directly adjacent to headers or footers */
+[mat-dialog-title] + mat-divider,
+.modal-header + mat-divider,
+mat-divider:has(+ [mat-dialog-actions]),
+mat-divider:has(+ .modal-footer) {
+  display: none !important;
+}
+
+/* --- 4. Unified Modal Body / Content --- */
+.modal-body,
+[mat-dialog-content],
+.mat-mdc-dialog-content {
+  padding: 20px 24px !important;
+  margin: 0 !important;
+  max-height: calc(85vh - 130px) !important;
+  overflow-y: auto !important;
+  font-family: var(--vn-font-body) !important;
+  color: var(--vn-text) !important;
+  line-height: 1.6;
+  direction: rtl;
+  text-align: start;
+
+  /* Custom subtle scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: var(--vn-surface-alt);
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--vn-border);
+    border-radius: 3px;
+  }
+}
+
+/* --- 5. Unified Modal Footer / Actions --- */
+.modal-footer,
+[mat-dialog-actions],
+.mat-mdc-dialog-actions {
+  background-color: var(--vn-surface-alt) !important;
+  border-top: 1px solid var(--vn-border-light) !important;
+  padding: 12px 24px !important;
+  margin: 0 !important;
+  min-height: 58px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: var(--vn-space-2, 10px) !important;
+  box-sizing: border-box !important;
+  direction: rtl;
+
+  /* Standard dialog button sizing */
+  button {
+    min-width: 95px;
+    font-size: 0.95rem !important;
+  }
+}
+
+/* Confirmation dialog specific card styling */
+app-confirmation {
+  display: block;
+  text-align: center;
+
+  .mat-mdc-dialog-content {
+    padding: 28px 24px 16px !important;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--vn-text);
+  }
+
+  .mat-mdc-dialog-actions {
+    justify-content: center !important;
+    gap: 12px !important;
+  }
+}
+
+/* --- 6. Unified Tables Inside Modals & Dialogs --- */
+.modal-body table,
+[mat-dialog-content] table,
+.mat-mdc-dialog-content table {
+  width: 100% !important;
+  margin-bottom: 0 !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  border-radius: var(--vn-radius-md);
+  overflow: hidden;
+  border: 1px solid var(--vn-border-light) !important;
+
+  thead th,
+  thead.thead-dark th,
+  thead.thead-light th {
+    background-color: var(--vn-surface-alt) !important;
+    color: var(--vn-brand) !important;
+    font-family: var(--vn-font-body) !important;
+    font-weight: var(--vn-weight-bold) !important;
+    border-bottom: 2px solid var(--vn-border) !important;
+    border-top: none !important;
+    padding: 10px 14px !important;
+    white-space: nowrap;
+  }
+
+  tbody td,
+  tbody th {
+    vertical-align: middle !important;
+    padding: 10px 14px !important;
+    border-bottom: 1px solid var(--vn-border-light) !important;
+    border-top: none !important;
+    font-weight: 500;
+  }
+
+  tbody tr:last-child td,
+  tbody tr:last-child th {
+    border-bottom: none !important;
+  }
+
+  tbody tr:hover td,
+  tbody tr:hover th {
+    background-color: var(--vn-surface-hover) !important;
+  }
+}
+

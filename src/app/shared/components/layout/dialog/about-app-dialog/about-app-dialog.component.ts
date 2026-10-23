@@ -1,18 +1,20 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatDialogRef, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatButton } from '@angular/material/button';
 
 @Component({
     selector: 'app-about-app-dialog',
     templateUrl: './about-app-dialog.component.html',
     styleUrls: ['./about-app-dialog.component.scss'],
-    imports: [MatCard, MatCardHeader, MatCardTitle, MatCardContent]
+    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButton]
 })
 export class AboutAppDialogComponent implements OnInit {
-  dialog = inject(MatDialog);
+  private dialogRef = inject(MatDialogRef<AboutAppDialogComponent>);
 
-  
-  ngOnInit(): void {
+  close() {
+    this.dialogRef.close();
   }
 
+  ngOnInit(): void {
+  }
 }

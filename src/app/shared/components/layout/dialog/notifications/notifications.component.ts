@@ -4,103 +4,115 @@ import { POS_Response } from '../../../../../_helpers/pos-responce';
 import { MaintanenceService } from '../../../../../maintainence/services/maintanence.service';
 import { ExpiredProductModel } from './models/notification-model';
 import { NotificationService } from './services/notification.service';
-import { MatDialogTitle } from '@angular/material/dialog';
-import { MatDivider } from '@angular/material/divider';
+import { MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogRef } from '@angular/material/dialog';
 import { MatTabGroup, MatTab } from '@angular/material/tabs';
+import { MatButton } from '@angular/material/button';
 import { DatePipe } from '@angular/common';
 
-
 @Component({
+    selector: 'app-notifications',
     template: `
-<style>
-  .head {
-  width: 50vw;
-}
-</style>
-<div class="head">
-  <h2 mat-dialog-title>الاشعارات</h2>
-  <mat-divider></mat-divider>
-</div>
-<mat-tab-group>
-  <mat-tab label="الصيانه">
-    <div class="mt-2" style="text-align: center;">
-      <h2 class="border rounded bg-light text-primary">صيانات اليوم</h2>
-      <!--table-->
-      <table class="table table-bordered table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th>العميل</th>
-            <th>التاريخ</th>
-            <th>ملاحظه</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of today?.data; track item) {
-            <tr>
-              <th>{{ item.customerName}}</th>
-              <th>{{ item.maintanenceDate |date: 'yyyy-MM-dd' }}</th>
-              <th>{{ item.comment}}</th>
-            </tr>
-          }
-        </tbody>
-      </table>
-    </div>
+<h2 mat-dialog-title>الإشعارات والتنبيهات</h2>
 
-    <div class="mt-2" style="text-align: center;">
-      <h2 class="border rounded bg-light text-primary">صيانات غداً</h2>
-      <!--table-->
-      <table class="table table-bordered table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th>العميل</th>
-            <th>التاريخ</th>
-            <th>ملاحظه</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of tomorrow?.data; track item) {
+<mat-dialog-content>
+  <mat-tab-group>
+    <mat-tab label="الصيانة اليوم والغد">
+      <div class="mt-3 text-center">
+        <h5 class="fw-bold text-navy mb-2">صيانات اليوم</h5>
+        <table class="table table-bordered table-sm mb-4">
+          <thead>
             <tr>
-              <th>{{ item.customerName}}</th>
-              <th>{{ item.maintanenceDate |date: 'yyyy-MM-dd'}}</th>
-              <th>{{ item.comment}}</th>
+              <th>العميل</th>
+              <th>التاريخ</th>
+              <th>ملاحظة</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </mat-tab>
+          </thead>
+          <tbody>
+            @for (item of today?.data; track item) {
+              <tr>
+                <td>{{ item.customerName}}</td>
+                <td class="t-num">{{ item.maintanenceDate | date: 'yyyy-MM-dd' }}</td>
+                <td>{{ item.comment}}</td>
+              </tr>
+            }
+            @if (!today?.data?.length) {
+              <tr><td colspan="3" class="text-muted py-3">لا توجد صيانات اليوم</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
 
-  <mat-tab label="المنتجات منتهيه الصلاحية">
-    <div class="mt-2" style="text-align: center;">
-      <h2 class="border rounded bg-light text-blue_primary-dark"> منتجات منتهيه الصلاحية لا يصلح بيعها</h2>
-      <!--table-->
-      <table class="table table-bordered table-sm">
-        <thead class="thead-light">
-          <tr>
-            <th>الكود</th>
-            <th>الأسم</th>
-            <th>تاريخ الانتهاء</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of expiredProducts?.data; track item) {
+      <div class="mt-3 text-center">
+        <h5 class="fw-bold text-navy mb-2">صيانات غداً</h5>
+        <table class="table table-bordered table-sm">
+          <thead>
             <tr>
-              <th class="text-blue_primary-dark">{{ item.productCode}}</th>
-              <th class="text-blue_primary-dark" >{{ item.productName}}</th>
-              <th class="text-blue_primary-dark" >{{ item.expirationDate | date: 'yyyy-MM-dd' }}</th>
+              <th>العميل</th>
+              <th>التاريخ</th>
+              <th>ملاحظة</th>
             </tr>
-          }
-        </tbody>
-      </table>
-    </div>
-  </mat-tab>
+          </thead>
+          <tbody>
+            @for (item of tomorrow?.data; track item) {
+              <tr>
+                <td>{{ item.customerName}}</td>
+                <td class="t-num">{{ item.maintanenceDate | date: 'yyyy-MM-dd'}}</td>
+                <td>{{ item.comment}}</td>
+              </tr>
+            }
+            @if (!tomorrow?.data?.length) {
+              <tr><td colspan="3" class="text-muted py-3">لا توجد صيانات غداً</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
 
-</mat-tab-group>
+    <mat-tab label="المنتجات منتهية الصلاحية">
+      <div class="mt-3 text-center">
+        <h5 class="fw-bold text-danger mb-2">منتجات منتهية الصلاحية</h5>
+        <table class="table table-bordered table-sm">
+          <thead>
+            <tr>
+              <th>الكود</th>
+              <th>الاسم</th>
+              <th>تاريخ الانتهاء</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of expiredProducts?.data; track item) {
+              <tr>
+                <td class="fw-bold t-num">{{ item.productCode}}</td>
+                <td>{{ item.productName}}</td>
+                <td class="t-num">{{ item.expirationDate | date: 'yyyy-MM-dd' }}</td>
+              </tr>
+            }
+            @if (!expiredProducts?.data?.length) {
+              <tr><td colspan="3" class="text-muted py-3">لا توجد منتجات منتهية الصلاحية</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="close()">إغلاق</button>
+</mat-dialog-actions>
 `,
-    styles: [],
-    imports: [MatDialogTitle, MatDivider, MatTabGroup, MatTab, DatePipe]
+    styles: [`
+      :host { display: block; width: 100%; }
+      .text-navy { color: var(--vn-brand); }
+    `],
+    imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatButton, MatTabGroup, MatTab, DatePipe]
 })
 export class NotificationsComponent implements OnInit {
+  private dialogRef = inject(MatDialogRef<NotificationsComponent>);
+
+  close() {
+    this.dialogRef.close();
+  }
   private MaintanenceService = inject(MaintanenceService);
   private notificationService = inject(NotificationService);
 

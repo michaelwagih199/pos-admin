@@ -11,6 +11,7 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
 import { MatButton } from '@angular/material/button';
 
 @Component({
+    selector: 'app-create-maintanence',
     templateUrl: './create-maintanence.component.html',
     styleUrls: ['./create-maintanence.component.scss'],
     imports: [MatDialogTitle, MatDivider, CdkScrollable, MatDialogContent, ReactiveFormsModule, MatFormField, MatLabel, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, MatDialogActions, MatButton]

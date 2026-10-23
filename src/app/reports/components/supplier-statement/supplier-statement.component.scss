@@ -151,7 +151,7 @@
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-sm);
     padding: 12px 14px;
-    text-align: end;
+    text-align: start;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
     font-family: var(--vn-font-body);
@@ -162,7 +162,7 @@
     font-size: var(--vn-text-sm);
     color: var(--vn-text);
     border-bottom: 1px solid var(--vn-border-light);
-    text-align: end;
+    text-align: start;
     vertical-align: middle;
   }
 
@@ -321,7 +321,7 @@
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-xs);
     padding: 10px 12px;
-    text-align: end;
+    text-align: start;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
     font-family: var(--vn-font-body);
@@ -332,7 +332,7 @@
     font-size: var(--vn-text-sm);
     color: var(--vn-text);
     border-bottom: 1px solid var(--vn-border-light);
-    text-align: end;
+    text-align: start;
     vertical-align: middle;
   }
 
@@ -350,6 +350,8 @@
     font-variant-numeric: tabular-nums;
     font-weight: var(--vn-weight-medium);
     color: var(--vn-text);
+    direction: ltr;
+    unicode-bidi: isolate;
   }
 
   .bill-subtotal {

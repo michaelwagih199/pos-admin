@@ -78,6 +78,9 @@ html {
   --mat-sys-outline: var(--vn-border);
   --mat-sys-outline-variant: var(--vn-border-light);
 
+  /* Focus indicator (buttons, list items, chips) → amber, matching the showcase ring */
+  --mat-focus-indicator-border-color: var(--vn-accent);
+
   /* Error maps to the danger trio */
   --mat-sys-error: var(--vn-danger);
   --mat-sys-on-error: var(--vn-white);
@@ -125,7 +128,13 @@ html {
   --mat-card-outlined-container-color: var(--vn-surface);
   --mat-card-outlined-outline-color: var(--vn-border-light);
 
-  /* Tables: white body, muted header text */
+  /* Tables: white body, brand-steel header text (sale-screen parity) */
   --mat-table-background-color: var(--vn-surface);
-  --mat-table-header-headline-color: var(--vn-text-muted);
+  --mat-table-header-headline-color: var(--vn-brand);
+
+  /* Buttons: ensure default elevated buttons have visible light slate surface */
+  --mat-button-protected-container-color: var(--vn-surface-hover);
+  --mat-button-protected-label-text-color: var(--vn-brand);
+  --mat-button-filled-container-color: var(--vn-brand);
+  --mat-button-filled-label-text-color: var(--vn-on-brand);
 }

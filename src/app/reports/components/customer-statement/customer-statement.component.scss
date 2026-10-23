@@ -134,7 +134,7 @@
     font-weight: var(--vn-weight-black);
     font-size: var(--vn-text-md);
     padding: 14px 16px;
-    text-align: end;
+    text-align: start;
     border-bottom: 2px solid var(--navy);
     white-space: nowrap;
     font-family: var(--vn-font-body);
@@ -145,7 +145,7 @@
     font-size: var(--vn-text-md);
     color: var(--vn-text);
     border-bottom: 1px solid var(--vn-border-light);
-    text-align: end;
+    text-align: start;
     vertical-align: middle;
   }
 

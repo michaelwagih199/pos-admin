@@ -1,94 +1,171 @@
-<mat-card class="mat-elevation-z2">
-  <mat-card-content>
-    <div class="row justify-content-center text-center m-2 p-3 ">
-      <div class="col">
-        <div class="customClass-1 p-2">
-          <div class="row justify-content-around">
-            <p>عدد الطلبات</p>
-            <p class="bg-blue_primary-dark text-white rounded p-2">{{orderCounter}}</p>
+<div class="dynamic-orders-container">
+  <!-- DIALOG HEADER -->
+  <div class="dialog-header d-flex justify-content-between align-items-center p-3 border-bottom">
+    <div class="d-flex align-items-center gap-2">
+      @if (selectedOrder) {
+        <button mat-icon-button class="text-navy" (click)="backToList()" title="العودة إلى قائمة الفواتير">
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+        <h3 class="m-0 text-navy fw-bold">
+          تفاصيل الفاتورة: <span class="t-num">#{{ selectedOrder.saleOrder.orderCode }}</span>
+        </h3>
+      } @else {
+        <mat-icon class="text-navy">receipt_long</mat-icon>
+        <h3 class="m-0 text-navy fw-bold">{{ isTodayOrders ? 'فواتير اليوم' : 'فواتير العميل' }}</h3>
+      }
+    </div>
+    <div class="d-flex align-items-center gap-2">
+      @if (selectedOrder) {
+        <button mat-stroked-button color="primary" (click)="onPrinting(selectedOrder)">
+          <mat-icon>print</mat-icon>
+          طباعة
+        </button>
+      }
+      <button mat-icon-button class="text-muted" (click)="closeDialog()" aria-label="إغلاق">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </div>
+
+  <!-- DIALOG BODY -->
+  <div class="dialog-body p-3">
+    <!-- VIEW 1: ORDERS LIST -->
+    @if (!selectedOrder) {
+      <!-- Summary Cards -->
+      <div class="row g-3 mb-3">
+        <div class="col-6">
+          <div class="summary-metric-card p-3 d-flex justify-content-between align-items-center">
+            <span class="fs-6 fw-bold text-muted">عدد الطلبات</span>
+            <span class="metric-badge metric-badge--blue t-num">{{ orderCounter }}</span>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="summary-metric-card p-3 d-flex justify-content-between align-items-center">
+            <span class="fs-6 fw-bold text-muted">الإجمالى</span>
+            <span class="metric-badge metric-badge--navy t-num">{{ sumTotal | number:'1.0-2' }}</span>
           </div>
         </div>
       </div>
 
-      <div class="col">
-        <div class="customClass-1 p-2">
-          <div class="row justify-content-around">
-            <p>اﻷجمالى</p>
-            <p class="bg-blue_primary-dark text-white rounded p-2">{{sumTotal}}</p>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div>
-      <!--table-->
+      <!-- Orders Table -->
       <div class="table-responsive">
-        <table class="table table-bordered table-sm data-table">
-          <thead class="thead-dark">
+        <table class="table table-hover dashboard-table">
+          <thead>
             <tr>
               <th>رقم الفاتورة</th>
               <th>التاريخ</th>
               <th>العميل</th>
-              <th class="num">الاجمالى</th>
-              <th></th>
+              <th class="cell-numeric">الإجمالى</th>
+              <th class="text-center">الإجراءات</th>
             </tr>
           </thead>
           <tbody>
             @for (item of ordersList; track item) {
               <tr>
-                <td>{{ item.saleOrder.orderCode }}</td>
-                <td>{{ item.saleOrder.createdDate|date: 'yyyy-MM-dd' }}</td>
-                <td>{{ item.saleOrder.customer?.customerName }}</td>
-                <td class="num">{{ item.totalOrder}}</td>
-                <td>
-                  <button type="button" class="btn btn-primary btn-sm"
-                  (click)="details(content,item)">التفاصيل</button> |
-                  <button type="button" class="btn btn-info btn-sm" (click)="onPrinting(item)"> طباعة</button>
+                <td class="fw-bold t-num">{{ item.saleOrder.orderCode }}</td>
+                <td class="t-num">{{ item.saleOrder.createdDate | date: 'yyyy-MM-dd' }}</td>
+                <td>{{ item.saleOrder.customer?.customerName || '-' }}</td>
+                <td class="cell-numeric fw-bold text-accent t-num">{{ item.totalOrder }}</td>
+                <td class="text-center">
+                  <button mat-stroked-button color="primary" class="me-2" (click)="details(item)">
+                    <mat-icon>visibility</mat-icon>
+                    التفاصيل
+                  </button>
+                  <button mat-stroked-button color="accent" (click)="onPrinting(item)">
+                    <mat-icon>print</mat-icon>
+                    طباعة
+                  </button>
+                </td>
+              </tr>
+            }
+            @if (!ordersList || ordersList.length === 0) {
+              <tr>
+                <td colspan="5" class="text-center text-muted py-5">
+                  <mat-icon class="d-block mx-auto mb-2 opacity-25">receipt</mat-icon>
+                  لا توجد فواتير مسجلة
                 </td>
               </tr>
             }
           </tbody>
         </table>
       </div>
-    </div>
-  </mat-card-content>
-</mat-card>
-<div>
-  <div>
-    <ng-template #content let-modal>
-      <div class="modal-header">
-        <h4 class="modal-title text-center" id="modal-basic-title">التفاصيل</h4>
+    }
+
+    <!-- VIEW 2: ORDER DETAILS -->
+    @if (selectedOrder) {
+      <div class="order-meta-bar mb-3 p-3 rounded d-flex justify-content-between align-items-center flex-wrap gap-2">
+        <div>
+          <span class="text-muted me-2">العميل:</span>
+          <strong class="text-navy">{{ selectedOrder.saleOrder.customer?.customerName || '-' }}</strong>
+        </div>
+        <div>
+          <span class="text-muted me-2">التاريخ:</span>
+          <span class="t-num">{{ selectedOrder.saleOrder.createdDate | date: 'yyyy-MM-dd' }}</span>
+        </div>
+        <div>
+          <span class="text-muted me-2">إجمالي الفاتورة:</span>
+          <strong class="text-accent fs-5 t-num">{{ selectedOrder.totalOrder }}</strong>
+        </div>
       </div>
-      <div class="modal-body">
-        <div class="mt-2" style="text-align: center;">
-          <table class="table table-bordered table-sm data-table">
-            <thead class="thead-dark">
+
+      @if (isLoadingDetails) {
+        <div class="text-center py-5">
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+          <p class="text-muted mt-2">جاري تحميل تفاصيل الفاتورة...</p>
+        </div>
+      } @else {
+        <div class="table-responsive">
+          <table class="table table-hover dashboard-table">
+            <thead>
               <tr>
                 <th>المنتج</th>
-                <th class="num">عدد الاتواب</th>
-                <th class="num">سعر الوحدة</th>
-                <th>وحدة القياس</th>
-                <th class="num">عدد الوحدات</th>
-                <th class="num">الإجمالى</th>
+                <th class="cell-numeric">عدد الأثواب</th>
+                <th class="cell-numeric">سعر الوحدة</th>
+                <th class="text-center">وحدة القياس</th>
+                <th class="cell-numeric">عدد الوحدات</th>
+                <th class="cell-numeric">الإجمالى</th>
               </tr>
             </thead>
             <tbody>
               @for (item of ordersDetailsList; track item) {
                 <tr>
-                  <td>{{ item.productName }}</td>
-                  <td class="num">{{ item.quantity }}</td>
-                  <td class="num">{{ item.price }}</td>
-                  <td>{{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}</td>
-                  <td class="num">{{ item.unitNumber }}</td>
-                  <td class="num">{{ item.total }}</td>
+                  <td class="fw-bold">{{ item.productName }}</td>
+                  <td class="cell-numeric t-num">{{ item.quantity }}</td>
+                  <td class="cell-numeric t-num">{{ item.price }}</td>
+                  <td class="text-center">
+                    <span class="unit-tag">{{ item.measurementUnit === 'METER' ? 'متر' : 'كيلو جرام' }}</span>
+                  </td>
+                  <td class="cell-numeric t-num">{{ item.unitNumber }}</td>
+                  <td class="cell-numeric fw-bold text-accent t-num">{{ item.total }}</td>
+                </tr>
+              }
+              @if (!ordersDetailsList || ordersDetailsList.length === 0) {
+                <tr>
+                  <td colspan="6" class="text-center text-muted py-4">
+                    لا توجد منتجات مسجلة في هذه الفاتورة
+                  </td>
                 </tr>
               }
             </tbody>
           </table>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close()">اغلاق</button>
-      </div>
-    </ng-template>
+      }
+    }
+  </div>
+
+  <!-- DIALOG FOOTER -->
+  <div class="dialog-footer p-3 border-top d-flex justify-content-between align-items-center">
+    @if (selectedOrder) {
+      <button mat-stroked-button (click)="backToList()">
+        <mat-icon>arrow_forward</mat-icon>
+        العودة إلى قائمة الفواتير
+      </button>
+    } @else {
+      <div></div>
+    }
+    <button mat-raised-button color="primary" (click)="closeDialog()">
+      إغلاق
+    </button>
   </div>
 </div>
+

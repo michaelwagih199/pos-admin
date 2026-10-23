@@ -1,6 +1,4 @@
-<div class="bg-gray-300 rounded text-center text-white mt-2 mb-2">
-  <h1>تفاصيل الفاتورة</h1>
-</div>
+<h2 mat-dialog-title>تفاصيل الفاتورة</h2>
 
 <mat-dialog-content>
   <table mat-table [dataSource]="listDetails" class="mat-elevation-z2">
@@ -29,6 +27,6 @@
 
 <mat-divider></mat-divider>
 
-<mat-dialog-actions align="center">
-  <button mat-raised-button color="primary" (click)="close()" tabindex="1">الغاء</button>
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="close()" tabindex="1">إغلاق</button>
 </mat-dialog-actions>

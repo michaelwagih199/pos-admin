@@ -77,12 +77,14 @@
 .text-l { font-size: var(--vn-text-lg); }
 
 /* Enhanced Button Sizing & Styling for POS
-   These declarations still carry the important flag, but not because of the
-   old cascade — Phase E moved the app stylesheet last, so Bootstrap no longer
-   wins at equal specificity. They compete with Material's own
+   .btn-navy and .btn-secondary-action still carry the flag, but not because of
+   the old cascade — Phase E moved the app stylesheet last, so Bootstrap no
+   longer wins at equal specificity. They compete with Material's own
    `.mat-raised-button` and `.mat-mini-fab` theme rules. Per DESIGN_SYSTEM §6.2
    the rule is never to ADD one; these are pre-existing, and removing them
-   cannot be visually verified in this environment. */
+   cannot be visually verified in this environment.
+   .btn-accent was collapsed: the template now sets color="accent", so the
+   global raised-button standard owns its fill and label. */
 .btn-navy {
   background-color: var(--theme-navy) !important;
   color: var(--vn-on-brand) !important;
@@ -95,16 +97,24 @@
   color: var(--vn-on-brand) !important;
   font-family: var(--vn-font-body);
   font-weight: var(--vn-weight-bold);
+  box-shadow: var(--vn-shadow-sm) !important;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-accent-hover) !important;
+  }
 }
 
 .btn-secondary-action {
-  background-color: var(--vn-border-light) !important;
+  background-color: var(--vn-surface-hover) !important;
   color: var(--theme-navy) !important;
+  border: 1px solid var(--vn-border) !important;
   font-family: var(--vn-font-body);
   font-weight: var(--vn-weight-bold);
+  box-shadow: var(--vn-shadow-sm) !important;
 
   &:hover:not(:disabled) {
-    background-color: var(--vn-border) !important;
+    background-color: var(--vn-border-light) !important;
+    border-color: var(--vn-ink-500) !important;
   }
 }
 
@@ -158,11 +168,18 @@
   text-align: end;
 }
 
+// Numeric headers use the same LTR isolation as their .t-num body
+// cells, so the inline end edge matches in both places.
+thead th.cell-numeric {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
 // Unit chip (متر / كيلو جرام) replaces a bare text cell.
 .unit-tag {
   display: inline-block;
   font-size: 0.75rem;
-  color: var(--vn-ink-muted);
+  color: var(--vn-text-muted);
   background: var(--vn-surface-alt);
   border: 1px solid var(--vn-border-light);
   padding-block: 2px;
@@ -187,7 +204,7 @@
   padding-block: 2px;
   padding-inline: var(--vn-space-1) + 2px;
   font-size: 11px;
-  color: var(--vn-ink-muted);
+  color: var(--vn-text-muted);
   font-family: monospace;
 }
 
@@ -231,16 +248,36 @@
 /* Pay button — accent CTA with the small elevation token (per user 2026-10-19;
    replaces the ad-hoc `0 2px 4px var(--vn-accent-shadow)` glow). Specificity is
    raised instead of adding the important flag (still pre-existing only). */
-.btn-pay.mat-mdc-raised-button {
-  background-color: var(--vn-accent);
-  color: var(--vn-on-brand);
+.btn-pay.mat-mdc-raised-button,
+.btn-accent.mat-mdc-raised-button {
+  --mat-button-protected-container-color: var(--vn-accent) !important;
+  --mat-button-protected-label-text-color: var(--vn-on-brand) !important;
+  --mat-button-filled-container-color: var(--vn-accent) !important;
+  --mat-button-filled-label-text-color: var(--vn-on-brand) !important;
+  background-color: var(--vn-accent) !important;
+  color: var(--vn-on-brand) !important;
+  border: 1px solid var(--vn-accent) !important;
   font-family: var(--vn-font-body);
   font-weight: var(--vn-weight-bold);
-  box-shadow: var(--vn-shadow-sm);
-  transition: background-color var(--vn-duration-fast) var(--vn-ease);
+  box-shadow: var(--vn-shadow-sm) !important;
+  transition: background-color var(--vn-duration-fast) var(--vn-ease), opacity var(--vn-duration-fast) var(--vn-ease);
 
   &:hover:not(:disabled) {
-    background-color: var(--vn-accent-hover);
+    background-color: var(--vn-accent-hover) !important;
+    border-color: var(--vn-accent-hover) !important;
+  }
+
+  &:disabled,
+  &[disabled],
+  &.mat-mdc-button-disabled {
+    --mat-button-protected-disabled-container-color: var(--vn-accent) !important;
+    --mat-button-protected-disabled-label-text-color: var(--vn-on-brand) !important;
+    background-color: var(--vn-accent) !important;
+    color: var(--vn-on-brand) !important;
+    border-color: var(--vn-accent) !important;
+    opacity: 0.65 !important;
+    cursor: not-allowed !important;
+    box-shadow: none !important;
   }
 }
 

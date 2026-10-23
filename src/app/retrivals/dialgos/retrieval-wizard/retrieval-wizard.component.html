@@ -16,7 +16,7 @@
   @if (step === 0) {
     <div class="wizard-step">
       <h3>اختر نوع المرتجع</h3>
-      <mat-button-toggle-group [(ngModel)]="returnType" class="full-width-toggle">
+      <mat-button-toggle-group [ngModel]="returnType" (ngModelChange)="onReturnTypeChange($event)" class="full-width-toggle">
         <mat-button-toggle value="CUSTOMER">
           <mat-icon>person</mat-icon> مرتجع مبيعات (عميل)
         </mat-button-toggle>
@@ -35,14 +35,36 @@
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>الاسم أو رقم الهاتف</mat-label>
         <input matInput [formControl]="searchCtrl" [matAutocomplete]="auto">
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onPersonSelected($event.option.value)">
-          @for (p of filteredPeople | async; track p) {
-            <mat-option [value]="p">
-              {{ p.name }} <small class="text-muted">{{ p.phone }}</small>
-            </mat-option>
+        @if (searching) {
+          <mat-progress-spinner matSuffix diameter="20" mode="indeterminate"></mat-progress-spinner>
+        }
+        @if (searchCtrl.value && !selectedPerson) {
+          <button mat-icon-button matSuffix type="button" (click)="clearPerson()" aria-label="مسح">
+            <mat-icon>close</mat-icon>
+          </button>
+        }
+        <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayPerson" (optionSelected)="onPersonSelected($event.option.value)">
+          @let people = (filteredPeople | async) ?? [];
+          @if (searching) {
+            <mat-option disabled>جارٍ البحث…</mat-option>
+          } @else {
+            @for (p of people; track p.id) {
+              <mat-option [value]="p">
+                {{ p.name }}
+                @if (p.phone) {
+                  <small class="text-muted t-num">{{ p.phone }}</small>
+                }
+              </mat-option>
+            }
+            @if (people.length === 0 && searchTerm.length >= 2) {
+              <mat-option disabled>لا توجد نتائج مطابقة</mat-option>
+            }
           }
         </mat-autocomplete>
       </mat-form-field>
+      @if (!selectedPerson && searchTerm.length < 2) {
+        <div class="search-hint">اكتب حرفين على الأقل من الاسم أو رقم الهاتف</div>
+      }
     </div>
   }
 
@@ -51,10 +73,12 @@
     <div class="wizard-step">
       <div class="person-badge">
         <mat-icon>check_circle</mat-icon> {{ selectedPerson?.name }}
+        <button mat-button type="button" class="change-person-btn" (click)="changePerson()">تغيير</button>
       </div>
       @if (loadingProducts) {
         <mat-progress-bar color="accent" mode="indeterminate" class="mb-3"></mat-progress-bar>
       }
+      <div class="table-scroll">
       <table mat-table [dataSource]="products" class="mat-elevation-z0 products-table">
         <!-- Product name -->
         <ng-container matColumnDef="name">
@@ -100,6 +124,7 @@
         <tr mat-header-row *matHeaderRowDef="['name','returnable','action']"></tr>
         <tr mat-row *matRowDef="let row; columns: ['name','returnable','action'];"></tr>
       </table>
+      </div>
       <div class="step-actions">
         <button mat-stroked-button (click)="step = 1">رجوع</button>
         <button mat-raised-button color="accent" (click)="step = 3" [disabled]="cart.length === 0">
@@ -113,63 +138,69 @@
   @if (step === 3) {
     <div class="wizard-step">
       <h3>مراجعة المرتجع</h3>
-      <table mat-table [dataSource]="cart" class="mat-elevation-z0 review-table">
-        <ng-container matColumnDef="product">
-          <th mat-header-cell *matHeaderCellDef> المنتج </th>
-          <td mat-cell *matCellDef="let e"> {{ e.productName }} </td>
-        </ng-container>
-        <ng-container matColumnDef="pieces">
-          <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الاتواب </th>
-          <td mat-cell *matCellDef="let e" class="text-center"> {{ e.quantity }} </td>
-        </ng-container>
-        <ng-container matColumnDef="units">
-          <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الوحدات </th>
-          <td mat-cell *matCellDef="let e" class="text-center">
-            {{ e.unitNumber | number:'1.0-3' }}
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="condition">
-          <th mat-header-cell *matHeaderCellDef class="text-center"> الحالة </th>
-          <td mat-cell *matCellDef="let e" class="text-center">
-            <span class="badge" [class.badge-good]="e.returnCondition==='GOOD'"
-              [class.badge-damaged]="e.returnCondition==='DAMAGED'">
-              {{ e.returnCondition === 'GOOD' ? 'سليم' : 'تالف' }}
-            </span>
-          </td>
-        </ng-container>
-        <ng-container matColumnDef="total">
-          <th mat-header-cell *matHeaderCellDef class="text-center"> الإجمالي </th>
-          <td mat-cell *matCellDef="let e" class="text-center">
-            {{ e.total | currency:'EGP':'symbol':'1.2-2' }}
-          </td>
-        </ng-container>
-        <tr mat-header-row *matHeaderRowDef="reviewColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: reviewColumns;"></tr>
-      </table>
-      <div class="review-options">
-        <mat-form-field appearance="outline">
-          <mat-label>الخصم</mat-label>
-          <input matInput type="number" [(ngModel)]="discount">
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>طريقة الرد</mat-label>
-          <mat-select [(ngModel)]="refundMethod">
-            <mat-option value="CREDIT">رصيد (خصم من الحساب)</mat-option>
-            <mat-option value="CASH">كاش (سحب من الخزنة)</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-      @if (saving) {
-        <mat-progress-bar color="accent" mode="indeterminate" class="mb-3"></mat-progress-bar>
-      }
-      <div class="footer-actions">
-        <div class="total-display">الصافي: {{ netTotal | currency:'EGP':'symbol':'1.2-2' }}</div>
-        <div class="action-buttons">
-          <button mat-stroked-button (click)="step = 2" [disabled]="saving">رجوع</button>
-          <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0 || saving">
-            <mat-icon>check_circle</mat-icon> تأكيد وحفظ
-          </button>
+      <div class="review-layout">
+        <div class="table-scroll">
+          <table mat-table [dataSource]="cart" class="mat-elevation-z0 review-table">
+            <ng-container matColumnDef="product">
+              <th mat-header-cell *matHeaderCellDef> المنتج </th>
+              <td mat-cell *matCellDef="let e"> {{ e.productName }} </td>
+            </ng-container>
+            <ng-container matColumnDef="pieces">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الاتواب </th>
+              <td mat-cell *matCellDef="let e" class="text-center"> {{ e.quantity }} </td>
+            </ng-container>
+            <ng-container matColumnDef="units">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> عدد الوحدات </th>
+              <td mat-cell *matCellDef="let e" class="text-center">
+                {{ e.unitNumber | number:'1.0-3' }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="condition">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> الحالة </th>
+              <td mat-cell *matCellDef="let e" class="text-center">
+                <span class="badge" [class.badge-good]="e.returnCondition==='GOOD'"
+                  [class.badge-damaged]="e.returnCondition==='DAMAGED'">
+                  {{ e.returnCondition === 'GOOD' ? 'سليم' : 'تالف' }}
+                </span>
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="total">
+              <th mat-header-cell *matHeaderCellDef class="text-center"> الإجمالي </th>
+              <td mat-cell *matCellDef="let e" class="text-center">
+                {{ e.total | currency:'EGP':'symbol':'1.2-2' }}
+              </td>
+            </ng-container>
+            <tr mat-header-row *matHeaderRowDef="reviewColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: reviewColumns;"></tr>
+          </table>
         </div>
+        <aside class="summary-panel">
+          <div class="review-options">
+            <mat-form-field appearance="outline">
+              <mat-label>الخصم</mat-label>
+              <input matInput type="number" [(ngModel)]="discount">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>طريقة الرد</mat-label>
+              <mat-select [(ngModel)]="refundMethod">
+                <mat-option value="CREDIT">رصيد (خصم من الحساب)</mat-option>
+                <mat-option value="CASH">كاش (سحب من الخزنة)</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          @if (saving) {
+            <mat-progress-bar color="accent" mode="indeterminate" class="mb-3"></mat-progress-bar>
+          }
+          <div class="footer-actions">
+            <div class="total-display">الصافي: {{ netTotal | currency:'EGP':'symbol':'1.2-2' }}</div>
+            <div class="action-buttons">
+              <button mat-stroked-button (click)="step = 2" [disabled]="saving">رجوع</button>
+              <button mat-raised-button color="primary" (click)="submit()" [disabled]="cart.length === 0 || saving">
+                <mat-icon>check_circle</mat-icon> تأكيد وحفظ
+              </button>
+            </div>
+          </div>
+        </aside>
       </div>
     </div>
   }

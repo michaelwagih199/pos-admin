@@ -5,6 +5,7 @@ export interface ReturnableInvoiceLine {
   orderDate: string;
   returnableQty: number;      // rolls ceiling
   returnableUnits: number;    // units ceiling (m/kg)
+  price?: number | null;      // source invoice line unit price
 }
 
 export interface ReturnableProduct {

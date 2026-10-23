@@ -33,12 +33,24 @@
     <form [formGroup]="form">
 
       <!-- Multi-invoice toggle -->
-      <mat-slide-toggle class="toggle-row" [formControl]="useAllInvoices" color="primary">
-        <span class="toggle-label">
-          <mat-icon inline>{{ useAllInvoices.value ? 'auto_awesome' : 'tune' }}</mat-icon>
-          {{ useAllInvoices.value ? 'إرجاع من جميع الفواتير (الأحدث أولاً)' : 'اختيار فاتورة محددة' }}
-        </span>
-      </mat-slide-toggle>
+      <div class="mode-switch">
+        <mat-slide-toggle class="toggle-row" [formControl]="useAllInvoices" color="primary">
+          <span class="toggle-label">
+            <mat-icon inline>{{ useAllInvoices.value ? 'auto_awesome' : 'tune' }}</mat-icon>
+            {{ useAllInvoices.value ? 'كل الفواتير (الأحدث أولاً)' : 'فاتورة محددة' }}
+          </span>
+        </mat-slide-toggle>
+        <p class="mode-hint">
+          @if (useAllInvoices.value) {
+            تُوزَّع الكمية على الفواتير من الأحدث للأقدم، وبسعر كل فاتورة.
+            <button type="button" class="mode-link" (click)="useAllInvoices.setValue(false)">
+              إدخال سعر يدوي
+            </button>
+          } @else {
+            اختر الفاتورة، ويمكنك إدخال سعر الوحدة قبل الإضافة.
+          }
+        </p>
+      </div>
 
       <!-- Invoice dropdown (manual mode only) -->
       @if (!useAllInvoices.value && multiInvoiceInvoices.length > 0) {
@@ -111,7 +123,27 @@
               </mat-error>
             }
           </mat-form-field>
+
         </div>
+
+        <!-- Optional unit price: full width so its hint never collides with the quantity fields -->
+        <mat-form-field appearance="outline" class="w-100 price-field">
+          <mat-label>سعر الوحدة (اختياري)</mat-label>
+          <input matInput class="t-num" type="number" formControlName="customPrice"
+            min="0" step="0.01" inputmode="decimal"
+            [placeholder]="useAllInvoices.value ? 'غير متاح' : 'سعر الفاتورة'">
+          <mat-hint>
+            @if (useAllInvoices.value) {
+              السعر يُؤخذ من كل فاتورة — أوقف الخيار أعلاه لإدخال سعر يدوي
+            } @else {
+              اتركه فارغاً لاستخدام سعر الفاتورة: <b>{{ (sourceUnitPrice ?? 0) | number:'1.0-2' }}</b>
+            }
+          </mat-hint>
+          @if (form.get('customPrice')?.hasError('min')) {
+            <mat-error>السعر لا يمكن أن يكون سالباً</mat-error>
+          }
+        </mat-form-field>
+
         <mat-radio-group formControlName="condition" class="condition-toggle">
           <mat-radio-button value="GOOD" class="cond-good">
             <mat-icon>check_circle</mat-icon>

@@ -20,7 +20,7 @@
 // No comment sits inside a rule here (postcss-gap-properties landmine, DESIGN_SYSTEM 6.2).
 
 .my-container {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.527),rgba(0, 0, 0, 0.5)) , 
+  background-image: linear-gradient(var(--vn-scrim-soft), var(--vn-scrim-soft)) ,
   url(/assets/login-bg.webp);
   background-size: cover;
   height: 100vh;  
@@ -58,20 +58,25 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
   border: 2px solid var(--vn-accent-hover);
-  box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+  box-shadow: var(--vn-shadow-2);
 
 }
 
 .mybtn {
   width: 100%;
-  background-color: var(--vn-accent-hover);
+  background-color: var(--vn-accent);
   color: var(--vn-on-brand);
   font-family: var(--vn-font-display);
   font-size: large;
   border-radius: var(--vn-radius-pill);
   border: 2px solid var(--vn-surface-sunken);
-  font-weight: 500;
+  font-weight: var(--vn-weight-bold);
   padding: 8px;
+
+  &:hover:not(:disabled) {
+    background-color: var(--vn-accent-hover);
+    color: var(--vn-on-brand);
+  }
 }
 
 button:hover{

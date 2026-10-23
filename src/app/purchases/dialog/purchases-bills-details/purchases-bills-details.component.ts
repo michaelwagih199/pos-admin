@@ -1,5 +1,5 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { PurchasesBillsDetails } from '../../model/purchases-deteails';
 import { PurchasingBillsDetailsService } from '../../service/purchasing-bills-details.service';
 import { CdkScrollable } from '@angular/cdk/scrolling';
@@ -11,7 +11,7 @@ import { MatButton } from '@angular/material/button';
     selector: 'app-purchases-bills-details',
     templateUrl: './purchases-bills-details.component.html',
     styleUrls: ['./purchases-bills-details.component.scss'],
-    imports: [CdkScrollable, MatDialogContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatDivider, MatDialogActions, MatButton]
+    imports: [CdkScrollable, MatDialogTitle, MatDialogContent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatDivider, MatDialogActions, MatButton]
 })
 export class PurchasesBillsDetailsComponent implements OnInit {
   private dialogRef = inject<MatDialogRef<PurchasesBillsDetailsComponent>>(MatDialogRef);

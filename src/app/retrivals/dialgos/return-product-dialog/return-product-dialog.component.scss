@@ -24,12 +24,15 @@
 
 .dialog-container {
   font-family: var(--vn-font-body);
-  min-width: 500px;
-  max-width: 560px;
+  inline-size: 100%;
+  max-inline-size: 820px;
+  max-block-size: 88vh;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== HEADER ===== */
-.dialog-header .subtitle .chip {
+.dialog-header {
   padding: var(--vn-space-4) var(--vn-space-5) var(--vn-space-3);
 
   .title-row {
@@ -96,6 +99,8 @@
 /* ===== BODY ===== */
 .dialog-body {
   padding: var(--vn-space-4) var(--vn-space-5);
+  overflow-y: auto;
+  flex: 1 1 auto;
 
   form {
     display: flex;
@@ -105,8 +110,72 @@
 
   .dual-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--vn-space-4);
+  }
+
+  .mode-switch {
+    background: var(--vn-surface-alt);
+    border: 1px solid var(--vn-border-faint);
+    border-radius: var(--vn-radius-lg);
+    padding: var(--vn-space-2) var(--vn-space-3);
+  }
+
+  .toggle-row {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    font-family: var(--vn-font-body);
+
+    ::ng-deep .mdc-form-field {
+      flex: 1;
+      min-width: 0;
+    }
+
+    ::ng-deep .mdc-label {
+      white-space: normal;
+      line-height: 1.4;
+    }
+  }
+
+  .toggle-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: var(--vn-text-sm);
+    font-weight: var(--vn-weight-medium);
+    color: var(--vn-text);
+  }
+
+  .mode-hint {
+    margin: var(--vn-space-1) 0 0;
+    font-size: var(--vn-text-xs);
+    line-height: 1.5;
+    color: var(--vn-text-muted);
+  }
+
+  .mode-link {
+    background: none;
+    border: 0;
+    padding: 0;
+    margin-inline-start: var(--vn-space-1);
+    color: var(--vn-link);
+    font: inherit;
+    font-weight: var(--vn-weight-bold);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+
+  .mode-link:hover {
+    color: var(--vn-brand-hover);
+  }
+
+  .price-field {
+    width: 100%;
+  }
+
+  .price-field ::ng-deep .mat-mdc-form-field-subscript-wrapper {
+    text-align: start;
   }
 
   .total-line {
@@ -166,12 +235,22 @@
   width: 100%;
 }
 
+@media (max-width: 640px) {
+  .dialog-body .dual-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
 /* ===== ACTIONS ===== */
 .dialog-actions {
   display: flex;
   justify-content: center;
   gap: 12px;
   padding: var(--vn-space-4) var(--vn-space-5);
+  position: sticky;
+  inset-block-end: 0;
+  background: var(--vn-surface);
+  border-block-start: 1px solid var(--vn-border-light);
 
   button {
     min-width: 140px;

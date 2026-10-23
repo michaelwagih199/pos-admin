@@ -59,9 +59,9 @@
   </form>
 </mat-dialog-content>
 <mat-divider></mat-divider>
-<mat-dialog-actions align="center">
-  <button mat-raised-button (click)="save()"
+<mat-dialog-actions align="end">
+  <button mat-raised-button color="primary" (click)="save()"
   [disabled]="!validateForm.valid">{{arabic.stock.category.util.dialog.addDialog.buttons.save}}</button>
-  <button mat-raised-button color="primary" (click)="close()"
+  <button mat-raised-button (click)="close()"
   tabindex="1">{{arabic.stock.category.util.dialog.addDialog.buttons.cancel}}</button>
 </mat-dialog-actions>

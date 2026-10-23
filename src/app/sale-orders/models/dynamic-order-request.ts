@@ -4,6 +4,7 @@ export interface DynamicOrderByCodeRequest {
   canvasTopUnits: number;
   searchBy: string;
   dynamicDetailsDao: DynamicDetailsDao[];
+  customPrice?: number | null;
 }
 
 export interface DynamicOrderByNameRequest {
@@ -12,6 +13,7 @@ export interface DynamicOrderByNameRequest {
   canvasTopUnits: number;
   searchBy: string;
   dynamicDetailsDao: DynamicDetailsDao[];
+  customPrice?: number | null;
 }
 
 

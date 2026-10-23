@@ -1,10 +1,19 @@
-* {
-    background-color: var(--vn-text-muted);
-    font-family: 'El Messiri', sans-serif;
-    color: white;
-    direction: ltr;
+:host {
+  display: block;
+  width: 100%;
 }
-h2,h3{
-    font-family: 'El Messiri', sans-serif;
 
+.app-logo {
+  max-width: 110px;
+  height: auto;
+  border-radius: var(--vn-radius-md);
+  box-shadow: var(--vn-shadow-sm);
+}
+
+.text-navy {
+  color: var(--vn-brand);
+}
+
+.fs-7 {
+  font-size: 0.85rem;
 }

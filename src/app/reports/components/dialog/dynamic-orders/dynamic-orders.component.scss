@@ -1,100 +1,122 @@
-// Phase G screen 9 (plan section 10) - dynamic-orders dialog.
-//
-// Tokenised in this pass:
-//   - the redundant local :host palette was deleted: this file @use-s the shared report
-//     partial, which already emits all twelve report properties (proved: each is still
-//     declared exactly once in the compiled stylesheet).
-//   - the card border and both figure colours -> var(--vn-text)
-//     FOLD of the off-ramp near-black onto the ink ramp.
-//   - the card background -> var(--vn-surface-sunken) (exact) and the two white box
-//     backgrounds -> var(--vn-surface) (exact).
-//   - the accent-bar colours -> var(--vn-brand) (exact) and var(--vn-accent) (exact);
-//     the second box's pink -> var(--vn-danger)
-//     FOLD onto the brand crimson.
-//   - both display faces -> var(--vn-font-display); the body face -> var(--vn-font-body).
-//   - the 20px box headers -> var(--vn-text-num-sm) (exact).
-//   - both drop shadows -> var(--vn-shadow-2)
-//     FOLD: same family as the other report cards (crisp grey offset -> shared slate step).
-//   - the radius 8px -> var(--vn-radius-lg) (exact).
-//   - three unused Sass colour variables (an unused green, red and off-white) deleted;
-//     they were declared and never referenced.
-//
-// Deliberately left alone:
-//   - the two accent bars stay physical properties: DESIGN_SYSTEM section 3.2 records that
-//     moving them to the logical form would flip them to the other edge under RTL, which is
-//     a real layout change rather than a tokenization.
-//   - off-grid geometry: the 60px box height, the 24px figure size, the
-//     1px / 2px / 8px border widths, and the body font-size keywords.
-//
-// No comment sits inside a rule here (postcss-gap-properties landmine, DESIGN_SYSTEM 6.2).
-
 @use 'src/app/shared/styles/report-tables' as rt;
 
-$bg_dark_color: var(--vn-brand);
-$accent: var(--vn-accent);
-$font_header_size: var(--vn-text-num-sm);
+:host {
+  display: block;
+  width: 100%;
+}
 
-* {
+.dynamic-orders-container {
+  background-color: var(--vn-surface);
+  border-radius: var(--vn-radius-lg);
+  overflow: hidden;
   font-family: var(--vn-font-body);
 }
 
-.data-table {
-  @include rt.table-base;
-}
+.dialog-header {
+  background-color: var(--vn-surface-alt);
+  border-bottom: 1px solid var(--vn-border-light);
 
-
-.mat-raised-button {
-  font-family: var(--vn-font-display);
-  font-size: large;
-}
-
-.customClass-1 {
-  background-color: var(--vn-surface);
-  border-inline-end: 8px solid $bg_dark_color;
-  height: 60px;
-  border-radius: var(--vn-radius-md);
-  box-shadow: var(--vn-shadow-2);
-  font-family: var(--vn-font-display);
-  font-size: $font_header_size;
-
-  &:hover {
-    border-inline-end: 8px solid $accent;
-    text-decoration: none;
-  }
-  .customTest {
-    color: var(--vn-text);
-    font-size: 24px;
-    &:hover {
-      animation: swing;
-      animation-duration: 1s;
-    }
+  h3 {
+    font-size: var(--vn-text-lg);
   }
 }
 
-.customClass-2{
+.dialog-body {
+  max-height: calc(85vh - 140px);
+  overflow-y: auto;
+}
 
-  background-color: var(--vn-surface);
-  border-inline-end: 8px solid var(--vn-danger);
-  height: 60px;
+.dialog-footer {
+  background-color: var(--vn-surface-alt);
+  border-top: 1px solid var(--vn-border-light);
+}
+
+.text-navy {
+  color: var(--vn-brand);
+}
+
+.text-accent {
+  color: var(--vn-accent);
+}
+
+.summary-metric-card {
+  background-color: var(--vn-surface-alt);
+  border: 1px solid var(--vn-border-light);
   border-radius: var(--vn-radius-md);
-  box-shadow: var(--vn-shadow-2);
-  font-family: var(--vn-font-display);
-  font-size: $font_header_size;
-  &:hover {
-    border-inline-end: 8px solid $bg_dark_color;
+  border-inline-start: 4px solid var(--vn-brand);
+  box-shadow: var(--vn-shadow-1);
+}
+
+.metric-badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: var(--vn-radius-sm);
+  color: var(--vn-on-brand);
+  font-weight: var(--vn-weight-bold);
+  font-size: 1.1rem;
+
+  &--blue {
+    background-color: var(--vn-brand);
+  }
+
+  &--navy {
+    background-color: var(--vn-brand-dark, #0f172a);
+  }
+}
+
+.order-meta-bar {
+  background-color: var(--vn-surface-alt);
+  border: 1px solid var(--vn-border-light);
+  border-radius: var(--vn-radius-md);
+  border-inline-start: 4px solid var(--vn-accent);
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+
+  thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: var(--vn-surface-alt);
+    color: var(--vn-brand);
     font-weight: var(--vn-weight-bold);
-  }
-  .customTest{
-    color: var(--vn-text);
-    font-size: 24px;
-    text-decoration: none;
-    &:hover{
-      animation: swing;
-      animation-duration: 1s;
-    }
+    border-bottom: 2px solid var(--vn-border);
+    padding: var(--vn-space-3);
+    white-space: nowrap;
   }
 
+  tbody td {
+    vertical-align: middle;
+    padding: var(--vn-space-3);
+    border-bottom: 1px solid var(--vn-border-light);
+  }
+
+  tbody tr:hover td {
+    background-color: var(--vn-surface-hover);
+  }
 }
-// The former .nz-table rule was deleted with the last Ng-Zorro component: it targeted the
-// class the library set on its own host element, and the scroll affordance is now provided by
-// Bootstrap's table-responsive wrapper on the plain table that replaced it.
+
+.cell-numeric {
+  text-align: end;
+}
+
+// Numeric headers use the same LTR isolation as their .t-num body
+// cells, so the inline end edge matches in both places.
+thead th.cell-numeric {
+  direction: ltr;
+  unicode-bidi: isolate;
+}
+
+.unit-tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  color: var(--vn-text-muted);
+  background: var(--vn-surface-alt);
+  border: 1px solid var(--vn-border-light);
+  padding: 2px 8px;
+  border-radius: var(--vn-radius-sm);
+}
+

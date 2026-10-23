@@ -28,7 +28,7 @@
       </div>
 
       <div class="col">
-        <button mat-raised-button class="btn-reset mt-2" (click)="resetFilters()">{{arabic.customers.util.reset}}</button>
+        <button mat-raised-button color="accent" class="btn-reset mt-2" (click)="resetFilters()">{{arabic.customers.util.reset}}</button>
       </div>
     </div>
   </div>
@@ -112,12 +112,15 @@
 <div>
   <ng-template #content let-modal>
     <div class="modal-header">
-      <h4 class="modal-title text-center" id="modal-basic-title">التفاصيل</h4>
+      <h4 class="modal-title" id="modal-basic-title">تفاصيل الفاتورة</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
     <div class="modal-body">
-      <div class="mt-2" style="text-align: center;">
+      <div class="mt-2 text-center">
         <table class="table table-bordered table-sm">
-          <thead class="thead-dark">
+          <thead>
             <tr>
               <th>المنتج</th>
               <th>عدد الاتواب</th>
@@ -143,7 +146,7 @@
       </div>
     </div>
     <div class="modal-footer">
-      <button type="button" class="btn btn-outline-dark" (click)="modal.close()">اغلاق</button>
+      <button mat-raised-button color="primary" (click)="modal.close()">إغلاق</button>
     </div>
   </ng-template>
 </div>

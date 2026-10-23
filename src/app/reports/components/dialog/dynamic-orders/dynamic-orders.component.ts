@@ -27,19 +27,20 @@ interface data {
     styleUrls: ['./dynamic-orders.component.scss'],
     standalone: false
 })
-export class DynamicOrdersComponent{
-
+export class DynamicOrdersComponent {
   startDate: any;
   endDate: any;
   arabic: Arabic = new Arabic();
-  invoceorderPrinting!: POS_Response<SaleOrderInvoceModel>
-
+  invoceorderPrinting!: POS_Response<SaleOrderInvoceModel>;
 
   orderCounter: number = 0;
   sumTotal: number = 0;
 
-  ordersList!: OrderPaymentModel[];
-  ordersDetailsList!: SaleOrderDetails[];
+  ordersList: OrderPaymentModel[] = [];
+  ordersDetailsList: SaleOrderDetails[] = [];
+  selectedOrder: OrderPaymentModel | null = null;
+  isLoadingDetails: boolean = false;
+  isTodayOrders: boolean = true;
 
   constructor(
     private saleReport: SalesRoportService,
@@ -52,7 +53,8 @@ export class DynamicOrdersComponent{
     private dialogRef: MatDialogRef<DynamicOrdersComponent>,
     @Inject(MAT_DIALOG_DATA) dialogData: data
   ) {
-    switch (dialogData.orderType) {
+    this.isTodayOrders = dialogData?.orderType === DynamicSOrderType.TODAY_ORDERS;
+    switch (dialogData?.orderType) {
       case DynamicSOrderType.TODAY_ORDERS:
         this.getTodayReport();
         break;
@@ -62,49 +64,58 @@ export class DynamicOrdersComponent{
     }
   }
 
-  getCustomerReport(customerId:any) {
-    this.saleReport
-      .getByCusromerId(customerId)
-      .subscribe((data) => {
-        this.ordersList = data.data;
-        this.orderCounter = this.ordersList.length
-        this.sumTotal = this.ordersList.map(a => a.totalOrder).reduce(function (a, b) {
-          return a + b;
-        });
-      });
+  getCustomerReport(customerId: any) {
+    this.saleReport.getByCusromerId(customerId).subscribe((data) => {
+      this.ordersList = data.data || [];
+      this.orderCounter = this.ordersList.length;
+      this.sumTotal = this.ordersList.map((a) => a.totalOrder).reduce((a, b) => a + b, 0);
+    });
   }
 
   getTodayReport() {
-    this.saleReport
-      .getTodaySales()
-      .subscribe((data) => {
-        this.ordersList = data.data;
-        this.orderCounter = this.ordersList.length
-        this.sumTotal = this.ordersList.map(a => a.totalOrder).reduce((a, b) => a + b, 0);
-      });
+    this.saleReport.getTodaySales().subscribe((data) => {
+      this.ordersList = data.data || [];
+      this.orderCounter = this.ordersList.length;
+      this.sumTotal = this.ordersList.map((a) => a.totalOrder).reduce((a, b) => a + b, 0);
+    });
   }
 
-
-  details(content: any, item: OrderPaymentModel) {
-    this.modalService.open(content, { size: 'xl' });
-    this.orderDetailsService
-      .getByCode(item.saleOrder.orderCode)
-      .subscribe((data) => {
-        this.ordersDetailsList = data;
-      });
+  details(itemOrContent: any, possibleItem?: OrderPaymentModel) {
+    const item: OrderPaymentModel = possibleItem ? possibleItem : itemOrContent;
+    this.selectedOrder = item;
+    this.isLoadingDetails = true;
+    this.ordersDetailsList = [];
+    this.orderDetailsService.getByCode(item.saleOrder.orderCode).subscribe({
+      next: (data) => {
+        this.ordersDetailsList = data || [];
+        this.isLoadingDetails = false;
+      },
+      error: (err) => {
+        this.isLoadingDetails = false;
+        console.error('Error fetching order details', err);
+      },
+    });
   }
 
+  backToList() {
+    this.selectedOrder = null;
+    this.ordersDetailsList = [];
+  }
 
-  onPrinting(item: OrderPaymentModel){
+  closeDialog() {
+    this.dialogRef.close();
+  }
+
+  onPrinting(item: OrderPaymentModel) {
     this.dialogRef.close(true);
-    this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode,"N").subscribe(response => {
-      this.invoceorderPrinting = response
+    this.orderServiceInvoce.getSaleOrderInvoce(item.saleOrder.orderCode, 'N').subscribe((response) => {
+      this.invoceorderPrinting = response;
       let dataServer = {
         orderCode: response.data.orderCode,
-           excludeOrder: "Y"
+        excludeOrder: 'Y',
       };
       this.dataServer.changeMessage(dataServer);
-    })
+    });
     this.redirectTo(`/printing/sale-order-invoice`);
   }
 
@@ -113,5 +124,4 @@ export class DynamicOrdersComponent{
       .navigateByUrl('/', { skipLocationChange: true })
       .then(() => this.router.navigate([uri]));
   }
-
 }

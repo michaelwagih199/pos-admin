@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialogTitle, MatDialogContent, MatDialogActions } from '@angular/material/dialog';
 import { PurchasesBillsDetailsComponent } from 'src/app/purchases/dialog/purchases-bills-details/purchases-bills-details.component';
 import { PurchasesBillsDetails } from 'src/app/purchases/model/purchases-deteails';
 import { PurchasingBillsDetailsService } from 'src/app/purchases/service/purchasing-bills-details.service';
@@ -16,7 +16,7 @@ import { DecimalPipe } from '@angular/common';
     selector: 'app-rerival-details',
     templateUrl: './rerival-details.component.html',
     styleUrls: ['./rerival-details.component.scss'],
-    imports: [CdkScrollable, MatDialogContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatDivider, MatDialogActions, MatButton, DecimalPipe]
+    imports: [CdkScrollable, MatDialogTitle, MatDialogContent, MatProgressBar, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatDivider, MatDialogActions, MatButton, DecimalPipe]
 })
 export class RerivalDetailsComponent implements OnInit {
 
